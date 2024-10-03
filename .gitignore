@@ -1,0 +1,9 @@
+.idea/
+.venv/
+__pycache__/
+arabic_reformer/__pycache__/
+data/
+gui/__pycache__/
+recordings/
+research.ipynb
+problems.txt
