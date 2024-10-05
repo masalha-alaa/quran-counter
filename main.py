@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         # TODO: Settings dialog...
         self._translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
+        self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
         self.ui.setupUi(self)
         self._current_lang = None
         self._apply_language(AppLang.ARABIC)
@@ -43,7 +44,8 @@ class MainWindow(QMainWindow):
         self._finder = Finder()
         self._prev_scrolling_value = 0
         self._all_matches = None
-        self._all_matches_iter = None
+        self._filtered_matches_iter = None
+        self._filtered_matches_idx = None
         self._adding_items = False
         # [f"<span style=\"color: {c.value};\">" for c in color]
         self.reformer = Reformer()
@@ -128,20 +130,24 @@ class MainWindow(QMainWindow):
         scrollbar = self.ui.foundVerses.verticalScrollBar()
         current_scroll_value = scrollbar.value()
         for _ in range(items_to_load):
-            if (item := next(self._all_matches_iter, MainWindow._exhausted)) is MainWindow._exhausted:
+            if (item := next(self._filtered_matches_iter, MainWindow._exhausted)) is MainWindow._exhausted:
                 return _done()
             surah_num, verse_num, verse, spans = item
             ref = f"{surah_num}:{verse_num}"
             if self.ui.colorizeCheckbox.isChecked():
-                verse = self.reformer.reform_text(verse, text_may_contain_diacritics=True)
-                # TODO: shouldn't we reform only span +-? See reformer.reform_span() -- didn't work so good
-                # verse = self.reformer.reform_span(verse, spans, text_may_contain_diacritics=True)
-                verse = emphasize_span(verse, spans, capitalize=False, underline=False, color=CssColors.CYAN, css=True)
+                verse = self.reform_and_color(verse, spans)
             line = f"<p>{ref}: {verse}</p>"
             # line = f"{ref}: {verse}"
             self.ui.foundVerses.append(line)
 
         return _done()
+
+    def reform_and_color(self, verse, spans):
+        verse = self.reformer.reform_text(verse, text_may_contain_diacritics=True)
+        # TODO: shouldn't we reform only span +-? See reformer.reform_span() -- didn't work so good
+        # verse = self.reformer.reform_span(verse, spans, text_may_contain_diacritics=True)
+        verse = emphasize_span(verse, spans, capitalize=False, underline=False, color=CssColors.CYAN, css=True)
+        return verse
 
     # search word
     @property
@@ -208,24 +214,17 @@ class MainWindow(QMainWindow):
     def ending_of_word_checkbox(self):
         return self.ui.endOfWordCheckbox.isChecked()
 
-    # events
-
+    # EVENTS
     def _toggle_colorize(self, state):
-        self._search_word_text_changed(self.search_word)
-        return
-        # TODO: ?
-        # qt_state = Qt.CheckState(state)
-        # if qt_state == Qt.CheckState.Checked:
-        #     self._search_word_text_changed(self.search_word)
-        # else:
-        #     self.remove_coloring()  # This works, but it keeps reformed results, which might still have some issues, and it's problematic for gpt as well
-
-    def remove_coloring(self):
-        self.ui.foundVerses.setText(self.ui.foundVerses.toPlainText())
+        # self._search_word_text_changed(self.search_word)
+        # return
+        self.ui.foundVerses.clear()
+        self._filtered_matches_iter = iter([self._all_matches[idx] for idx in self._filtered_matches_idx])
+        self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
     @Slot()
     def _filter_button_clicked(self):
-        self.disambiguation_dialog.set_data(self.search_word, self.found_verses)
+        self.disambiguation_dialog.set_data(self.search_word)
         self.disambiguation_dialog.response_signal.connect(self._handle_disambiguation_dialog_response)
         if self.disambiguation_dialog.exec() == QDialog.DialogCode.Accepted:
             pass
@@ -249,16 +248,41 @@ class MainWindow(QMainWindow):
 
     @Slot(list, QThread)
     def on_ask_gpt_for_relevant_verses_completed(self, results, caller_thread: AskGptThread):
-        print("FINAL RESULTS (NEED TO SUBTRACT 1):")
-        print(results)
+        # print("FINAL RESULTS (NEED TO SUBTRACT 1):")
+        # print(results)
         # TODO: One time GPT returned the verse refs as they appear in the Holy Quran (x:y, x:y, ...)
         #       Need to put an eye on this
         caller_thread.relevant_verses_result_ready.disconnect(self.on_ask_gpt_for_relevant_verses_completed)
         self.waiting_dialog.reject()
+        self._filtered_matches_idx = [r - 1 for r in results]
+        self.filter_text_browser()
+
+    def filter_text_browser(self):
+        # TODO: Maybe a numpy array would serve index selection better
+        # self._all_matches = [self._all_matches[idx] for idx in self._filtered_matches_idx]
+        self._filtered_matches_iter = iter([self._all_matches[idx] for idx in self._filtered_matches_idx])
+        self.ui.foundVerses.clear()
+        self.clear_results()
+        # self.ui.filterButton.setEnabled(False)
+        self.refresh_matches()
+        self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
+
+    def refresh_matches(self):
+        # TODO: make background thread if takes too much time
+        self.matches_number_verses = str(len(self._filtered_matches_idx))
+        surahs = set()
+        matches_num = 0
+        for idx in self._filtered_matches_idx:
+            surah_num, _, verse, spans = self._all_matches[idx]
+            surahs.add(surah_num)
+            matches_num += len(spans)
+
+        self.matches_number = str(matches_num)
+        self.matches_number_surahs = str(len(surahs))
 
     def _search_word_text_changed(self, new_text):
         self._all_matches = None
-        self._all_matches_iter = None
+        self._filtered_matches_iter = None
         self.ui.foundVerses.clear()
         if not new_text.strip():
             self.clear_results()
@@ -288,7 +312,8 @@ class MainWindow(QMainWindow):
                 new_text = rf"{new_text}" + end_of_word
 
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = self._finder.find_word(new_text)
-        self._all_matches_iter = iter(self._all_matches)
+        self._filtered_matches_idx = range(len(self._all_matches))
+        self._filtered_matches_iter = iter(self._all_matches)
         self.ui.filterButton.setEnabled((number_of_matches > 0) and search_words == 1)
         # for _, row in results.iterrows():
         #     surah_cnt += 1

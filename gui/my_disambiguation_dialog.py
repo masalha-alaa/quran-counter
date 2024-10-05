@@ -18,11 +18,9 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
         self.disambiguator = disambiguator
         self.worker = AskGptThread(disambiguator)  # GPT claims i can't reuse a thread, but it's working...
         self._word = None
-        self._verses = None
 
-    def set_data(self, word, verses):
+    def set_data(self, word):
         self._word = word
-        self._verses = verses
         self.instructionsWordLabel.setText(f"'{self._word}'")
 
     def _setup_events(self):
@@ -41,8 +39,7 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
 
     @Slot()
     def on_accepted(self):
-        if self._word.strip() and self._verses.strip() and (selected := self.resultsListWidget.currentItem()):
-            # self.ask_gpt_for_relevant_verses(self._word, self._verses, selected.text())
+        if self._word.strip() and (selected := self.resultsListWidget.currentItem()):
             self.response_signal.emit(selected.text())
         self.accept()  # Close the dialog and return # QDialog.DialogCode.Accepted
 
