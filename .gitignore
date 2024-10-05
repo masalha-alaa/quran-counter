@@ -6,4 +6,7 @@ data/
 gui/__pycache__/
 recordings/
 research.ipynb
-problems.txt
+issues.txt
+open_ai_key.txt
+color-test.html
+gui/translations/*.qm

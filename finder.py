@@ -28,5 +28,6 @@ class Finder:
     def find_word(self, w):
         spans, number_of_matches, found_in_surah, number_of_verses = zip(*self.df.apply(lambda row: self._find_in_surah(row, w), axis=1))  # NOTE: index is not retained
         # spans = chain.from_iterable(tup for lst in spans if lst is not None for tup in lst)
-        spans = (tup for lst in spans if lst is not None for tup in lst)
+        # spans = (tup for lst in spans if lst is not None for tup in lst)
+        spans = [tup for lst in spans if lst is not None for tup in lst]
         return spans, sum(number_of_matches), sum(found_in_surah), sum(number_of_verses)

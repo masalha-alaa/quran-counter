@@ -1,3 +1,4 @@
+# TODO: Convert class to a library
 class Reformer:
     MAX_CONSECUTIVE_DIACRITICS = 4
 
@@ -20,16 +21,17 @@ class Reformer:
         ALIF_WITH_HAMZAT_WASL = 'ﭐ'
         ALIF_WITH_HAMZAT_WASL2 = 'ٱ'
 
-    def __init__(self):
-        self._diacritics_begin = "\u064B"
-        self._diacritics_end = "\u065F"
-        self._alamaat_waqf = ["\u06D6", "\u06D8", "\u06D9", "\u06DA", "\u06DB", "\u06D7", "\u06DC"]
-        self._long_harakat = ["\u06E6", "\u06E7"]
-        self._alif_khunjariyah = "\u0670"  # ـٰ
-        self._alif_maksura = "ى"
-        self._special_diacritics = ["\uFC60", "\uFC61", "\uFC62", "\u0640", "\u06DF", "\u06EA"] + [self._alif_khunjariyah] + self._alamaat_waqf + self._long_harakat
-        self._diacritics = f"[{self._diacritics_begin}-{self._diacritics_end}{''.join(self._special_diacritics)}]"
+    _diacritics_begin = "\u064B"
+    _diacritics_end = "\u065F"
+    _alamaat_waqf = ["\u06D6", "\u06D8", "\u06D9", "\u06DA", "\u06DB", "\u06D7", "\u06DC"]
+    _long_harakat = ["\u06E5", "\u06E6", "\u06E7"]
+    _alif_khunjariyah = "\u0670"  # ـٰ
+    _alif_maksura = "ى"
+    _special_diacritics = ["\uFC60", "\uFC61", "\uFC62", "\u0640", "\u06DF", "\u06EA"] + [
+        _alif_khunjariyah] + _alamaat_waqf + _long_harakat
+    _diacritics = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
 
+    def __init__(self):
         # TODO: Adding _alif_khunjariyah to both special diacritics and to _alifs is a bit dangerous
         self._alifs = [Reformer.Alif.ALIF,
                        Reformer.Alif.ALIF_WITH_HAMZA_ABOVE,
@@ -99,10 +101,12 @@ class Reformer:
     def reformer_char(self, ch):
         return self._d.get(ch, ch)
 
-    def _is_diacritic(self, ch):
-        return (self._diacritics_begin <= ch <= self._diacritics_end) or ch in self._diacritics
+    @staticmethod
+    def is_diacritic(ch):
+        return (Reformer._diacritics_begin <= ch <= Reformer._diacritics_end) or ch in Reformer._diacritics
 
-    def reform_text_old(self, txt):
+    def reform_text_deprecated(self, txt):
+        # TODO: DEPRECATED!!!
         # diacritics not supported
 
         reformed = list(txt)
@@ -157,7 +161,7 @@ class Reformer:
                 return txt_[current_idx + 1]
 
             for j in range(1, Reformer.MAX_CONSECUTIVE_DIACRITICS + 2):
-                if current_idx + j < len(txt_) and not self._is_diacritic(txt_[current_idx + j]):
+                if current_idx + j < len(txt_) and not self.is_diacritic(txt_[current_idx + j]):
                     return txt_[current_idx + j]
             return None
 
@@ -166,7 +170,7 @@ class Reformer:
                 return txt_[current_idx - 1]
 
             for j in range(1, Reformer.MAX_CONSECUTIVE_DIACRITICS + 2):
-                if current_idx - j >= 0 and not self._is_diacritic(txt_[current_idx - j]):
+                if current_idx - j >= 0 and not self.is_diacritic(txt_[current_idx - j]):
                     return txt_[current_idx - j]
             return None
 
@@ -239,10 +243,13 @@ class Reformer:
 
         return ''.join(reformed)
 
-    def reform_span(self, txt, span):
-        beginning_of_span = max(0, span[0] - 1)
-        end_of_span = min(len(txt), span[1] + 1)
-        return f"{txt[:beginning_of_span]}{self.reform_text(txt[beginning_of_span:end_of_span])}{txt[end_of_span:]}"
+    def reform_span(self, txt, spans, text_may_contain_diacritics=False):
+        res = txt
+        for span in spans[::-1]:
+            beginning_of_span = max(0, span[0] - 1)
+            end_of_span = min(len(res), span[1] + 1)
+            res = f"{res[:beginning_of_span]}{self.reform_text(res[beginning_of_span:end_of_span], text_may_contain_diacritics=text_may_contain_diacritics)}{txt[end_of_span:]}"
+        return res
 
     def reform_regex(self, p):
         new_p = ""
@@ -253,7 +260,7 @@ class Reformer:
                 new_p += ch
             if ch == " ":
                 new_p += f"(?:[{''.join(self._alamaat_waqf)}] )?"
-            elif not self._is_diacritic(ch):
+            elif not self.is_diacritic(ch):
                 # not diacritics
                 new_p += f"{self._diacritics}{{,{Reformer.MAX_CONSECUTIVE_DIACRITICS}}}"
         return new_p

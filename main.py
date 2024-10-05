@@ -2,15 +2,19 @@ import sys
 
 import re
 from enum import Enum
-from PySide6.QtCore import Qt, QTranslator
-from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtGui import QFontDatabase, QAction, QIcon
+from PySide6.QtCore import Slot
+from PySide6.QtCore import Qt, QTranslator, QThread
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
+from PySide6.QtGui import QFontDatabase
 from gui.main_screen import Ui_MainWindow
 from validators import ArabicOnlyValidator
 from finder import Finder
 from emphasizer import emphasize_span, CssColors
-# from arabic_reshaper import ArabicReshaper
 from arabic_reformer.reformer import Reformer
+from gui.my_disambiguation_dialog import MyDidsambiguationDialog
+from gui.my_waiting_dialog import MyWaitingDialog
+from disambiguator import Disambiguator
+from ask_gpt_thread import AskGptThread
 
 
 class AppLang(Enum):
@@ -25,6 +29,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
+        # TODO: Settings dialog...
         self._translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self.ui.setupUi(self)
@@ -36,11 +41,18 @@ class MainWindow(QMainWindow):
         self._setup_validators()
         # self._setup_fonts()
         self._finder = Finder()
-
         self._prev_scrolling_value = 0
         self._all_matches = None
+        self._all_matches_iter = None
         self._adding_items = False
+        # [f"<span style=\"color: {c.value};\">" for c in color]
         self.reformer = Reformer()
+
+        self._disambiguator = Disambiguator(open("open_ai_key.txt", mode='r').read())
+        self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator)
+
+        self.waiting_dialog = MyWaitingDialog()
+        self.ask_gpt_thread = AskGptThread(self._disambiguator)
 
     def _apply_language(self, lang):
         if lang != self._current_lang and self._translator.load(f"gui/translations/{lang.value}.qm"):
@@ -74,6 +86,7 @@ class MainWindow(QMainWindow):
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
+        self.ui.filterButton.clicked.connect(self._filter_button_clicked)
 
     def _setup_validators(self):
         self.ui.searchWord.setValidator(ArabicOnlyValidator())
@@ -115,14 +128,17 @@ class MainWindow(QMainWindow):
         scrollbar = self.ui.foundVerses.verticalScrollBar()
         current_scroll_value = scrollbar.value()
         for _ in range(items_to_load):
-            if (item := next(self._all_matches, MainWindow._exhausted)) is MainWindow._exhausted:
+            if (item := next(self._all_matches_iter, MainWindow._exhausted)) is MainWindow._exhausted:
                 return _done()
             surah_num, verse_num, verse, spans = item
             ref = f"{surah_num}:{verse_num}"
             if self.ui.colorizeCheckbox.isChecked():
                 verse = self.reformer.reform_text(verse, text_may_contain_diacritics=True)
+                # TODO: shouldn't we reform only span +-? See reformer.reform_span() -- didn't work so good
+                # verse = self.reformer.reform_span(verse, spans, text_may_contain_diacritics=True)
                 verse = emphasize_span(verse, spans, capitalize=False, underline=False, color=CssColors.CYAN, css=True)
             line = f"<p>{ref}: {verse}</p>"
+            # line = f"{ref}: {verse}"
             self.ui.foundVerses.append(line)
 
         return _done()
@@ -174,10 +190,8 @@ class MainWindow(QMainWindow):
 
     @found_verses.setter
     def found_verses(self, verses):
-        # for verse in verses:
-        #     self.cursor.insertText(verse)
-        self.ui.foundVerses.setHtml(verses)
-        # self.ui.foundVerses.setText(verses)
+        # self.ui.foundVerses.setHtml(verses)
+        self.ui.foundVerses.addItems(verses)
 
     # full word
     @property
@@ -198,12 +212,57 @@ class MainWindow(QMainWindow):
 
     def _toggle_colorize(self, state):
         self._search_word_text_changed(self.search_word)
+        return
+        # TODO: ?
+        # qt_state = Qt.CheckState(state)
+        # if qt_state == Qt.CheckState.Checked:
+        #     self._search_word_text_changed(self.search_word)
+        # else:
+        #     self.remove_coloring()  # This works, but it keeps reformed results, which might still have some issues, and it's problematic for gpt as well
+
+    def remove_coloring(self):
+        self.ui.foundVerses.setText(self.ui.foundVerses.toPlainText())
+
+    @Slot()
+    def _filter_button_clicked(self):
+        self.disambiguation_dialog.set_data(self.search_word, self.found_verses)
+        self.disambiguation_dialog.response_signal.connect(self._handle_disambiguation_dialog_response)
+        if self.disambiguation_dialog.exec() == QDialog.DialogCode.Accepted:
+            pass
+        else:
+            pass
+
+    @Slot(str)
+    def _handle_disambiguation_dialog_response(self, selected_meaning):
+        # print("_handle_disambiguation_dialog_response")
+        self.disambiguation_dialog.response_signal.disconnect(self._handle_disambiguation_dialog_response)
+        if selected_meaning.strip():
+            self.waiting_dialog.open()
+            self.ask_gpt_for_relevant_verses(self.search_word, self._all_matches, selected_meaning)
+
+    def ask_gpt_for_relevant_verses(self, word, verses, meaning):
+        self.ask_gpt_thread.set_command_get_relevant_verses(word,
+                                                verses,
+                                                meaning)
+        self.ask_gpt_thread.relevant_verses_result_ready.connect(self.on_ask_gpt_for_relevant_verses_completed)
+        self.ask_gpt_thread.start()
+
+    @Slot(list, QThread)
+    def on_ask_gpt_for_relevant_verses_completed(self, results, caller_thread: AskGptThread):
+        print("FINAL RESULTS (NEED TO SUBTRACT 1):")
+        print(results)
+        # TODO: One time GPT returned the verse refs as they appear in the Holy Quran (x:y, x:y, ...)
+        #       Need to put an eye on this
+        caller_thread.relevant_verses_result_ready.disconnect(self.on_ask_gpt_for_relevant_verses_completed)
+        self.waiting_dialog.reject()
 
     def _search_word_text_changed(self, new_text):
         self._all_matches = None
+        self._all_matches_iter = None
         self.ui.foundVerses.clear()
         if not new_text.strip():
             self.clear_results()
+            self.ui.filterButton.setEnabled(False)
             return
 
         # ignore diacritics
@@ -218,6 +277,7 @@ class MainWindow(QMainWindow):
         # elif self.ending_of_word_checkbox:
         #     new_text = rf"{new_text}\b"
 
+        search_words = len(new_text.split())
         end_of_word = r"[ ,$]"
         if self.full_word_checkbox:
             new_text = r"[ ^]" + rf"{new_text}" + end_of_word
@@ -228,6 +288,8 @@ class MainWindow(QMainWindow):
                 new_text = rf"{new_text}" + end_of_word
 
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = self._finder.find_word(new_text)
+        self._all_matches_iter = iter(self._all_matches)
+        self.ui.filterButton.setEnabled((number_of_matches > 0) and search_words == 1)
         # for _, row in results.iterrows():
         #     surah_cnt += 1
         #     for v, spans in row['spans'].items():

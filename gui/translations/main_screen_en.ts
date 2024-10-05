@@ -45,6 +45,11 @@
         <translation>Artificial Intelligence</translation>
     </message>
     <message>
+        <location filename="../main_screen.ui" line="89"/>
+        <source>؟</source>
+        <translation>?</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="355"/>
         <source>سور</source>
         <translation>Surahs</translation>

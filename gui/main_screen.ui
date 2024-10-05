@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1049</width>
-    <height>752</height>
+    <width>1096</width>
+    <height>701</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,8 +28,14 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>22</number>
+      </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <item>
          <spacer name="verticalSpacer_3">
           <property name="orientation">
@@ -128,7 +134,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            <string extracomment="End of word"/>
           </property>
           <property name="text">
-           <string>نهايةكلمة</string>
+           <string>نهاية كلمة</string>
           </property>
          </widget>
         </item>
@@ -244,6 +250,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </item>
         <item>
@@ -297,6 +306,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </item>
         <item>
@@ -344,6 +356,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
          </widget>
         </item>
         <item>
@@ -378,6 +393,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_10">
+      <property name="spacing">
+       <number>5</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
@@ -387,6 +405,26 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           </property>
           <property name="text">
            <string>الآيات</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="filterButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resources/resources.qrc">
+            <normaloff>:/filter-icon.png</normaloff>:/filter-icon.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -407,6 +445,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="spacing">
+         <number>7</number>
+        </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
@@ -459,7 +500,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1049</width>
+     <width>1096</width>
      <height>42</height>
     </rect>
    </property>

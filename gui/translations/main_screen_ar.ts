@@ -9,67 +9,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="58"/>
+        <location filename="../main_screen.ui" line="64"/>
         <source>الكلمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="158"/>
+        <location filename="../main_screen.ui" line="137"/>
+        <source>نهاية كلمة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="164"/>
         <source>كلمة كاملة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="104"/>
+        <location filename="../main_screen.ui" line="110"/>
         <source>بداية كلمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="232"/>
+        <location filename="../main_screen.ui" line="238"/>
         <source>العدد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="389"/>
+        <location filename="../main_screen.ui" line="407"/>
         <source>الآيات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="185"/>
+        <location filename="../main_screen.ui" line="191"/>
         <source>ذكاء اصطناعي</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="131"/>
-        <source>نهايةكلمة</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_screen.ui" line="285"/>
+        <location filename="../main_screen.ui" line="294"/>
         <source>سور</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="338"/>
+        <location filename="../main_screen.ui" line="350"/>
         <source>آيات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="429"/>
+        <location filename="../main_screen.ui" line="470"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="468"/>
+        <location filename="../main_screen.ui" line="509"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="482"/>
+        <location filename="../main_screen.ui" line="523"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="487"/>
+        <location filename="../main_screen.ui" line="528"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
