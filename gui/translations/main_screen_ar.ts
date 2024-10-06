@@ -54,22 +54,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="470"/>
+        <location filename="../main_screen.ui" line="490"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="509"/>
+        <location filename="../main_screen.ui" line="529"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="523"/>
+        <location filename="../main_screen.ui" line="543"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="528"/>
+        <location filename="../main_screen.ui" line="548"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

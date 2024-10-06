@@ -254,6 +254,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.filterButton)
 
+        self.clearFilterButton = QPushButton(self.centralwidget)
+        self.clearFilterButton.setObjectName(u"clearFilterButton")
+        self.clearFilterButton.setEnabled(False)
+        icon1 = QIcon()
+        icon1.addFile(u":/clear-filter-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.clearFilterButton.setIcon(icon1)
+        self.clearFilterButton.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.clearFilterButton)
+
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
@@ -305,9 +315,9 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 1096, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
-        icon1 = QIcon()
-        icon1.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.menu_Language.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.menu_Language.setIcon(icon2)
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -363,6 +373,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0622\u064a\u0627\u062a", None))
         self.filterButton.setText("")
+        self.clearFilterButton.setText("")
 #if QT_CONFIG(tooltip)
         self.colorizeCheckbox.setToolTip("")
 #endif // QT_CONFIG(tooltip)

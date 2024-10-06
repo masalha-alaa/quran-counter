@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>language-icon.png</file>
         <file>filter-icon.png</file>
+        <file>clear-filter-icon.png</file>
     </qresource>
 </RCC>

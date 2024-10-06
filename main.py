@@ -89,6 +89,7 @@ class MainWindow(QMainWindow):
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
         self.ui.filterButton.clicked.connect(self._filter_button_clicked)
+        self.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
 
     def _setup_validators(self):
         self.ui.searchWord.setValidator(ArabicOnlyValidator())
@@ -231,6 +232,11 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    def _clear_filter_button_clicked(self):
+        self._filtered_matches_idx = range(len(self._all_matches))
+        self.filter_text_browser()
+        self.ui.clearFilterButton.setEnabled(False)
+
     @Slot(str)
     def _handle_disambiguation_dialog_response(self, selected_meaning):
         # print("_handle_disambiguation_dialog_response")
@@ -255,11 +261,11 @@ class MainWindow(QMainWindow):
         caller_thread.relevant_verses_result_ready.disconnect(self.on_ask_gpt_for_relevant_verses_completed)
         self.waiting_dialog.reject()
         self._filtered_matches_idx = [r - 1 for r in results]
+        self.ui.clearFilterButton.setEnabled(True)
         self.filter_text_browser()
 
     def filter_text_browser(self):
         # TODO: Maybe a numpy array would serve index selection better
-        # self._all_matches = [self._all_matches[idx] for idx in self._filtered_matches_idx]
         self._filtered_matches_iter = iter([self._all_matches[idx] for idx in self._filtered_matches_idx])
         self.ui.foundVerses.clear()
         self.clear_results()
