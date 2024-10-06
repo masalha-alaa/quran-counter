@@ -42,7 +42,7 @@ class Reformer:
         self._d = self._build_dict()
 
     def _connects_from_right(self, ch):
-        return ch in self._alifs + ["ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و", "ي", "ى", "ئ", "ؤ", "ة"]
+        return ch in self._alifs + ["ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و", "ي", "ى", "ئ", "ؤ", "ة"]
 
     def _connects_from_left(self, ch, support_alif_khunjariyah=False):
         alif_mamduda = support_alif_khunjariyah and ch == self._alif_khunjariyah
@@ -104,54 +104,6 @@ class Reformer:
     @staticmethod
     def is_diacritic(ch):
         return (Reformer._diacritics_begin <= ch <= Reformer._diacritics_end) or ch in Reformer._diacritics
-
-    def reform_text_deprecated(self, txt):
-        # TODO: DEPRECATED!!!
-        # diacritics not supported
-
-        reformed = list(txt)
-        for i, ch in enumerate(txt):
-            if ch not in self._d:
-                continue
-            can_connect_from_right = self._connects_from_right(ch)
-            can_connect_from_left = self._connects_from_left(ch)
-            can_connect_from_both_sides = can_connect_from_right and can_connect_from_left
-            prv_can_connect_from_left = i - 1 >= 0 and self._connects_from_left(txt[i - 1])
-            nxt_can_connect_from_right = i + 1 < len(txt) and self._connects_from_right(txt[i + 1])
-            if can_connect_from_both_sides:
-                # potential to connect from both sides
-                if prv_can_connect_from_left and nxt_can_connect_from_right:
-                    # middle
-                    if ch == "ل" and self._is_alif(txt[i + 1]):
-                        # ـلا
-                        reformed[i] = self._d[ch][4]
-                    else:
-                        reformed[i] = self._d[ch][1]
-                elif not prv_can_connect_from_left and nxt_can_connect_from_right:
-                    # beginning
-                    if ch == "ل" and self._is_alif(txt[i + 1]):
-                        # لا
-                        reformed[i] = self._d[ch][3]
-                    else:
-                        reformed[i] = self._d[ch][0]
-                elif prv_can_connect_from_left and not nxt_can_connect_from_right:
-                    # end
-                    reformed[i] = self._d[ch][2]
-            elif can_connect_from_right:
-                # potential to connect only from right side
-                if prv_can_connect_from_left:
-                    # end
-                    if self._is_alif(ch) and txt[i - 1] == "ل":
-                        reformed[i] = self._d['invisible']
-                    else:
-                        reformed[i] = self._d[ch][2]
-            elif can_connect_from_left:
-                # potential to connect only from left side
-                if nxt_can_connect_from_right:
-                    # beginning
-                    reformed[i] = self._d[ch][0]
-
-        return ''.join(reformed)
 
     def reform_text(self, txt, text_may_contain_diacritics=False):
         # diacritics supported
@@ -224,6 +176,8 @@ class Reformer:
                                 reformed[i] = self._d[ch][Reformer.La.ISOLATED_LA]
                     else:
                         reformed[i] = self._d[ch][0]
+                elif not prv_can_connect_from_left and not nxt_can_connect_from_right and ord(ch) == 0x647:
+                    reformed[i] = chr(0xFEE9)
                 elif prv_can_connect_from_left and not nxt_can_connect_from_right:
                     # end
                     reformed[i] = self._d[ch][2]
