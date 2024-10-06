@@ -205,11 +205,15 @@ class Reformer:
             res = f"{res[:beginning_of_span]}{self.reform_text(res[beginning_of_span:end_of_span], text_may_contain_diacritics=text_may_contain_diacritics)}{txt[end_of_span:]}"
         return res
 
-    def reform_regex(self, p):
+    def reform_regex(self, p, alif_variations=True, ya_variations=False, ta_variations=False):
         new_p = ""
         for ch in p:
-            if self._is_alif(ch):
+            if alif_variations and self._is_alif(ch):
                 new_p += f"[{''.join(self._alifs)}{self._alif_maksura}]"
+            elif ta_variations and ch in ["ت", "ة"]:
+                new_p += "[تة]"
+            elif ya_variations and ch in ["ي", "ى"]:
+                new_p += "[يى]"
             else:
                 new_p += ch
             if ch == " ":

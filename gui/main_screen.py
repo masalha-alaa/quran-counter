@@ -72,6 +72,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.searchWord)
 
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.finalYaCheckbox = QCheckBox(self.centralwidget)
+        self.finalYaCheckbox.setObjectName(u"finalYaCheckbox")
+        self.finalYaCheckbox.setEnabled(False)
+
+        self.horizontalLayout_8.addWidget(self.finalYaCheckbox)
+
+        self.finalTaCheckbox = QCheckBox(self.centralwidget)
+        self.finalTaCheckbox.setObjectName(u"finalTaCheckbox")
+        self.finalTaCheckbox.setEnabled(False)
+        font = QFont()
+        font.setFamilies([u"Calibri"])
+        font.setPointSize(20)
+        font.setBold(False)
+        font.setItalic(False)
+        self.finalTaCheckbox.setFont(font)
+
+        self.horizontalLayout_8.addWidget(self.finalTaCheckbox)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_8)
+
 
         self.horizontalLayout.addLayout(self.verticalLayout)
 
@@ -85,6 +108,10 @@ class Ui_MainWindow(object):
         self.beginningOfWordCheckbox.setObjectName(u"beginningOfWordCheckbox")
 
         self.verticalLayout_2.addWidget(self.beginningOfWordCheckbox)
+
+        self.verticalSpacer_13 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_2.addItem(self.verticalSpacer_13)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout_2)
@@ -100,6 +127,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.endOfWordCheckbox)
 
+        self.verticalSpacer_14 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer_14)
+
 
         self.horizontalLayout.addLayout(self.verticalLayout_3)
 
@@ -114,6 +145,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.fullWordcheckbox)
 
+        self.verticalSpacer_15 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer_15)
+
 
         self.horizontalLayout.addLayout(self.verticalLayout_4)
 
@@ -127,6 +162,10 @@ class Ui_MainWindow(object):
         self.aiPushButton.setObjectName(u"aiPushButton")
 
         self.verticalLayout_5.addWidget(self.aiPushButton)
+
+        self.verticalSpacer_16 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_5.addItem(self.verticalSpacer_16)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout_5)
@@ -340,6 +379,8 @@ class Ui_MainWindow(object):
         self.label.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0643\u0644\u0645\u0629", None))
+        self.finalYaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
+        self.finalTaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0640\u062a / \u0640\u0629", None))
 #if QT_CONFIG(tooltip)
         self.beginningOfWordCheckbox.setToolTip("")
 #endif // QT_CONFIG(tooltip)
