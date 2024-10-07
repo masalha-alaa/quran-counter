@@ -80,6 +80,8 @@ class MainWindow(QMainWindow):
         self.ui.fullWordcheckbox.stateChanged.connect(self._full_word_checkbox_state_changed)
         self.ui.beginningOfWordCheckbox.stateChanged.connect(self._beginning_of_word_checkbox_state_changed)
         self.ui.endOfWordCheckbox.stateChanged.connect(self._end_of_word_checkbox_state_changed)
+        self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
+        self.ui.finalYaCheckbox.stateChanged.connect(self._final_ya_state_changed)
         self.ui.aiPushButton.clicked.connect(self._ai_button_clicked)
         self.ui.searchWord.textChanged.connect(self._search_word_text_changed)
         self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
@@ -224,10 +226,12 @@ class MainWindow(QMainWindow):
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
     def _final_ta_state_changed(self, state):
-        self._search_word_text_changed(self.search_word)
+        if any(word.endswith(("ت", "ة")) for word in self.search_word.split()):
+            self._search_word_text_changed(self.search_word)
 
     def _final_ya_state_changed(self, state):
-        self._search_word_text_changed(self.search_word)
+        if any(word.endswith(("ي", "ى")) for word in self.search_word.split()):
+            self._search_word_text_changed(self.search_word)
 
     @Slot()
     def _filter_button_clicked(self):

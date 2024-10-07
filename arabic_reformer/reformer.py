@@ -30,6 +30,7 @@ class Reformer:
     _special_diacritics = ["\uFC60", "\uFC61", "\uFC62", "\u0640", "\u06DF", "\u06EA"] + [
         _alif_khunjariyah] + _alamaat_waqf + _long_harakat
     _diacritics = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
+    _prohibited_characters = ["\u0640"]  # TODO?
 
     def __init__(self):
         # TODO: Adding _alif_khunjariyah to both special diacritics and to _alifs is a bit dangerous
@@ -128,7 +129,9 @@ class Reformer:
 
         reformed = list(txt)
         for i, ch in enumerate(txt):
-            if ch not in self._d:
+            if ch in Reformer._prohibited_characters:  # TODO: DEBUG
+                reformed[i] = self._d['invisible']
+            elif ch not in self._d:
                 continue
 
             prv_char = _get_prv_char(txt, i)
