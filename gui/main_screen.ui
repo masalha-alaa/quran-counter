@@ -89,7 +89,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           <item>
            <widget class="QCheckBox" name="finalYaCheckbox">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="text">
              <string>ى / ي</string>
@@ -99,7 +99,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           <item>
            <widget class="QCheckBox" name="finalTaCheckbox">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="font">
              <font>

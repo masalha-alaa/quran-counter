@@ -115,4 +115,4 @@ class Disambiguator:
                 responses[i][j] += counter
             counter += len(verses_for_prompt[i])
 
-        return sum(responses, [])
+        return [i - 1 for i in sum(responses, [])]

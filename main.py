@@ -88,7 +88,6 @@ class MainWindow(QMainWindow):
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
-        self._connect_letter_variations_signals()
         self.ui.filterButton.clicked.connect(self._filter_button_clicked)
         self.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
 
@@ -261,13 +260,13 @@ class MainWindow(QMainWindow):
 
     @Slot(list, QThread)
     def on_ask_gpt_for_relevant_verses_completed(self, results, caller_thread: AskGptThread):
-        # print("FINAL RESULTS (NEED TO SUBTRACT 1):")
+        # print("FINAL RESULTS:")
         # print(results)
         # TODO: One time GPT returned the verse refs as they appear in the Holy Quran (x:y, x:y, ...)
         #       Need to put an eye on this
         caller_thread.relevant_verses_result_ready.disconnect(self.on_ask_gpt_for_relevant_verses_completed)
         self.waiting_dialog.reject()
-        self._filtered_matches_idx = [r - 1 for r in results]
+        self._filtered_matches_idx = results
         self.ui.clearFilterButton.setEnabled(True)
         self.filter_text_browser()
 
@@ -293,14 +292,6 @@ class MainWindow(QMainWindow):
         self.matches_number = str(matches_num)
         self.matches_number_surahs = str(len(surahs))
 
-    def _connect_letter_variations_signals(self):
-        self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
-        self.ui.finalYaCheckbox.stateChanged.connect(self._final_ya_state_changed)
-
-    def _disconnect_letter_variations_signals(self):
-        self.ui.finalTaCheckbox.stateChanged.disconnect(self._final_ta_state_changed)
-        self.ui.finalYaCheckbox.stateChanged.disconnect(self._final_ya_state_changed)
-
     def _search_word_text_changed(self, new_text):
         self._all_matches = None
         self._filtered_matches_iter = None
@@ -310,19 +301,11 @@ class MainWindow(QMainWindow):
             self.ui.filterButton.setEnabled(False)
             return
 
-        self._disconnect_letter_variations_signals()
         if any(word.endswith(("ت", "ة")) for word in new_text.split()):
             self.ui.finalTaCheckbox.setEnabled(True)
         else:
             self.ui.finalTaCheckbox.setEnabled(False)
             self.ui.finalTaCheckbox.setChecked(False)
-
-        if any(word.endswith(("ي", "ى")) for word in new_text.split()):
-            self.ui.finalYaCheckbox.setEnabled(True)
-        else:
-            self.ui.finalYaCheckbox.setEnabled(False)
-            self.ui.finalYaCheckbox.setChecked(False)
-        self._connect_letter_variations_signals()
 
         # ignore diacritics
         # TODO: make checkbox?

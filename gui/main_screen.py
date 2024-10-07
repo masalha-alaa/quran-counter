@@ -76,13 +76,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.finalYaCheckbox = QCheckBox(self.centralwidget)
         self.finalYaCheckbox.setObjectName(u"finalYaCheckbox")
-        self.finalYaCheckbox.setEnabled(False)
+        self.finalYaCheckbox.setEnabled(True)
 
         self.horizontalLayout_8.addWidget(self.finalYaCheckbox)
 
         self.finalTaCheckbox = QCheckBox(self.centralwidget)
         self.finalTaCheckbox.setObjectName(u"finalTaCheckbox")
-        self.finalTaCheckbox.setEnabled(False)
+        self.finalTaCheckbox.setEnabled(True)
         font = QFont()
         font.setFamilies([u"Calibri"])
         font.setPointSize(20)
