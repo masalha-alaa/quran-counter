@@ -323,12 +323,14 @@ class MainWindow(QMainWindow):
         #     new_text = rf"{new_text}\b"
 
         search_words = len(new_text.split())
+        new_text = f"({new_text})"  # capturing group
+        beginning_of_word = r"[ ^]"
         end_of_word = r"[ ,$]"
         if self.full_word_checkbox:
-            new_text = r"[ ^]" + rf"{new_text}" + end_of_word
+            new_text = beginning_of_word + rf"{new_text}" + end_of_word
         else:
             if self.beginning_of_word_checkbox:
-                new_text = r"[ ^]" + rf"{new_text}"
+                new_text =beginning_of_word + rf"{new_text}"
             if self.ending_of_word_checkbox:
                 new_text = rf"{new_text}" + end_of_word
 

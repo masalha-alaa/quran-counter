@@ -93,7 +93,7 @@ class Reformer:
             "ؤ": (None, None, chr(0xFE86)),
             "ي": (chr(0xFEF3), chr(0xFEF4), chr(0xFEF2)),
             "ة": (None, None, chr(0xFE94)),
-            "ى": ("ىـ", "ـ", chr(0xFEF0)),  # TODO: DEBUG
+            "ى": (chr(0xFBE8), "ـ", chr(0xFEF0)),  # TODO: DEBUG
             "ئ": (chr(0xFE8B), chr(0xFE8C), chr(0xFE8A)),
              }
         return d

@@ -18,7 +18,7 @@ class Finder:
         all_matches = []
         for i, verse in enumerate(verses_clean_split):
             # re.sub("\uFEFB", "لا", verse) ?
-            matches_in_verse = [m.span() for m in re.finditer(w, verse, flags=re.M)]
+            matches_in_verse = [m.span(1) for m in re.finditer(w, verse, flags=re.M)]
             if matches_in_verse:
                 # [(surah_num, verse_num, verse, [spans]), (...), ...]
                 all_matches.append((int(row.name)+1, i + 1, verse, matches_in_verse))
