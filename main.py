@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
         self.ui.beginningOfWordCheckbox.stateChanged.connect(self._beginning_of_word_checkbox_state_changed)
         self.ui.endOfWordCheckbox.stateChanged.connect(self._end_of_word_checkbox_state_changed)
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
-        self.ui.finalYaCheckbox.stateChanged.connect(self._final_ya_state_changed)
+        self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
         self.ui.aiPushButton.clicked.connect(self._ai_button_clicked)
         self.ui.searchWord.textChanged.connect(self._search_word_text_changed)
         self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
@@ -229,8 +229,9 @@ class MainWindow(QMainWindow):
         if any(word.endswith(("ت", "ة")) for word in self.search_word.split()):
             self._search_word_text_changed(self.search_word)
 
-    def _final_ya_state_changed(self, state):
-        if any(word.endswith(("ي", "ى")) for word in self.search_word.split()):
+    def _ya_alif_maksura_state_changed(self, state):
+        # if any(word.endswith(("ي", "يء", "ى", "ىء")) for word in self.search_word.split()):
+        if any(ch in ['ي', 'ى'] for ch in self.search_word):
             self._search_word_text_changed(self.search_word)
 
     @Slot()
@@ -315,7 +316,7 @@ class MainWindow(QMainWindow):
         # TODO: make checkbox?
         new_text = self.reformer.reform_regex(new_text,
                                               alif_variations=True,
-                                              ya_variations=self.ui.finalYaCheckbox.isChecked(),
+                                              ya_variations=self.ui.yaAlifMaksuraCheckbox.isChecked(),
                                               ta_variations=self.ui.finalTaCheckbox.isChecked())
 
         # NOT WORKING WITH TASHKEEL

@@ -79,6 +79,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <height>16777215</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="maxLength">
            <number>40</number>
           </property>
@@ -87,7 +90,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
-           <widget class="QCheckBox" name="finalYaCheckbox">
+           <widget class="QCheckBox" name="yaAlifMaksuraCheckbox">
             <property name="enabled">
              <bool>true</bool>
             </property>

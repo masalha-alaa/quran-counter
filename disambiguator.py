@@ -46,13 +46,6 @@ class Disambiguator:
         )
         return response.choices[0].message.content
 
-    def _clean_text(self, txt):
-        cleaned = []
-        for ch in txt:
-            if not Reformer.is_diacritic(ch):
-                cleaned.append(ch)
-        return ''.join(cleaned).strip()
-
     @cached(cache={}, key=lambda word, verses, verses_ref, meaning, query: hashkey(word, verses_ref, meaning))
     def get_relevant_verses(self, word, meaning, verses_ref, verses):
         """

@@ -68,17 +68,18 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.searchWord.sizePolicy().hasHeightForWidth())
         self.searchWord.setSizePolicy(sizePolicy1)
         self.searchWord.setMaximumSize(QSize(16777215, 16777215))
+        self.searchWord.setStyleSheet(u"")
         self.searchWord.setMaxLength(40)
 
         self.verticalLayout.addWidget(self.searchWord)
 
         self.horizontalLayout_8 = QHBoxLayout()
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.finalYaCheckbox = QCheckBox(self.centralwidget)
-        self.finalYaCheckbox.setObjectName(u"finalYaCheckbox")
-        self.finalYaCheckbox.setEnabled(True)
+        self.yaAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
+        self.yaAlifMaksuraCheckbox.setObjectName(u"yaAlifMaksuraCheckbox")
+        self.yaAlifMaksuraCheckbox.setEnabled(True)
 
-        self.horizontalLayout_8.addWidget(self.finalYaCheckbox)
+        self.horizontalLayout_8.addWidget(self.yaAlifMaksuraCheckbox)
 
         self.finalTaCheckbox = QCheckBox(self.centralwidget)
         self.finalTaCheckbox.setObjectName(u"finalTaCheckbox")
@@ -379,7 +380,7 @@ class Ui_MainWindow(object):
         self.label.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0643\u0644\u0645\u0629", None))
-        self.finalYaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
+        self.yaAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
         self.finalTaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0640\u062a / \u0640\u0629", None))
 #if QT_CONFIG(tooltip)
         self.beginningOfWordCheckbox.setToolTip("")
