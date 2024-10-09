@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1096</width>
+    <width>1097</width>
     <height>701</height>
    </rect>
   </property>
@@ -22,7 +22,7 @@ color: rgb(207, 207, 207);
 font: 400 20pt &quot;Calibri&quot;;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,1,8">
+   <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,1,18">
     <property name="spacing">
      <number>18</number>
     </property>
@@ -243,46 +243,6 @@ font: 400 20pt &quot;Calibri&quot;;</string>
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
-        <item>
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="aiPushButton">
-          <property name="toolTip">
-           <string extracomment="Artificial Intelligence"/>
-          </property>
-          <property name="text">
-           <string>ذكاء اصطناعي</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_16">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -480,126 +440,242 @@ font: 400 20pt &quot;Calibri&quot;;</string>
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_10">
-      <property name="spacing">
-       <number>5</number>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="locale">
+       <locale language="Arabic" country="Israel"/>
       </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Triangular</enum>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="ayatTab">
+       <attribute name="title">
+        <string>آيات</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
         <item>
-         <widget class="QLabel" name="label_3">
-          <property name="toolTip">
-           <string extracomment="Matches"/>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <property name="spacing">
+           <number>5</number>
           </property>
-          <property name="text">
-           <string>الآيات</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="filterButton">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="resources/resources.qrc">
-            <normaloff>:/filter-icon.png</normaloff>:/filter-icon.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="clearFilterButton">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="resources/resources.qrc">
-            <normaloff>:/clear-filter-icon.png</normaloff>:/clear-filter-icon.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <property name="spacing">
-         <number>7</number>
-        </property>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QTextBrowser" name="foundVerses">
-            <property name="styleSheet">
-             <string notr="true">font-family: 'Noto Naskh Arabic'; font-size: 17pt;</string>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="filterButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources/resources.qrc">
+                <normaloff>:/filter-icon.png</normaloff>:/filter-icon.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="clearFilterButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources/resources.qrc">
+                <normaloff>:/clear-filter-icon.png</normaloff>:/clear-filter-icon.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>7</number>
             </property>
-           </widget>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QTextBrowser" name="foundVerses">
+                <property name="styleSheet">
+                 <string notr="true">font-family: 'Noto Naskh Arabic'; font-size: 17pt;</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <item>
+               <widget class="QCheckBox" name="colorizeCheckbox">
+                <property name="toolTip">
+                 <string extracomment="Colorize"/>
+                </property>
+                <property name="text">
+                 <string>تلوين</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_9">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>83</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="surahTab">
+       <attribute name="title">
+        <string>سور</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_13">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item>
-           <widget class="QCheckBox" name="colorizeCheckbox">
-            <property name="toolTip">
-             <string extracomment="Colorize"/>
-            </property>
-            <property name="text">
-             <string>تلوين</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QPushButton" name="sortPushButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources/resources.qrc">
+                <normaloff>:/sort-icon.png</normaloff>:/sort-icon.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sortMethodLabel">
+              <property name="text">
+               <string>طريقة الترتيب</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
           <item>
-           <spacer name="verticalSpacer_9">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <property name="spacing">
+             <number>7</number>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <item>
+               <widget class="QListWidget" name="surahResultsListWidget"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_14">
+              <item>
+               <widget class="QCheckBox" name="allResultsCheckbox">
+                <property name="toolTip">
+                 <string extracomment="Colorize"/>
+                </property>
+                <property name="text">
+                 <string>جميع
+النتائج</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_16">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
        </layout>
-      </item>
-     </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -608,7 +684,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1096</width>
+     <width>1097</width>
      <height>42</height>
     </rect>
    </property>
@@ -637,6 +713,22 @@ font: 400 20pt &quot;Calibri&quot;;</string>
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>searchWord</tabstop>
+  <tabstop>beginningOfWordCheckbox</tabstop>
+  <tabstop>endOfWordCheckbox</tabstop>
+  <tabstop>fullWordcheckbox</tabstop>
+  <tabstop>yaAlifMaksuraCheckbox</tabstop>
+  <tabstop>finalTaCheckbox</tabstop>
+  <tabstop>matchesNumber</tabstop>
+  <tabstop>matchesNumberSurahs</tabstop>
+  <tabstop>matchesNumberVerses</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>filterButton</tabstop>
+  <tabstop>clearFilterButton</tabstop>
+  <tabstop>foundVerses</tabstop>
+  <tabstop>colorizeCheckbox</tabstop>
+ </tabstops>
  <resources>
   <include location="resources/resources.qrc"/>
  </resources>

@@ -2,6 +2,8 @@ import sys
 
 import re
 from enum import Enum
+from yaml import safe_load
+import uuid
 from PySide6.QtCore import Slot
 from PySide6.QtCore import Qt, QTranslator, QThread
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
@@ -15,6 +17,7 @@ from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
 from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
+from surah_results_sorting import CustomSurahSortWidget
 
 
 class AppLang(Enum):
@@ -33,7 +36,10 @@ class MainWindow(QMainWindow):
         self._translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
+        self._surah_index = safe_load(open("surah_index.yml", encoding='utf-8', mode='r'))
+        self._surah_results_list_uuid = uuid.uuid4().hex
         self.ui.setupUi(self)
+        self.ui.tabWidget.setCurrentIndex(0)
         self._current_lang = None
         self._apply_language(AppLang.ARABIC)
         self.cursor = None
@@ -82,7 +88,6 @@ class MainWindow(QMainWindow):
         self.ui.endOfWordCheckbox.stateChanged.connect(self._end_of_word_checkbox_state_changed)
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
-        self.ui.aiPushButton.clicked.connect(self._ai_button_clicked)
         self.ui.searchWord.textChanged.connect(self._search_word_text_changed)
         self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.ui.foundVerses.verticalScrollBar().actionTriggered.connect(self.before_scroll)
@@ -90,8 +95,10 @@ class MainWindow(QMainWindow):
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
+        self.ui.allResultsCheckbox.stateChanged.connect(self._toggle_all_surah_results)
         self.ui.filterButton.clicked.connect(self._filter_button_clicked)
         self.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
+        self.ui.sortPushButton.clicked.connect(self._sort_surah_results_clicked)
 
     def _setup_validators(self):
         self.ui.searchWord.setValidator(ArabicOnlyValidator())
@@ -225,6 +232,9 @@ class MainWindow(QMainWindow):
         self._filtered_matches_iter = iter([self._all_matches[idx] for idx in self._filtered_matches_idx])
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
+    def _toggle_all_surah_results(self, state):
+        self._populate_surah_results()
+
     def _final_ta_state_changed(self, state):
         if any(word.endswith(("ت", "ة")) for word in self.search_word.split()):
             self._search_word_text_changed(self.search_word)
@@ -247,6 +257,12 @@ class MainWindow(QMainWindow):
         self._filtered_matches_idx = range(len(self._all_matches))
         self.filter_text_browser()
         self.ui.clearFilterButton.setEnabled(False)
+
+    def _sort_surah_results_clicked(self):
+        CustomSurahSortWidget.switch_order(self._surah_results_list_uuid)
+        self.ui.surahResultsListWidget.sortItems()
+        current_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
+        self.ui.sortMethodLabel.setText(current_sorting.to_string())
 
     @Slot(str)
     def _handle_disambiguation_dialog_response(self, selected_meaning):
@@ -353,12 +369,31 @@ class MainWindow(QMainWindow):
         self.matches_number_surahs = str(number_of_surahs)
         self.matches_number_verses = str(number_of_verses)
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
+        self._populate_surah_results()
+
+    def _populate_surah_results(self):
+        self.ui.surahResultsListWidget.clear()
+        count_by_surah = {}
+        self.ui.sortPushButton.setEnabled(len(self._all_matches) > 0)
+        for item in self._all_matches:
+            surah_num, verse_num, verse, spans = item
+            count_by_surah[surah_num] = count_by_surah.get(surah_num, 0) + len(spans)
+        for surah_num, surah_name in self._surah_index.items():
+            count = count_by_surah.get(surah_num, 0)
+            if count == 0 and not self.ui.allResultsCheckbox.isChecked():
+                continue
+            latest_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
+            self.ui.surahResultsListWidget.addItem(CustomSurahSortWidget(f"{surah_name} (#{surah_num}):\t\t{count}", self._surah_results_list_uuid, latest_sorting))
+        self.ui.surahResultsListWidget.sortItems()
+        current_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
+        self.ui.sortMethodLabel.setText(current_sorting.to_string())
 
     def _full_word_checkbox_state_changed(self, state):
         def _set_enabled_others(enabled):
             # self.ui.beginningOfWordCheckbox.setEnabled(enabled)
             # self.ui.endOfWordCheckbox.setEnabled(enabled)
-            self.ui.aiPushButton.setEnabled(enabled)
+            # self.ui.aiPushButton.setEnabled(enabled)
+            pass
 
         qt_state = Qt.CheckState(state)
         if qt_state == Qt.CheckState.Checked:
@@ -376,7 +411,8 @@ class MainWindow(QMainWindow):
     def _beginning_of_word_checkbox_state_changed(self, state):
         def _set_enabled_others(enabled):
             # self.ui.fullWordcheckbox.setEnabled(enabled)
-            self.ui.aiPushButton.setEnabled(enabled)
+            # self.ui.aiPushButton.setEnabled(enabled)
+            pass
 
         qt_state = Qt.CheckState(state)
         if qt_state == Qt.CheckState.Checked:
@@ -393,7 +429,8 @@ class MainWindow(QMainWindow):
     def _end_of_word_checkbox_state_changed(self, state):
         def _set_enabled_others(enabled):
             # self.ui.fullWordcheckbox.setEnabled(enabled)
-            self.ui.aiPushButton.setEnabled(enabled)
+            # self.ui.aiPushButton.setEnabled(enabled)
+            pass
 
         qt_state = Qt.CheckState(state)
         if qt_state == Qt.CheckState.Checked:

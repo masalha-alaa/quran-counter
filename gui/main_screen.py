@@ -17,16 +17,17 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QHBoxLayout, QLabel,
-    QLineEdit, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
-    QTextBrowser, QVBoxLayout, QWidget)
+    QLineEdit, QListWidget, QListWidgetItem, QMainWindow,
+    QMenu, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QStatusBar, QTabWidget, QTextBrowser,
+    QVBoxLayout, QWidget)
 import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1096, 701)
+        MainWindow.resize(1097, 701)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
@@ -37,9 +38,9 @@ class Ui_MainWindow(object):
         self.englishLangButton.setObjectName(u"englishLangButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_11 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_11.setSpacing(18)
-        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.verticalLayout_5 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_5.setSpacing(18)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -153,30 +154,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout_4)
 
-        self.verticalLayout_5 = QVBoxLayout()
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_5.addItem(self.verticalSpacer_5)
-
-        self.aiPushButton = QPushButton(self.centralwidget)
-        self.aiPushButton.setObjectName(u"aiPushButton")
-
-        self.verticalLayout_5.addWidget(self.aiPushButton)
-
-        self.verticalSpacer_16 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_5.addItem(self.verticalSpacer_16)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout_5)
-
         self.horizontalSpacer = QSpacerItem(58, 48, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_11.addLayout(self.horizontalLayout)
+        self.verticalLayout_5.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -272,19 +255,23 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_11.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_5.addLayout(self.horizontalLayout_2)
 
+        self.tabWidget = QTabWidget(self.centralwidget)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setLocale(QLocale(QLocale.Arabic, QLocale.Israel))
+        self.tabWidget.setTabPosition(QTabWidget.North)
+        self.tabWidget.setTabShape(QTabWidget.Triangular)
+        self.ayatTab = QWidget()
+        self.ayatTab.setObjectName(u"ayatTab")
+        self.verticalLayout_12 = QVBoxLayout(self.ayatTab)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_10 = QVBoxLayout()
         self.verticalLayout_10.setSpacing(5)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_3 = QLabel(self.centralwidget)
-        self.label_3.setObjectName(u"label_3")
-
-        self.horizontalLayout_3.addWidget(self.label_3)
-
-        self.filterButton = QPushButton(self.centralwidget)
+        self.filterButton = QPushButton(self.ayatTab)
         self.filterButton.setObjectName(u"filterButton")
         self.filterButton.setEnabled(False)
         icon = QIcon()
@@ -294,7 +281,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.filterButton)
 
-        self.clearFilterButton = QPushButton(self.centralwidget)
+        self.clearFilterButton = QPushButton(self.ayatTab)
         self.clearFilterButton.setObjectName(u"clearFilterButton")
         self.clearFilterButton.setEnabled(False)
         icon1 = QIcon()
@@ -316,7 +303,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.foundVerses = QTextBrowser(self.centralwidget)
+        self.foundVerses = QTextBrowser(self.ayatTab)
         self.foundVerses.setObjectName(u"foundVerses")
         self.foundVerses.setStyleSheet(u"font-family: 'Noto Naskh Arabic'; font-size: 17pt;")
 
@@ -327,13 +314,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_9 = QVBoxLayout()
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.colorizeCheckbox = QCheckBox(self.centralwidget)
+        self.colorizeCheckbox = QCheckBox(self.ayatTab)
         self.colorizeCheckbox.setObjectName(u"colorizeCheckbox")
         self.colorizeCheckbox.setChecked(True)
 
         self.verticalLayout_9.addWidget(self.colorizeCheckbox)
 
-        self.verticalSpacer_9 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_9 = QSpacerItem(83, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_9.addItem(self.verticalSpacer_9)
 
@@ -344,30 +331,116 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addLayout(self.horizontalLayout_5)
 
 
-        self.verticalLayout_11.addLayout(self.verticalLayout_10)
+        self.verticalLayout_12.addLayout(self.verticalLayout_10)
 
-        self.verticalLayout_11.setStretch(0, 1)
-        self.verticalLayout_11.setStretch(1, 1)
-        self.verticalLayout_11.setStretch(2, 8)
+        self.tabWidget.addTab(self.ayatTab, "")
+        self.surahTab = QWidget()
+        self.surahTab.setObjectName(u"surahTab")
+        self.verticalLayout_13 = QVBoxLayout(self.surahTab)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.verticalLayout_11 = QVBoxLayout()
+        self.verticalLayout_11.setSpacing(5)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.sortPushButton = QPushButton(self.surahTab)
+        self.sortPushButton.setObjectName(u"sortPushButton")
+        self.sortPushButton.setEnabled(False)
+        icon2 = QIcon()
+        icon2.addFile(u":/sort-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.sortPushButton.setIcon(icon2)
+        self.sortPushButton.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_6.addWidget(self.sortPushButton)
+
+        self.sortMethodLabel = QLabel(self.surahTab)
+        self.sortMethodLabel.setObjectName(u"sortMethodLabel")
+
+        self.horizontalLayout_6.addWidget(self.sortMethodLabel)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_6.addItem(self.horizontalSpacer_4)
+
+
+        self.verticalLayout_11.addLayout(self.horizontalLayout_6)
+
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setSpacing(7)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.surahResultsListWidget = QListWidget(self.surahTab)
+        self.surahResultsListWidget.setObjectName(u"surahResultsListWidget")
+
+        self.horizontalLayout_10.addWidget(self.surahResultsListWidget)
+
+
+        self.horizontalLayout_9.addLayout(self.horizontalLayout_10)
+
+        self.verticalLayout_14 = QVBoxLayout()
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.allResultsCheckbox = QCheckBox(self.surahTab)
+        self.allResultsCheckbox.setObjectName(u"allResultsCheckbox")
+        self.allResultsCheckbox.setChecked(False)
+
+        self.verticalLayout_14.addWidget(self.allResultsCheckbox)
+
+        self.verticalSpacer_16 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_14.addItem(self.verticalSpacer_16)
+
+
+        self.horizontalLayout_9.addLayout(self.verticalLayout_14)
+
+
+        self.verticalLayout_11.addLayout(self.horizontalLayout_9)
+
+
+        self.verticalLayout_13.addLayout(self.verticalLayout_11)
+
+        self.tabWidget.addTab(self.surahTab, "")
+
+        self.verticalLayout_5.addWidget(self.tabWidget)
+
+        self.verticalLayout_5.setStretch(0, 1)
+        self.verticalLayout_5.setStretch(1, 1)
+        self.verticalLayout_5.setStretch(2, 18)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1096, 42))
+        self.menubar.setGeometry(QRect(0, 0, 1097, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
-        icon2 = QIcon()
-        icon2.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.menu_Language.setIcon(icon2)
+        icon3 = QIcon()
+        icon3.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.menu_Language.setIcon(icon3)
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        QWidget.setTabOrder(self.searchWord, self.beginningOfWordCheckbox)
+        QWidget.setTabOrder(self.beginningOfWordCheckbox, self.endOfWordCheckbox)
+        QWidget.setTabOrder(self.endOfWordCheckbox, self.fullWordcheckbox)
+        QWidget.setTabOrder(self.fullWordcheckbox, self.yaAlifMaksuraCheckbox)
+        QWidget.setTabOrder(self.yaAlifMaksuraCheckbox, self.finalTaCheckbox)
+        QWidget.setTabOrder(self.finalTaCheckbox, self.matchesNumber)
+        QWidget.setTabOrder(self.matchesNumber, self.matchesNumberSurahs)
+        QWidget.setTabOrder(self.matchesNumberSurahs, self.matchesNumberVerses)
+        QWidget.setTabOrder(self.matchesNumberVerses, self.tabWidget)
+        QWidget.setTabOrder(self.tabWidget, self.filterButton)
+        QWidget.setTabOrder(self.filterButton, self.clearFilterButton)
+        QWidget.setTabOrder(self.clearFilterButton, self.foundVerses)
+        QWidget.setTabOrder(self.foundVerses, self.colorizeCheckbox)
 
         self.menubar.addAction(self.menu_Language.menuAction())
         self.menu_Language.addAction(self.arabicLangButton)
         self.menu_Language.addAction(self.englishLangButton)
 
         self.retranslateUi(MainWindow)
+
+        self.tabWidget.setCurrentIndex(1)
+
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -395,10 +468,6 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.fullWordcheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.aiPushButton.setToolTip("")
-#endif // QT_CONFIG(tooltip)
-        self.aiPushButton.setText(QCoreApplication.translate("MainWindow", u"\u0630\u0643\u0627\u0621 \u0627\u0635\u0637\u0646\u0627\u0639\u064a", None))
-#if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0639\u062f\u062f", None))
@@ -410,16 +479,21 @@ class Ui_MainWindow(object):
         self.label_5.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"\u0622\u064a\u0627\u062a", None))
-#if QT_CONFIG(tooltip)
-        self.label_3.setToolTip("")
-#endif // QT_CONFIG(tooltip)
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0622\u064a\u0627\u062a", None))
         self.filterButton.setText("")
         self.clearFilterButton.setText("")
 #if QT_CONFIG(tooltip)
         self.colorizeCheckbox.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.colorizeCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062a\u0644\u0648\u064a\u0646", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.ayatTab), QCoreApplication.translate("MainWindow", u"\u0622\u064a\u0627\u062a", None))
+        self.sortPushButton.setText("")
+        self.sortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
+#if QT_CONFIG(tooltip)
+        self.allResultsCheckbox.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.allResultsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0645\u064a\u0639\n"
+"\u0627\u0644\u0646\u062a\u0627\u0626\u062c", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.surahTab), QCoreApplication.translate("MainWindow", u"\u0633\u0648\u0631", None))
         self.menu_Language.setTitle(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0644\u063a\u0629 / Language", None))
     # retranslateUi
 
