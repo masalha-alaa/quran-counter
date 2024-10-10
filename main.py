@@ -1,6 +1,7 @@
 import sys
 
 import re
+from collections import defaultdict
 from enum import Enum
 from yaml import safe_load
 import uuid
@@ -17,6 +18,7 @@ from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
 from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
+from PySide6.QtWidgets import QListWidgetItem
 from surah_results_sorting import CustomSurahSortWidget
 
 
@@ -38,6 +40,7 @@ class MainWindow(QMainWindow):
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
         self._surah_index = safe_load(open("surah_index.yml", encoding='utf-8', mode='r'))
         self._surah_results_list_uuid = uuid.uuid4().hex
+        self._word_results_list_uuid = uuid.uuid4().hex
         self.ui.setupUi(self)
         self.ui.tabWidget.setCurrentIndex(0)
         self._current_lang = None
@@ -317,6 +320,9 @@ class MainWindow(QMainWindow):
         self._all_matches = None
         self._filtered_matches_iter = None
         self.ui.foundVerses.clear()
+        self.ui.surahResultsListWidget.clear()
+        self.ui.wordResultsListWidget.clear()
+
         if not new_text.strip():
             self.clear_results()
             self.ui.filterButton.setEnabled(False)
@@ -370,9 +376,9 @@ class MainWindow(QMainWindow):
         self.matches_number_verses = str(number_of_verses)
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
         self._populate_surah_results()
+        self._populate_word_results()
 
     def _populate_surah_results(self):
-        self.ui.surahResultsListWidget.clear()
         count_by_surah = {}
         self.ui.sortPushButton.setEnabled(len(self._all_matches) > 0)
         for item in self._all_matches:
@@ -387,6 +393,20 @@ class MainWindow(QMainWindow):
         self.ui.surahResultsListWidget.sortItems()
         current_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
+
+    def _populate_word_results(self):
+        counts = defaultdict(int)
+        for surah_num, verse_num, verse, spans in self._all_matches:
+            for span in spans:
+                word_start = verse.rfind(" ", 0, span[0]) + 1
+                word_end = verse.find(" ", span[1], -1)
+                counts[verse[word_start:word_end]] += 1
+        for i, (word, count) in enumerate(counts.items()):
+            self.ui.wordResultsListWidget.addItem(QListWidgetItem(f"{i + 1}. {word}:\t{count}"))
+            # latest_sorting = CustomSurahSortWidget.get_current_sorting(self._word_results_list_uuid)
+            # self.ui.wordResultsListWidget.addItem(CustomSurahSortWidget(f"{i + 1}. {word}:\t\t{count}", self._surah_results_list_uuid, latest_sorting))
+            # current_sorting = CustomSurahSortWidget.get_current_sorting(self._word_results_list_uuid)
+            # self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
 
     def _full_word_checkbox_state_changed(self, state):
         def _set_enabled_others(enabled):

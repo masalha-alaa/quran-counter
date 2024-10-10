@@ -62,6 +62,7 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="610"/>
+        <location filename="../main_screen.ui" line="713"/>
         <source>طريقة الترتيب</source>
         <translation type="unfinished"></translation>
     </message>
@@ -72,17 +73,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="693"/>
+        <location filename="../main_screen.ui" line="680"/>
+        <source>كلمات</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="742"/>
+        <source>حركات</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="782"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="707"/>
+        <location filename="../main_screen.ui" line="796"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="712"/>
+        <location filename="../main_screen.ui" line="801"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

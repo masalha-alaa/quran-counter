@@ -1,6 +1,6 @@
 import re
 from enum import Enum, auto
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QListWidgetItem
+from PySide6.QtWidgets import QListWidgetItem
 
 
 class SurahResultsSortEnum(Enum):

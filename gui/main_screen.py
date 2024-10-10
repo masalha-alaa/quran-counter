@@ -38,9 +38,9 @@ class Ui_MainWindow(object):
         self.englishLangButton.setObjectName(u"englishLangButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_5 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_5.setSpacing(18)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_17 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_17.setSpacing(18)
+        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -159,7 +159,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_5.addLayout(self.horizontalLayout)
+        self.verticalLayout_17.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -255,7 +255,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_5.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_17.addLayout(self.horizontalLayout_2)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -400,12 +400,69 @@ class Ui_MainWindow(object):
         self.verticalLayout_13.addLayout(self.verticalLayout_11)
 
         self.tabWidget.addTab(self.surahTab, "")
+        self.wordsTab = QWidget()
+        self.wordsTab.setObjectName(u"wordsTab")
+        self.verticalLayout_5 = QVBoxLayout(self.wordsTab)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_15 = QVBoxLayout()
+        self.verticalLayout_15.setSpacing(5)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.wordsSortPushButton = QPushButton(self.wordsTab)
+        self.wordsSortPushButton.setObjectName(u"wordsSortPushButton")
+        self.wordsSortPushButton.setEnabled(False)
+        self.wordsSortPushButton.setIcon(icon2)
+        self.wordsSortPushButton.setIconSize(QSize(24, 24))
 
-        self.verticalLayout_5.addWidget(self.tabWidget)
+        self.horizontalLayout_7.addWidget(self.wordsSortPushButton)
 
-        self.verticalLayout_5.setStretch(0, 1)
-        self.verticalLayout_5.setStretch(1, 1)
-        self.verticalLayout_5.setStretch(2, 18)
+        self.wordSortMethodLabel = QLabel(self.wordsTab)
+        self.wordSortMethodLabel.setObjectName(u"wordSortMethodLabel")
+
+        self.horizontalLayout_7.addWidget(self.wordSortMethodLabel)
+
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_7.addItem(self.horizontalSpacer_5)
+
+
+        self.verticalLayout_15.addLayout(self.horizontalLayout_7)
+
+        self.horizontalLayout_11 = QHBoxLayout()
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.wordResultsListWidget = QListWidget(self.wordsTab)
+        self.wordResultsListWidget.setObjectName(u"wordResultsListWidget")
+
+        self.horizontalLayout_11.addWidget(self.wordResultsListWidget)
+
+        self.verticalLayout_16 = QVBoxLayout()
+        self.verticalLayout_16.setObjectName(u"verticalLayout_16")
+        self.diacriticsCheckbox = QCheckBox(self.wordsTab)
+        self.diacriticsCheckbox.setObjectName(u"diacriticsCheckbox")
+
+        self.verticalLayout_16.addWidget(self.diacriticsCheckbox)
+
+        self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_16.addItem(self.verticalSpacer_5)
+
+
+        self.horizontalLayout_11.addLayout(self.verticalLayout_16)
+
+
+        self.verticalLayout_15.addLayout(self.horizontalLayout_11)
+
+
+        self.verticalLayout_5.addLayout(self.verticalLayout_15)
+
+        self.tabWidget.addTab(self.wordsTab, "")
+
+        self.verticalLayout_17.addWidget(self.tabWidget)
+
+        self.verticalLayout_17.setStretch(0, 1)
+        self.verticalLayout_17.setStretch(1, 1)
+        self.verticalLayout_17.setStretch(2, 8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -439,7 +496,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -494,6 +551,10 @@ class Ui_MainWindow(object):
         self.allResultsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0645\u064a\u0639\n"
 "\u0627\u0644\u0646\u062a\u0627\u0626\u062c", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.surahTab), QCoreApplication.translate("MainWindow", u"\u0633\u0648\u0631", None))
+        self.wordsSortPushButton.setText("")
+        self.wordSortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
+        self.diacriticsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062d\u0631\u0643\u0627\u062a", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.wordsTab), QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a", None))
         self.menu_Language.setTitle(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0644\u063a\u0629 / Language", None))
     # retranslateUi
 
