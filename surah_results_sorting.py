@@ -6,7 +6,8 @@ from PySide6.QtWidgets import QListWidgetItem
 class SurahResultsSortEnum(Enum):
     BY_NUMBER = 0
     BY_NAME = auto()
-    BY_RESULT = auto()
+    BY_RESULT_ASCENDING = auto()
+    BY_RESULT_DESCENDING = auto()
 
     def to_string(self):
         match self:
@@ -14,8 +15,10 @@ class SurahResultsSortEnum(Enum):
                 return "(رقم السورة)"
             case self.BY_NAME:
                 return "(اسم السورة)"
-            case self.BY_RESULT:
-                return "(عدد النتائج)"
+            case self.BY_RESULT_ASCENDING:
+                return "(عدد النتائج صعودًا)"
+            case self.BY_RESULT_DESCENDING:
+                return "(عدد النتائج نزولًا)"
 
 
 class SurahResultsSort:
@@ -34,12 +37,21 @@ class CustomSurahSortWidget(QListWidgetItem):
     _ptrn = re.compile(r"(.*)\s+\(#(\d{,3})\):\s+(\d+)")
     _list_ids = {}
 
-    def __init__(self, label, list_id, initial_sorting=None):
+    def __init__(self, label, list_id):
         super().__init__(label)
-        if initial_sorting is None:
-            initial_sorting = SurahResultsSortEnum.BY_NUMBER
-        CustomSurahSortWidget._list_ids[list_id] = SurahResultsSort(initial_sorting)
         self._my_list_id = list_id
+
+    @staticmethod
+    def add_list_id(list_id, initial_sorting: SurahResultsSortEnum = None):
+        if list_id not in CustomSurahSortWidget._list_ids:
+            CustomSurahSortWidget._list_ids[list_id] = SurahResultsSort(initial_sorting)
+
+    @staticmethod
+    def set_sorting(list_id, sorting_method: SurahResultsSortEnum):
+        if list_id in CustomSurahSortWidget._list_ids:
+            CustomSurahSortWidget._list_ids[list_id] = SurahResultsSort(sorting_method)
+        else:
+            raise KeyError(f"{list_id} does not exist. Please call add_list_id() first.")
 
     @staticmethod
     def switch_order(list_id):
@@ -67,5 +79,13 @@ class CustomSurahSortWidget(QListWidgetItem):
                 return int(surah_num_1) < int(surah_num_2)
             case SurahResultsSortEnum.BY_NAME:
                 return surah_name_1 < surah_name_2
-            case SurahResultsSortEnum.BY_RESULT:
-                return int(surah_count_1) < int(surah_count_2)
+            case SurahResultsSortEnum.BY_RESULT_ASCENDING:
+                if int(surah_count_1) != int(surah_count_2):
+                    return int(surah_count_1) < int(surah_count_2)
+                else:
+                    return surah_name_1 < surah_name_2
+            case SurahResultsSortEnum.BY_RESULT_DESCENDING:
+                if int(surah_count_1) != int(surah_count_2):
+                    return int(surah_count_1) > int(surah_count_2)
+                else:
+                    return surah_name_1 < surah_name_2

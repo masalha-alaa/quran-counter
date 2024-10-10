@@ -19,7 +19,7 @@ from gui.my_waiting_dialog import MyWaitingDialog
 from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
 from PySide6.QtWidgets import QListWidgetItem
-from surah_results_sorting import CustomSurahSortWidget
+from surah_results_sorting import CustomSurahSortWidget, SurahResultsSortEnum
 
 
 class AppLang(Enum):
@@ -320,12 +320,11 @@ class MainWindow(QMainWindow):
         self._all_matches = None
         self._filtered_matches_iter = None
         self.ui.foundVerses.clear()
-        self.ui.surahResultsListWidget.clear()
-        self.ui.wordResultsListWidget.clear()
-
         if not new_text.strip():
             self.clear_results()
             self.ui.filterButton.setEnabled(False)
+            self.ui.surahResultsListWidget.clear()
+            self.ui.wordResultsListWidget.clear()
             return
 
         if any(word.endswith(("ت", "ة")) for word in new_text.split()):
@@ -379,7 +378,9 @@ class MainWindow(QMainWindow):
         self._populate_word_results()
 
     def _populate_surah_results(self):
+        self.ui.surahResultsListWidget.clear()
         count_by_surah = {}
+        CustomSurahSortWidget.add_list_id(self._surah_results_list_uuid, initial_sorting=SurahResultsSortEnum.BY_NUMBER)
         self.ui.sortPushButton.setEnabled(len(self._all_matches) > 0)
         for item in self._all_matches:
             surah_num, verse_num, verse, spans = item
@@ -388,13 +389,13 @@ class MainWindow(QMainWindow):
             count = count_by_surah.get(surah_num, 0)
             if count == 0 and not self.ui.allResultsCheckbox.isChecked():
                 continue
-            latest_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
-            self.ui.surahResultsListWidget.addItem(CustomSurahSortWidget(f"{surah_name} (#{surah_num}):\t\t{count}", self._surah_results_list_uuid, latest_sorting))
+            self.ui.surahResultsListWidget.addItem(CustomSurahSortWidget(f"{surah_name} (#{surah_num}):\t\t{count}", self._surah_results_list_uuid))
         self.ui.surahResultsListWidget.sortItems()
         current_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
 
     def _populate_word_results(self):
+        self.ui.wordResultsListWidget.clear()
         counts = defaultdict(int)
         for surah_num, verse_num, verse, spans in self._all_matches:
             for span in spans:

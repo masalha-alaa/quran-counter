@@ -45,7 +45,7 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="342"/>
-        <location filename="../main_screen.ui" line="577"/>
+        <location filename="../main_screen.ui" line="584"/>
         <source>سور</source>
         <translation type="unfinished"></translation>
     </message>
@@ -56,44 +56,44 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="547"/>
+        <location filename="../main_screen.ui" line="554"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="610"/>
-        <location filename="../main_screen.ui" line="713"/>
+        <location filename="../main_screen.ui" line="617"/>
+        <location filename="../main_screen.ui" line="727"/>
         <source>طريقة الترتيب</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="649"/>
+        <location filename="../main_screen.ui" line="663"/>
         <source>جميع
 النتائج</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="680"/>
+        <location filename="../main_screen.ui" line="694"/>
         <source>كلمات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="742"/>
+        <location filename="../main_screen.ui" line="763"/>
         <source>حركات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="782"/>
+        <location filename="../main_screen.ui" line="803"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="796"/>
+        <location filename="../main_screen.ui" line="817"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="801"/>
+        <location filename="../main_screen.ui" line="822"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
