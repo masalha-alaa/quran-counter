@@ -219,20 +219,28 @@ class Reformer:
                      ta_variations=False):
         new_p = ""
         for ch in p:
-            if (((alif_variations or alif_alif_maksura_variations) and (self._is_alif(ch))) or
-                    (alif_alif_maksura_variations and (ch == self._alif_maksura))):
-                alifs = []
+            if self._is_alif(ch) and (alif_variations or alif_alif_maksura_variations):
+                variations = []
                 if alif_variations:
-                    alifs.extend(self._alifs)
+                    variations.extend(self._alifs)
                 if alif_alif_maksura_variations:
-                    alifs.append(self._alif_maksura)
-                    if not alif_variations:
-                        alifs.append("ا")
-                new_p += f"[{''.join(alifs)}]"
-            elif ta_variations and ch in ["ت", "ة"]:
-                new_p += "[تة]"
+                    variations.append(self._alif_maksura)
+                new_p += f"[{''.join(variations)}]"
+            elif ch == self._alif_maksura and (ya_variations or alif_alif_maksura_variations):
+                variations = []
+                if ya_variations:
+                    variations.extend(["ي", "ى"])
+                if alif_alif_maksura_variations:
+                    variations.append(self._alif_maksura)
+                    if alif_variations:
+                        variations.extend(self._alifs)
+                    else:
+                        variations.append("ا")
+                new_p += f"[{''.join(variations)}]"
             elif ya_variations and ch in ["ي", "ى"]:
                 new_p += "[يى]"
+            elif ta_variations and ch in ["ت", "ة"]:
+                new_p += "[تة]"
             else:
                 new_p += ch
             if ch == " ":
