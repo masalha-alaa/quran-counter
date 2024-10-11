@@ -341,6 +341,8 @@ class MainWindow(QMainWindow):
         if not new_text.strip():
             self.clear_results()
             self.ui.filterButton.setEnabled(False)
+            self.ui.sortPushButton.setEnabled(False)
+            self.ui.wordsSortPushButton.setEnabled(False)
             self.ui.surahResultsListWidget.clear()
             self.ui.wordResultsListWidget.clear()
             return
