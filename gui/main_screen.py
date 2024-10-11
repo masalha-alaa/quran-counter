@@ -312,6 +312,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.foundVerses = QTextBrowser(self.ayatTab)
         self.foundVerses.setObjectName(u"foundVerses")
+        self.foundVerses.viewport().setProperty("cursor", QCursor(Qt.CursorShape.IBeamCursor))
         self.foundVerses.setStyleSheet(u"font-family: 'Noto Naskh Arabic'; font-size: 17pt;")
 
         self.horizontalLayout_4.addWidget(self.foundVerses)
@@ -518,7 +519,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

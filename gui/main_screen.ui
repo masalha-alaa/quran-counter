@@ -451,7 +451,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <attribute name="title">
@@ -536,6 +536,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
                <widget class="QTextBrowser" name="foundVerses">
+                <property name="cursor" stdset="0">
+                 <cursorShape>IBeamCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">font-family: 'Noto Naskh Arabic'; font-size: 17pt;</string>
                 </property>
