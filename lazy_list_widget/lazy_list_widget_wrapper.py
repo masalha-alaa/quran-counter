@@ -1,10 +1,18 @@
 from typing import Callable
-from PySide6.QtWidgets import QListWidget, QListWidgetItem
+
 from PySide6.QtWidgets import QAbstractItemView
+from PySide6.QtWidgets import QListWidget
+
+from .surah_results_sort_enum import SurahResultsSortEnum
+from .surah_results_sort import SurahResultsSort
+from .custom_list_widget_item import CustomListWidgetItem
+from .abstract_subtext_getter import AbstractSubtextGetter
 
 
 class LazyListWidgetWrapper:
-    def __init__(self, parent: QListWidget, default_items_load=30, add_item_function: Callable[[str], None] = None):
+    def __init__(self, parent: QListWidget, subtext_getter: AbstractSubtextGetter, default_items_load=30,
+                 row_widget: type[CustomListWidgetItem] = None, supported_methods=None,
+                 initial_sorting_method: SurahResultsSortEnum = None):
         self._exhausted = object()
         self.list_widget = parent
         self.list_widget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
@@ -15,10 +23,18 @@ class LazyListWidgetWrapper:
         self._rows = None
         self._rows_iter = None
         self._adding_items = False
-        self._add_item_function = add_item_function
+        self._row_widget = row_widget if row_widget else CustomListWidgetItem
         self._selection_changed_callback = None
 
-    def set_item_selection_changed_signal(self, callback: Callable[[list[QListWidgetItem]], None]):
+        if supported_methods is None:
+            supported_methods = list(SurahResultsSortEnum)
+        if initial_sorting_method is None:
+            initial_sorting_method = supported_methods[0]
+        self.supported_methods = supported_methods
+        self.sorting_method = SurahResultsSort(initial_sorting_method)
+        self.subtext_getter = subtext_getter
+
+    def set_item_selection_changed_signal(self, callback: Callable[[list[CustomListWidgetItem]], None]):
         self._selection_changed_callback = callback
         if self._selection_changed_callback:
             self.list_widget.itemSelectionChanged.connect(self._selection_changed)
@@ -35,7 +51,8 @@ class LazyListWidgetWrapper:
         self._prev_scrolling_value = scrollbar.value()
 
     def after_scroll(self):
-        if self._adding_items or ((scrollbar := self.list_widget.verticalScrollBar()).value() < self._prev_scrolling_value):
+        if self._adding_items or (
+                (scrollbar := self.list_widget.verticalScrollBar()).value() < self._prev_scrolling_value):
             return "break"
         current_val = scrollbar.value()
         if scrollbar.value() > 0.85 * scrollbar.maximum():  # At the bottom
@@ -62,17 +79,22 @@ class LazyListWidgetWrapper:
         for _ in range(how_many):
             if (row := next(self._rows_iter, self._exhausted)) is self._exhausted:
                 return _done()
-            self._add_item(row)
+            self.list_widget.addItem(self._row_widget(row, self.subtext_getter, self.get_current_sorting))
         return _done()
-
-    def _add_item(self, row):
-        if self._add_item_function:
-            self._add_item_function(row)
-        else:
-            # default
-            self.list_widget.addItem(QListWidgetItem(row))
 
     def clear(self):
         self.list_widget.clear()
         # QTimer.singleShot(0, self.list_widget.clear)
         self.list_widget.verticalScrollBar().setValue(0)
+
+    def sort(self):
+        self.list_widget.sortItems()
+
+    def switch_order(self):
+        new_order = None
+        while new_order not in self.supported_methods:
+            new_order = self.sorting_method.switch_order()
+        return new_order
+
+    def get_current_sorting(self):
+        return self.sorting_method.get_current()

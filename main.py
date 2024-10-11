@@ -1,12 +1,10 @@
 import sys
-from datetime import datetime
 import re
-from collections import defaultdict
 from enum import Enum
 from yaml import safe_load
 import uuid
 from PySide6.QtCore import Slot
-from PySide6.QtCore import Qt, QTranslator, QThread, QTimer
+from PySide6.QtCore import Qt, QTranslator, QThread
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QListWidgetItem
 from PySide6.QtGui import QFontDatabase
 from gui.main_screen import Ui_MainWindow
@@ -20,7 +18,8 @@ from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
 from surah_results_sorting import CustomSurahSortWidget, SurahResultsSortEnum
 from word_bounds_finder_thread import WordBoundsFinderThread
-from lazy_list_widget_wrapper import LazyListWidgetWrapper
+from lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, SurahResultsSortEnum
+from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
 
 
 class AppLang(Enum):
@@ -39,7 +38,6 @@ class MainWindow(QMainWindow):
         self._translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
-        self._word_boundaries_count_ptrn = re.compile(r"\d+\. .*:\s+(\d+)")
         self._surah_index = safe_load(open("surah_index.yml", encoding='utf-8', mode='r'))
         self._surah_results_list_uuid = uuid.uuid4().hex
         self._word_results_list_uuid = uuid.uuid4().hex
@@ -65,9 +63,9 @@ class MainWindow(QMainWindow):
 
         self.waiting_dialog = MyWaitingDialog()
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
-        self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget)
+        self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget, subtext_getter=WordBoundsResultsSubtextGetter(), supported_methods=[SurahResultsSortEnum.BY_NAME, SurahResultsSortEnum.BY_RESULT_ASCENDING, SurahResultsSortEnum.BY_RESULT_DESCENDING])
         self.word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
-        self.word_bounds_finder_thread.result_ready.connect(self.on_find_word_boundaries_completed)
+        self.word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
         self.lazy_word_results_list.set_item_selection_changed_signal(self.word_bounds_results_selection_changed)
         self.ui.wordSum.setText(str(0))
 
@@ -110,6 +108,7 @@ class MainWindow(QMainWindow):
         self.ui.filterButton.clicked.connect(self._filter_button_clicked)
         self.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
         self.ui.sortPushButton.clicked.connect(self._sort_surah_results_clicked)
+        self.ui.wordsSortPushButton.clicked.connect(self._sort_word_results_clicked)
 
     def _setup_validators(self):
         self.ui.searchWord.setValidator(ArabicOnlyValidator())
@@ -285,6 +284,12 @@ class MainWindow(QMainWindow):
         current_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
 
+    def _sort_word_results_clicked(self):
+        self.lazy_word_results_list.switch_order()
+        self.lazy_word_results_list.sort()
+        current_sorting = self.lazy_word_results_list.get_current_sorting()
+        self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
+
     @Slot(str)
     def _handle_disambiguation_dialog_response(self, selected_meaning):
         # print("_handle_disambiguation_dialog_response")
@@ -344,7 +349,7 @@ class MainWindow(QMainWindow):
             self.ui.sortPushButton.setEnabled(False)
             self.ui.wordsSortPushButton.setEnabled(False)
             self.ui.surahResultsListWidget.clear()
-            self.ui.wordResultsListWidget.clear()
+            self.lazy_word_results_list.clear()
             return
 
         # if any(word.endswith(("ت", "ة")) for word in new_text.split()):
@@ -397,10 +402,10 @@ class MainWindow(QMainWindow):
         self._populate_word_results()
 
     def _populate_surah_results(self):
+        return
         self.ui.surahResultsListWidget.clear()
         count_by_surah = {}
         CustomSurahSortWidget.add_list_id(self._surah_results_list_uuid, initial_sorting=SurahResultsSortEnum.BY_NUMBER)
-        self.ui.sortPushButton.setEnabled(len(self._all_matches) > 0)
         for item in self._all_matches:
             surah_num, verse_num, verse, spans = item
             count_by_surah[surah_num] = count_by_surah.get(surah_num, 0) + len(spans)
@@ -412,16 +417,20 @@ class MainWindow(QMainWindow):
         self.ui.surahResultsListWidget.sortItems()
         current_sorting = CustomSurahSortWidget.get_current_sorting(self._surah_results_list_uuid)
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
+        self.ui.sortPushButton.setEnabled(len(self._all_matches) > 0)
 
     def _populate_word_results(self):
         self.word_bounds_finder_thread.set_matches(self._all_matches)
         self.word_bounds_finder_thread.set_diacritics_sensitive(self.ui.diacriticsCheckbox.isChecked())
         self.word_bounds_finder_thread.start()
 
-    def on_find_word_boundaries_completed(self, counts, caller_thread):
+    def on_find_word_bounds_completed(self, counts, caller_thread):
         self.lazy_word_results_list.clear()
         self.lazy_word_results_list.save_values(counts)
         self.lazy_word_results_list.load_more_items()
+        self.lazy_word_results_list.sort()
+        current_sorting = self.lazy_word_results_list.get_current_sorting()
+        self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
         # self.ui.wordResultsListWidget.clear()
         # for row in counts:
         #     self.ui.wordResultsListWidget.addItem(QListWidgetItem(row))
@@ -429,9 +438,10 @@ class MainWindow(QMainWindow):
             # self.ui.wordResultsListWidget.addItem(CustomSurahSortWidget(f"{i + 1}. {word}:\t\t{count}", self._surah_results_list_uuid, latest_sorting))
             # current_sorting = CustomSurahSortWidget.get_current_sorting(self._word_results_list_uuid)
             # self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
+        self.ui.wordsSortPushButton.setEnabled(len(self._all_matches) > 0)
 
-    def word_bounds_results_selection_changed(self, selected_items: list[QListWidgetItem]):
-        total = sum(int(self._word_boundaries_count_ptrn.search(item.text()).group(1)) for item in selected_items)
+    def word_bounds_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
+        total = sum(int(WordBoundsResultsSubtextGetter.ptrn.search(item.text()).group(2)) for item in selected_items)
         self.ui.wordSum.setText(str(total))
 
     def _full_word_checkbox_state_changed(self, state):

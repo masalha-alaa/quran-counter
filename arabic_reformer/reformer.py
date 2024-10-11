@@ -1,7 +1,7 @@
 from .alif import Alif
 from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end,
                      _alamaat_waqf, alif_maksura, _special_diacritics, diacritics_regex,
-                     _prohibited_characters, _alifs, _d)
+                     _prohibited_characters, _alifs, _d, diacritics_regex_compiled)
 from .la import La
 from .utils import _connects_from_left, _connects_from_right, is_alif
 
@@ -16,6 +16,10 @@ def reform_char(ch):
 
 def is_diacritic(ch):
     return (_diacritics_begin <= ch <= _diacritics_end) or ch in _special_diacritics
+
+
+def remove_diacritics(txt):
+    return diacritics_regex_compiled.sub("", txt)
 
 
 def reform_text(txt, text_may_contain_diacritics=False):
