@@ -1,11 +1,12 @@
 from typing import Callable
 from PySide6.QtWidgets import QListWidget, QListWidgetItem
-
+from PySide6.QtWidgets import QAbstractItemView
 
 class LazyListWidgetWrapper:
     def __init__(self, parent: QListWidget, default_items_load=30, add_item_function: Callable[[str], None] = None):
         self._exhausted = object()
         self.list_widget = parent
+        self.list_widget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.list_widget.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.list_widget.verticalScrollBar().actionTriggered.connect(self.before_scroll)
         self._prev_scrolling_value = 0

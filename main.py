@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
         self.waiting_dialog = MyWaitingDialog()
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
         self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget)
-        self.word_bounds_finder_thread = WordBoundsFinderThread()
+        self.word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
         self.word_bounds_finder_thread.result_ready.connect(self.on_find_word_boundaries_completed)
 
     def _apply_language(self, lang):
@@ -103,6 +103,7 @@ class MainWindow(QMainWindow):
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
+        self.ui.diacriticsCheckbox.stateChanged.connect(self._toggle_diacritics)
         self.ui.allResultsCheckbox.stateChanged.connect(self._toggle_all_surah_results)
         self.ui.filterButton.clicked.connect(self._filter_button_clicked)
         self.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
@@ -239,6 +240,12 @@ class MainWindow(QMainWindow):
         self.ui.foundVerses.clear()
         self._filtered_matches_iter = iter([self._all_matches[idx] for idx in self._filtered_matches_idx])
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
+
+    def _toggle_diacritics(self, state):
+        # self._search_word_text_changed(self.search_word)
+        # return
+        self.word_bounds_finder_thread.set_diacritics_sensitive(state)
+        self._populate_word_results()
 
     def _toggle_all_surah_results(self, state):
         self._populate_surah_results()
@@ -400,6 +407,7 @@ class MainWindow(QMainWindow):
 
     def _populate_word_results(self):
         self.word_bounds_finder_thread.set_matches(self._all_matches)
+        self.word_bounds_finder_thread.set_diacritics_sensitive(self.ui.diacriticsCheckbox.isChecked())
         self.word_bounds_finder_thread.start()
 
     def on_find_word_boundaries_completed(self, counts, caller_thread):
