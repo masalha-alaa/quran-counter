@@ -1,8 +1,9 @@
+from typing import Callable
 from PySide6.QtWidgets import QListWidget, QListWidgetItem
 
 
 class LazyListWidgetWrapper:
-    def __init__(self, parent: QListWidget, default_items_load=30, add_item_function=None):
+    def __init__(self, parent: QListWidget, default_items_load=30, add_item_function: Callable[[str], None] = None):
         self._exhausted = object()
         self.list_widget = parent
         self.list_widget.verticalScrollBar().valueChanged.connect(self.after_scroll)

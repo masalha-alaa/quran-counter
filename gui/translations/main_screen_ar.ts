@@ -83,17 +83,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="803"/>
+        <location filename="../main_screen.ui" line="806"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="817"/>
+        <location filename="../main_screen.ui" line="820"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="822"/>
+        <location filename="../main_screen.ui" line="825"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

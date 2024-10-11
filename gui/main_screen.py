@@ -461,6 +461,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
         self.diacriticsCheckbox = QCheckBox(self.wordsTab)
         self.diacriticsCheckbox.setObjectName(u"diacriticsCheckbox")
+        self.diacriticsCheckbox.setChecked(True)
 
         self.verticalLayout_16.addWidget(self.diacriticsCheckbox)
 
@@ -517,7 +518,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
