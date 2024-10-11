@@ -63,7 +63,7 @@ class Ui_MainWindow(object):
 
         self.searchWord = QLineEdit(self.centralwidget)
         self.searchWord.setObjectName(u"searchWord")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.searchWord.sizePolicy().hasHeightForWidth())
@@ -75,12 +75,32 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.searchWord)
 
         self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setSpacing(6)
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.alifAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
+        self.alifAlifMaksuraCheckbox.setObjectName(u"alifAlifMaksuraCheckbox")
+
+        self.horizontalLayout_8.addWidget(self.alifAlifMaksuraCheckbox)
+
+        self.line_4 = QFrame(self.centralwidget)
+        self.line_4.setObjectName(u"line_4")
+        self.line_4.setFrameShape(QFrame.Shape.VLine)
+        self.line_4.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout_8.addWidget(self.line_4)
+
         self.yaAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
         self.yaAlifMaksuraCheckbox.setObjectName(u"yaAlifMaksuraCheckbox")
         self.yaAlifMaksuraCheckbox.setEnabled(True)
 
         self.horizontalLayout_8.addWidget(self.yaAlifMaksuraCheckbox)
+
+        self.line_5 = QFrame(self.centralwidget)
+        self.line_5.setObjectName(u"line_5")
+        self.line_5.setFrameShape(QFrame.Shape.VLine)
+        self.line_5.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout_8.addWidget(self.line_5)
 
         self.finalTaCheckbox = QCheckBox(self.centralwidget)
         self.finalTaCheckbox.setObjectName(u"finalTaCheckbox")
@@ -178,11 +198,8 @@ class Ui_MainWindow(object):
         self.matchesNumber = QLineEdit(self.centralwidget)
         self.matchesNumber.setObjectName(u"matchesNumber")
         self.matchesNumber.setEnabled(False)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.matchesNumber.sizePolicy().hasHeightForWidth())
-        self.matchesNumber.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.matchesNumber.sizePolicy().hasHeightForWidth())
+        self.matchesNumber.setSizePolicy(sizePolicy1)
         self.matchesNumber.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_6.addWidget(self.matchesNumber)
@@ -208,8 +225,8 @@ class Ui_MainWindow(object):
         self.matchesNumberSurahs = QLineEdit(self.centralwidget)
         self.matchesNumberSurahs.setObjectName(u"matchesNumberSurahs")
         self.matchesNumberSurahs.setEnabled(False)
-        sizePolicy2.setHeightForWidth(self.matchesNumberSurahs.sizePolicy().hasHeightForWidth())
-        self.matchesNumberSurahs.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.matchesNumberSurahs.sizePolicy().hasHeightForWidth())
+        self.matchesNumberSurahs.setSizePolicy(sizePolicy1)
         self.matchesNumberSurahs.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_7.addWidget(self.matchesNumberSurahs)
@@ -543,7 +560,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -557,6 +574,7 @@ class Ui_MainWindow(object):
         self.label.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0643\u0644\u0645\u0629", None))
+        self.alifAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0627 / \u0649", None))
         self.yaAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
         self.finalTaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0640\u062a / \u0640\u0629", None))
 #if QT_CONFIG(tooltip)

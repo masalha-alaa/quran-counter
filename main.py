@@ -98,6 +98,7 @@ class MainWindow(QMainWindow):
         self.ui.endOfWordCheckbox.stateChanged.connect(self._end_of_word_checkbox_state_changed)
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
+        self.ui.alifAlifMaksuraCheckbox.stateChanged.connect(self._alif_variations_state_changed)
         self.ui.searchWord.textChanged.connect(self._search_word_text_changed)
         self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.ui.foundVerses.verticalScrollBar().actionTriggered.connect(self.before_scroll)
@@ -261,6 +262,10 @@ class MainWindow(QMainWindow):
         if any(ch in ['ي', 'ى'] for ch in self.search_word):
             self._search_word_text_changed(self.search_word)
 
+    def _alif_variations_state_changed(self, state):
+        if any((self.reformer._is_alif(ch) or self.reformer._alif_maksura == ch) for ch in self.search_word):
+            self._search_word_text_changed(self.search_word)
+
     @Slot()
     def _filter_button_clicked(self):
         self.disambiguation_dialog.set_data(self.search_word)
@@ -349,7 +354,7 @@ class MainWindow(QMainWindow):
         # ignore diacritics
         # TODO: make checkbox?
         new_text = self.reformer.reform_regex(new_text,
-                                              alif_variations=True,
+                                              alif_alif_maksura_variations=self.ui.alifAlifMaksuraCheckbox.isChecked(),
                                               ya_variations=self.ui.yaAlifMaksuraCheckbox.isChecked(),
                                               ta_variations=self.ui.finalTaCheckbox.isChecked())
 

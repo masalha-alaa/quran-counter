@@ -63,7 +63,8 @@ class Disambiguator:
             verses_for_prompt[-1].append(f"{verse_counter + 1}. {self.remove_ref.sub('', verse)}")
             verse_counter += 1
 
-        ptr = self.reformer.reform_regex(word)
+        # TODO: Use flags from checkboxes
+        ptr = self.reformer.reform_regex(word, True, True, True, True)
         responses = []
         for verses_for_prompt_chunk in verses_for_prompt:
             variations = set()

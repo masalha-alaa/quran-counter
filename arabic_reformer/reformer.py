@@ -213,11 +213,22 @@ class Reformer:
             res = f"{res[:beginning_of_span]}{self.reform_text(res[beginning_of_span:end_of_span], text_may_contain_diacritics=text_may_contain_diacritics)}{txt[end_of_span:]}"
         return res
 
-    def reform_regex(self, p, alif_variations=True, ya_variations=False, ta_variations=False):
+    def reform_regex(self, p, alif_variations=True,
+                     alif_alif_maksura_variations=False,
+                     ya_variations=False,
+                     ta_variations=False):
         new_p = ""
         for ch in p:
-            if alif_variations and self._is_alif(ch):
-                new_p += f"[{''.join(self._alifs)}{self._alif_maksura}]"
+            if (((alif_variations or alif_alif_maksura_variations) and (self._is_alif(ch))) or
+                    (alif_alif_maksura_variations and (ch == self._alif_maksura))):
+                alifs = []
+                if alif_variations:
+                    alifs.extend(self._alifs)
+                if alif_alif_maksura_variations:
+                    alifs.append(self._alif_maksura)
+                    if not alif_variations:
+                        alifs.append("ا")
+                new_p += f"[{''.join(alifs)}]"
             elif ta_variations and ch in ["ت", "ة"]:
                 new_p += "[تة]"
             elif ya_variations and ch in ["ي", "ى"]:
