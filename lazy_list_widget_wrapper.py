@@ -2,6 +2,7 @@ from typing import Callable
 from PySide6.QtWidgets import QListWidget, QListWidgetItem
 from PySide6.QtWidgets import QAbstractItemView
 
+
 class LazyListWidgetWrapper:
     def __init__(self, parent: QListWidget, default_items_load=30, add_item_function: Callable[[str], None] = None):
         self._exhausted = object()
@@ -15,6 +16,19 @@ class LazyListWidgetWrapper:
         self._rows_iter = None
         self._adding_items = False
         self._add_item_function = add_item_function
+        self._selection_changed_callback = None
+
+    def set_item_selection_changed_signal(self, callback: Callable[[list[QListWidgetItem]], None]):
+        self._selection_changed_callback = callback
+        if self._selection_changed_callback:
+            self.list_widget.itemSelectionChanged.connect(self._selection_changed)
+
+    def disconnect_item_selection_changed_signal(self):
+        self.list_widget.itemSelectionChanged.disconnect(self._selection_changed)
+
+    def _selection_changed(self):
+        if self._selection_changed_callback:
+            self._selection_changed_callback(self.list_widget.selectedItems())
 
     def before_scroll(self):
         scrollbar = self.list_widget.verticalScrollBar()

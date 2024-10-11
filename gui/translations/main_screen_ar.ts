@@ -56,6 +56,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../main_screen.ui" line="797"/>
+        <source>مجموع النتائج المختارة:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="557"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
@@ -83,17 +88,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="809"/>
+        <location filename="../main_screen.ui" line="843"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="823"/>
+        <location filename="../main_screen.ui" line="857"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="828"/>
+        <location filename="../main_screen.ui" line="862"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

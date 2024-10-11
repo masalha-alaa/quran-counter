@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1097, 701)
+        MainWindow.resize(1153, 740)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
@@ -38,9 +38,9 @@ class Ui_MainWindow(object):
         self.englishLangButton.setObjectName(u"englishLangButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_17 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_17.setSpacing(18)
-        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
+        self.verticalLayout_18 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_18.setSpacing(18)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -159,7 +159,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_17.addLayout(self.horizontalLayout)
+        self.verticalLayout_18.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -255,7 +255,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_17.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_18.addLayout(self.horizontalLayout_2)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -308,17 +308,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setSpacing(7)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.verticalLayout_17 = QVBoxLayout()
+        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.foundVerses = QTextBrowser(self.ayatTab)
         self.foundVerses.setObjectName(u"foundVerses")
         self.foundVerses.viewport().setProperty("cursor", QCursor(Qt.CursorShape.IBeamCursor))
         self.foundVerses.setStyleSheet(u"font-family: 'Noto Naskh Arabic'; font-size: 17pt;")
 
-        self.horizontalLayout_4.addWidget(self.foundVerses)
+        self.verticalLayout_17.addWidget(self.foundVerses)
 
 
-        self.horizontalLayout_5.addLayout(self.horizontalLayout_4)
+        self.horizontalLayout_5.addLayout(self.verticalLayout_17)
 
         self.verticalLayout_9 = QVBoxLayout()
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
@@ -479,17 +479,41 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addLayout(self.verticalLayout_15)
 
+        self.horizontalLayout_12 = QHBoxLayout()
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.label_3 = QLabel(self.wordsTab)
+        self.label_3.setObjectName(u"label_3")
+
+        self.horizontalLayout_12.addWidget(self.label_3)
+
+        self.wordSum = QLineEdit(self.wordsTab)
+        self.wordSum.setObjectName(u"wordSum")
+        self.wordSum.setEnabled(False)
+        self.wordSum.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_12.addWidget(self.wordSum)
+
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_12.addItem(self.horizontalSpacer_6)
+
+        self.horizontalLayout_12.setStretch(0, 1)
+        self.horizontalLayout_12.setStretch(1, 1)
+        self.horizontalLayout_12.setStretch(2, 8)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_12)
+
         self.tabWidget.addTab(self.wordsTab, "")
 
-        self.verticalLayout_17.addWidget(self.tabWidget)
+        self.verticalLayout_18.addWidget(self.tabWidget)
 
-        self.verticalLayout_17.setStretch(0, 1)
-        self.verticalLayout_17.setStretch(1, 1)
-        self.verticalLayout_17.setStretch(2, 8)
+        self.verticalLayout_18.setStretch(0, 1)
+        self.verticalLayout_18.setStretch(1, 1)
+        self.verticalLayout_18.setStretch(2, 8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1097, 42))
+        self.menubar.setGeometry(QRect(0, 0, 1153, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
         icon3 = QIcon()
@@ -519,7 +543,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -577,6 +601,7 @@ class Ui_MainWindow(object):
         self.wordsSortPushButton.setText("")
         self.wordSortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
         self.diacriticsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062d\u0631\u0643\u0627\u062a", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.wordsTab), QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a", None))
         self.menu_Language.setTitle(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0644\u063a\u0629 / Language", None))
     # retranslateUi
