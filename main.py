@@ -1,12 +1,12 @@
 import sys
-
+from datetime import datetime
 import re
 from collections import defaultdict
 from enum import Enum
 from yaml import safe_load
 import uuid
 from PySide6.QtCore import Slot
-from PySide6.QtCore import Qt, QTranslator, QThread
+from PySide6.QtCore import Qt, QTranslator, QThread, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
 from gui.main_screen import Ui_MainWindow
@@ -20,6 +20,7 @@ from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
 from PySide6.QtWidgets import QListWidgetItem
 from surah_results_sorting import CustomSurahSortWidget, SurahResultsSortEnum
+from word_bounds_finder_thread import WordBoundsFinderThread
 
 
 class AppLang(Enum):
@@ -64,6 +65,8 @@ class MainWindow(QMainWindow):
 
         self.waiting_dialog = MyWaitingDialog()
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
+        self.word_bounds_finder_thread = WordBoundsFinderThread()
+        self.word_bounds_finder_thread.result_ready.connect(self.on_find_word_boundaries_completed)
 
     def _apply_language(self, lang):
         if lang != self._current_lang and self._translator.load(f"gui/translations/{lang.value}.qm"):
@@ -395,15 +398,13 @@ class MainWindow(QMainWindow):
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
 
     def _populate_word_results(self):
+        self.word_bounds_finder_thread.set_matches(self._all_matches)
+        self.word_bounds_finder_thread.start()
+
+    def on_find_word_boundaries_completed(self, counts, caller_thread):
         self.ui.wordResultsListWidget.clear()
-        counts = defaultdict(int)
-        for surah_num, verse_num, verse, spans in self._all_matches:
-            for span in spans:
-                word_start = verse.rfind(" ", 0, span[0]) + 1
-                word_end = verse.find(" ", span[1], -1)
-                counts[verse[word_start:word_end]] += 1
-        for i, (word, count) in enumerate(counts.items()):
-            self.ui.wordResultsListWidget.addItem(QListWidgetItem(f"{i + 1}. {word}:\t{count}"))
+        for row in counts:
+            self.ui.wordResultsListWidget.addItem(QListWidgetItem(row))
             # latest_sorting = CustomSurahSortWidget.get_current_sorting(self._word_results_list_uuid)
             # self.ui.wordResultsListWidget.addItem(CustomSurahSortWidget(f"{i + 1}. {word}:\t\t{count}", self._surah_results_list_uuid, latest_sorting))
             # current_sorting = CustomSurahSortWidget.get_current_sorting(self._word_results_list_uuid)
