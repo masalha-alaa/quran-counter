@@ -21,6 +21,7 @@ from ask_gpt_thread import AskGptThread
 from PySide6.QtWidgets import QListWidgetItem
 from surah_results_sorting import CustomSurahSortWidget, SurahResultsSortEnum
 from word_bounds_finder_thread import WordBoundsFinderThread
+from lazy_list_widget_wrapper import LazyListWidgetWrapper
 
 
 class AppLang(Enum):
@@ -29,7 +30,7 @@ class AppLang(Enum):
 
 
 class MainWindow(QMainWindow):
-    ITEM_LOAD = 10
+    ITEM_LOAD = 20
     _exhausted = object()
 
     def __init__(self):
@@ -65,6 +66,7 @@ class MainWindow(QMainWindow):
 
         self.waiting_dialog = MyWaitingDialog()
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
+        self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget)
         self.word_bounds_finder_thread = WordBoundsFinderThread()
         self.word_bounds_finder_thread.result_ready.connect(self.on_find_word_boundaries_completed)
 
@@ -330,11 +332,10 @@ class MainWindow(QMainWindow):
             self.ui.wordResultsListWidget.clear()
             return
 
-        if any(word.endswith(("ت", "ة")) for word in new_text.split()):
-            self.ui.finalTaCheckbox.setEnabled(True)
-        else:
-            self.ui.finalTaCheckbox.setEnabled(False)
-            self.ui.finalTaCheckbox.setChecked(False)
+        # if any(word.endswith(("ت", "ة")) for word in new_text.split()):
+        #     self.ui.finalTaCheckbox.setEnabled(True)
+        # else:
+        #     self.ui.finalTaCheckbox.setEnabled(False)
 
         # ignore diacritics
         # TODO: make checkbox?
@@ -402,9 +403,12 @@ class MainWindow(QMainWindow):
         self.word_bounds_finder_thread.start()
 
     def on_find_word_boundaries_completed(self, counts, caller_thread):
-        self.ui.wordResultsListWidget.clear()
-        for row in counts:
-            self.ui.wordResultsListWidget.addItem(QListWidgetItem(row))
+        self.lazy_word_results_list.clear()
+        self.lazy_word_results_list.save_values(counts)
+        self.lazy_word_results_list.load_more_items()
+        # self.ui.wordResultsListWidget.clear()
+        # for row in counts:
+        #     self.ui.wordResultsListWidget.addItem(QListWidgetItem(row))
             # latest_sorting = CustomSurahSortWidget.get_current_sorting(self._word_results_list_uuid)
             # self.ui.wordResultsListWidget.addItem(CustomSurahSortWidget(f"{i + 1}. {word}:\t\t{count}", self._surah_results_list_uuid, latest_sorting))
             # current_sorting = CustomSurahSortWidget.get_current_sorting(self._word_results_list_uuid)
