@@ -3,7 +3,7 @@ import re
 from cachetools import cached, LRUCache
 from cachetools.keys import hashkey
 import openai
-from arabic_reformer.reformer import Reformer
+from arabic_reformer import reform_regex
 from ast import literal_eval
 
 
@@ -22,7 +22,6 @@ class Disambiguator:
         if self._key:
             openai.api_key = self._key
 
-        self.reformer = Reformer()
         self.remove_ref = re.compile(r"^\d{,3}:\d{,3}:\s+", flags=re.M)
 
         # TODO: settings to choose model
@@ -64,7 +63,7 @@ class Disambiguator:
             verse_counter += 1
 
         # TODO: Use flags from checkboxes
-        ptr = self.reformer.reform_regex(word, True, True, True, True)
+        ptr = reform_regex(word, True, True, True, True)
         responses = []
         for verses_for_prompt_chunk in verses_for_prompt:
             variations = set()

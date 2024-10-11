@@ -13,7 +13,7 @@ from gui.main_screen import Ui_MainWindow
 from validators import ArabicOnlyValidator
 from finder import Finder
 from emphasizer import emphasize_span, CssColors
-from arabic_reformer.reformer import Reformer
+from arabic_reformer import reform_text, reform_regex, is_alif, alif_maksura
 from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
 from disambiguator import Disambiguator
@@ -59,7 +59,6 @@ class MainWindow(QMainWindow):
         self._filtered_matches_idx = None
         self._adding_items = False
         # [f"<span style=\"color: {c.value};\">" for c in color]
-        self.reformer = Reformer()
 
         self._disambiguator = Disambiguator(open("open_ai_key.txt", mode='r').read())
         self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator)
@@ -165,7 +164,7 @@ class MainWindow(QMainWindow):
         return _done()
 
     def reform_and_color(self, verse, spans):
-        verse = self.reformer.reform_text(verse, text_may_contain_diacritics=True)
+        verse = reform_text(verse, text_may_contain_diacritics=True)
         # TODO: shouldn't we reform only span +-? See reformer.reform_span() -- didn't work so good
         # verse = self.reformer.reform_span(verse, spans, text_may_contain_diacritics=True)
         verse = emphasize_span(verse, spans, capitalize=False, underline=False, color=CssColors.CYAN, css=True)
@@ -263,7 +262,7 @@ class MainWindow(QMainWindow):
             self._search_word_text_changed(self.search_word)
 
     def _alif_variations_state_changed(self, state):
-        if any((self.reformer._is_alif(ch) or self.reformer._alif_maksura == ch) for ch in self.search_word):
+        if any((is_alif(ch) or alif_maksura == ch) for ch in self.search_word):
             self._search_word_text_changed(self.search_word)
 
     @Slot()
@@ -353,10 +352,10 @@ class MainWindow(QMainWindow):
 
         # ignore diacritics
         # TODO: make checkbox?
-        new_text = self.reformer.reform_regex(new_text,
-                                              alif_alif_maksura_variations=self.ui.alifAlifMaksuraCheckbox.isChecked(),
-                                              ya_variations=self.ui.yaAlifMaksuraCheckbox.isChecked(),
-                                              ta_variations=self.ui.finalTaCheckbox.isChecked())
+        new_text = reform_regex(new_text,
+                                alif_alif_maksura_variations=self.ui.alifAlifMaksuraCheckbox.isChecked(),
+                                ya_variations=self.ui.yaAlifMaksuraCheckbox.isChecked(),
+                                ta_variations=self.ui.finalTaCheckbox.isChecked())
 
         # NOT WORKING WITH TASHKEEL
         # if self.full_word_checkbox:

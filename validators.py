@@ -1,10 +1,10 @@
 from PySide6.QtGui import QValidator
 from PySide6.QtCore import QRegularExpression
-from arabic_reformer.reformer import Reformer
+from arabic_reformer import get_arabic_abc
 
 
 class ArabicOnlyValidator(QValidator):
-    arabic_abc = ''.join(Reformer().get_arabic_abc())
+    arabic_abc = ''.join(get_arabic_abc())
 
     def validate(self, input, pos):
         # Define the regular expression for Arabic letters

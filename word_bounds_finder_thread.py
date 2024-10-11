@@ -1,7 +1,7 @@
 import re
 from PySide6.QtCore import Signal, QThread
 from collections import defaultdict
-from arabic_reformer.reformer import Reformer
+from arabic_reformer import diacritics_regex
 
 
 class WordBoundsFinderThread(QThread):
@@ -11,7 +11,7 @@ class WordBoundsFinderThread(QThread):
         super().__init__()
         self._matches = None
         self._diacritics_sensitive = diacritics_sensitive
-        self._diacritics_regex = re.compile(Reformer._diacritics_regex)
+        self._diacritics_regex = re.compile(diacritics_regex)
 
     def set_matches(self, matches):
         self._matches = matches
