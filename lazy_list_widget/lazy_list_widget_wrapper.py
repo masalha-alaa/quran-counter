@@ -7,6 +7,7 @@ from .custom_results_sort_enum import CustomResultsSortEnum
 from .custom_results_sort import CustomResultsSort
 from .custom_list_widget_item import CustomListWidgetItem
 from .abstract_subtext_getter import AbstractSubtextGetter
+from .custom_row import CustomRow
 
 
 class LazyListWidgetWrapper:
@@ -25,6 +26,7 @@ class LazyListWidgetWrapper:
         self._adding_items = False
         self._row_widget = row_widget if row_widget else CustomListWidgetItem
         self._selection_changed_callback = None
+        self._item_double_clicked_callback = None
 
         if supported_methods is None:
             supported_methods = list(CustomResultsSortEnum)
@@ -34,17 +36,33 @@ class LazyListWidgetWrapper:
         self.sorting_method = CustomResultsSort(initial_sorting_method)
         self.subtext_getter = subtext_getter
 
-    def set_item_selection_changed_signal(self, callback: Callable[[list[CustomListWidgetItem]], None]):
+    # SELECTION CALLBACKS [BEGIN]
+    def set_item_selection_changed_callback(self, callback: Callable[[list[CustomListWidgetItem]], None]):
         self._selection_changed_callback = callback
         if self._selection_changed_callback:
             self.list_widget.itemSelectionChanged.connect(self._selection_changed)
 
-    def disconnect_item_selection_changed_signal(self):
+    def disconnect_item_selection_changed_callback(self):
         self.list_widget.itemSelectionChanged.disconnect(self._selection_changed)
 
     def _selection_changed(self):
         if self._selection_changed_callback:
             self._selection_changed_callback(self.list_widget.selectedItems())
+    # SELECTION CALLBACKS [END]
+
+    # DOUBLE CLICK CALLBACKS [BEGIN]
+    def set_item_double_clicked_callback(self, callback: Callable[[CustomRow], None]):
+        self._item_double_clicked_callback = callback
+        if self._item_double_clicked_callback:
+            self.list_widget.itemDoubleClicked.connect(self._item_double_clicked)
+
+    def disconnect_item_double_clicked_callback(self):
+        self.list_widget.itemDoubleClicked.disconnect(self._item_double_clicked)
+
+    def _item_double_clicked(self, item: CustomListWidgetItem):
+        if self._item_double_clicked_callback:
+            self._item_double_clicked_callback(item.row)
+    # DOUBLE CLICK CALLBACKS [END]
 
     def before_scroll(self):
         scrollbar = self.list_widget.verticalScrollBar()
@@ -76,7 +94,7 @@ class LazyListWidgetWrapper:
 
         if how_many is None:
             how_many = self._default_items_load
-        for _ in range(how_many):
+        for i in range(how_many):
             if (row := next(self._rows_iter, self._exhausted)) is self._exhausted:
                 return _done()
             self.list_widget.addItem(self._row_widget(row, self.subtext_getter, self.get_current_sorting))

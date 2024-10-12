@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1153</width>
-    <height>740</height>
+    <width>1104</width>
+    <height>763</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -475,7 +475,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <attribute name="title">
@@ -848,6 +848,16 @@ font: 400 20pt &quot;Calibri&quot;;</string>
          </layout>
         </item>
         <item>
+         <widget class="QLabel" name="label_7">
+          <property name="styleSheet">
+           <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+          </property>
+          <property name="text">
+           <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,1,8">
           <item>
            <widget class="QLabel" name="label_3">
@@ -892,7 +902,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1153</width>
+     <width>1104</width>
      <height>42</height>
     </rect>
    </property>

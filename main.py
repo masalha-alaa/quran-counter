@@ -7,6 +7,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtCore import Qt, QTranslator, QThread
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
+from my_data_loader import MyDataLoader
 from gui.main_screen import Ui_MainWindow
 from validators import ArabicOnlyValidator
 from finder import Finder
@@ -14,11 +15,12 @@ from emphasizer import emphasize_span, CssColors
 from arabic_reformer import reform_text, reform_regex, is_alif, alif_maksura
 from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
+from gui.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
 from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
 from word_bounds_finder_thread import WordBoundsFinderThread
 from surah_finder_thread import SurahFinderThread
-from lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum
+from lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
 from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
 from surah_results_subtext_getter import SurahResultsSubtextGetter
 
@@ -65,16 +67,19 @@ class MainWindow(QMainWindow):
         self.waiting_dialog = MyWaitingDialog()
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
 
+        self.detailed_word_display_dialog = MyWordDetailedDisplayDialog()
+
         self.lazy_surah_results_list = LazyListWidgetWrapper(self.ui.surahResultsListWidget, subtext_getter=SurahResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NUMBER, CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
         self.surah_finder_thread = SurahFinderThread(self._surah_index, self.ui.allResultsCheckbox.isChecked())
         self.surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
-        self.lazy_surah_results_list.set_item_selection_changed_signal(self.surah_results_selection_changed)
+        self.lazy_surah_results_list.set_item_selection_changed_callback(self.surah_results_selection_changed)
         self.ui.surahResultsSum.setText(str(0))
 
         self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget, subtext_getter=WordBoundsResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
         self.word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
         self.word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
-        self.lazy_word_results_list.set_item_selection_changed_signal(self.word_bounds_results_selection_changed)
+        self.lazy_word_results_list.set_item_selection_changed_callback(self.word_bounds_results_selection_changed)
+        self.lazy_word_results_list.set_item_double_clicked_callback(self.word_bounds_results_item_double_clicked)
         self.ui.wordSum.setText(str(0))
 
     def _apply_language(self, lang):
@@ -105,8 +110,8 @@ class MainWindow(QMainWindow):
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
         self.ui.alifAlifMaksuraCheckbox.stateChanged.connect(self._alif_variations_state_changed)
         self.ui.searchWord.textChanged.connect(self._search_word_text_changed)
-        self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.ui.foundVerses.verticalScrollBar().actionTriggered.connect(self.before_scroll)
+        self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.ui.arabicLangButton.triggered.connect(lambda: self._apply_language(AppLang.ARABIC))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
@@ -423,7 +428,7 @@ class MainWindow(QMainWindow):
         self.lazy_surah_results_list.sort()
         current_sorting = self.lazy_surah_results_list.get_current_sorting()
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
-        self.ui.sortPushButton.setEnabled(len(self._all_matches) > 0)
+        self.ui.sortPushButton.setEnabled(self._all_matches and len(self._all_matches) > 0)
 
     def surah_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
         total = sum(int(SurahResultsSubtextGetter.ptrn.search(item.text()).group(3)) for item in selected_items)
@@ -441,11 +446,16 @@ class MainWindow(QMainWindow):
         self.lazy_word_results_list.sort()
         current_sorting = self.lazy_word_results_list.get_current_sorting()
         self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
-        self.ui.wordsSortPushButton.setEnabled(len(self._all_matches) > 0)
+        self.ui.wordsSortPushButton.setEnabled(self._all_matches and len(self._all_matches) > 0)
 
     def word_bounds_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
         total = sum(int(WordBoundsResultsSubtextGetter.ptrn.search(item.text()).group(2)) for item in selected_items)
         self.ui.wordSum.setText(str(total))
+
+    def word_bounds_results_item_double_clicked(self, item: CustomRow):
+        self.detailed_word_display_dialog.set_data(item)
+        # self.detailed_word_display_dialog.open()
+        self.detailed_word_display_dialog.exec()
 
     def _full_word_checkbox_state_changed(self, state):
         def _set_enabled_others(enabled):
@@ -522,6 +532,8 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
+    MyDataLoader()
 
     window = MainWindow()
     window.show()

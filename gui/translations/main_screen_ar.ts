@@ -57,7 +57,7 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="720"/>
-        <location filename="../main_screen.ui" line="855"/>
+        <location filename="../main_screen.ui" line="865"/>
         <source>مجموع النتائج المختارة:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -84,6 +84,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../main_screen.ui" line="856"/>
+        <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="755"/>
         <source>كلمات</source>
         <translation type="unfinished"></translation>
@@ -94,17 +99,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="901"/>
+        <location filename="../main_screen.ui" line="911"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="915"/>
+        <location filename="../main_screen.ui" line="925"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="920"/>
+        <location filename="../main_screen.ui" line="930"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

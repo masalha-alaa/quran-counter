@@ -18,5 +18,11 @@ pyside6-lupdate gui/waiting_dialog.ui -ts gui/translations/waiting_dlg_ar.ts
 pyside6-lrelease gui/translations/waiting_dlg_ar.ts
 pyside6-lrelease gui/translations/waiting_dlg_en.ts
 
+REM word_detailed_display dialog
+pyside6-uic .\gui\word_detailed_display.ui -o .\gui\word_detailed_display.py
+pyside6-lupdate gui/word_detailed_display.ui -ts gui/translations/word_detailed_display_ar.ts
+pyside6-lrelease gui/translations/word_detailed_display_ar.ts
+pyside6-lrelease gui/translations/word_detailed_display_en.ts
+
 pyside6-rcc gui\resources\resources.qrc -o resources_rc.py
 deactivate

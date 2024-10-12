@@ -1,16 +1,11 @@
 import re
-import pandas as pd
-from yaml import safe_load
+from my_data_loader import MyDataLoader
 
 
 class Finder:
     def __init__(self):
-        config = safe_load(open("config.yml", mode='r'))
-        self.df = pd.read_json(config['data']['path'])
-        # TODO: save column in df beforehand
-        verses_col = config['data']['verses_column']
-        self._working_col = f"{verses_col}_split"
-        self.df[self._working_col] = self.df[verses_col].str.split('\n')
+        self.df = MyDataLoader.get_data()
+        self._working_col = MyDataLoader.get_working_col()
 
     def _find_in_surah(self, row, w):
         verses_clean_split = row[self._working_col]

@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1153, 740)
+        MainWindow.resize(1104, 763)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
@@ -520,6 +520,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addLayout(self.verticalLayout_15)
 
+        self.label_7 = QLabel(self.wordsTab)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
+
+        self.verticalLayout_5.addWidget(self.label_7)
+
         self.horizontalLayout_12 = QHBoxLayout()
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.label_3 = QLabel(self.wordsTab)
@@ -554,7 +560,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1153, 42))
+        self.menubar.setGeometry(QRect(0, 0, 1104, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
         icon3 = QIcon()
@@ -584,7 +590,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -644,6 +650,7 @@ class Ui_MainWindow(object):
         self.wordsSortPushButton.setText("")
         self.wordSortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
         self.diacriticsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062d\u0631\u0643\u0627\u062a", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.wordsTab), QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a", None))
         self.menu_Language.setTitle(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0644\u063a\u0629 / Language", None))

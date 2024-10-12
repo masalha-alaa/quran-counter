@@ -3,11 +3,14 @@ from PySide6.QtWidgets import QListWidgetItem
 from arabic_reformer import remove_diacritics
 from .abstract_subtext_getter import AbstractSubtextGetter
 from .custom_results_sort_enum import CustomResultsSortEnum
+from .custom_row import CustomRow
 
 
 class CustomListWidgetItem(QListWidgetItem):
-    def __init__(self, label, subtext_getter: AbstractSubtextGetter, get_sorting_method_handle):
-        super().__init__(label)
+    def __init__(self, row: CustomRow, subtext_getter: AbstractSubtextGetter, get_sorting_method_handle):
+        super().__init__(row.label)
+        # self.metadata = row.metadata
+        self.row = row
         self.get_sorting_method = get_sorting_method_handle
         self.subtext_getter = subtext_getter
 
