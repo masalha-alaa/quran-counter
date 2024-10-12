@@ -3,8 +3,8 @@ from typing import Callable
 from PySide6.QtWidgets import QAbstractItemView
 from PySide6.QtWidgets import QListWidget
 
-from .surah_results_sort_enum import SurahResultsSortEnum
-from .surah_results_sort import SurahResultsSort
+from .custom_results_sort_enum import CustomResultsSortEnum
+from .custom_results_sort import CustomResultsSort
 from .custom_list_widget_item import CustomListWidgetItem
 from .abstract_subtext_getter import AbstractSubtextGetter
 
@@ -12,7 +12,7 @@ from .abstract_subtext_getter import AbstractSubtextGetter
 class LazyListWidgetWrapper:
     def __init__(self, parent: QListWidget, subtext_getter: AbstractSubtextGetter, default_items_load=30,
                  row_widget: type[CustomListWidgetItem] = None, supported_methods=None,
-                 initial_sorting_method: SurahResultsSortEnum = None):
+                 initial_sorting_method: CustomResultsSortEnum = None):
         self._exhausted = object()
         self.list_widget = parent
         self.list_widget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
@@ -27,11 +27,11 @@ class LazyListWidgetWrapper:
         self._selection_changed_callback = None
 
         if supported_methods is None:
-            supported_methods = list(SurahResultsSortEnum)
+            supported_methods = list(CustomResultsSortEnum)
         if initial_sorting_method is None:
             initial_sorting_method = supported_methods[0]
         self.supported_methods = supported_methods
-        self.sorting_method = SurahResultsSort(initial_sorting_method)
+        self.sorting_method = CustomResultsSort(initial_sorting_method)
         self.subtext_getter = subtext_getter
 
     def set_item_selection_changed_signal(self, callback: Callable[[list[CustomListWidgetItem]], None]):

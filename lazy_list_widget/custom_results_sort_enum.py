@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 
-class SurahResultsSortEnum(Enum):
+class CustomResultsSortEnum(Enum):
     BY_NUMBER = 0
     BY_NAME = auto()
     BY_RESULT_ASCENDING = auto()

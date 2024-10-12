@@ -1,5 +1,5 @@
 from .abstract_subtext_getter import AbstractSubtextGetter
 from .custom_list_widget_item import CustomListWidgetItem
 from .lazy_list_widget_wrapper import LazyListWidgetWrapper
-from .surah_results_sort import SurahResultsSort
-from .surah_results_sort_enum import SurahResultsSortEnum
+from .custom_results_sort import CustomResultsSort
+from .custom_results_sort_enum import CustomResultsSortEnum

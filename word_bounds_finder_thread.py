@@ -30,4 +30,4 @@ class WordBoundsFinderThread(QThread):
                     word = self._diacritics_regex.sub("", word)
                 counts[word] += 1
         self._matches = None
-        self.result_ready.emit([f"{w}:\t\t{c}" for i,(w,c) in enumerate(counts.items())], self)
+        self.result_ready.emit([f"{w}:\t\t{c}" for w,c in counts.items()], self)
