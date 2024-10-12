@@ -3,7 +3,7 @@ import re
 from enum import Enum
 from yaml import safe_load
 import uuid
-from PySide6.QtCore import Slot
+from PySide6.QtCore import Slot, QTimer
 from PySide6.QtCore import Qt, QTranslator, QThread
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
@@ -54,6 +54,8 @@ class MainWindow(QMainWindow):
         self._setup_validators()
         # self._setup_fonts()
         self._finder = Finder()
+        self._finder.result_ready.connect(self.on_word_found_complete)
+
         self._prev_scrolling_value = 0
         self._all_matches = None
         self._filtered_matches_iter = None
@@ -221,7 +223,7 @@ class MainWindow(QMainWindow):
         self.matches_number_surahs = ""
         self.matches_number_verses = ""
         if clear_verses:
-            self.found_verses = ""
+            self.ui.foundVerses.clear()
 
     # found verses
     @property
@@ -357,9 +359,8 @@ class MainWindow(QMainWindow):
     def _search_word_text_changed(self, new_text):
         self._all_matches = None
         self._filtered_matches_iter = None
-        self.ui.foundVerses.clear()
         if not new_text.strip():
-            self.clear_results()
+            self.clear_results(clear_verses=True)
             self.ui.filterButton.setEnabled(False)
             self.ui.sortPushButton.setEnabled(False)
             self.ui.wordsSortPushButton.setEnabled(False)
@@ -367,42 +368,20 @@ class MainWindow(QMainWindow):
             self.lazy_word_results_list.clear()
             return
 
-        # if any(word.endswith(("ت", "ة")) for word in new_text.split()):
-        #     self.ui.finalTaCheckbox.setEnabled(True)
-        # else:
-        #     self.ui.finalTaCheckbox.setEnabled(False)
+        self._finder.prep_data(new_text,
+                               self.ui.alifAlifMaksuraCheckbox.isChecked(),
+                               self.ui.yaAlifMaksuraCheckbox.isChecked(),
+                               self.ui.finalTaCheckbox.isChecked(),
+                               self.full_word_checkbox,
+                               self.beginning_of_word_checkbox,
+                               self.ending_of_word_checkbox)
+        QTimer.singleShot(0, self._finder.start_thread)
 
-        # ignore diacritics
-        # TODO: make checkbox?
-        new_text = reform_regex(new_text,
-                                alif_alif_maksura_variations=self.ui.alifAlifMaksuraCheckbox.isChecked(),
-                                ya_variations=self.ui.yaAlifMaksuraCheckbox.isChecked(),
-                                ta_variations=self.ui.finalTaCheckbox.isChecked())
-
-        # NOT WORKING WITH TASHKEEL
-        # if self.full_word_checkbox:
-        #     new_text = rf"\b{new_text}\b"
-        # elif self.beginning_of_word_checkbox:
-        #     new_text = rf"\b{new_text}"
-        # elif self.ending_of_word_checkbox:
-        #     new_text = rf"{new_text}\b"
-
-        search_words = len(new_text.split())
-        new_text = f"({new_text})"  # capturing group
-        beginning_of_word = r"[ ^]"
-        end_of_word = r"[ ,$]"
-        if self.full_word_checkbox:
-            new_text = beginning_of_word + rf"{new_text}" + end_of_word
-        else:
-            if self.beginning_of_word_checkbox:
-                new_text = beginning_of_word + rf"{new_text}"
-            if self.ending_of_word_checkbox:
-                new_text = rf"{new_text}" + end_of_word
-
-        self._all_matches, number_of_matches, number_of_surahs, number_of_verses = self._finder.find_word(new_text)
+    def on_word_found_complete(self, search_text, words_num, result, caller_thread):
+        self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result
         self._filtered_matches_idx = range(len(self._all_matches))
         self._filtered_matches_iter = iter(self._all_matches)
-        self.ui.filterButton.setEnabled((number_of_matches > 0) and search_words == 1)
+        self.ui.filterButton.setEnabled((number_of_matches > 0) and words_num == 1)
         # for _, row in results.iterrows():
         #     surah_cnt += 1
         #     for v, spans in row['spans'].items():
@@ -412,6 +391,7 @@ class MainWindow(QMainWindow):
         self.matches_number = str(number_of_matches)
         self.matches_number_surahs = str(number_of_surahs)
         self.matches_number_verses = str(number_of_verses)
+        self.ui.foundVerses.clear()
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
         self._populate_surah_results()
         self._populate_word_results()
@@ -428,7 +408,7 @@ class MainWindow(QMainWindow):
         self.lazy_surah_results_list.sort()
         current_sorting = self.lazy_surah_results_list.get_current_sorting()
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
-        self.ui.sortPushButton.setEnabled(self._all_matches and len(self._all_matches) > 0)
+        self.ui.sortPushButton.setEnabled(self._all_matches is not None and len(self._all_matches) > 0)
 
     def surah_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
         total = sum(int(SurahResultsSubtextGetter.ptrn.search(item.text()).group(3)) for item in selected_items)
@@ -446,7 +426,7 @@ class MainWindow(QMainWindow):
         self.lazy_word_results_list.sort()
         current_sorting = self.lazy_word_results_list.get_current_sorting()
         self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
-        self.ui.wordsSortPushButton.setEnabled(self._all_matches and len(self._all_matches) > 0)
+        self.ui.wordsSortPushButton.setEnabled(self._all_matches is not None and len(self._all_matches) > 0)
 
     def word_bounds_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
         total = sum(int(WordBoundsResultsSubtextGetter.ptrn.search(item.text()).group(2)) for item in selected_items)
