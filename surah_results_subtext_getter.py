@@ -3,7 +3,7 @@ from lazy_list_widget import AbstractSubtextGetter
 
 
 class SurahResultsSubtextGetter(AbstractSubtextGetter):
-    ptrn = re.compile(r"(.*)\s+\(#(\d{,3})\):\s+(\d+)")
+    ptrn = re.compile(r"(.*)\s+<(\d{,3})>:\s+(\d+)")
 
     def __init__(self):
         super().__init__()

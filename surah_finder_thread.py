@@ -29,6 +29,6 @@ class SurahFinderThread(QThread):
             count = count_by_surah.get(surah_num, 0)
             if count == 0 and not self._include_zeros:
                 continue
-            rows.append(f"{surah_name} (#{surah_num}):\t\t{count}")
+            rows.append(f"{surah_name} <{surah_num}>:\t\t{count}")
         self._matches = None
         self.result_ready.emit(rows, self)
