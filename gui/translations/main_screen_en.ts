@@ -60,6 +60,39 @@
         <translation>Verses</translation>
     </message>
     <message>
+        <location filename="../main_screen.ui" line="720"/>
+        <location filename="../main_screen.ui" line="855"/>
+        <source>مجموع النتائج المختارة:</source>
+        <translation>Sum of selected results:</translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="581"/>
+        <source>تلوين</source>
+        <translation>Colorize</translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="644"/>
+        <location filename="../main_screen.ui" line="788"/>
+        <source>طريقة الترتيب</source>
+        <translation>Sorting method</translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="690"/>
+        <source>جميع
+النتائج</source>
+        <translation>All results</translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="755"/>
+        <source>كلمات</source>
+        <translation>Words</translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="824"/>
+        <source>حركات</source>
+        <translation>Diacritics</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="452"/>
         <source>اللغة</source>
         <translation>Language</translation>

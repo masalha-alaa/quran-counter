@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
         self.ui.wordSum.setText(str(0))
 
     def _apply_language(self, lang):
-        if lang != self._current_lang and self._translator.load(f"gui/translations/{lang.value}.qm"):
+        if lang != self._current_lang and self._translator.load(f"gui/translations/main_screen_{lang.value}.qm"):
             app.installTranslator(self._translator)
             self.ui.retranslateUi(self)
             self.set_font_for_language(lang)
@@ -108,7 +108,6 @@ class MainWindow(QMainWindow):
         self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.ui.foundVerses.verticalScrollBar().actionTriggered.connect(self.before_scroll)
         self.ui.arabicLangButton.triggered.connect(lambda: self._apply_language(AppLang.ARABIC))
-        self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
         self.ui.diacriticsCheckbox.stateChanged.connect(self._toggle_diacritics)
