@@ -56,7 +56,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="821"/>
+        <location filename="../main_screen.ui" line="720"/>
+        <location filename="../main_screen.ui" line="855"/>
         <source>مجموع النتائج المختارة:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -72,7 +73,7 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="644"/>
-        <location filename="../main_screen.ui" line="754"/>
+        <location filename="../main_screen.ui" line="788"/>
         <source>طريقة الترتيب</source>
         <translation type="unfinished"></translation>
     </message>
@@ -83,27 +84,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="721"/>
+        <location filename="../main_screen.ui" line="755"/>
         <source>كلمات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="790"/>
+        <location filename="../main_screen.ui" line="824"/>
         <source>حركات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="867"/>
+        <location filename="../main_screen.ui" line="901"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="881"/>
+        <location filename="../main_screen.ui" line="915"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="886"/>
+        <location filename="../main_screen.ui" line="920"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

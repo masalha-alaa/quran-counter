@@ -68,6 +68,8 @@ class MainWindow(QMainWindow):
         self.lazy_surah_results_list = LazyListWidgetWrapper(self.ui.surahResultsListWidget, subtext_getter=SurahResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NUMBER, CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
         self.surah_finder_thread = SurahFinderThread(self._surah_index, self.ui.allResultsCheckbox.isChecked())
         self.surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
+        self.lazy_surah_results_list.set_item_selection_changed_signal(self.surah_results_selection_changed)
+        self.ui.surahResultsSum.setText(str(0))
 
         self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget, subtext_getter=WordBoundsResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
         self.word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
@@ -423,6 +425,10 @@ class MainWindow(QMainWindow):
         current_sorting = self.lazy_surah_results_list.get_current_sorting()
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
         self.ui.sortPushButton.setEnabled(len(self._all_matches) > 0)
+
+    def surah_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
+        total = sum(int(SurahResultsSubtextGetter.ptrn.search(item.text()).group(3)) for item in selected_items)
+        self.ui.surahResultsSum.setText(str(total))
 
     def _populate_word_results(self):
         self.word_bounds_finder_thread.set_matches(self._all_matches)

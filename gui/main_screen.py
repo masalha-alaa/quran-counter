@@ -428,6 +428,30 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addLayout(self.horizontalLayout_9)
 
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.label_6 = QLabel(self.surahTab)
+        self.label_6.setObjectName(u"label_6")
+
+        self.horizontalLayout_13.addWidget(self.label_6)
+
+        self.surahResultsSum = QLineEdit(self.surahTab)
+        self.surahResultsSum.setObjectName(u"surahResultsSum")
+        self.surahResultsSum.setEnabled(False)
+        self.surahResultsSum.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_13.addWidget(self.surahResultsSum)
+
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_7)
+
+        self.horizontalLayout_13.setStretch(0, 1)
+        self.horizontalLayout_13.setStretch(1, 1)
+        self.horizontalLayout_13.setStretch(2, 8)
+
+        self.verticalLayout_11.addLayout(self.horizontalLayout_13)
+
 
         self.verticalLayout_13.addLayout(self.verticalLayout_11)
 
@@ -560,7 +584,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -615,6 +639,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.allResultsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0645\u064a\u0639\n"
 "\u0627\u0644\u0646\u062a\u0627\u0626\u062c", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.surahTab), QCoreApplication.translate("MainWindow", u"\u0633\u0648\u0631", None))
         self.wordsSortPushButton.setText("")
         self.wordSortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
