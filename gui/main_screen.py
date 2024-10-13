@@ -428,6 +428,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addLayout(self.horizontalLayout_9)
 
+        self.label_8 = QLabel(self.surahTab)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
+
+        self.verticalLayout_11.addWidget(self.label_8)
+
         self.horizontalLayout_13 = QHBoxLayout()
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.label_6 = QLabel(self.surahTab)
@@ -590,7 +596,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -645,6 +651,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.allResultsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0645\u064a\u0639\n"
 "\u0627\u0644\u0646\u062a\u0627\u0626\u062c", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.surahTab), QCoreApplication.translate("MainWindow", u"\u0633\u0648\u0631", None))
         self.wordsSortPushButton.setText("")

@@ -1,5 +1,6 @@
 import sys
 import re
+import threading
 from enum import Enum
 from yaml import safe_load
 import uuid
@@ -12,7 +13,7 @@ from gui.main_screen import Ui_MainWindow
 from validators import ArabicOnlyValidator
 from finder import Finder
 from emphasizer import emphasize_span, CssColors
-from arabic_reformer import reform_text, reform_regex, is_alif, alif_maksura
+from arabic_reformer import reform_text, is_alif, alif_maksura
 from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
 from gui.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
@@ -33,10 +34,12 @@ class AppLang(Enum):
 class MainWindow(QMainWindow):
     ITEM_LOAD = 20
     _exhausted = object()
+    threads_set_lock = threading.Lock()
 
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
+        self.running_threads = set()
         # TODO: Settings dialog...
         self._translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
@@ -53,8 +56,8 @@ class MainWindow(QMainWindow):
         self._setup_events()
         self._setup_validators()
         # self._setup_fonts()
-        self._finder = Finder()
-        self._finder.result_ready.connect(self.on_word_found_complete)
+        # self._finder_thread = Finder()
+        # self._finder_thread.result_ready.connect(self.on_word_found_complete)
 
         self._prev_scrolling_value = 0
         self._all_matches = None
@@ -72,14 +75,10 @@ class MainWindow(QMainWindow):
         self.detailed_word_display_dialog = MyWordDetailedDisplayDialog()
 
         self.lazy_surah_results_list = LazyListWidgetWrapper(self.ui.surahResultsListWidget, subtext_getter=SurahResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NUMBER, CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
-        self.surah_finder_thread = SurahFinderThread(self._surah_index, self.ui.allResultsCheckbox.isChecked())
-        self.surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
         self.lazy_surah_results_list.set_item_selection_changed_callback(self.surah_results_selection_changed)
         self.ui.surahResultsSum.setText(str(0))
 
         self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget, subtext_getter=WordBoundsResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
-        self.word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
-        self.word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
         self.lazy_word_results_list.set_item_selection_changed_callback(self.word_bounds_results_selection_changed)
         self.lazy_word_results_list.set_item_double_clicked_callback(self.word_bounds_results_item_double_clicked)
         self.ui.wordSum.setText(str(0))
@@ -259,13 +258,9 @@ class MainWindow(QMainWindow):
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
     def _toggle_diacritics(self, state):
-        # self._search_word_text_changed(self.search_word)
-        # return
-        self.word_bounds_finder_thread.set_diacritics_sensitive(state)
         self._populate_word_results()
 
     def _toggle_all_surah_results(self, state):
-        self.surah_finder_thread.set_include_zeros(state)
         self._populate_surah_results()
 
     def _final_ta_state_changed(self, state):
@@ -296,12 +291,24 @@ class MainWindow(QMainWindow):
         self.ui.clearFilterButton.setEnabled(False)
 
     def _sort_surah_results_clicked(self):
+        def _surah_sorting_done():
+            self.ui.sortPushButton.setEnabled(True)
+            current_sorting = self.lazy_surah_results_list.get_current_sorting()
+            self.ui.sortMethodLabel.setText(current_sorting.to_string())
+
+        self.ui.sortPushButton.setEnabled(False)
+        self.lazy_surah_results_list.set_sorting_done_callback(_surah_sorting_done)
         self.lazy_surah_results_list.switch_order()
         self.lazy_surah_results_list.sort()
-        current_sorting = self.lazy_surah_results_list.get_current_sorting()
-        self.ui.sortMethodLabel.setText(current_sorting.to_string())
 
     def _sort_word_results_clicked(self):
+        def _word_sorting_done():
+            self.ui.wordsSortPushButton.setEnabled(True)
+            current_sorting = self.lazy_word_results_list.get_current_sorting()
+            self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
+
+        self.ui.wordsSortPushButton.setEnabled(False)
+        self.lazy_word_results_list.set_sorting_done_callback(_word_sorting_done)
         self.lazy_word_results_list.switch_order()
         self.lazy_word_results_list.sort()
         current_sorting = self.lazy_word_results_list.get_current_sorting()
@@ -343,6 +350,14 @@ class MainWindow(QMainWindow):
         self.refresh_matches()
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
+    def _add_thread(self, thread):
+        with MainWindow.threads_set_lock:
+            self.running_threads.add(thread)
+
+    def _remove_thread(self, thread):
+        with MainWindow.threads_set_lock:
+            self.running_threads.remove(thread)
+
     def refresh_matches(self):
         # TODO: make background thread if takes too much time
         self.matches_number_verses = str(len(self._filtered_matches_idx))
@@ -368,40 +383,47 @@ class MainWindow(QMainWindow):
             self.lazy_word_results_list.clear()
             return
 
-        self._finder.prep_data(new_text,
+        finder_thread = Finder()
+        finder_thread.set_data(new_text,
                                self.ui.alifAlifMaksuraCheckbox.isChecked(),
                                self.ui.yaAlifMaksuraCheckbox.isChecked(),
                                self.ui.finalTaCheckbox.isChecked(),
                                self.full_word_checkbox,
                                self.beginning_of_word_checkbox,
                                self.ending_of_word_checkbox)
-        QTimer.singleShot(0, self._finder.start_thread)
+        finder_thread.result_ready.connect(self.on_word_found_complete)
+        self._add_thread(finder_thread)
+        finder_thread.start()
 
     def on_word_found_complete(self, search_text, words_num, result, caller_thread):
+        caller_thread.result_ready.disconnect(self.on_word_found_complete)
+        self._remove_thread(caller_thread)
+
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result
         self._filtered_matches_idx = range(len(self._all_matches))
         self._filtered_matches_iter = iter(self._all_matches)
         self.ui.filterButton.setEnabled((number_of_matches > 0) and words_num == 1)
-        # for _, row in results.iterrows():
-        #     surah_cnt += 1
-        #     for v, spans in row['spans'].items():
-        #         verse_cnt += 1
-        #         wrd_sum += len(spans)
-        #         self._all_matches.append((int(row.name) + 1, v + 1, row['verses_clean_split'][v], spans))
+
         self.matches_number = str(number_of_matches)
         self.matches_number_surahs = str(number_of_surahs)
         self.matches_number_verses = str(number_of_verses)
         self.ui.foundVerses.clear()
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
+
         self._populate_surah_results()
         self._populate_word_results()
 
     def _populate_surah_results(self):
-        self.surah_finder_thread.set_matches(self._all_matches)
-        self.surah_finder_thread.set_include_zeros(self.ui.allResultsCheckbox.isChecked())
-        self.surah_finder_thread.start()
+        surah_finder_thread = SurahFinderThread(self._surah_index, self.ui.allResultsCheckbox.isChecked())
+        surah_finder_thread.set_data(self._all_matches, self.ui.allResultsCheckbox.isChecked())
+        surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
+        self._add_thread(surah_finder_thread)
+        surah_finder_thread.start()
 
     def on_find_surahs_completed(self, counts, caller_thread):
+        caller_thread.result_ready.disconnect(self.on_find_surahs_completed)
+        self._remove_thread(caller_thread)
+
         self.lazy_surah_results_list.clear()
         self.lazy_surah_results_list.save_values(counts)
         self.lazy_surah_results_list.load_more_items()
@@ -415,11 +437,16 @@ class MainWindow(QMainWindow):
         self.ui.surahResultsSum.setText(str(total))
 
     def _populate_word_results(self):
-        self.word_bounds_finder_thread.set_matches(self._all_matches)
-        self.word_bounds_finder_thread.set_diacritics_sensitive(self.ui.diacriticsCheckbox.isChecked())
-        self.word_bounds_finder_thread.start()
+        word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
+        word_bounds_finder_thread.set_data(self._all_matches, self.ui.diacriticsCheckbox.isChecked())
+        word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
+        self._add_thread(word_bounds_finder_thread)
+        word_bounds_finder_thread.start()
 
-    def on_find_word_bounds_completed(self, counts, caller_thread):
+    def on_find_word_bounds_completed(self, counts, caller_thread: WordBoundsFinderThread):
+        caller_thread.result_ready.disconnect(self.on_find_word_bounds_completed)
+        self._remove_thread(caller_thread)
+
         self.lazy_word_results_list.clear()
         self.lazy_word_results_list.save_values(counts)
         self.lazy_word_results_list.load_more_items()

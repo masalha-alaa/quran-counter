@@ -11,29 +11,47 @@ class Finder(QThread):
         super().__init__()
         self.df = MyDataLoader.get_data()
         self._working_col = MyDataLoader.get_working_col()
-        self._word = None
+
+        self.initial_word = None
+        self.alif_alif_maksura_variations = None
+        self.ya_variations = None
+        self.ta_variations = None
+        self.full_word = None
+        self.beginning_of_word_flag = None
+        self.end_of_word_flag = None
+
+        self._final_word = None
         self._words_num = None
 
-    def prep_data(self, word, alif_alif_maksura_variations, ya_variations, ta_variations, full_word, beginning_of_word_flag, end_of_word_flag):
+    def set_data(self, word, alif_alif_maksura_variations, ya_variations, ta_variations, full_word, beginning_of_word_flag, end_of_word_flag):
+        self.initial_word = word
+        self.alif_alif_maksura_variations = alif_alif_maksura_variations
+        self.ya_variations = ya_variations
+        self.ta_variations = ta_variations
+        self.full_word = full_word
+        self.beginning_of_word_flag = beginning_of_word_flag
+        self.end_of_word_flag = end_of_word_flag
+
+    def _prep_data(self):
         # ignore diacritics
         # TODO: make checkbox?
-        new_text = reform_regex(word,
-                                alif_alif_maksura_variations=alif_alif_maksura_variations,
-                                ya_variations=ya_variations,
-                                ta_variations=ta_variations)
+        new_text = reform_regex(self.initial_word,
+                                alif_alif_maksura_variations=self.alif_alif_maksura_variations,
+                                ya_variations=self.ya_variations,
+                                ta_variations=self.ta_variations)
 
         search_words = len(new_text.split())
         new_text = f"({new_text})"  # capturing group
         beginning_of_word = r"[ ^]"
         end_of_word = r"[ ,$]"
-        if full_word:
+        if self.full_word:
             new_text = beginning_of_word + rf"{new_text}" + end_of_word
         else:
-            if beginning_of_word_flag:
+            if self.beginning_of_word_flag:
                 new_text = beginning_of_word + rf"{new_text}"
-            if end_of_word_flag:
+            if self.end_of_word_flag:
                 new_text = rf"{new_text}" + end_of_word
-        self._word = new_text
+        self._final_word = new_text
         self._words_num = search_words
 
     def _find_in_surah(self, row, w):
@@ -57,13 +75,11 @@ class Finder(QThread):
         return spans, sum(number_of_matches), sum(found_in_surah), sum(number_of_verses)
 
     def run(self):
-        word = self._word
+        # print(f"finder start {id(self)}")
+        self._prep_data()
+        word = self._final_word
         words_num = self._words_num
         if word:
             result = self._find_word(word)
             self.result_ready.emit(word, words_num, result, self)
-
-    def start_thread(self):
-        if self.isRunning():
-            self.wait()
-        self.start()
+        # print(f"finder end {id(self)}")

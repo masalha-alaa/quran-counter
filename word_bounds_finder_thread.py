@@ -7,29 +7,33 @@ from lazy_list_widget import CustomRow
 
 class WordBoundsFinderThread(QThread):
     result_ready = Signal(defaultdict, QThread)
+    _diacritics_regex = re.compile(diacritics_regex)
 
     def __init__(self, diacritics_sensitive=True):
         super().__init__()
         self._matches = None
         self._diacritics_sensitive = diacritics_sensitive
-        self._diacritics_regex = re.compile(diacritics_regex)
 
-    def set_matches(self, matches):
+    def set_data(self, matches, diacritics_sensitive):
         self._matches = matches
-
-    def set_diacritics_sensitive(self, sensitive):
-        self._diacritics_sensitive = sensitive
+        self._diacritics_sensitive = diacritics_sensitive
 
     def run(self):
-        counts = defaultdict(lambda: defaultdict(list))
+        # print(f"word bounds start {id(self)}")
+        counts = defaultdict(list)
+
         for surah_num, verse_num, verse, spans in self._matches:
             for span in spans:
                 word_start = verse.rfind(" ", 0, span[0]) + 1
                 word_end = verse.find(" ", span[1], -1)
                 word = verse[word_start:word_end]
                 if not self._diacritics_sensitive:
-                    word = self._diacritics_regex.sub("", word)
-                ref = (surah_num, verse_num)
-                counts[word][ref].append((word_start, word_end))
+                    word = WordBoundsFinderThread._diacritics_regex.sub("", word)
+                ref = f"{surah_num}:{verse_num}"
+                if counts.get(word, None) is not None and ref == counts[word][-1][0]:
+                    counts[word][-1].extend((word_start, word_end))
+                else:
+                    counts[word].append([ref, word_start, word_end])
         self._matches = None
-        self.result_ready.emit([CustomRow(f"{w}:\t\t{sum(len(spans) for spans in data.values())}", data) for w,data in counts.items()], self)
+        self.result_ready.emit([CustomRow(f"{w}:\t\t{sum(((len(lst) - 1) // 2) for lst in data)}", data) for w,data in counts.items()], self)
+        # print(f"word bounds end {id(self)}")
