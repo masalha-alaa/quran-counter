@@ -1,4 +1,3 @@
-from line_profiler import profile
 import re
 from functools import lru_cache
 from PySide6.QtCore import Signal, QThread
@@ -24,7 +23,6 @@ class WordBoundsFinderThread(QThread):
     def remove_diacritics(self, word):
         return WordBoundsFinderThread._diacritics_regex.sub("", word)
 
-    @profile
     def run(self):
         # print(f"word bounds start {id(self)}")
         counts = defaultdict(list)

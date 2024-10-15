@@ -1,5 +1,6 @@
 import pandas as pd
 from yaml import safe_load
+from my_utils import resource_path
 
 
 class MyDataLoader:
@@ -8,8 +9,8 @@ class MyDataLoader:
 
     def __init__(self):
         if MyDataLoader.df is None:
-            config = safe_load(open("config.yml", mode='r'))
-            MyDataLoader.df = pd.read_json(config['data']['path'])
+            config = safe_load(open(resource_path("config.yml"), mode='r'))
+            MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
             # TODO: save column in df beforehand
             verses_col = config['data']['verses_column']
             MyDataLoader._working_col = f"{verses_col}_split"

@@ -1,18 +1,15 @@
-from PySide6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QPainter, QColor
-import sys
 
 
 class SpinningLoader(QWidget):
     def __init__(self):
         super().__init__()
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
+
         self.hide()
         self.setMinimumSize(24, 24)  # Set minimum size for the widget
         self.angle = 0  # Angle for rotation

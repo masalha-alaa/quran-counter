@@ -16,18 +16,19 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QListWidget, QListWidgetItem,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
-    QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QFrame,
+    QHBoxLayout, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
+    QPushButton, QRadioButton, QSizePolicy, QSpacerItem,
+    QStatusBar, QTabWidget, QTextBrowser, QVBoxLayout,
+    QWidget)
 import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1104, 763)
+        MainWindow.resize(1096, 784)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
@@ -38,9 +39,9 @@ class Ui_MainWindow(object):
         self.englishLangButton.setObjectName(u"englishLangButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_18 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_18.setSpacing(18)
-        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.verticalLayout_21 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_21.setSpacing(18)
+        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -126,10 +127,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
-        self.beginningOfWordCheckbox = QCheckBox(self.centralwidget)
-        self.beginningOfWordCheckbox.setObjectName(u"beginningOfWordCheckbox")
+        self.beginningOfWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup = QButtonGroup(MainWindow)
+        self.searchOptionsButtonGroup.setObjectName(u"searchOptionsButtonGroup")
+        self.searchOptionsButtonGroup.addButton(self.beginningOfWordRadioButton)
+        self.beginningOfWordRadioButton.setObjectName(u"beginningOfWordRadioButton")
 
-        self.verticalLayout_2.addWidget(self.beginningOfWordCheckbox)
+        self.verticalLayout_2.addWidget(self.beginningOfWordRadioButton)
 
         self.verticalSpacer_13 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -144,10 +148,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addItem(self.verticalSpacer_2)
 
-        self.endOfWordCheckbox = QCheckBox(self.centralwidget)
-        self.endOfWordCheckbox.setObjectName(u"endOfWordCheckbox")
+        self.endOfWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.endOfWordRadioButton)
+        self.endOfWordRadioButton.setObjectName(u"endOfWordRadioButton")
 
-        self.verticalLayout_3.addWidget(self.endOfWordCheckbox)
+        self.verticalLayout_3.addWidget(self.endOfWordRadioButton)
 
         self.verticalSpacer_14 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -162,10 +167,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addItem(self.verticalSpacer_4)
 
-        self.fullWordcheckbox = QCheckBox(self.centralwidget)
-        self.fullWordcheckbox.setObjectName(u"fullWordcheckbox")
+        self.fullWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.fullWordRadioButton)
+        self.fullWordRadioButton.setObjectName(u"fullWordRadioButton")
 
-        self.verticalLayout_4.addWidget(self.fullWordcheckbox)
+        self.verticalLayout_4.addWidget(self.fullWordRadioButton)
 
         self.verticalSpacer_15 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -174,12 +180,58 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout_4)
 
+        self.verticalLayout_19 = QVBoxLayout()
+        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
+        self.verticalSpacer_17 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_19.addItem(self.verticalSpacer_17)
+
+        self.rootRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.rootRadioButton)
+        self.rootRadioButton.setObjectName(u"rootRadioButton")
+
+        self.verticalLayout_19.addWidget(self.rootRadioButton)
+
+        self.verticalSpacer_18 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_19.addItem(self.verticalSpacer_18)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_19)
+
+        self.verticalLayout_20 = QVBoxLayout()
+        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
+        self.verticalSpacer_19 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_20.addItem(self.verticalSpacer_19)
+
+        self.noRestrictionsRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.noRestrictionsRadioButton)
+        self.noRestrictionsRadioButton.setObjectName(u"noRestrictionsRadioButton")
+        self.noRestrictionsRadioButton.setChecked(True)
+
+        self.verticalLayout_20.addWidget(self.noRestrictionsRadioButton)
+
+        self.verticalSpacer_20 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_20.addItem(self.verticalSpacer_20)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_20)
+
         self.horizontalSpacer = QSpacerItem(58, 48, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_18.addLayout(self.horizontalLayout)
+        self.verticalLayout_21.addLayout(self.horizontalLayout)
+
+        self.line_6 = QFrame(self.centralwidget)
+        self.line_6.setObjectName(u"line_6")
+        self.line_6.setFrameShape(QFrame.Shape.HLine)
+        self.line_6.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_21.addWidget(self.line_6)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -272,7 +324,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_18.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_21.addLayout(self.horizontalLayout_2)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -526,11 +578,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addLayout(self.verticalLayout_15)
 
-        self.label_9 = QLabel(self.wordsTab)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
+        self.minimum_letters_restriction_lbl = QLabel(self.wordsTab)
+        self.minimum_letters_restriction_lbl.setObjectName(u"minimum_letters_restriction_lbl")
+        self.minimum_letters_restriction_lbl.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
 
-        self.verticalLayout_5.addWidget(self.label_9)
+        self.verticalLayout_5.addWidget(self.minimum_letters_restriction_lbl)
 
         self.label_7 = QLabel(self.wordsTab)
         self.label_7.setObjectName(u"label_7")
@@ -564,15 +616,16 @@ class Ui_MainWindow(object):
 
         self.tabWidget.addTab(self.wordsTab, "")
 
-        self.verticalLayout_18.addWidget(self.tabWidget)
+        self.verticalLayout_21.addWidget(self.tabWidget)
 
-        self.verticalLayout_18.setStretch(0, 1)
-        self.verticalLayout_18.setStretch(1, 1)
-        self.verticalLayout_18.setStretch(2, 8)
+        self.verticalLayout_21.setStretch(0, 1)
+        self.verticalLayout_21.setStretch(1, 1)
+        self.verticalLayout_21.setStretch(2, 1)
+        self.verticalLayout_21.setStretch(3, 8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1104, 42))
+        self.menubar.setGeometry(QRect(0, 0, 1096, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
         icon3 = QIcon()
@@ -582,10 +635,10 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        QWidget.setTabOrder(self.searchWord, self.beginningOfWordCheckbox)
-        QWidget.setTabOrder(self.beginningOfWordCheckbox, self.endOfWordCheckbox)
-        QWidget.setTabOrder(self.endOfWordCheckbox, self.fullWordcheckbox)
-        QWidget.setTabOrder(self.fullWordcheckbox, self.yaAlifMaksuraCheckbox)
+        QWidget.setTabOrder(self.searchWord, self.beginningOfWordRadioButton)
+        QWidget.setTabOrder(self.beginningOfWordRadioButton, self.endOfWordRadioButton)
+        QWidget.setTabOrder(self.endOfWordRadioButton, self.fullWordRadioButton)
+        QWidget.setTabOrder(self.fullWordRadioButton, self.yaAlifMaksuraCheckbox)
         QWidget.setTabOrder(self.yaAlifMaksuraCheckbox, self.finalTaCheckbox)
         QWidget.setTabOrder(self.finalTaCheckbox, self.matchesNumber)
         QWidget.setTabOrder(self.matchesNumber, self.matchesNumberSurahs)
@@ -620,17 +673,19 @@ class Ui_MainWindow(object):
         self.yaAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
         self.finalTaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0640\u062a / \u0640\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.beginningOfWordCheckbox.setToolTip("")
+        self.beginningOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
-        self.beginningOfWordCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0628\u062f\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
+        self.beginningOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0628\u062f\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.endOfWordCheckbox.setToolTip("")
+        self.endOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
-        self.endOfWordCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0646\u0647\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
+        self.endOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0646\u0647\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.fullWordcheckbox.setToolTip("")
+        self.fullWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
-        self.fullWordcheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
+        self.fullWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
+        self.rootRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0630\u0631", None))
+        self.noRestrictionsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0646 \u063a\u064a\u0631 \u062a\u0642\u064a\u064a\u062f", None))
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
 #endif // QT_CONFIG(tooltip)
@@ -663,7 +718,7 @@ class Ui_MainWindow(object):
         self.wordsSortPushButton.setText("")
         self.wordSortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
         self.diacriticsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062d\u0631\u0643\u0627\u062a", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u062f\u062e\u0644 3 \u0627\u062d\u0631\u0641 \u0627\u0648 \u0627\u0643\u062b\u0631 \u0644\u0644\u0628\u062d\u062b.", None))
+        self.minimum_letters_restriction_lbl.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u062f\u062e\u0644 \u062d\u0631\u0641\u064a\u0646 \u0627\u0648 \u0627\u0643\u062b\u0631 \u0644\u0644\u0628\u062d\u062b.", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629.", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.wordsTab), QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a", None))

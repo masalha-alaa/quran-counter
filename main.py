@@ -24,11 +24,19 @@ from surah_finder_thread import SurahFinderThread
 from lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
 from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
 from surah_results_subtext_getter import SurahResultsSubtextGetter
+from tab_wrapper import TabWrapper
+from gui.spinning_loader import SpinningLoader
 
 
 class AppLang(Enum):
     ARABIC = "ar"
     ENGLISH = "en"
+
+
+class TabIndex(Enum):
+    VERSES = 0
+    SURAHS = 1
+    WORDS = 2
 
 
 class MainWindow(QMainWindow):
@@ -40,6 +48,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.running_threads = set()
+        self.spinner = SpinningLoader()
         # TODO: Settings dialog...
         self._translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
@@ -49,9 +58,13 @@ class MainWindow(QMainWindow):
         self._word_results_list_uuid = uuid.uuid4().hex
         self.ui.setupUi(self)
         self.ui.tabWidget.setCurrentIndex(0)
+        self.verse_tab_wrapper = TabWrapper(self.ui.ayatTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
+        self.surah_tab_wrapper = TabWrapper(self.ui.surahTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
+        self.word_tab_wrapper = TabWrapper(self.ui.wordsTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
         self._current_lang = None
         self._apply_language(AppLang.ARABIC)
         self.cursor = None
+        self.minimum_letters_restriction_lbl_stylesheet = self.ui.minimum_letters_restriction_lbl.styleSheet()
         # self.set_text_with_cursor()
         self._setup_events()
         self._setup_validators()
@@ -104,9 +117,8 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(styleSheet)
 
     def _setup_events(self):
-        self.ui.fullWordcheckbox.stateChanged.connect(self._full_word_checkbox_state_changed)
-        self.ui.beginningOfWordCheckbox.stateChanged.connect(self._beginning_of_word_checkbox_state_changed)
-        self.ui.endOfWordCheckbox.stateChanged.connect(self._end_of_word_checkbox_state_changed)
+        self.ui.searchOptionsButtonGroup.buttonToggled.connect(self._search_options_radio_buttons_changed)
+        self.ui.tabWidget.currentChanged.connect(self._tab_changed)
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
         self.ui.alifAlifMaksuraCheckbox.stateChanged.connect(self._alif_variations_state_changed)
@@ -195,7 +207,7 @@ class MainWindow(QMainWindow):
     # matches number
     @property
     def matches_number(self):
-        return self.ui.matchesNumber.toPlainText()
+        return int(self.ui.matchesNumber.text())
 
     @matches_number.setter
     def matches_number(self, match_count):
@@ -203,7 +215,7 @@ class MainWindow(QMainWindow):
 
     @property
     def matches_number_surahs(self):
-        return self.ui.matchesNumberSurahs.toPlainText()
+        return int(self.ui.matchesNumberSurahs.text())
 
     @matches_number_surahs.setter
     def matches_number_surahs(self, match_count):
@@ -211,7 +223,7 @@ class MainWindow(QMainWindow):
 
     @property
     def matches_number_verses(self):
-        return self.ui.matchesNumberVerses.toPlainText()
+        return int(self.ui.matchesNumberVerses.text())
 
     @matches_number_verses.setter
     def matches_number_verses(self, match_count):
@@ -237,17 +249,17 @@ class MainWindow(QMainWindow):
     # full word
     @property
     def full_word_checkbox(self):
-        return self.ui.fullWordcheckbox.isChecked()
+        return self.ui.fullWordRadioButton.isChecked()
 
     # start of word
     @property
     def beginning_of_word_checkbox(self):
-        return self.ui.beginningOfWordCheckbox.isChecked()
+        return self.ui.beginningOfWordRadioButton.isChecked()
 
     # end of word
     @property
     def ending_of_word_checkbox(self):
-        return self.ui.endOfWordCheckbox.isChecked()
+        return self.ui.endOfWordRadioButton.isChecked()
 
     # EVENTS
     def _toggle_colorize(self, state):
@@ -374,7 +386,7 @@ class MainWindow(QMainWindow):
     def _search_word_text_changed(self, new_text):
         self._all_matches = None
         self._filtered_matches_iter = None
-        if not new_text.strip():
+        if not (stripped := new_text.strip()) or (self.ui.rootRadioButton.isChecked() and len(stripped) < 2) or len(stripped.split()) != 1:
             self.clear_results(clear_verses=True)
             self.ui.filterButton.setEnabled(False)
             self.ui.sortPushButton.setEnabled(False)
@@ -383,6 +395,9 @@ class MainWindow(QMainWindow):
             self.lazy_word_results_list.clear()
             return
 
+        if self.ui.rootRadioButton.isChecked():
+            self.waiting()
+
         finder_thread = Finder()
         finder_thread.set_data(new_text,
                                self.ui.alifAlifMaksuraCheckbox.isChecked(),
@@ -390,7 +405,8 @@ class MainWindow(QMainWindow):
                                self.ui.finalTaCheckbox.isChecked(),
                                self.full_word_checkbox,
                                self.beginning_of_word_checkbox,
-                               self.ending_of_word_checkbox)
+                               self.ending_of_word_checkbox,
+                               self.ui.rootRadioButton.isChecked())
         finder_thread.result_ready.connect(self.on_word_found_complete)
         self._add_thread(finder_thread)
         finder_thread.start()
@@ -398,22 +414,54 @@ class MainWindow(QMainWindow):
     def on_word_found_complete(self, initial_word, words_num, result, caller_thread):
         caller_thread.result_ready.disconnect(self.on_word_found_complete)
         self._remove_thread(caller_thread)
-
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result
-        self._filtered_matches_idx = range(len(self._all_matches))
-        self._filtered_matches_iter = iter(self._all_matches)
-        self.ui.filterButton.setEnabled((number_of_matches > 0) and words_num == 1)
-
         self.matches_number = str(number_of_matches)
         self.matches_number_surahs = str(number_of_surahs)
         self.matches_number_verses = str(number_of_verses)
+
+        match self.ui.tabWidget.currentIndex():
+            case TabIndex.VERSES.value:
+                self._populate_verses_results(number_of_matches)
+            case TabIndex.SURAHS.value:
+                self._populate_surah_results()
+            case TabIndex.WORDS.value:
+                self._populate_word_results(initial_word)
+
+        self.finished_waiting()
+
+    def waiting(self):
+        self.ui.searchWord.setEnabled(False)
+        self.spinner.start()
+
+    def finished_waiting(self):
+        self.spinner.stop()
+        self.ui.searchWord.setEnabled(True)
+        self.ui.searchWord.setFocus()
+
+    def _tab_changed(self, tab_index):
+        current_word, current_radio = self.search_word, self.ui.searchOptionsButtonGroup.checkedId()
+        match tab_index:
+            case TabIndex.VERSES.value:
+                if self.verse_tab_wrapper.config_changed(current_word, current_radio):
+                    self._populate_verses_results(self.matches_number)
+            case TabIndex.SURAHS.value:
+                if self.surah_tab_wrapper.config_changed(current_word, current_radio):
+                    self._populate_surah_results()
+            case TabIndex.WORDS.value:
+                if self.word_tab_wrapper.config_changed(current_word, current_radio):
+                    self._populate_word_results(self.search_word)
+
+    def _populate_verses_results(self, number_of_matches):
+        self.verse_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
+        self._filtered_matches_idx = range(len(self._all_matches))
+        self._filtered_matches_iter = iter(self._all_matches)
+        self.ui.filterButton.setEnabled((number_of_matches > 0) and len(self.search_word.split()) == 1)
+
         self.ui.foundVerses.clear()
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
-        self._populate_surah_results()
-        self._populate_word_results(initial_word)
-
     def _populate_surah_results(self):
+        self.surah_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
         surah_finder_thread = SurahFinderThread(self._surah_index, self.ui.allResultsCheckbox.isChecked())
         surah_finder_thread.set_data(self._all_matches, self.ui.allResultsCheckbox.isChecked())
         surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
@@ -437,10 +485,14 @@ class MainWindow(QMainWindow):
         self.ui.surahResultsSum.setText(str(total))
 
     def _populate_word_results(self, initial_word):
-        if len(initial_word.strip()) < 3:
+        if len(initial_word.strip()) < 2:
             self.lazy_word_results_list.clear()
             self.lazy_word_results_list.save_values([])
+            self.ui.minimum_letters_restriction_lbl.setStyleSheet(f"{self.minimum_letters_restriction_lbl_stylesheet} color: red;")
             return
+        self.ui.minimum_letters_restriction_lbl.setStyleSheet(self.minimum_letters_restriction_lbl_stylesheet)
+
+        self.word_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
         word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
         word_bounds_finder_thread.set_data(self._all_matches, self.ui.diacriticsCheckbox.isChecked())
         word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
@@ -468,77 +520,10 @@ class MainWindow(QMainWindow):
         # self.detailed_word_display_dialog.open()
         self.detailed_word_display_dialog.exec()
 
-    def _full_word_checkbox_state_changed(self, state):
-        def _set_enabled_others(enabled):
-            # self.ui.beginningOfWordCheckbox.setEnabled(enabled)
-            # self.ui.endOfWordCheckbox.setEnabled(enabled)
-            # self.ui.aiPushButton.setEnabled(enabled)
-            pass
-
-        qt_state = Qt.CheckState(state)
-        if qt_state == Qt.CheckState.Checked:
-            # uncheck
-            self.ui.beginningOfWordCheckbox.setChecked(False)
-            self.ui.endOfWordCheckbox.setChecked(False)
-
-        # enable / disable
-        _set_enabled_others(qt_state != Qt.CheckState.Checked)
-
-        # search
-        # TODO: caching
+    def _search_options_radio_buttons_changed(self, button, state):
+        if Qt.CheckState(state) == Qt.CheckState.Unchecked:
+            return
         self._search_word_text_changed(self.search_word)
-
-    def _beginning_of_word_checkbox_state_changed(self, state):
-        def _set_enabled_others(enabled):
-            # self.ui.fullWordcheckbox.setEnabled(enabled)
-            # self.ui.aiPushButton.setEnabled(enabled)
-            pass
-
-        qt_state = Qt.CheckState(state)
-        if qt_state == Qt.CheckState.Checked:
-            # uncheck
-            self.ui.fullWordcheckbox.setChecked(False)
-
-        # enable / disable
-        _set_enabled_others(qt_state != Qt.CheckState.Checked)
-
-        # search
-        # TODO: caching
-        self._search_word_text_changed(self.search_word)
-
-    def _end_of_word_checkbox_state_changed(self, state):
-        def _set_enabled_others(enabled):
-            # self.ui.fullWordcheckbox.setEnabled(enabled)
-            # self.ui.aiPushButton.setEnabled(enabled)
-            pass
-
-        qt_state = Qt.CheckState(state)
-        if qt_state == Qt.CheckState.Checked:
-            # uncheck
-            self.ui.fullWordcheckbox.setChecked(False)
-
-        # enable / disable
-        _set_enabled_others(qt_state != Qt.CheckState.Checked)
-
-        # search
-        # TODO: caching
-        self._search_word_text_changed(self.search_word)
-
-    def _ai_button_clicked(self, state):
-        def _set_enabled_others(enabled):
-            self.ui.fullWordcheckbox.setEnabled(enabled)
-            self.ui.beginningOfWordCheckbox.setEnabled(enabled)
-            self.ui.endOfWordCheckbox.setEnabled(enabled)
-
-        qt_state = Qt.CheckState(state)
-        if qt_state == Qt.CheckState.Checked:
-            # uncheck
-            self.ui.fullWordcheckbox.setChecked(False)
-            self.ui.beginningOfWordCheckbox.setChecked(False)
-            self.ui.endOfWordCheckbox.setChecked(False)
-
-        # enable / disable
-        # _set_enabled_others(qt_state != Qt.CheckState.Checked)
 
 
 if __name__ == "__main__":
