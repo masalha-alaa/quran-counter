@@ -4,7 +4,7 @@ import threading
 from enum import Enum
 from yaml import safe_load
 import uuid
-from PySide6.QtCore import Slot, QTimer
+from PySide6.QtCore import Slot
 from PySide6.QtCore import Qt, QTranslator, QThread
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
@@ -258,7 +258,7 @@ class MainWindow(QMainWindow):
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
     def _toggle_diacritics(self, state):
-        self._populate_word_results()
+        self._populate_word_results(self.search_word)
 
     def _toggle_all_surah_results(self, state):
         self._populate_surah_results()
@@ -395,7 +395,7 @@ class MainWindow(QMainWindow):
         self._add_thread(finder_thread)
         finder_thread.start()
 
-    def on_word_found_complete(self, search_text, words_num, result, caller_thread):
+    def on_word_found_complete(self, initial_word, words_num, result, caller_thread):
         caller_thread.result_ready.disconnect(self.on_word_found_complete)
         self._remove_thread(caller_thread)
 
@@ -411,7 +411,7 @@ class MainWindow(QMainWindow):
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
         self._populate_surah_results()
-        self._populate_word_results()
+        self._populate_word_results(initial_word)
 
     def _populate_surah_results(self):
         surah_finder_thread = SurahFinderThread(self._surah_index, self.ui.allResultsCheckbox.isChecked())
@@ -436,7 +436,11 @@ class MainWindow(QMainWindow):
         total = sum(int(SurahResultsSubtextGetter.ptrn.search(item.text()).group(3)) for item in selected_items)
         self.ui.surahResultsSum.setText(str(total))
 
-    def _populate_word_results(self):
+    def _populate_word_results(self, initial_word):
+        if len(initial_word.strip()) < 3:
+            self.lazy_word_results_list.clear()
+            self.lazy_word_results_list.save_values([])
+            return
         word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
         word_bounds_finder_thread.set_data(self._all_matches, self.ui.diacriticsCheckbox.isChecked())
         word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)

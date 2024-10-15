@@ -475,7 +475,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <attribute name="title">
@@ -858,12 +858,22 @@ font: 400 20pt &quot;Calibri&quot;;</string>
          </layout>
         </item>
         <item>
+         <widget class="QLabel" name="label_9">
+          <property name="styleSheet">
+           <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+          </property>
+          <property name="text">
+           <string>* ادخل 3 احرف او اكثر للبحث.</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_7">
           <property name="styleSheet">
            <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
           </property>
           <property name="text">
-           <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</string>
+           <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</string>
           </property>
          </widget>
         </item>

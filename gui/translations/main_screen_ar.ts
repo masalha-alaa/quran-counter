@@ -57,7 +57,7 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="730"/>
-        <location filename="../main_screen.ui" line="875"/>
+        <location filename="../main_screen.ui" line="885"/>
         <source>مجموع النتائج المختارة:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -85,7 +85,6 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="721"/>
-        <location filename="../main_screen.ui" line="866"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</source>
         <translation type="unfinished"></translation>
     </message>
@@ -100,17 +99,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="921"/>
+        <location filename="../main_screen.ui" line="866"/>
+        <source>* ادخل 3 احرف او اكثر للبحث.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="876"/>
+        <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="931"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="935"/>
+        <location filename="../main_screen.ui" line="945"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="940"/>
+        <location filename="../main_screen.ui" line="950"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

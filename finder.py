@@ -81,5 +81,5 @@ class Finder(QThread):
         words_num = self._words_num
         if word:
             result = self._find_word(word)
-            self.result_ready.emit(word, words_num, result, self)
+            self.result_ready.emit(self.initial_word, words_num, result, self)
         # print(f"finder end {id(self)}")
