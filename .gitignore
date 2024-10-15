@@ -2,7 +2,10 @@
 .venv/
 __pycache__/
 arabic_reformer/__pycache__/
+build/
+dist/
 data/
+*.spec
 gui/__pycache__/
 recordings/
 research.ipynb

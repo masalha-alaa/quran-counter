@@ -36,18 +36,20 @@ class Finder(QThread):
         self.root_flag = root_flag
 
     def _prep_data(self):
-        # ignore diacritics
-        # TODO: make checkbox?
         if self.root_flag:
             new_text = self._get_root(self.initial_word)
-            num_of_search_words = len(new_text.split())
         else:
-            new_text = reform_regex(self.initial_word,
-                                    alif_alif_maksura_variations=self.alif_alif_maksura_variations,
-                                    ya_variations=self.ya_variations,
-                                    ta_variations=self.ta_variations)
+            new_text = self.initial_word
 
-            num_of_search_words = len(new_text.split())
+        # ignore diacritics
+        # TODO: make checkbox?
+        new_text = reform_regex(new_text,
+                                alif_alif_maksura_variations=self.alif_alif_maksura_variations,
+                                ya_variations=self.ya_variations,
+                                ta_variations=self.ta_variations)
+
+        num_of_search_words = len(new_text.split())
+        if not self.root_flag:
             new_text = f"({new_text})"  # capturing group
             beginning_of_word = r"[ ^]"
             end_of_word = r"[ ,$]"
@@ -72,7 +74,7 @@ class Finder(QThread):
                 cumsum = [0]
                 for j in range(len(split_verse)):
                     cumsum.append(cumsum[j] + len(split_verse[j]) + 1)
-                matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if self._get_root(word) == w]
+                matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(w, self._get_root(word))]
             else:
                 matches_in_verse = [m.span(1) for m in re.finditer(w, verse, flags=re.M)]
             if matches_in_verse:

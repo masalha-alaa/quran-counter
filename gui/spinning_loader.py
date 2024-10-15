@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QTimer, Qt
-from PySide6.QtGui import QPainter, QColor
+from PySide6.QtGui import QPainter, QColor, QPen
 
 
 class SpinningLoader(QWidget):
@@ -39,8 +39,10 @@ class SpinningLoader(QWidget):
 
         # Draw a spinning circle
         center = self.rect().center()
-        radius = 10  # Radius of the circle
-        painter.setPen(QColor(0, 150, 150))  # Green color for the spinner
+        radius = 20  # Radius of the circle
+        pen = QPen(QColor(0, 150, 150))
+        pen.setWidth(4)
+        painter.setPen(pen)  # Green color for the spinner
         painter.setBrush(Qt.BrushStyle.NoBrush)  # No fill color for the arc
 
         # Draw the spinner as an arc

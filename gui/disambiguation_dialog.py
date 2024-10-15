@@ -97,6 +97,9 @@ class Ui_DidsambiguationDialog(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
+        self.verticalLayout.setStretch(0, 1)
+        self.verticalLayout.setStretch(1, 5)
+        self.verticalLayout.setStretch(2, 1)
 
         self.retranslateUi(DidsambiguationDialog)
 
