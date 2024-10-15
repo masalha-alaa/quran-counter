@@ -6,7 +6,7 @@ from lazy_list_widget import CustomRow
 
 
 class WordBoundsFinderThread(QThread):
-    result_ready = Signal(defaultdict, QThread)
+    result_ready = Signal(list, QThread)
     _diacritics_regex = re.compile(diacritics_regex)
 
     def __init__(self, diacritics_sensitive=True):
@@ -30,7 +30,7 @@ class WordBoundsFinderThread(QThread):
                 if not self._diacritics_sensitive:
                     word = WordBoundsFinderThread._diacritics_regex.sub("", word)
                 ref = f"{surah_num}:{verse_num}"
-                if counts.get(word, None) is not None and ref == counts[word][-1][0]:
+                if word not in counts and ref == counts[word][-1][0]:
                     counts[word][-1].extend((word_start, word_end))
                 else:
                     counts[word].append([ref, word_start, word_end])

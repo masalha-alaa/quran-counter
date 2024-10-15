@@ -41,7 +41,6 @@ class SortingThread(QThread):
         self.result_ready.emit(self.data, self)
 
 
-
 class LazyListWidgetWrapper:
     def __init__(self, parent: QListWidget, subtext_getter: AbstractSubtextGetter, default_items_load=30,
                  row_widget: type[CustomListWidgetItem] = None, supported_methods=None,
