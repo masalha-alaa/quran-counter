@@ -1,4 +1,6 @@
+from line_profiler import profile
 import re
+from functools import lru_cache
 from PySide6.QtCore import Signal, QThread
 from collections import defaultdict
 from arabic_reformer import diacritics_regex
@@ -18,22 +20,25 @@ class WordBoundsFinderThread(QThread):
         self._matches = matches
         self._diacritics_sensitive = diacritics_sensitive
 
+    @lru_cache(maxsize=1000)
+    def remove_diacritics(self, word):
+        return WordBoundsFinderThread._diacritics_regex.sub("", word)
+
+    @profile
     def run(self):
         # print(f"word bounds start {id(self)}")
         counts = defaultdict(list)
-
         for surah_num, verse_num, verse, spans in self._matches:
             for span in spans:
                 word_start = verse.rfind(" ", 0, span[0]) + 1
                 word_end = verse.find(" ", span[1], -1)
                 word = verse[word_start:word_end]
                 if not self._diacritics_sensitive:
-                    word = WordBoundsFinderThread._diacritics_regex.sub("", word)
-                ref = f"{surah_num}:{verse_num}"
-                if word in counts and ref == counts[word][-1][0]:
+                    word = self.remove_diacritics(word)
+                if word in counts and surah_num == counts[word][-1][0] and verse_num == counts[word][-1][1]:
                     counts[word][-1].extend((word_start, word_end))
                 else:
-                    counts[word].append([ref, word_start, word_end])
+                    counts[word].append([surah_num, verse_num, word_start, word_end])
         self._matches = None
-        self.result_ready.emit([CustomRow(f"{w}:\t\t{sum(((len(lst) - 1) // 2) for lst in data)}", data) for w,data in counts.items()], self)
+        self.result_ready.emit([CustomRow(f"{w}:\t\t{sum(((len(lst) - 2) // 2) for lst in data)}", data) for w,data in counts.items()], self)
         # print(f"word bounds end {id(self)}")
