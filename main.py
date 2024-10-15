@@ -207,7 +207,9 @@ class MainWindow(QMainWindow):
     # matches number
     @property
     def matches_number(self):
-        return int(self.ui.matchesNumber.text())
+        if s := self.ui.matchesNumber.text():
+            return int(s)
+        return 0
 
     @matches_number.setter
     def matches_number(self, match_count):
@@ -215,7 +217,9 @@ class MainWindow(QMainWindow):
 
     @property
     def matches_number_surahs(self):
-        return int(self.ui.matchesNumberSurahs.text())
+        if s := self.ui.matchesNumberSurahs.text():
+            return int(s)
+        return 0
 
     @matches_number_surahs.setter
     def matches_number_surahs(self, match_count):
@@ -223,7 +227,9 @@ class MainWindow(QMainWindow):
 
     @property
     def matches_number_verses(self):
-        return int(self.ui.matchesNumberVerses.text())
+        if s := self.ui.matchesNumberVerses.text():
+            return int(s)
+        return 0
 
     @matches_number_verses.setter
     def matches_number_verses(self, match_count):
@@ -384,15 +390,25 @@ class MainWindow(QMainWindow):
         self.matches_number_surahs = str(len(surahs))
 
     def _search_word_text_changed(self, new_text):
-        self._all_matches = None
+        self._all_matches = []
         self._filtered_matches_iter = None
-        if not (stripped := new_text.strip()) or (self.ui.rootRadioButton.isChecked() and len(stripped) < 2) or len(stripped.split()) != 1:
-            self.clear_results(clear_verses=True)
-            self.ui.filterButton.setEnabled(False)
-            self.ui.sortPushButton.setEnabled(False)
-            self.ui.wordsSortPushButton.setEnabled(False)
-            self.ui.surahResultsListWidget.clear()
-            self.lazy_word_results_list.clear()
+        if (not (stripped := new_text.strip())) or (self.ui.rootRadioButton.isChecked() and len(stripped) < 2) or (len(stripped.split()) != 1):
+            self.clear_results()
+            self.verse_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
+            self.surah_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
+            self.word_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
+            match self.ui.tabWidget.currentIndex():
+                case TabIndex.VERSES.value:
+                    self.ui.filterButton.setEnabled(False)
+                    self.ui.sortPushButton.setEnabled(False)
+                    self.ui.wordsSortPushButton.setEnabled(False)
+                    self.ui.foundVerses.clear()
+                case TabIndex.SURAHS.value:
+                    self.lazy_surah_results_list.clear()
+                    self.lazy_surah_results_list.save_values([])
+                case TabIndex.WORDS.value:
+                    self.lazy_word_results_list.clear()
+                    self.lazy_word_results_list.save_values([])
             return
 
         if self.ui.rootRadioButton.isChecked():
@@ -472,9 +488,9 @@ class MainWindow(QMainWindow):
         caller_thread.result_ready.disconnect(self.on_find_surahs_completed)
         self._remove_thread(caller_thread)
 
-        self.lazy_surah_results_list.clear()
+        # self.lazy_surah_results_list.clear()
         self.lazy_surah_results_list.save_values(counts)
-        self.lazy_surah_results_list.load_more_items()
+        # self.lazy_surah_results_list.load_more_items()
         self.lazy_surah_results_list.sort()
         current_sorting = self.lazy_surah_results_list.get_current_sorting()
         self.ui.sortMethodLabel.setText(current_sorting.to_string())
@@ -503,9 +519,9 @@ class MainWindow(QMainWindow):
         caller_thread.result_ready.disconnect(self.on_find_word_bounds_completed)
         self._remove_thread(caller_thread)
 
-        self.lazy_word_results_list.clear()
+        # self.lazy_word_results_list.clear()
         self.lazy_word_results_list.save_values(counts)
-        self.lazy_word_results_list.load_more_items()
+        # self.lazy_word_results_list.load_more_items()
         self.lazy_word_results_list.sort()
         current_sorting = self.lazy_word_results_list.get_current_sorting()
         self.ui.wordSortMethodLabel.setText(current_sorting.to_string())

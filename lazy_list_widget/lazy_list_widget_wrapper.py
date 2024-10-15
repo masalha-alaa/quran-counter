@@ -1,6 +1,6 @@
 from typing import Callable
 
-from PySide6.QtCore import Signal, QThread
+from PySide6.QtCore import Signal, QThread, QTimer
 from PySide6.QtWidgets import QAbstractItemView
 from PySide6.QtWidgets import QListWidget
 

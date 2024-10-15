@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QWidget
 class TabWrapper(QWidget):
     def __init__(self, parent, latest_search_word='', latest_radio_button=''):
         super().__init__(parent)
+        self.parent = parent
         self.latest_search_word = latest_search_word
         self.latest_radio_button = latest_radio_button
 
