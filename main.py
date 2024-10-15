@@ -17,6 +17,7 @@ from arabic_reformer import reform_text, is_alif, alif_maksura
 from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
 from gui.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
+from gui.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
 from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
 from word_bounds_finder_thread import WordBoundsFinderThread
@@ -86,9 +87,11 @@ class MainWindow(QMainWindow):
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
 
         self.detailed_word_display_dialog = MyWordDetailedDisplayDialog()
+        self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog()
 
         self.lazy_surah_results_list = LazyListWidgetWrapper(self.ui.surahResultsListWidget, subtext_getter=SurahResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NUMBER, CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
         self.lazy_surah_results_list.set_item_selection_changed_callback(self.surah_results_selection_changed)
+        self.lazy_surah_results_list.set_item_double_clicked_callback(self.surah_results_item_double_clicked)
         self.ui.surahResultsSum.setText(str(0))
 
         self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget, subtext_getter=WordBoundsResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
@@ -535,6 +538,11 @@ class MainWindow(QMainWindow):
         self.detailed_word_display_dialog.set_data(item)
         # self.detailed_word_display_dialog.open()
         self.detailed_word_display_dialog.exec()
+
+    def surah_results_item_double_clicked(self, item: CustomRow):
+        self.detailed_surah_display_dialog.set_data(item)
+        # self.detailed_word_display_dialog.open()
+        self.detailed_surah_display_dialog.exec()
 
     def _search_options_radio_buttons_changed(self, button, state):
         if Qt.CheckState(state) == Qt.CheckState.Unchecked:

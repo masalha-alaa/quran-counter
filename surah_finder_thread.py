@@ -19,16 +19,21 @@ class SurahFinderThread(QThread):
 
     def run(self):
         # print(f"surah start {id(self)}")
-        count_by_surah = defaultdict(int)
+        count_by_surah = defaultdict(list)
         for surah_num, verse_num, verse, spans in self._matches:
-            count_by_surah[surah_num] += len(spans)
+            if surah_num not in count_by_surah:
+                count_by_surah[surah_num] = [len(spans), [(surah_num, verse_num, spans)]]
+            else:
+                count_by_surah[surah_num][0] += len(spans)
+                count_by_surah[surah_num][1].append((surah_num, verse_num, spans))
 
         rows = []
         for surah_num, surah_name in self._surah_index.items():
-            count = count_by_surah.get(surah_num, 0)
-            if count == 0 and not self._include_zeros:
+            count = count_by_surah.get(surah_num, [0, []])
+            if count[0] == 0 and not self._include_zeros:
                 continue
-            rows.append(CustomRow(f"{surah_name} <{surah_num}>:\t\t{count}"))
+            matches_num, verse_nums_and_spans = count
+            rows.append(CustomRow(f"{surah_name} <{surah_num}>:\t\t{matches_num}", verse_nums_and_spans))
 
         self._matches = None
         self.result_ready.emit(rows, self)
