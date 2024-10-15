@@ -30,7 +30,7 @@ class WordBoundsFinderThread(QThread):
                 if not self._diacritics_sensitive:
                     word = WordBoundsFinderThread._diacritics_regex.sub("", word)
                 ref = f"{surah_num}:{verse_num}"
-                if word not in counts and ref == counts[word][-1][0]:
+                if word in counts and ref == counts[word][-1][0]:
                     counts[word][-1].extend((word_start, word_end))
                 else:
                     counts[word].append([ref, word_start, word_end])

@@ -136,8 +136,8 @@ class LazyListWidgetWrapper:
             if (row := next(self._rows_iter, self._exhausted)) is self._exhausted:
                 return _done()
             # self.list_widget.addItem(self._row_widget(row, self.subtext_getter, self.get_current_sorting))
-            # self.list_widget.addItem(self._row_widget(row))
-            self.list_widget.addItem(row.label)
+            self.list_widget.addItem(self._row_widget(row))
+            # self.list_widget.addItem(row.label)
         return _done()
 
     def clear(self):
