@@ -114,6 +114,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../main_screen.ui" line="1065"/>
+        <source>تصفّح</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="336"/>
         <source>من غير تقييد</source>
         <translation type="unfinished"></translation>
@@ -124,12 +129,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1044"/>
+        <location filename="../main_screen.ui" line="1055"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1049"/>
+        <location filename="../main_screen.ui" line="1060"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

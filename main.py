@@ -18,6 +18,7 @@ from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
 from gui.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
 from gui.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
+from gui.my_mushaf_view_dialog_ import MyMushafViewDialog
 from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
 from word_bounds_finder_thread import WordBoundsFinderThread
@@ -88,6 +89,7 @@ class MainWindow(QMainWindow):
 
         self.detailed_word_display_dialog = MyWordDetailedDisplayDialog()
         self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog()
+        self.mushaf_view_display = MyMushafViewDialog()
 
         self.lazy_surah_results_list = LazyListWidgetWrapper(self.ui.surahResultsListWidget, subtext_getter=SurahResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NUMBER, CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
         self.lazy_surah_results_list.set_item_selection_changed_callback(self.surah_results_selection_changed)
@@ -130,6 +132,7 @@ class MainWindow(QMainWindow):
         self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.ui.arabicLangButton.triggered.connect(lambda: self._apply_language(AppLang.ARABIC))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
+        self.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
         self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
         self.ui.diacriticsCheckbox.stateChanged.connect(self._toggle_diacritics)
         self.ui.allResultsCheckbox.stateChanged.connect(self._toggle_all_surah_results)
@@ -153,6 +156,9 @@ class MainWindow(QMainWindow):
             self.ui.foundVerses.setStyleSheet(f"font-family: '{font_family}'; font-size: 17;")
             # naskh_font = QFont(font_family, 14)
             # self.ui.foundVerses.setFont(naskh_font)
+
+    def _view_mushaf(self):
+        self.mushaf_view_display.exec()
 
     def before_scroll(self):
         scrollbar = self.ui.foundVerses.verticalScrollBar()
@@ -252,8 +258,8 @@ class MainWindow(QMainWindow):
 
     @found_verses.setter
     def found_verses(self, verses):
-        # self.ui.foundVerses.setHtml(verses)
-        self.ui.foundVerses.addItems(verses)
+        self.ui.foundVerses.setHtml(verses)
+        # self.ui.foundVerses.addItems(verses)
 
     # full word
     @property

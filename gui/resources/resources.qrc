@@ -4,5 +4,7 @@
         <file>filter-icon.png</file>
         <file>clear-filter-icon.png</file>
         <file>sort-icon.png</file>
+        <file>book-icon.png</file>
+        <file>search-icon.png</file>
     </qresource>
 </RCC>

@@ -24,5 +24,11 @@ pyside6-lupdate gui/word_detailed_display.ui -ts gui/translations/word_detailed_
 pyside6-lrelease gui/translations/word_detailed_display_ar.ts
 pyside6-lrelease gui/translations/word_detailed_display_en.ts
 
+REM mushaf_view dialog
+pyside6-uic .\gui\mushaf_view.ui -o .\gui\mushaf_view.py
+pyside6-lupdate gui/mushaf_view.ui -ts gui/translations/mushaf_view_ar.ts
+pyside6-lrelease gui/translations/mushaf_view_ar.ts
+pyside6-lrelease gui/translations/mushaf_view_en.ts
+
 pyside6-rcc gui\resources\resources.qrc -o resources_rc.py
 deactivate

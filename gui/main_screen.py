@@ -37,6 +37,8 @@ class Ui_MainWindow(object):
         self.arabicLangButton.setObjectName(u"arabicLangButton")
         self.englishLangButton = QAction(MainWindow)
         self.englishLangButton.setObjectName(u"englishLangButton")
+        self.mushafNavigationButton = QAction(MainWindow)
+        self.mushafNavigationButton.setObjectName(u"mushafNavigationButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_21 = QVBoxLayout(self.centralwidget)
@@ -631,6 +633,11 @@ class Ui_MainWindow(object):
         icon3 = QIcon()
         icon3.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.menu_Language.setIcon(icon3)
+        self.mushafViewButton = QMenu(self.menubar)
+        self.mushafViewButton.setObjectName(u"mushafViewButton")
+        icon4 = QIcon()
+        icon4.addFile(u":/book-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.mushafViewButton.setIcon(icon4)
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -650,8 +657,10 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.foundVerses, self.colorizeCheckbox)
 
         self.menubar.addAction(self.menu_Language.menuAction())
+        self.menubar.addAction(self.mushafViewButton.menuAction())
         self.menu_Language.addAction(self.arabicLangButton)
         self.menu_Language.addAction(self.englishLangButton)
+        self.mushafViewButton.addAction(self.mushafNavigationButton)
 
         self.retranslateUi(MainWindow)
 
@@ -665,6 +674,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.arabicLangButton.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0639\u0631\u0628\u064a\u0629", None))
         self.englishLangButton.setText(QCoreApplication.translate("MainWindow", u"English", None))
+        self.mushafNavigationButton.setText(QCoreApplication.translate("MainWindow", u"\u062a\u0635\u0641\u0651\u062d", None))
 #if QT_CONFIG(tooltip)
         self.label.setToolTip("")
 #endif // QT_CONFIG(tooltip)
@@ -723,5 +733,6 @@ class Ui_MainWindow(object):
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.wordsTab), QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a", None))
         self.menu_Language.setTitle(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0644\u063a\u0629 / Language", None))
+        self.mushafViewButton.setTitle("")
     # retranslateUi
 

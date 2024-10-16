@@ -1036,7 +1036,18 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     <addaction name="arabicLangButton"/>
     <addaction name="englishLangButton"/>
    </widget>
+   <widget class="QMenu" name="mushafViewButton">
+    <property name="title">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="resources/resources.qrc">
+      <normaloff>:/book-icon.png</normaloff>:/book-icon.png</iconset>
+    </property>
+    <addaction name="mushafNavigationButton"/>
+   </widget>
    <addaction name="menu_Language"/>
+   <addaction name="mushafViewButton"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="arabicLangButton">
@@ -1047,6 +1058,11 @@ font: 400 20pt &quot;Calibri&quot;;</string>
   <action name="englishLangButton">
    <property name="text">
     <string>English</string>
+   </property>
+  </action>
+  <action name="mushafNavigationButton">
+   <property name="text">
+    <string>تصفّح</string>
    </property>
   </action>
  </widget>
