@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
             font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
             print(f"Loaded font: {font_family}")  # Print the font family name to verify
 
-            self.ui.foundVerses.setStyleSheet(f"font-family: '{font_family}'; font-size: 14pt;")
+            self.ui.foundVerses.setStyleSheet(f"font-family: '{font_family}'; font-size: 17;")
             # naskh_font = QFont(font_family, 14)
             # self.ui.foundVerses.setFont(naskh_font)
 
