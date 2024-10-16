@@ -15,21 +15,22 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QTextBrowser, QVBoxLayout,
+    QWidget)
 import resources_rc
 
 class Ui_MushafViewDialog(object):
     def setupUi(self, MushafViewDialog):
         if not MushafViewDialog.objectName():
             MushafViewDialog.setObjectName(u"MushafViewDialog")
-        MushafViewDialog.resize(907, 883)
+        MushafViewDialog.resize(1046, 835)
         MushafViewDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
 "font: 400 20pt \"Calibri\";")
-        self.verticalLayout_4 = QVBoxLayout(MushafViewDialog)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_10 = QVBoxLayout(MushafViewDialog)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_3 = QVBoxLayout()
@@ -273,7 +274,122 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
 
-        self.verticalLayout_4.addLayout(self.verticalLayout)
+        self.verticalLayout_10.addLayout(self.verticalLayout)
+
+        self.frame = QFrame(MushafViewDialog)
+        self.frame.setObjectName(u"frame")
+        self.frame.setStyleSheet(u"font-size: 11pt;")
+        self.frame.setFrameShape(QFrame.Box)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.gridLayout = QGridLayout(self.frame)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.label_7 = QLabel(self.frame)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setLayoutDirection(Qt.LeftToRight)
+
+        self.verticalLayout_4.addWidget(self.label_7)
+
+        self.lettersFromBeginOfSurah = QLabel(self.frame)
+        self.lettersFromBeginOfSurah.setObjectName(u"lettersFromBeginOfSurah")
+        self.lettersFromBeginOfSurah.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_4.addWidget(self.lettersFromBeginOfSurah)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_4, 0, 1, 1, 1)
+
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.label_8 = QLabel(self.frame)
+        self.label_8.setObjectName(u"label_8")
+
+        self.verticalLayout_5.addWidget(self.label_8)
+
+        self.lettersFromBeginOfMushaf = QLabel(self.frame)
+        self.lettersFromBeginOfMushaf.setObjectName(u"lettersFromBeginOfMushaf")
+        self.lettersFromBeginOfMushaf.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_5.addWidget(self.lettersFromBeginOfMushaf)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_5, 1, 1, 1, 1)
+
+        self.verticalLayout_8 = QVBoxLayout()
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.label_11 = QLabel(self.frame)
+        self.label_11.setObjectName(u"label_11")
+
+        self.verticalLayout_8.addWidget(self.label_11)
+
+        self.wordsFromBeginOfMushaf = QLabel(self.frame)
+        self.wordsFromBeginOfMushaf.setObjectName(u"wordsFromBeginOfMushaf")
+        self.wordsFromBeginOfMushaf.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_8.addWidget(self.wordsFromBeginOfMushaf)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_8, 1, 3, 1, 1)
+
+        self.verticalLayout_9 = QVBoxLayout()
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.label_12 = QLabel(self.frame)
+        self.label_12.setObjectName(u"label_12")
+
+        self.verticalLayout_9.addWidget(self.label_12)
+
+        self.wordsInSelection = QLabel(self.frame)
+        self.wordsInSelection.setObjectName(u"wordsInSelection")
+        self.wordsInSelection.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_9.addWidget(self.wordsInSelection)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_9, 2, 3, 1, 1)
+
+        self.verticalLayout_6 = QVBoxLayout()
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.label_9 = QLabel(self.frame)
+        self.label_9.setObjectName(u"label_9")
+
+        self.verticalLayout_6.addWidget(self.label_9)
+
+        self.lettersInSelection = QLabel(self.frame)
+        self.lettersInSelection.setObjectName(u"lettersInSelection")
+        self.lettersInSelection.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_6.addWidget(self.lettersInSelection)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_6, 2, 1, 1, 1)
+
+        self.verticalLayout_7 = QVBoxLayout()
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.label_10 = QLabel(self.frame)
+        self.label_10.setObjectName(u"label_10")
+
+        self.verticalLayout_7.addWidget(self.label_10)
+
+        self.wordsFromBeginOfSurah = QLabel(self.frame)
+        self.wordsFromBeginOfSurah.setObjectName(u"wordsFromBeginOfSurah")
+        self.wordsFromBeginOfSurah.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.verticalLayout_7.addWidget(self.wordsFromBeginOfSurah)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_7, 0, 3, 1, 1)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer_4, 0, 0, 1, 1)
+
+        self.gridLayout.setColumnStretch(0, 3)
+        self.gridLayout.setColumnStretch(1, 1)
+        self.gridLayout.setColumnStretch(2, 1)
+        self.gridLayout.setColumnStretch(3, 1)
+
+        self.verticalLayout_10.addWidget(self.frame)
 
         QWidget.setTabOrder(self.pageInput, self.surahNumInput)
         QWidget.setTabOrder(self.surahNumInput, self.verseInput)
@@ -302,5 +418,17 @@ class Ui_MushafViewDialog(object):
         self.label_3.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0633\u0648\u0631\u0629", None))
         self.nextPushButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u062a\u0627\u0644\u064a", None))
         self.prevPushButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0633\u0627\u0628\u0642", None))
+        self.label_7.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u062d\u0631\u0641 \u0645\u0646 \u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u0633\u0648\u0631\u0629", None))
+        self.lettersFromBeginOfSurah.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
+        self.label_8.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u062d\u0631\u0641 \u0645\u0646 \u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u0645\u0635\u062d\u0641", None))
+        self.lettersFromBeginOfMushaf.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
+        self.label_11.setText(QCoreApplication.translate("MushafViewDialog", u"\u0643\u0644\u0645\u0627\u062a \u0645\u0646 \u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u0645\u0635\u062d\u0641", None))
+        self.wordsFromBeginOfMushaf.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
+        self.label_12.setText(QCoreApplication.translate("MushafViewDialog", u"\u0643\u0644\u0645\u0627\u062a \u062f\u0627\u062e\u0644 \u062a\u062d\u062f\u064a\u062f \u0627\u0644\u0645\u0624\u0634\u0631", None))
+        self.wordsInSelection.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
+        self.label_9.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u062d\u0631\u0641 \u062f\u0627\u062e\u0644 \u062a\u062d\u062f\u064a\u062f \u0627\u0644\u0645\u0624\u0634\u0631", None))
+        self.lettersInSelection.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
+        self.label_10.setText(QCoreApplication.translate("MushafViewDialog", u"\u0643\u0644\u0645\u0627\u062a \u0645\u0646 \u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u0633\u0648\u0631\u0629", None))
+        self.wordsFromBeginOfSurah.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
     # retranslateUi
 

@@ -1,4 +1,3 @@
-import re
 from PySide6.QtCore import Signal, QThread
 from collections import defaultdict
 from lazy_list_widget import CustomRow

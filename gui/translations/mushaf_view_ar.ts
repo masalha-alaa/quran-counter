@@ -48,5 +48,45 @@
         <source>السابق</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="358"/>
+        <source>احرف من بداية السورة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="365"/>
+        <location filename="../mushaf_view.ui" line="386"/>
+        <location filename="../mushaf_view.ui" line="407"/>
+        <location filename="../mushaf_view.ui" line="428"/>
+        <location filename="../mushaf_view.ui" line="449"/>
+        <location filename="../mushaf_view.ui" line="470"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="379"/>
+        <source>احرف من بداية المصحف</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="400"/>
+        <source>كلمات من بداية المصحف</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="421"/>
+        <source>كلمات داخل تحديد المؤشر</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="442"/>
+        <source>احرف داخل تحديد المؤشر</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="463"/>
+        <source>كلمات من بداية السورة</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

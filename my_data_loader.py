@@ -63,6 +63,10 @@ class MyDataLoader:
         return [MyDataLoader.df.loc[MyDataLoader.df['surah'] == int(surah_num), MyDataLoader._working_col].iloc[0][v-1] for v in verses_nums]
 
     @staticmethod
+    def get_surah(surah_num):
+        return MyDataLoader.df.loc[MyDataLoader.df['surah'] == int(surah_num), MyDataLoader._working_col].iloc[0]
+
+    @staticmethod
     def get_data():
         return MyDataLoader.df
 

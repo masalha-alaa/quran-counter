@@ -1,3 +1,4 @@
+import re
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QDialog
 from gui.mushaf_view import Ui_MushafViewDialog
@@ -5,6 +6,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QCursor, QIntValidator
 from my_data_loader import MyDataLoader
 from validators import ArabicOnlyValidator
+from span_info_thread import SpanInfo, SpanInfoThread
 
 
 class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
@@ -23,9 +25,10 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
         self.df = MyDataLoader.get_data()
-        self._working_col = MyDataLoader.get_working_col()
         self._current_page = 1
         self._current_surah = 1
+
+        self.running_threads = set()
         self.nextPushButton.clicked.connect(self.next_button_clicked)
         self.prevPushButton.clicked.connect(self.prev_button_clicked)
         self.goToPageButton.clicked.connect(self.go_to_page)
@@ -35,11 +38,25 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.surahNumInput.returnPressed.connect(self.go_to_ref)
         self.surahNameInput.returnPressed.connect(self.go_to_ref)
         self.verseInput.returnPressed.connect(self.go_to_ref)
+        self.textBrowser.cursorPositionChanged.connect(self.on_cursor_position_changed)
         self._setup_validators()
 
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
         self.show_verses_from_page(self._current_page)
+        self.clear_results()
+
+    def clear_results(self):
+        self.wordsInSelection.setText("0")
+        self.wordsFromBeginOfSurah.setText("0")
+        self.wordsFromBeginOfMushaf.setText("0")
+        self.lettersInSelection.setText("0")
+        self.lettersFromBeginOfSurah.setText("0")
+        self.lettersFromBeginOfMushaf.setText("0")
+
+    # def closeEvent(self, event: QCloseEvent):
+    #     self.textBrowser.clear()
+    #     event.accept()
 
     def needsBasmalah(self, surah_num):
         return surah_num not in [1, 9]
@@ -161,6 +178,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.textBrowser.viewport().setProperty("cursor", QCursor(Qt.CursorShape.IBeamCursor))
         self.surahNumDisplay.setText(", ".join(surahs_nums))
 
+        # print(self.textBrowser.toPlainText())
+
     def next_button_clicked(self):
         if self._current_page < self.LAST_PAGE:
             self._current_page += 1
@@ -198,6 +217,24 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             if (page := self.show_verses_from_surah_name(self.surahNameInput.text())) is not None:
                 self.current_page = page
 
-    # def closeEvent(self, event: QCloseEvent):
-    #     self.textBrowser.clear()
-    #     event.accept()
+    def on_cursor_position_changed(self):
+        cursor = self.textBrowser.textCursor()
+        span = (cursor.selectionStart(), cursor.selectionEnd())
+        if span[0] != span[1]:
+            # print(span)
+            # TODO: Not sure a thread is needed here but ok
+            span_thread = SpanInfoThread()
+            span_thread.set_text(cursor.selection().toPlainText())
+            span_thread.result_ready.connect(self.span_info_completed)
+            self.running_threads.add(span_thread)
+            span_thread.start()
+        else:
+            self.clear_results()
+
+    def span_info_completed(self, span_info: SpanInfo, caller_thread: SpanInfoThread):
+        caller_thread.result_ready.disconnect(self.span_info_completed)
+        self.running_threads.remove(caller_thread)
+        self.wordsInSelection.setText(str(span_info.words_in_selection))
+        self.lettersInSelection.setText(str(span_info.letters_in_selection))
+        # print(f"{count.words_in_selection = }")
+
