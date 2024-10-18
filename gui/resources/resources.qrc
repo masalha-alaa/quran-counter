@@ -6,5 +6,6 @@
         <file>sort-icon.png</file>
         <file>book-icon.png</file>
         <file>search-icon.png</file>
+        <file>reset-icon.png</file>
     </qresource>
 </RCC>

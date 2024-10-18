@@ -36,13 +36,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="625"/>
-        <source>احرف داخل التحديد</source>
+        <location filename="../mushaf_view.ui" line="488"/>
+        <source>الحرف الأكثر متكرر في السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="646"/>
-        <source>الحرف الأكثر متردد في السورة</source>
+        <location filename="../mushaf_view.ui" line="527"/>
+        <source>احرف داخل التحديد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -56,19 +56,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="541"/>
+        <location filename="../mushaf_view.ui" line="593"/>
         <source>احرف من بداية السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="482"/>
-        <location filename="../mushaf_view.ui" line="503"/>
-        <location filename="../mushaf_view.ui" line="524"/>
-        <location filename="../mushaf_view.ui" line="548"/>
-        <location filename="../mushaf_view.ui" line="569"/>
-        <location filename="../mushaf_view.ui" line="590"/>
-        <location filename="../mushaf_view.ui" line="611"/>
-        <location filename="../mushaf_view.ui" line="632"/>
+        <location filename="../mushaf_view.ui" line="513"/>
+        <location filename="../mushaf_view.ui" line="534"/>
+        <location filename="../mushaf_view.ui" line="555"/>
+        <location filename="../mushaf_view.ui" line="576"/>
+        <location filename="../mushaf_view.ui" line="600"/>
+        <location filename="../mushaf_view.ui" line="621"/>
+        <location filename="../mushaf_view.ui" line="642"/>
+        <location filename="../mushaf_view.ui" line="663"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -89,32 +89,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="496"/>
+        <location filename="../mushaf_view.ui" line="635"/>
         <source>كلمات داخل التحديد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="562"/>
+        <location filename="../mushaf_view.ui" line="548"/>
         <source>احرف من بداية المصحف</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="475"/>
+        <location filename="../mushaf_view.ui" line="614"/>
         <source>كلمات من بداية المصحف</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="583"/>
+        <location filename="../mushaf_view.ui" line="569"/>
         <source>عدد كلمات السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="604"/>
+        <location filename="../mushaf_view.ui" line="506"/>
         <source>عدد حروف السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="517"/>
+        <location filename="../mushaf_view.ui" line="656"/>
         <source>كلمات من بداية السورة</source>
         <translation type="unfinished"></translation>
     </message>

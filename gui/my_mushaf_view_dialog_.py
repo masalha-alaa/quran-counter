@@ -51,6 +51,12 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.page = Page()
         self.selectionStartInfo: CursorPositionInfo | None = None
         self.selectionEndInfo: CursorPositionInfo | None = None
+        self.stats_widgets = [self.wordsFromBeginOfSurah,
+                              self.wordsFromBeginOfMushaf,
+                              self.wordsInSelection,
+                              self.lettersFromBeginOfSurah,
+                              self.lettersFromBeginOfMushaf,
+                              self.lettersInSelection]
 
         self.running_threads = set()
         self.nextPushButton.clicked.connect(self.next_button_clicked)
@@ -65,6 +71,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.textBrowser.cursorPositionChanged.connect(self.on_cursor_position_changed)
         self.selectionStartButton.clicked.connect(self.selection_start_button_clicked)
         self.selectionEndButton.clicked.connect(self.selection_end_button_clicked)
+        self.resetStatsButton.clicked.connect(self.restart_stats_button_clicked)
         self._setup_validators()
 
     def showEvent(self, event: QShowEvent):
@@ -376,3 +383,6 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                 break
         return cursor_position_info
 
+    def restart_stats_button_clicked(self):
+        for widget in self.stats_widgets:
+            widget.setText("0")
