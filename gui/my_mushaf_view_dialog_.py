@@ -1,4 +1,5 @@
 import re
+from enum import Enum, auto
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QDialog
 from gui.mushaf_view import Ui_MushafViewDialog
@@ -29,6 +30,12 @@ class Page:
         self.surahs.clear()
 
 
+class SelectionType(Enum):
+    NO_SELECTION = 0
+    BY_TEXT = auto()
+    BY_REF = auto()
+
+
 class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     FIRST_PAGE = 1
     LAST_PAGE = 604
@@ -51,14 +58,10 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.page = Page()
         self.selectionStartInfo: CursorPositionInfo | None = None
         self.selectionEndInfo: CursorPositionInfo | None = None
-        self.stats_widgets = [self.wordsFromBeginOfSurah,
-                              self.wordsFromBeginOfMushaf,
-                              self.wordsInSelection,
-                              self.lettersFromBeginOfSurah,
-                              self.lettersFromBeginOfMushaf,
-                              self.lettersInSelection]
+        self.stats_widgets = [self.wordsInSelection,]
 
         self.running_threads = set()
+        self.last_selection_type = SelectionType.NO_SELECTION
         self.nextPushButton.clicked.connect(self.next_button_clicked)
         self.prevPushButton.clicked.connect(self.prev_button_clicked)
         self.goToPageButton.clicked.connect(self.go_to_page)
@@ -72,21 +75,20 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.selectionStartButton.clicked.connect(self.selection_start_button_clicked)
         self.selectionEndButton.clicked.connect(self.selection_end_button_clicked)
         self.resetStatsButton.clicked.connect(self.restart_stats_button_clicked)
+        self.wawIsAWordCheckbox.stateChanged.connect(self.waw_is_a_word_checkbox_state_changed)
+        self.waykaannaTwoWordsCheckbox.stateChanged.connect(self.waykaanna_two_words_checkbox_state_changed)
+
         self._setup_validators()
 
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
         self.show_verses_from_page(self._current_page)
+        self.last_selection_type = SelectionType.NO_SELECTION
         self.clear_results()
         self.clear_selection_info()
 
     def clear_results(self):
         self.wordsInSelection.setText("0")
-        self.wordsFromBeginOfSurah.setText("0")
-        self.wordsFromBeginOfMushaf.setText("0")
-        self.lettersInSelection.setText("0")
-        self.lettersFromBeginOfSurah.setText("0")
-        self.lettersFromBeginOfMushaf.setText("0")
 
     def clear_selection_info(self):
         self.selectionStartLabel.setText("")
@@ -281,20 +283,18 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             if (page := self.show_verses_from_surah_name(self.surahNameInput.text())) is not None:
                 self.current_page = page
 
-    def on_cursor_position_changed(self):
+    def valid_selection(self):
         cursor = self.textBrowser.textCursor()
         span = (cursor.selectionStart(), cursor.selectionEnd())
-        # print(span)
-        if span[0] != span[1]:
+        return span[0] != span[1]
+
+    def on_cursor_position_changed(self):
+        if self.valid_selection():
             # print(span)
             # TODO: Not sure a thread is needed here but ok
             # TODO: Need to verify threads finish in the right order!
-
-            span_thread = SpanInfoThread()
-            span_thread.from_text(cursor.selection().toPlainText())
-            span_thread.result_ready.connect(self.span_info_completed)
-            self.running_threads.add(span_thread)
-            span_thread.start()
+            self.last_selection_type = SelectionType.BY_TEXT
+            self.start_span_info_thread(SelectionType.BY_TEXT)
         # else:
         #     self.clear_results()
 
@@ -302,18 +302,20 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         caller_thread.result_ready.disconnect(self.span_info_completed)
         self.running_threads.remove(caller_thread)
         self.wordsInSelection.setText(str(span_info.words_in_selection))
-        self.lettersInSelection.setText(str(span_info.letters_in_selection))
         # print(f"{count.words_in_selection = }")
 
     def selection_start_button_clicked(self):
         self.selectionStartInfo = self.get_selection_info()
         if self.selectionStartInfo is not None:
             if self.selectionEndInfo is not None and self.selectionStartInfo >= self.selectionEndInfo:
-                self.selectionEndInfo.clear()
+                self.selectionEndInfo = None
                 self.selectionEndLabel.clear()
             surah_name, verse_num, word = self.selectionStartInfo.surah_name, self.selectionStartInfo.verse_num, self.selectionStartInfo.word
             aya = "اية"
             self.selectionStartLabel.setText(f"[{surah_name} - {aya} {verse_num} - {word}]")
+            if self.selectionEndInfo is not None and self.selectionStartInfo < self.selectionEndInfo:
+                self.last_selection_type = SelectionType.BY_REF
+                self.start_span_info_thread(SelectionType.BY_REF)
         self.textBrowser.setFocus()
         self.beam_cursor()
 
@@ -321,30 +323,47 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.selectionEndInfo = self.get_selection_info()
         if self.selectionEndInfo is not None:
             if self.selectionStartInfo is not None and self.selectionEndInfo <= self.selectionStartInfo:
-                self.selectionStartInfo.clear()
+                self.selectionStartInfo = None
                 self.selectionStartLabel.clear()
             surah_name, verse_num, word = self.selectionEndInfo.surah_name, self.selectionEndInfo.verse_num, self.selectionEndInfo.word
             aya = "اية"
             self.selectionEndLabel.setText(f"[{surah_name} - {aya} {verse_num} - {word}]")
-
-            span_thread = SpanInfoThread()
-            span_thread.from_ref(self.selectionStartInfo, self.selectionEndInfo)
-            span_thread.result_ready.connect(self.span_info_completed)
-            self.running_threads.add(span_thread)
-            span_thread.start()
+            if self.selectionStartInfo is not None and self.selectionEndInfo > self.selectionStartInfo:
+                self.last_selection_type = SelectionType.BY_REF
+                self.start_span_info_thread(SelectionType.BY_REF)
 
         self.textBrowser.setFocus()
         self.beam_cursor()
 
-    def get_selection_info(self) -> CursorPositionInfo | None:
+    def valid_selection_span(self):
+        if self.selectionStartInfo is None or self.selectionEndInfo is None:
+            return False
+        if self.selectionStartInfo < self.selectionEndInfo:
+            return True
+        return False
+
+    def start_span_info_thread(self, selection_type: SelectionType):
+        span_thread = SpanInfoThread(count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
+                                     count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked())
+        if selection_type == SelectionType.BY_TEXT:
+            span_thread.from_text(self.textBrowser.textCursor().selection().toPlainText())
+        elif selection_type == SelectionType.BY_REF:
+            span_thread.from_ref(self.selectionStartInfo, self.selectionEndInfo)
+        else:
+            return
+        span_thread.result_ready.connect(self.span_info_completed)
+        self.running_threads.add(span_thread)
+        span_thread.start()
+
+    def get_selection_info(self, snap_to_beginning_of_word=True) -> CursorPositionInfo | None:
         selection_start, selection_end = self.textBrowser.textCursor().selectionStart(), self.textBrowser.textCursor().selectionEnd()
         if selection_end > selection_start:
-            selection_start_info = self.get_info_of_cursor_position(selection_start)
+            selection_start_info = self.get_info_of_cursor_position(selection_start, snap_to_beginning_of_word=snap_to_beginning_of_word)
             # print(selection_start_info)
             return selection_start_info if selection_start_info.is_valid() else None
         return None
 
-    def get_info_of_cursor_position(self, cursor_position: int) -> CursorPositionInfo:
+    def get_info_of_cursor_position(self, cursor_position: int, snap_to_beginning_of_word=True) -> CursorPositionInfo:
         text = self.textBrowser.toPlainText()
 
         cursor_position_info = CursorPositionInfo()
@@ -374,7 +393,12 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                 except ValueError:
                     prev_verse_idx_span = -1
                 # count spaces to know place of current word
-                current_word_num = text.count(" ", prev_verse_idx_span + 1, cursor_position)
+                # current_word_num = text.count(" ", prev_verse_idx_span + 1, cursor_position)
+                spaces_before = list(re.finditer(r"\s", text[prev_verse_idx_span + 1:cursor_position]))
+                current_word_num = len(spaces_before)
+                if snap_to_beginning_of_word:
+                    last_space = spaces_before[-1].span()[1] if spaces_before else 0
+                    cursor_position = prev_verse_idx_span + 1 + last_space
                 cursor_position_info.word_num_in_verse = current_word_num
                 cursor_position_info.verse_num = int(my_verse_num)
                 # get word / part of word between cursor and next space
@@ -382,6 +406,18 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                 cursor_position_info.word = text[cursor_position:next_space_idx].strip()
                 break
         return cursor_position_info
+
+    def waw_is_a_word_checkbox_state_changed(self, state):
+        if self.last_selection_type == SelectionType.NO_SELECTION:
+            return
+        if self.valid_selection() or self.valid_selection_span():
+            self.start_span_info_thread(self.last_selection_type)
+
+    def waykaanna_two_words_checkbox_state_changed(self, state):
+        if self.last_selection_type == SelectionType.NO_SELECTION:
+            return
+        if self.valid_selection() or self.valid_selection_span():
+            self.start_span_info_thread(self.last_selection_type)
 
     def restart_stats_button_clicked(self):
         for widget in self.stats_widgets:

@@ -19,7 +19,7 @@ class SpanInfo:
 class SpanInfoThread(QThread):
     result_ready = Signal(SpanInfo, QThread)
     verse_mark_regex_ptrn = re.compile(r"[\d()]")
-    waikanna = ["وَيْكَأَنّ", "وَيْكَأَنَّهُۥ"]
+    waikanna = ["وَيْكَأَنَّ", "وَيْكَأَنَّهُۥ"]
 
     def __init__(self, thread_id=0, count_waw_as_a_word=True, count_waikaana_as_two_words=True):
         super().__init__()
@@ -49,9 +49,12 @@ class SpanInfoThread(QThread):
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):
                 if not is_diacritic(word):
-                    if self.count_waw_as_a_word and word.startswith("و") and not MyDataLoader.is_waw_part_of_word(word):
-                        self.info.words_in_selection += 2
-                    elif self.count_waikaana_as_two_words and word in SpanInfoThread.waikanna:
+                    if word in self.waikanna:
+                        if self.count_waikaana_as_two_words:
+                            self.info.words_in_selection += 2
+                        else:
+                            self.info.words_in_selection += 1
+                    elif self.count_waw_as_a_word and word.startswith("و") and not MyDataLoader.is_waw_part_of_word(word):
                         self.info.words_in_selection += 2
                     else:
                         self.info.words_in_selection += 1

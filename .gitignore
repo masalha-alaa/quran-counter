@@ -5,6 +5,7 @@ arabic_reformer/__pycache__/
 build/
 dist/
 data/
+private/
 *.spec
 gui/__pycache__/
 recordings/
