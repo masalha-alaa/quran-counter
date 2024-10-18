@@ -423,6 +423,8 @@ class MainWindow(QMainWindow):
         if self.ui.rootRadioButton.isChecked():
             self.waiting()
 
+        # TODO: Need to verify threads finish in the right order!
+        #       Test while removing characters from a long word
         finder_thread = Finder()
         finder_thread.set_data(new_text,
                                self.ui.alifAlifMaksuraCheckbox.isChecked(),

@@ -8,9 +8,10 @@ _alamaat_waqf = ["\u06D6", "\u06D8", "\u06D9", "\u06DA", "\u06DB", "\u06D7", "\u
 _long_harakat = ["\u06E5", "\u06E6", "\u06E7"]
 _alif_khunjariyah = "\u0670"  # ـٰ
 _n_to_m_conversion = "\u06E2"
+rub_el_hizb_mark = "\u06DE"
 alif_maksura = "ى"
 _special_diacritics = ["\uFC60", "\uFC61", "\uFC62", "\u0640", "\u06DF", "\u06EA"] + [
-    _alif_khunjariyah] + _alamaat_waqf + _long_harakat + [_n_to_m_conversion]
+    _alif_khunjariyah] + _alamaat_waqf + _long_harakat + [_n_to_m_conversion] + [rub_el_hizb_mark]
 diacritics_regex = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
 diacritics_regex_compiled = re_compile(diacritics_regex)
 _prohibited_characters = ["\u0640"]  # TODO?

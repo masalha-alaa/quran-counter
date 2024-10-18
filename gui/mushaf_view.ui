@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1046</width>
-    <height>835</height>
+    <width>1029</width>
+    <height>840</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,21 +16,113 @@
   <property name="styleSheet">
    <string notr="true">background-color: rgb(59, 59, 59);
 color: rgb(207, 207, 207);
-font: 400 20pt &quot;Calibri&quot;;</string>
+font: 400 18pt &quot;Calibri&quot;;</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_10">
+  <layout class="QVBoxLayout" name="verticalLayout_15">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,4">
+        <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,0,4">
          <item>
           <widget class="Line" name="line">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
           </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <widget class="QFrame" name="frame_2">
+             <property name="styleSheet">
+              <string notr="true">font-size: 14pt;</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Panel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="0,0,0">
+                <item>
+                 <spacer name="horizontalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="selectionStartLabel">
+                  <property name="text">
+                   <string> </string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="selectionStartButton">
+                  <property name="text">
+                   <string>بداية التحديد</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="0,0,0">
+                <item>
+                 <spacer name="horizontalSpacer_5">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLabel" name="selectionEndLabel">
+                  <property name="text">
+                   <string> </string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="selectionEndButton">
+                  <property name="text">
+                   <string>نهاية التحديد</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_16">
+                <property name="styleSheet">
+                 <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+                </property>
+                <property name="text">
+                 <string>1. اختر بداية التحديد في السورة, ثم اضغط &quot;بداية التحديد&quot;.
+2. اختر نهاية التحديد (في نفس الصفحة او غيرها), ثم اضغط &quot;نهاية التحديد&quot;.</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
@@ -190,7 +282,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="3,0,0,2">
+            <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="3,0,0,2,0">
              <item>
               <spacer name="horizontalSpacer_3">
                <property name="orientation">
@@ -231,6 +323,37 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_15">
                <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_18">
+                 <item>
+                  <widget class="QLineEdit" name="verseInput_2">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="layoutDirection">
+                    <enum>Qt::RightToLeft</enum>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_17">
+                   <property name="text">
+                    <string>رقم الاية</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_19">
+               <item>
                 <widget class="QLineEdit" name="surahNameInput"/>
                </item>
                <item>
@@ -249,9 +372,6 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_13" stretch=""/>
-       </item>
-       <item>
         <widget class="QTextBrowser" name="textBrowser">
          <property name="cursor" stdset="0">
           <cursorShape>IBeamCursor</cursorShape>
@@ -260,7 +380,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           <enum>Qt::RightToLeft</enum>
          </property>
          <property name="styleSheet">
-          <string notr="true">font-family: 'Noto Naskh Arabic'; font-size: 18pt;</string>
+          <string notr="true">font-family: 'Noto Naskh Arabic'; font-size: 17pt;</string>
          </property>
          <property name="locale">
           <locale language="Arabic" country="Israel"/>
@@ -272,7 +392,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLineEdit" name="pageNumDisplay">
            <property name="enabled">
@@ -284,16 +404,16 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="label_15">
            <property name="text">
-            <string>الصفحة</string>
+            <string>صفحة</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLineEdit" name="surahNumDisplay">
            <property name="enabled">
@@ -305,9 +425,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="label_14">
            <property name="text">
-            <string>السورة</string>
+            <string>سورة</string>
            </property>
           </widget>
          </item>
@@ -346,52 +466,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout" columnstretch="3,1,1,1">
-      <item row="0" column="1">
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string>احرف من بداية السورة</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lettersFromBeginOfSurah">
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="1">
-       <layout class="QVBoxLayout" name="verticalLayout_5">
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>احرف من بداية المصحف</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lettersFromBeginOfMushaf">
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
+     <layout class="QGridLayout" name="gridLayout" columnstretch="1,1,1,1">
       <item row="1" column="3">
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
@@ -418,33 +493,12 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <widget class="QLabel" name="label_12">
           <property name="text">
-           <string>كلمات داخل تحديد المؤشر</string>
+           <string>كلمات داخل التحديد</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="wordsInSelection">
-          <property name="text">
-           <string>0</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="1">
-       <layout class="QVBoxLayout" name="verticalLayout_6">
-        <item>
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>احرف داخل تحديد المؤشر</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lettersInSelection">
           <property name="text">
            <string>0</string>
           </property>
@@ -476,18 +530,131 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         </item>
        </layout>
       </item>
-      <item row="0" column="0">
-       <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+      <item row="0" column="2">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>احرف من بداية السورة</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lettersFromBeginOfSurah">
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="2">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>احرف من بداية المصحف</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lettersFromBeginOfMushaf">
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>عدد كلمات السورة</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="surahWordsNum">
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>عدد حروف السورة</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="surahLettersNum">
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="2">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>احرف داخل التحديد</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lettersInSelection">
+          <property name="text">
+           <string>0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="1">
+       <layout class="QVBoxLayout" name="verticalLayout_14">
+        <item>
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>الحرف الأكثر متردد في السورة</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="mostRepeatedLetter">
+          <property name="text">
+           <string> </string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -496,13 +663,18 @@ font: 400 20pt &quot;Calibri&quot;;</string>
  </widget>
  <tabstops>
   <tabstop>pageInput</tabstop>
+  <tabstop>goToPageButton</tabstop>
   <tabstop>surahNumInput</tabstop>
   <tabstop>verseInput</tabstop>
+  <tabstop>goToRefButton</tabstop>
+  <tabstop>goToSurahNameButton</tabstop>
+  <tabstop>selectionStartButton</tabstop>
+  <tabstop>prevPushButton</tabstop>
   <tabstop>textBrowser</tabstop>
   <tabstop>surahNumDisplay</tabstop>
   <tabstop>pageNumDisplay</tabstop>
   <tabstop>nextPushButton</tabstop>
-  <tabstop>prevPushButton</tabstop>
+  <tabstop>selectionEndButton</tabstop>
  </tabstops>
  <resources>
   <include location="resources/resources.qrc"/>

@@ -19,6 +19,11 @@ class MyDataLoader:
     page_surah_verses = None
     surah_num_to_name_map = None
     surah_name_to_num_map = None
+    waw_words = None
+    FIRST_SURAH = 1
+    LAST_SURAH = 114
+    MIN_VERSE = 1
+    MAX_VERSE = 286
 
     def __init__(self):
         if MyDataLoader.df is None:
@@ -27,6 +32,7 @@ class MyDataLoader:
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
             MyDataLoader.surah_name_to_num_map = {v:k for k,v in MyDataLoader.surah_num_to_name_map.items()}
             MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
+            MyDataLoader.waw_words = set(j_load(open(resource_path('data/waw_words.json'), encoding='utf-8')))
             # TODO: save columns in df beforehand
             verses_col = config['data']['verses_column']
             MyDataLoader._working_col = f"{verses_col}_split"
@@ -77,6 +83,32 @@ class MyDataLoader:
     @staticmethod
     def get_first_page_of_surah(surah_num):
         return MyDataLoader.df.loc[MyDataLoader.df['surah'] == int(surah_num), 'page'].iloc[0]
+
+    @staticmethod
+    def iterate_over_verses_words(start_surah_num, start_verse_num, start_word_in_verse_num,
+                                  end_surah_num=None, end_verse_num=None, end_word_in_verse_num=None):
+        if end_word_in_verse_num is None:
+            end_word_in_verse_num = MyDataLoader.MAX_VERSE + 1
+        if end_surah_num is None:
+            end_surah_num = MyDataLoader.LAST_SURAH
+            if end_verse_num is None:
+                end_verse_num = MyDataLoader.get_num_of_last_verse_in_surah(end_verse_num)
+        elif end_verse_num is None:
+            end_verse_num = MyDataLoader.get_num_of_last_verse_in_surah(end_verse_num)
+
+        s, v = int(start_surah_num), int(start_verse_num)
+        while s <= min(end_surah_num, MyDataLoader.LAST_SURAH):
+            if v <= (last_verse_num := min(end_verse_num, MyDataLoader.get_num_of_last_verse_in_surah(s))):
+                verse = MyDataLoader.get_verse(s, v)
+                start = start_word_in_verse_num if (s == start_surah_num and v == start_verse_num) else 0
+                for i in range(start, len((words := verse.split()))):
+                    if s == end_surah_num and v == last_verse_num and i > end_word_in_verse_num:
+                        break
+                    yield words[i]
+                v += 1
+                if v > last_verse_num:
+                    s += 1
+                    v = 1
     # df methods [END]
 
     # page-surah-verses methods [BEGIN]
@@ -105,4 +137,10 @@ class MyDataLoader:
             if verses_range[0] <= verse_num <= verses_range[1]:
                 return surah_page
         return None
-    # page-surah-verses methods [BEGIN]
+    # page-surah-verses methods [END]
+
+    # waw-words methods [BEGIN]
+    @staticmethod
+    def is_waw_part_of_word(word):
+        return word in MyDataLoader.waw_words
+    # waw-words methods [END]
