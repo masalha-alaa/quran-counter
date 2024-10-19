@@ -1,9 +1,10 @@
+import traceback
 import re
 from enum import Enum, auto
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QDialog
 from gui.mushaf_view import Ui_MushafViewDialog
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QMutex
 from PySide6.QtGui import QCursor, QIntValidator
 from my_data_loader import MyDataLoader
 from validators import ArabicOnlyValidator
@@ -15,11 +16,19 @@ from PySide6.QtWidgets import QApplication
 class SurahInPage:
     def __init__(self):
         self.surah_name = None
+        self.surah_num = None
         self.basmalah = None
         # self.verses = []
         self.start_idx = 0
         self.end_idx = 0
         self.verses_start_idx = 0
+
+
+class SurahStats:
+    def __init__(self):
+        self.words_count = 0
+        self.letters_count = 0
+        self.most_repeated_letter = None
 
 
 class Page:
@@ -34,6 +43,7 @@ class SelectionType(Enum):
     NO_SELECTION = 0
     BY_TEXT = auto()
     BY_REF = auto()
+    BY_PAGE = auto()
 
 
 class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
@@ -45,6 +55,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     MAX_VERSE = 286
     basmalah = "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ"
     verse_num_pattern = re.compile(r"\((\d{,3})\)")
+    CURRENT_SURAH_STATS_MUTEX = QMutex()
 
     def __init__(self):
         super(MyMushafViewDialog, self).__init__()
@@ -61,7 +72,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.stats_widgets = [self.wordsInSelection,]
 
         self.running_threads = set()
-        self.last_selection_type = SelectionType.NO_SELECTION
+        self.current_surah_stats = SurahStats()
+        self.last_selection_type: None | SelectionType = None
         self.nextPushButton.clicked.connect(self.next_button_clicked)
         self.prevPushButton.clicked.connect(self.prev_button_clicked)
         self.goToPageButton.clicked.connect(self.go_to_page)
@@ -83,12 +95,52 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
         self.show_verses_from_page(self._current_page)
-        self.last_selection_type = SelectionType.NO_SELECTION
+        self.last_selection_type = SelectionType.BY_PAGE
         self.clear_results()
         self.clear_selection_info()
+        self.get_current_surah_stats()
+
+    def get_current_surah_stats(self, clear_current=False):
+        if clear_current:
+            self.surahLettersNum.setText("")
+            self.mostRepeatedLetter.setText("")
+            self.surahWordsNum.setText("")
+        for surah in self.page.surahs:
+            span_thread = SpanInfoThread(surah_name=surah.surah_name,
+                                         count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
+                                         count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked())
+            span_thread.from_text('\n'.join(MyDataLoader.get_surah(surah.surah_num)))
+            span_thread.result_ready.connect(self.current_surah_stats_callback)
+            self.running_threads.add(span_thread)
+            span_thread.start()
+
+    def current_surah_stats_callback(self, span_info: SpanInfo, caller_thread: SpanInfoThread):
+        caller_thread.result_ready.disconnect(self.current_surah_stats_callback)
+        self.running_threads.remove(caller_thread)
+
+        MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.lock()
+        # letters num
+        letters_num_new_text = (self.surahLettersNum.text() + ", " + f"{span_info.surah_name}: {span_info.letters_in_selection}").strip(", ")
+        letters_num_sorted_results = sorted(letters_num_new_text.split(", "), key=lambda x: MyDataLoader.surah_name_to_num_map[x.split(": ")[0]])
+        self.surahLettersNum.setText(", ".join(letters_num_sorted_results))
+
+        # most repeated letter
+        letter, repetitions = span_info.most_repeated_letter
+        most_repeated_letter_new_text = (self.mostRepeatedLetter.text() + ", " + f"{span_info.surah_name}: '{letter}' ({repetitions})").strip(", ")
+        most_repeated_letter_sorted_results = sorted(most_repeated_letter_new_text.split(", "), key=lambda x: MyDataLoader.surah_name_to_num_map[x.split(": ")[0]])
+        self.mostRepeatedLetter.setText(", ".join(most_repeated_letter_sorted_results))
+
+        # surah words num
+        surah_words_num_new_text = (self.surahWordsNum.text() + ", " + f"{span_info.surah_name}: {span_info.words_in_selection}").strip(", ")
+        surah_words_num_sorted_results = sorted(surah_words_num_new_text.split(", "), key=lambda x: MyDataLoader.surah_name_to_num_map[x.split(": ")[0]])
+        self.surahWordsNum.setText(", ".join(surah_words_num_sorted_results))
+        MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.unlock()
 
     def clear_results(self):
         self.wordsInSelection.setText("0")
+        self.surahLettersNum.setText("")
+        self.mostRepeatedLetter.setText("")
+        self.surahWordsNum.setText("")
 
     def clear_selection_info(self):
         self.selectionStartLabel.setText("")
@@ -202,7 +254,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             surahs_nums.append(str(surah_num))
             al_fatiha = surah_num == 1
             al_baqara_first_page = (surah_num == 2) and (verses_range[0] == 1)
-            should_center = al_fatiha or al_baqara_first_page
+            should_center = al_fatiha or al_baqara_first_page or surah_num >= 103
             separator = '<br>' if should_center else ' '
             self.textBrowser.setAlignment(Qt.AlignmentFlag.AlignCenter)
             needs_basmalah = self.needsBasmalah(surah_num) and verses_range[0] == 1
@@ -235,6 +287,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             current_idx = len(self.textBrowser.toPlainText())
             surah_in_page.end_idx = current_idx
             surah_in_page.surah_name = surah_name
+            surah_in_page.surah_num = surah_num
             surah_in_page.basmalah = needs_basmalah
             self.page.surahs.append(surah_in_page)
 
@@ -246,13 +299,21 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def next_button_clicked(self):
         if self._current_page < self.LAST_PAGE:
+            prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
             self._current_page += 1
             self.show_verses_from_page(self._current_page)
+            new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
+            if prev_surahs != new_surahs:
+                self.get_current_surah_stats(clear_current=True)
 
     def prev_button_clicked(self):
         if self._current_page > self.FIRST_PAGE:
+            prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
             self._current_page -= 1
             self.show_verses_from_page(self._current_page)
+            new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
+            if prev_surahs != new_surahs:
+                self.get_current_surah_stats(clear_current=True)
 
     def go_to_ref(self):
         # current_focus = QApplication.focusWidget()
@@ -268,20 +329,35 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def go_to_page(self):
         if self.pageInput.text():
+            prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
             self.show_verses_from_page(self.pageInput.text())
             self.current_page = self.pageInput.text()
+            new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
+            if prev_surahs != new_surahs:
+                self.last_selection_type = SelectionType.BY_PAGE
+                self.get_current_surah_stats(clear_current=True)
 
     def go_to_surah_verse(self):
+        prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
         if self.verseInput.text() and self.surahNumInput.text():
             self.current_page = self.show_verses_from_surah_verse_ref(self.surahNumInput.text(), self.verseInput.text())
         elif self.surahNumInput.text():
             page_num = self.show_verses_from_beginning_of_surah(self.surahNumInput.text())
             self.current_page = page_num
+        new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
+        if prev_surahs != new_surahs:
+            self.last_selection_type = SelectionType.BY_PAGE
+            self.get_current_surah_stats(clear_current=True)
 
     def go_to_surah_name(self):
         if self.surahNameInput.text():
+            prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
             if (page := self.show_verses_from_surah_name(self.surahNameInput.text())) is not None:
                 self.current_page = page
+                new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
+                if prev_surahs != new_surahs:
+                    self.last_selection_type = SelectionType.BY_PAGE
+                    self.get_current_surah_stats(clear_current=True)
 
     def valid_selection(self):
         cursor = self.textBrowser.textCursor()
@@ -293,7 +369,6 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             # print(span)
             # TODO: Not sure a thread is needed here but ok
             # TODO: Need to verify threads finish in the right order!
-            self.last_selection_type = SelectionType.BY_TEXT
             self.start_span_info_thread(SelectionType.BY_TEXT)
         # else:
         #     self.clear_results()
@@ -314,7 +389,6 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             aya = "اية"
             self.selectionStartLabel.setText(f"[{surah_name} - {aya} {verse_num} - {word}]")
             if self.selectionEndInfo is not None and self.selectionStartInfo < self.selectionEndInfo:
-                self.last_selection_type = SelectionType.BY_REF
                 self.start_span_info_thread(SelectionType.BY_REF)
         self.textBrowser.setFocus()
         self.beam_cursor()
@@ -329,7 +403,6 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             aya = "اية"
             self.selectionEndLabel.setText(f"[{surah_name} - {aya} {verse_num} - {word}]")
             if self.selectionStartInfo is not None and self.selectionEndInfo > self.selectionStartInfo:
-                self.last_selection_type = SelectionType.BY_REF
                 self.start_span_info_thread(SelectionType.BY_REF)
 
         self.textBrowser.setFocus()
@@ -343,6 +416,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         return False
 
     def start_span_info_thread(self, selection_type: SelectionType):
+        self.last_selection_type = selection_type
         span_thread = SpanInfoThread(count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
                                      count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked())
         if selection_type == SelectionType.BY_TEXT:
@@ -410,12 +484,16 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def waw_is_a_word_checkbox_state_changed(self, state):
         if self.last_selection_type == SelectionType.NO_SELECTION:
             return
+        if self.last_selection_type == SelectionType.BY_PAGE:
+            self.get_current_surah_stats(clear_current=True)
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
 
     def waykaanna_two_words_checkbox_state_changed(self, state):
         if self.last_selection_type == SelectionType.NO_SELECTION:
             return
+        if self.last_selection_type == SelectionType.BY_PAGE:
+            self.get_current_surah_stats(clear_current=True)
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
 

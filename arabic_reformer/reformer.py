@@ -1,7 +1,7 @@
 from .alif import Alif
 from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end,
-                     _alamaat_waqf, alif_maksura, _special_diacritics, diacritics_regex,
-                     _prohibited_characters, _alifs, _d, diacritics_regex_compiled)
+                      _alamaat_waqf, alif_maksura, _special_diacritics, diacritics_regex,
+                      _prohibited_characters, _alifs, _d, diacritics_regex_compiled, alif_khunjariyah)
 from .la import La
 from .utils import _connects_from_left, _connects_from_right, is_alif
 
@@ -162,3 +162,13 @@ def reform_regex(p, alif_variations=True,
             # not diacritics
             new_p += f"{diacritics_regex}{{,{MAX_CONSECUTIVE_DIACRITICS}}}"
     return new_p
+
+
+def normalize_letter(ch):
+    if is_alif(ch) or ch == alif_khunjariyah:
+        return "ا"
+    if ch in ["ي", "ى"]:
+        return "ي"
+    if ch in ["ت", "ة"]:
+        return "ت"
+    return ch
