@@ -224,13 +224,13 @@ class Ui_MushafViewDialog(object):
 
         self.horizontalLayout_14.addItem(self.horizontalSpacer_3)
 
-        self.goToSurahNameButton = QPushButton(MushafViewDialog)
-        self.goToSurahNameButton.setObjectName(u"goToSurahNameButton")
-        self.goToSurahNameButton.setIcon(icon)
-        self.goToSurahNameButton.setIconSize(QSize(24, 24))
-        self.goToSurahNameButton.setAutoDefault(False)
+        self.goToRef_2 = QPushButton(MushafViewDialog)
+        self.goToRef_2.setObjectName(u"goToRef_2")
+        self.goToRef_2.setIcon(icon)
+        self.goToRef_2.setIconSize(QSize(24, 24))
+        self.goToRef_2.setAutoDefault(False)
 
-        self.horizontalLayout_14.addWidget(self.goToSurahNameButton)
+        self.horizontalLayout_14.addWidget(self.goToRef_2)
 
         self.line_4 = QFrame(MushafViewDialog)
         self.line_4.setObjectName(u"line_4")
@@ -245,7 +245,7 @@ class Ui_MushafViewDialog(object):
         self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
         self.verseInput_2 = QLineEdit(MushafViewDialog)
         self.verseInput_2.setObjectName(u"verseInput_2")
-        self.verseInput_2.setEnabled(False)
+        self.verseInput_2.setEnabled(True)
         self.verseInput_2.setLayoutDirection(Qt.RightToLeft)
         self.verseInput_2.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -547,8 +547,8 @@ class Ui_MushafViewDialog(object):
         QWidget.setTabOrder(self.verseInput, self.goToRefButton)
         QWidget.setTabOrder(self.goToRefButton, self.surahNameInput)
         QWidget.setTabOrder(self.surahNameInput, self.verseInput_2)
-        QWidget.setTabOrder(self.verseInput_2, self.goToSurahNameButton)
-        QWidget.setTabOrder(self.goToSurahNameButton, self.selectionStartButton)
+        QWidget.setTabOrder(self.verseInput_2, self.goToRef_2)
+        QWidget.setTabOrder(self.goToRef_2, self.selectionStartButton)
         QWidget.setTabOrder(self.selectionStartButton, self.selectionEndButton)
         QWidget.setTabOrder(self.selectionEndButton, self.textBrowser)
         QWidget.setTabOrder(self.textBrowser, self.surahNumDisplay)
@@ -578,7 +578,7 @@ class Ui_MushafViewDialog(object):
         self.verseInput.setText("")
         self.label_5.setText(QCoreApplication.translate("MushafViewDialog", u"\u0631\u0642\u0645 \u0627\u0644\u0627\u064a\u0629", None))
         self.label_4.setText(QCoreApplication.translate("MushafViewDialog", u"\u0631\u0642\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))
-        self.goToSurahNameButton.setText("")
+        self.goToRef_2.setText("")
         self.verseInput_2.setText("")
         self.label_17.setText(QCoreApplication.translate("MushafViewDialog", u"\u0631\u0642\u0645 \u0627\u0644\u0627\u064a\u0629", None))
         self.label_6.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0633\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))

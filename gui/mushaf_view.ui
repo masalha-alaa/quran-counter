@@ -309,7 +309,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="goToSurahNameButton">
+              <widget class="QPushButton" name="goToRef_2">
                <property name="text">
                 <string/>
                </property>
@@ -342,7 +342,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
                  <item>
                   <widget class="QLineEdit" name="verseInput_2">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="layoutDirection">
                     <enum>Qt::RightToLeft</enum>
@@ -801,7 +801,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
   <tabstop>goToRefButton</tabstop>
   <tabstop>surahNameInput</tabstop>
   <tabstop>verseInput_2</tabstop>
-  <tabstop>goToSurahNameButton</tabstop>
+  <tabstop>goToRef_2</tabstop>
   <tabstop>selectionStartButton</tabstop>
   <tabstop>selectionEndButton</tabstop>
   <tabstop>textBrowser</tabstop>
