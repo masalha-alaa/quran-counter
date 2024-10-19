@@ -98,15 +98,20 @@ class MyDataLoader:
 
         s, v = int(start_surah_num), int(start_verse_num)
         while s <= min(end_surah_num, MyDataLoader.LAST_SURAH):
-            if v <= (last_verse_num := min(end_verse_num, MyDataLoader.get_num_of_last_verse_in_surah(s))):
+            is_final_surah = s == min(end_surah_num, MyDataLoader.LAST_SURAH)
+            if is_final_surah:
+                verses_to_read = min(end_verse_num, MyDataLoader.get_num_of_last_verse_in_surah(s))
+            else:
+                verses_to_read = MyDataLoader.get_num_of_last_verse_in_surah(s)
+            if v <= verses_to_read:
                 verse = MyDataLoader.get_verse(s, v)
                 start = start_word_in_verse_num if (s == start_surah_num and v == start_verse_num) else 0
                 for i in range(start, len((words := verse.split()))):
-                    if s == end_surah_num and v == last_verse_num and i > end_word_in_verse_num:
+                    if s == end_surah_num and v == verses_to_read and i > end_word_in_verse_num:
                         break
                     yield words[i]
                 v += 1
-                if v > last_verse_num:
+                if v > verses_to_read:
                     s += 1
                     v = 1
     # df methods [END]
