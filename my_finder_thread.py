@@ -51,8 +51,12 @@ class FinderThread(QThread):
         num_of_search_words = len(new_text.split())
         if not self.root_flag:
             new_text = f"({new_text})"  # capturing group
-            beginning_of_word = r"[ ^]"
-            end_of_word = r"[ ,$]"
+
+            beginning_of_word = r"(?: |^)"
+            end_of_word = r"(?: |$)"
+
+            # beginning_of_word = r"\b"
+            # end_of_word = r"\b"
             if self.full_word:
                 new_text = beginning_of_word + rf"{new_text}" + end_of_word
             else:
