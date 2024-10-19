@@ -504,7 +504,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                     *_, prev_verse_idx_match = self.verse_num_pattern.finditer(text[:cursor_position])
                     prev_verse_idx_span = prev_verse_idx_match.span()[1]
                 except ValueError:
-                    prev_verse_idx_span = -1
+                    prev_verse_idx_span = list(re.finditer(r"\n", text[:cursor_position]))[-1].span()[0]
                 # count spaces to know place of current word
                 # current_word_num = text.count(" ", prev_verse_idx_span + 1, cursor_position)
                 spaces_before = list(re.finditer(r"\s", text[prev_verse_idx_span + 1:cursor_position]))
