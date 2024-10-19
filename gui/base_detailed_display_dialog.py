@@ -61,15 +61,15 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
 
         return _done()
 
-    def _append(self, row_metadata):
-        surah_num, verse_num = row_metadata[0], row_metadata[1]
-        verse = MyDataLoader.get_verse(int(surah_num), int(verse_num))
-        if self.colorizeCheckbox.isChecked():
-            verse = self._reform_and_color(verse, [(row_metadata[idx], row_metadata[idx + 1]) for idx in
-                                                   range(2, len(row_metadata), 2)])
-        line = f"<p>{surah_num}:{verse_num}: {verse}</p>"
-        # line = f"{ref}: {verse}"
-        self.textBrowser.append(line)
+    # def _append(self, row_metadata):
+    #     surah_num, verse_num = row_metadata[0], row_metadata[1]
+    #     verse = MyDataLoader.get_verse(int(surah_num), int(verse_num))
+    #     if self.colorizeCheckbox.isChecked():
+    #         verse = self._reform_and_color(verse, [(row_metadata[idx], row_metadata[idx + 1]) for idx in
+    #                                                range(2, len(row_metadata), 2)])
+    #     line = f"<p>{surah_num}:{verse_num}: {verse}</p>"
+    #     # line = f"{ref}: {verse}"
+    #     self.textBrowser.append(line)
 
     def _reform_and_color(self, verse, spans):
         verse = reform_text(verse, text_may_contain_diacritics=True)

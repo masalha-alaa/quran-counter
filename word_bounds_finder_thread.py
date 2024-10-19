@@ -29,7 +29,9 @@ class WordBoundsFinderThread(QThread):
         for surah_num, verse_num, verse, spans in self._matches:
             for span in spans:
                 word_start = verse.rfind(" ", 0, span[0]) + 1
-                word_end = verse.find(" ", span[1], -1)
+                word_end = verse.find(" ", span[1])
+                if word_end == -1:
+                    word_end = len(verse)
                 word = verse[word_start:word_end]
                 if not self._diacritics_sensitive:
                     word = self.remove_diacritics(word)
