@@ -427,6 +427,7 @@ class MainWindow(QMainWindow):
 
         # TODO: Need to verify threads finish in the right order!
         #       Test while removing characters from a long word
+        #       ==> Tried and they do finish in the right order, but idk if we can count on it
         finder_thread = FinderThread()
         finder_thread.set_data(new_text,
                                self.ui.alifAlifMaksuraCheckbox.isChecked(),
@@ -441,6 +442,7 @@ class MainWindow(QMainWindow):
         finder_thread.start()
 
     def on_word_found_complete(self, initial_word, words_num, result, caller_thread):
+        # print(initial_word)
         caller_thread.result_ready.disconnect(self.on_word_found_complete)
         QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result
