@@ -6,7 +6,7 @@ from arabic_reformer import reform_regex
 from nltk.stem.isri import ISRIStemmer
 
 
-class Finder(QThread):
+class FinderThread(QThread):
     result_ready = Signal(str, int, tuple, QThread)
 
     def __init__(self):

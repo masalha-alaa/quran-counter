@@ -1,17 +1,16 @@
 import sys
 import re
-import threading
 from enum import Enum
 from yaml import safe_load
 import uuid
 from PySide6.QtCore import Slot
-from PySide6.QtCore import Qt, QTranslator, QThread
+from PySide6.QtCore import Qt, QTranslator, QThread, QMutex, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
 from my_data_loader import MyDataLoader
 from gui.main_screen import Ui_MainWindow
 from validators import ArabicOnlyValidator
-from finder import Finder
+from my_finder_thread import FinderThread
 from emphasizer import emphasize_span, CssColors
 from arabic_reformer import reform_text, is_alif, alif_maksura
 from gui.my_disambiguation_dialog import MyDidsambiguationDialog
@@ -44,7 +43,8 @@ class TabIndex(Enum):
 class MainWindow(QMainWindow):
     ITEM_LOAD = 20
     _exhausted = object()
-    threads_set_lock = threading.Lock()
+    REMOVE_THREAD_AFTER_MS = 1000
+    RUNNING_THREADS_MUTEX = QMutex()
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -378,12 +378,14 @@ class MainWindow(QMainWindow):
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
     def _add_thread(self, thread):
-        with MainWindow.threads_set_lock:
-            self.running_threads.add(thread)
+        MainWindow.RUNNING_THREADS_MUTEX.lock()
+        self.running_threads.add(thread)
+        MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
     def _remove_thread(self, thread):
-        with MainWindow.threads_set_lock:
-            self.running_threads.remove(thread)
+        MainWindow.RUNNING_THREADS_MUTEX.lock()
+        self.running_threads.remove(thread)
+        MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
     def refresh_matches(self):
         # TODO: make background thread if takes too much time
@@ -425,7 +427,7 @@ class MainWindow(QMainWindow):
 
         # TODO: Need to verify threads finish in the right order!
         #       Test while removing characters from a long word
-        finder_thread = Finder()
+        finder_thread = FinderThread()
         finder_thread.set_data(new_text,
                                self.ui.alifAlifMaksuraCheckbox.isChecked(),
                                self.ui.yaAlifMaksuraCheckbox.isChecked(),
@@ -440,7 +442,7 @@ class MainWindow(QMainWindow):
 
     def on_word_found_complete(self, initial_word, words_num, result, caller_thread):
         caller_thread.result_ready.disconnect(self.on_word_found_complete)
-        self._remove_thread(caller_thread)
+        QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result
         self.matches_number = str(number_of_matches)
         self.matches_number_surahs = str(number_of_surahs)
@@ -497,7 +499,7 @@ class MainWindow(QMainWindow):
 
     def on_find_surahs_completed(self, counts, caller_thread):
         caller_thread.result_ready.disconnect(self.on_find_surahs_completed)
-        self._remove_thread(caller_thread)
+        QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
 
         # self.lazy_surah_results_list.clear()
         self.lazy_surah_results_list.save_values(counts)
@@ -528,7 +530,7 @@ class MainWindow(QMainWindow):
 
     def on_find_word_bounds_completed(self, counts, caller_thread: WordBoundsFinderThread):
         caller_thread.result_ready.disconnect(self.on_find_word_bounds_completed)
-        self._remove_thread(caller_thread)
+        QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
 
         # self.lazy_word_results_list.clear()
         self.lazy_word_results_list.save_values(counts)

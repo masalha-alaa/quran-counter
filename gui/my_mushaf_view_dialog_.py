@@ -4,7 +4,7 @@ from enum import Enum, auto
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QDialog
 from gui.mushaf_view import Ui_MushafViewDialog
-from PySide6.QtCore import Qt, QMutex
+from PySide6.QtCore import Qt, QMutex, QTimer
 from PySide6.QtGui import QCursor, QIntValidator
 from my_data_loader import MyDataLoader
 from validators import ArabicOnlyValidator
@@ -53,9 +53,11 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     LAST_SURAH = 114
     MIN_VERSE = 1
     MAX_VERSE = 286
+    REMOVE_THREAD_AFTER_MS = 1000
     basmalah = "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ"
     verse_num_pattern = re.compile(r"\((\d{,3})\)")
     CURRENT_SURAH_STATS_MUTEX = QMutex()
+    RUNNING_THREADS_MUTEX = QMutex()
 
     def __init__(self):
         super(MyMushafViewDialog, self).__init__()
@@ -101,6 +103,11 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.clear_selection_info()
         self.get_current_surah_stats()
 
+    def remove_thread(self, thread):
+        MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
+        self.running_threads.remove(thread)
+        MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
+
     def get_current_surah_stats(self, clear_current=False):
         if clear_current:
             self.surahLettersNum.setText("")
@@ -112,12 +119,14 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                                          count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked())
             span_thread.from_text('\n'.join(MyDataLoader.get_surah(surah.surah_num)))
             span_thread.result_ready.connect(self.current_surah_stats_callback)
+            MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
             self.running_threads.add(span_thread)
+            MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
             span_thread.start()
 
     def current_surah_stats_callback(self, span_info: SpanInfo, caller_thread: SpanInfoThread):
         caller_thread.result_ready.disconnect(self.current_surah_stats_callback)
-        self.running_threads.remove(caller_thread)
+        QTimer.singleShot(MyMushafViewDialog.REMOVE_THREAD_AFTER_MS, lambda: self.remove_thread(caller_thread))
 
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.lock()
         # letters num
@@ -403,7 +412,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def span_info_completed(self, span_info: SpanInfo, caller_thread: SpanInfoThread):
         caller_thread.result_ready.disconnect(self.span_info_completed)
-        self.running_threads.remove(caller_thread)
+        QTimer.singleShot(MyMushafViewDialog.REMOVE_THREAD_AFTER_MS, lambda: self.remove_thread(caller_thread))
         self.wordsInSelection.setText(str(span_info.words_in_selection))
         # print(f"{count.words_in_selection = }")
 
@@ -454,7 +463,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         else:
             return
         span_thread.result_ready.connect(self.span_info_completed)
+        MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
         self.running_threads.add(span_thread)
+        MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
         span_thread.start()
 
     def get_selection_info(self, snap_to_beginning_of_word=True) -> CursorPositionInfo | None:

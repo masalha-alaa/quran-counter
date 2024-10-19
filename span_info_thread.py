@@ -72,7 +72,8 @@ class SpanInfoThread(QThread):
         self.info.most_repeated_letter = max(letters.items(), key=lambda x: x[1], default="")
 
         try:
-            self.result_ready.emit(self.info, self)
+            pass
+            self.result_ready.emit(self.info, self)  # TODO: Enable
             # try catch is for debug only - exception isn't thrown in non-debug mode
         except RuntimeError as e:
             print(e)
