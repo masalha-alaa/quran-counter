@@ -1,3 +1,4 @@
+import threading
 import traceback
 import re
 from enum import Enum, auto
@@ -57,7 +58,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     basmalah = "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ"
     verse_num_pattern = re.compile(r"\((\d{,3})\)")
     CURRENT_SURAH_STATS_MUTEX = QMutex()
-    RUNNING_THREADS_MUTEX = QMutex()
+    # CURRENT_SURAH_STATS_MUTEX = threading.Lock()
+    # RUNNING_THREADS_MUTEX = QMutex()
 
     def __init__(self):
         super(MyMushafViewDialog, self).__init__()

@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1096, 784)
+        MainWindow.resize(1096, 867)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
         self.searchWord.setSizePolicy(sizePolicy1)
         self.searchWord.setMaximumSize(QSize(16777215, 16777215))
         self.searchWord.setStyleSheet(u"")
-        self.searchWord.setMaxLength(40)
+        self.searchWord.setMaxLength(30)
 
         self.verticalLayout.addWidget(self.searchWord)
 
@@ -82,6 +82,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.alifAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
         self.alifAlifMaksuraCheckbox.setObjectName(u"alifAlifMaksuraCheckbox")
+        self.alifAlifMaksuraCheckbox.setStyleSheet(u"font: 18pt;")
 
         self.horizontalLayout_8.addWidget(self.alifAlifMaksuraCheckbox)
 
@@ -95,6 +96,7 @@ class Ui_MainWindow(object):
         self.yaAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
         self.yaAlifMaksuraCheckbox.setObjectName(u"yaAlifMaksuraCheckbox")
         self.yaAlifMaksuraCheckbox.setEnabled(True)
+        self.yaAlifMaksuraCheckbox.setStyleSheet(u"font: 18pt;")
 
         self.horizontalLayout_8.addWidget(self.yaAlifMaksuraCheckbox)
 
@@ -110,12 +112,31 @@ class Ui_MainWindow(object):
         self.finalTaCheckbox.setEnabled(True)
         font = QFont()
         font.setFamilies([u"Calibri"])
-        font.setPointSize(20)
+        font.setPointSize(18)
         font.setBold(False)
         font.setItalic(False)
         self.finalTaCheckbox.setFont(font)
+        self.finalTaCheckbox.setStyleSheet(u"font: 18pt;")
 
         self.horizontalLayout_8.addWidget(self.finalTaCheckbox)
+
+        self.line_7 = QFrame(self.centralwidget)
+        self.line_7.setObjectName(u"line_7")
+        self.line_7.setFrameShape(QFrame.Shape.VLine)
+        self.line_7.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout_8.addWidget(self.line_7)
+
+        self.maintainOrderCheckbox = QCheckBox(self.centralwidget)
+        self.maintainOrderCheckbox.setObjectName(u"maintainOrderCheckbox")
+        self.maintainOrderCheckbox.setStyleSheet(u"font: 18pt;")
+        icon = QIcon()
+        icon.addFile(u":/in-order-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.maintainOrderCheckbox.setIcon(icon)
+        self.maintainOrderCheckbox.setIconSize(QSize(36, 36))
+        self.maintainOrderCheckbox.setChecked(True)
+
+        self.horizontalLayout_8.addWidget(self.maintainOrderCheckbox)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_8)
@@ -345,9 +366,9 @@ class Ui_MainWindow(object):
         self.filterButton = QPushButton(self.ayatTab)
         self.filterButton.setObjectName(u"filterButton")
         self.filterButton.setEnabled(False)
-        icon = QIcon()
-        icon.addFile(u":/filter-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.filterButton.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/filter-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.filterButton.setIcon(icon1)
         self.filterButton.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.filterButton)
@@ -355,9 +376,9 @@ class Ui_MainWindow(object):
         self.clearFilterButton = QPushButton(self.ayatTab)
         self.clearFilterButton.setObjectName(u"clearFilterButton")
         self.clearFilterButton.setEnabled(False)
-        icon1 = QIcon()
-        icon1.addFile(u":/clear-filter-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.clearFilterButton.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/clear-filter-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.clearFilterButton.setIcon(icon2)
         self.clearFilterButton.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_3.addWidget(self.clearFilterButton)
@@ -425,9 +446,9 @@ class Ui_MainWindow(object):
         self.sortPushButton = QPushButton(self.surahTab)
         self.sortPushButton.setObjectName(u"sortPushButton")
         self.sortPushButton.setEnabled(False)
-        icon2 = QIcon()
-        icon2.addFile(u":/sort-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.sortPushButton.setIcon(icon2)
+        icon3 = QIcon()
+        icon3.addFile(u":/sort-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.sortPushButton.setIcon(icon3)
         self.sortPushButton.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_6.addWidget(self.sortPushButton)
@@ -528,7 +549,7 @@ class Ui_MainWindow(object):
         self.wordsSortPushButton = QPushButton(self.wordsTab)
         self.wordsSortPushButton.setObjectName(u"wordsSortPushButton")
         self.wordsSortPushButton.setEnabled(False)
-        self.wordsSortPushButton.setIcon(icon2)
+        self.wordsSortPushButton.setIcon(icon3)
         self.wordsSortPushButton.setIconSize(QSize(24, 24))
 
         self.horizontalLayout_7.addWidget(self.wordsSortPushButton)
@@ -630,14 +651,14 @@ class Ui_MainWindow(object):
         self.menubar.setGeometry(QRect(0, 0, 1096, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
-        icon3 = QIcon()
-        icon3.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.menu_Language.setIcon(icon3)
+        icon4 = QIcon()
+        icon4.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.menu_Language.setIcon(icon4)
         self.mushafViewButton = QMenu(self.menubar)
         self.mushafViewButton.setObjectName(u"mushafViewButton")
-        icon4 = QIcon()
-        icon4.addFile(u":/book-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.mushafViewButton.setIcon(icon4)
+        icon5 = QIcon()
+        icon5.addFile(u":/book-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.mushafViewButton.setIcon(icon5)
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -664,7 +685,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -682,6 +703,10 @@ class Ui_MainWindow(object):
         self.alifAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0627 / \u0649", None))
         self.yaAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
         self.finalTaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0640\u062a / \u0640\u0629", None))
+#if QT_CONFIG(tooltip)
+        self.maintainOrderCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u0645\u062d\u0627\u0641\u0638\u0629 \u0639\u0644\u0649 \u062a\u0631\u062a\u064a\u0628 \u0627\u0644\u0643\u0644\u0645\u0627\u062a", None))
+#endif // QT_CONFIG(tooltip)
+        self.maintainOrderCheckbox.setText("")
 #if QT_CONFIG(tooltip)
         self.beginningOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)

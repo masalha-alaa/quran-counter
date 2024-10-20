@@ -14,127 +14,132 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="213"/>
+        <location filename="../main_screen.ui" line="255"/>
         <source>نهاية كلمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="256"/>
+        <location filename="../main_screen.ui" line="298"/>
         <source>كلمة كاملة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="170"/>
+        <location filename="../main_screen.ui" line="212"/>
         <source>بداية كلمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="409"/>
+        <location filename="../main_screen.ui" line="451"/>
         <source>العدد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="115"/>
+        <location filename="../main_screen.ui" line="121"/>
         <source>ى / ي</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="141"/>
+        <location filename="../main_screen.ui" line="150"/>
         <source>ـت / ـة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="465"/>
-        <location filename="../main_screen.ui" line="710"/>
+        <location filename="../main_screen.ui" line="164"/>
+        <source>محافظة على ترتيب الكلمات</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="507"/>
+        <location filename="../main_screen.ui" line="752"/>
         <source>سور</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="521"/>
-        <location filename="../main_screen.ui" line="581"/>
+        <location filename="../main_screen.ui" line="563"/>
+        <location filename="../main_screen.ui" line="623"/>
         <source>آيات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="829"/>
-        <location filename="../main_screen.ui" line="984"/>
+        <location filename="../main_screen.ui" line="871"/>
+        <location filename="../main_screen.ui" line="1026"/>
         <source>مجموع النتائج المختارة:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="680"/>
+        <location filename="../main_screen.ui" line="722"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="98"/>
+        <location filename="../main_screen.ui" line="101"/>
         <source>ا / ى</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="296"/>
+        <location filename="../main_screen.ui" line="338"/>
         <source>جذر</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="743"/>
-        <location filename="../main_screen.ui" line="897"/>
+        <location filename="../main_screen.ui" line="785"/>
+        <location filename="../main_screen.ui" line="939"/>
         <source>طريقة الترتيب</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="789"/>
+        <location filename="../main_screen.ui" line="831"/>
         <source>جميع
 النتائج</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="820"/>
+        <location filename="../main_screen.ui" line="862"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="864"/>
+        <location filename="../main_screen.ui" line="906"/>
         <source>كلمات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="933"/>
+        <location filename="../main_screen.ui" line="975"/>
         <source>حركات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="965"/>
+        <location filename="../main_screen.ui" line="1007"/>
         <source>* ادخل حرفين او اكثر للبحث.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="975"/>
+        <location filename="../main_screen.ui" line="1017"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1065"/>
+        <location filename="../main_screen.ui" line="1107"/>
         <source>تصفّح</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="336"/>
+        <location filename="../main_screen.ui" line="378"/>
         <source>من غير تقييد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1030"/>
+        <location filename="../main_screen.ui" line="1072"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1055"/>
+        <location filename="../main_screen.ui" line="1097"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1060"/>
+        <location filename="../main_screen.ui" line="1102"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

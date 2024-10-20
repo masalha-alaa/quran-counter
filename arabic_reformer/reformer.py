@@ -1,7 +1,8 @@
 from .alif import Alif
-from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end,
-                      _alamaat_waqf, alif_maksura, _special_diacritics, diacritics_regex,
-                      _prohibited_characters, _alifs, _d, diacritics_regex_compiled, alif_khunjariyah)
+from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end, alif_maksura,
+                      _special_diacritics, diacritics_regex,
+                      _prohibited_characters, _alifs, _d, diacritics_regex_compiled, alif_khunjariyah,
+                      alamaat_waqf_regex)
 from .la import La
 from .utils import _connects_from_left, _connects_from_right, is_alif
 
@@ -157,7 +158,7 @@ def reform_regex(p, alif_variations=True,
         else:
             new_p += ch
         if ch == " ":
-            new_p += f"(?:[{''.join(_alamaat_waqf)}] )?"
+            new_p += alamaat_waqf_regex
         elif not is_diacritic(ch):
             # not diacritics
             new_p += f"{diacritics_regex}{{,{MAX_CONSECUTIVE_DIACRITICS}}}"

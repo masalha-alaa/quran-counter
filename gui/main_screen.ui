@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1096</width>
-    <height>784</height>
+    <height>867</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,17 +83,20 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            <string notr="true"/>
           </property>
           <property name="maxLength">
-           <number>40</number>
+           <number>30</number>
           </property>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,0,0,0">
+         <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,0,0,0,0,0">
           <property name="spacing">
            <number>6</number>
           </property>
           <item>
            <widget class="QCheckBox" name="alifAlifMaksuraCheckbox">
+            <property name="styleSheet">
+             <string notr="true">font: 18pt;</string>
+            </property>
             <property name="text">
              <string>ا / ى</string>
             </property>
@@ -110,6 +113,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            <widget class="QCheckBox" name="yaAlifMaksuraCheckbox">
             <property name="enabled">
              <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 18pt;</string>
             </property>
             <property name="text">
              <string>ى / ي</string>
@@ -131,14 +137,50 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <property name="font">
              <font>
               <family>Calibri</family>
-              <pointsize>20</pointsize>
+              <pointsize>18</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
             </property>
+            <property name="styleSheet">
+             <string notr="true">font: 18pt;</string>
+            </property>
             <property name="text">
              <string>ـت / ـة</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_7">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="maintainOrderCheckbox">
+            <property name="toolTip">
+             <string>محافظة على ترتيب الكلمات</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 18pt;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/in-order-icon.png</normaloff>:/in-order-icon.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>36</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -574,7 +616,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <attribute name="title">

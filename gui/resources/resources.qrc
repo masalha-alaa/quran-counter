@@ -7,5 +7,6 @@
         <file>book-icon.png</file>
         <file>search-icon.png</file>
         <file>reset-icon.png</file>
+        <file>in-order-icon.png</file>
     </qresource>
 </RCC>

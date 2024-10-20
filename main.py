@@ -9,7 +9,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
 from my_data_loader import MyDataLoader
 from gui.main_screen import Ui_MainWindow
-from validators import ArabicOnlyValidator
+from validators import ArabicOnlyValidator, MaxWordsValidator
 from my_finder_thread import FinderThread
 from emphasizer import emphasize_span, CssColors
 from arabic_reformer import reform_text, is_alif, alif_maksura
@@ -42,9 +42,10 @@ class TabIndex(Enum):
 
 class MainWindow(QMainWindow):
     ITEM_LOAD = 20
+    MAX_WORDS_IF_NOT_MAINTAIN_ORDER = 2
     _exhausted = object()
     REMOVE_THREAD_AFTER_MS = 1000
-    RUNNING_THREADS_MUTEX = QMutex()
+    # RUNNING_THREADS_MUTEX = QMutex()
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -63,6 +64,7 @@ class MainWindow(QMainWindow):
         self.verse_tab_wrapper = TabWrapper(self.ui.ayatTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
         self.surah_tab_wrapper = TabWrapper(self.ui.surahTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
         self.word_tab_wrapper = TabWrapper(self.ui.wordsTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
+        self._max_words_validator = MaxWordsValidator(None if self.ui.maintainOrderCheckbox.isChecked() else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
         self._current_lang = None
         self._apply_language(AppLang.ARABIC)
         self.cursor = None
@@ -124,6 +126,7 @@ class MainWindow(QMainWindow):
     def _setup_events(self):
         self.ui.searchOptionsButtonGroup.buttonToggled.connect(self._search_options_radio_buttons_changed)
         self.ui.tabWidget.currentChanged.connect(self._tab_changed)
+        self.ui.maintainOrderCheckbox.stateChanged.connect(self._maintain_words_order_state_changed)
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
         self.ui.alifAlifMaksuraCheckbox.stateChanged.connect(self._alif_variations_state_changed)
@@ -143,6 +146,7 @@ class MainWindow(QMainWindow):
 
     def _setup_validators(self):
         self.ui.searchWord.setValidator(ArabicOnlyValidator())
+        self.ui.searchWord.setValidator(self._max_words_validator)
 
     def _setup_fonts(self):
         # Load the custom font
@@ -290,18 +294,29 @@ class MainWindow(QMainWindow):
     def _toggle_all_surah_results(self, state):
         self._populate_surah_results()
 
+    def _maintain_words_order_state_changed(self, state):
+        self._max_words_validator.max_words = None if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Checked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER
+        self.ui.searchWord.setFocus()
+        if qt_state == Qt.CheckState.Unchecked and len((words := self.search_word.split())) > 2:
+            self.ui.searchWord.setText(' '.join(words[:MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER]))
+        else:
+            self._search_word_text_changed(self.search_word)
+
     def _final_ta_state_changed(self, state):
         if any(word.endswith(("ت", "ة")) for word in self.search_word.split()):
             self._search_word_text_changed(self.search_word)
+        self.ui.searchWord.setFocus()
 
     def _ya_alif_maksura_state_changed(self, state):
         # if any(word.endswith(("ي", "يء", "ى", "ىء")) for word in self.search_word.split()):
         if any(ch in ['ي', 'ى'] for ch in self.search_word):
             self._search_word_text_changed(self.search_word)
+        self.ui.searchWord.setFocus()
 
     def _alif_variations_state_changed(self, state):
         if any((is_alif(ch) or alif_maksura == ch) for ch in self.search_word):
             self._search_word_text_changed(self.search_word)
+        self.ui.searchWord.setFocus()
 
     @Slot()
     def _filter_button_clicked(self):
@@ -430,9 +445,10 @@ class MainWindow(QMainWindow):
         #       ==> Tried and they do finish in the right order, but idk if we can count on it
         finder_thread = FinderThread()
         finder_thread.set_data(new_text,
-                               self.ui.alifAlifMaksuraCheckbox.isChecked(),
-                               self.ui.yaAlifMaksuraCheckbox.isChecked(),
-                               self.ui.finalTaCheckbox.isChecked(),
+                               self.ui.alifAlifMaksuraCheckbox.isChecked() and self.ui.alifAlifMaksuraCheckbox.isEnabled(),
+                               self.ui.yaAlifMaksuraCheckbox.isChecked() and self.ui.yaAlifMaksuraCheckbox.isEnabled(),
+                               self.ui.finalTaCheckbox.isChecked() and self.ui.finalTaCheckbox.isEnabled(),
+                               self.ui.maintainOrderCheckbox.isChecked() and self.ui.maintainOrderCheckbox.isEnabled(),
                                self.full_word_checkbox,
                                self.beginning_of_word_checkbox,
                                self.ending_of_word_checkbox,
@@ -556,9 +572,16 @@ class MainWindow(QMainWindow):
         # self.detailed_word_display_dialog.open()
         self.detailed_surah_display_dialog.exec()
 
-    def _search_options_radio_buttons_changed(self, button, state):
-        if Qt.CheckState(state) == Qt.CheckState.Unchecked:
+    def _search_options_radio_buttons_changed(self, button, is_checked: bool):
+        if button == self.ui.rootRadioButton:
+            self.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
+            self.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
+            self.ui.finalTaCheckbox.setEnabled(not is_checked)
+            self.ui.maintainOrderCheckbox.setEnabled(not is_checked)
+
+        if not is_checked:
             return
+
         self._search_word_text_changed(self.search_word)
 
 

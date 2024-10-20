@@ -16,6 +16,8 @@ diacritics_regex = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_dia
 diacritics_regex_compiled = re_compile(diacritics_regex)
 _prohibited_characters = ["\u0640"]  # TODO?
 
+alamaat_waqf_regex = f"(?:[{''.join(_alamaat_waqf)}] )?"
+
 # TODO: Adding _alif_khunjariyah to both special diacritics and to _alifs is a bit dangerous
 _alifs = [Alif.ALIF,
           Alif.ALIF_WITH_HAMZA_ABOVE,

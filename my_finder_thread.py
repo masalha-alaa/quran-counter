@@ -2,8 +2,9 @@ from functools import lru_cache
 import re
 from my_data_loader import MyDataLoader
 from PySide6.QtCore import Signal, QThread
-from arabic_reformer import reform_regex
+from arabic_reformer import reform_regex, alamaat_waqf_regex
 from nltk.stem.isri import ISRIStemmer
+from itertools import permutations
 
 
 class FinderThread(QThread):
@@ -18,18 +19,30 @@ class FinderThread(QThread):
         self.alif_alif_maksura_variations = None
         self.ya_variations = None
         self.ta_variations = None
+        self.maintain_words_order = None
         self.full_word = None
         self.beginning_of_word_flag = None
         self.end_of_word_flag = None
+        self.root_flag = None
 
         self._final_word = None
         self._words_num = None
 
-    def set_data(self, word, alif_alif_maksura_variations, ya_variations, ta_variations, full_word, beginning_of_word_flag, end_of_word_flag, root_flag):
+    def set_data(self,
+                 word,
+                 alif_alif_maksura_variations,
+                 ya_variations,
+                 ta_variations,
+                 maintain_words_order,
+                 full_word,
+                 beginning_of_word_flag,
+                 end_of_word_flag,
+                 root_flag):
         self.initial_word = word
         self.alif_alif_maksura_variations = alif_alif_maksura_variations
         self.ya_variations = ya_variations
         self.ta_variations = ta_variations
+        self.maintain_words_order = maintain_words_order
         self.full_word = full_word
         self.beginning_of_word_flag = beginning_of_word_flag
         self.end_of_word_flag = end_of_word_flag
@@ -49,12 +62,16 @@ class FinderThread(QThread):
                                 ta_variations=self.ta_variations)
 
         num_of_search_words = len(new_text.split())
+
         if not self.root_flag:
+            if not self.maintain_words_order and num_of_search_words > 1:
+                separator = f" {alamaat_waqf_regex}"
+                new_text = '|'.join([separator.join(perm) for perm in permutations(new_text.split(separator))])
+
             new_text = f"({new_text})"  # capturing group
 
             beginning_of_word = r"(?: |^)"
             end_of_word = r"(?: |$)"
-
             # beginning_of_word = r"\b"
             # end_of_word = r"\b"
             if self.full_word:
@@ -64,6 +81,7 @@ class FinderThread(QThread):
                     new_text = beginning_of_word + rf"{new_text}"
                 if self.end_of_word_flag:
                     new_text = rf"{new_text}" + end_of_word
+
         self._final_word = new_text
         self._words_num = num_of_search_words
 
