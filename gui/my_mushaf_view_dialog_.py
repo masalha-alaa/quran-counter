@@ -103,10 +103,15 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.clear_selection_info()
         self.get_current_surah_stats()
 
+    def add_thread(self, thread):
+        # MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
+        self.running_threads.add(thread)
+        # MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
+
     def remove_thread(self, thread):
-        MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
+        # MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
         self.running_threads.remove(thread)
-        MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
+        # MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
 
     def get_current_surah_stats(self, clear_current=False):
         if clear_current:
@@ -119,9 +124,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                                          count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked())
             span_thread.from_text('\n'.join(MyDataLoader.get_surah(surah.surah_num)))
             span_thread.result_ready.connect(self.current_surah_stats_callback)
-            MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
-            self.running_threads.add(span_thread)
-            MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
+            self.add_thread(span_thread)
             span_thread.start()
 
     def current_surah_stats_callback(self, span_info: SpanInfo, caller_thread: SpanInfoThread):
@@ -463,9 +466,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         else:
             return
         span_thread.result_ready.connect(self.span_info_completed)
-        MyMushafViewDialog.RUNNING_THREADS_MUTEX.lock()
-        self.running_threads.add(span_thread)
-        MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
+        self.add_thread(span_thread)
         span_thread.start()
 
     def get_selection_info(self, snap_to_beginning_of_word=True) -> CursorPositionInfo | None:

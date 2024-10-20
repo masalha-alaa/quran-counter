@@ -72,10 +72,15 @@ class LazyListWidgetWrapper:
         self.subtext_getter = subtext_getter
         self._sorting_done_callback = None
 
+    def add_thread(self, thread):
+        # LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.lock()
+        self._threads.add(thread)
+        # LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.unlock()
+
     def remove_thread(self, thread):
-        LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.lock()
+        # LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.lock()
         self._threads.remove(thread)
-        LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.unlock()
+        # LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.unlock()
 
     def set_sorting_done_callback(self, callback):
         self._sorting_done_callback = callback
@@ -160,16 +165,12 @@ class LazyListWidgetWrapper:
         sorting_thread.sorting_method = self.get_current_sorting()
         sorting_thread.subtext_getter = self.subtext_getter
         sorting_thread.result_ready.connect(self._sorting_done)
-        LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.lock()
-        self._threads.add(sorting_thread)
-        LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.unlock()
+        self.add_thread(sorting_thread)
         sorting_thread.start()
 
     def _sorting_done(self, sorted_data: list, caller_thread: SortingThread):
         caller_thread.result_ready.disconnect(self._sorting_done)
-        LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.lock()
         QTimer.singleShot(LazyListWidgetWrapper.REMOVE_THREAD_AFTER_MS, lambda: self.remove_thread(caller_thread))
-        LazyListWidgetWrapper.RUNNING_THREADS_MUTEX.unlock()
         self._rows = sorted_data
         self._rows_iter = iter(self._rows)
         self.clear()

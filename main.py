@@ -378,14 +378,14 @@ class MainWindow(QMainWindow):
         self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
     def _add_thread(self, thread):
-        MainWindow.RUNNING_THREADS_MUTEX.lock()
+        # MainWindow.RUNNING_THREADS_MUTEX.lock()
         self.running_threads.add(thread)
-        MainWindow.RUNNING_THREADS_MUTEX.unlock()
+        # MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
     def _remove_thread(self, thread):
-        MainWindow.RUNNING_THREADS_MUTEX.lock()
+        # MainWindow.RUNNING_THREADS_MUTEX.lock()
         self.running_threads.remove(thread)
-        MainWindow.RUNNING_THREADS_MUTEX.unlock()
+        # MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
     def refresh_matches(self):
         # TODO: make background thread if takes too much time
