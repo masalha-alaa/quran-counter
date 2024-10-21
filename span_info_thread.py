@@ -1,5 +1,5 @@
 import re
-from PySide6.QtCore import Signal, QThread
+from PySide6.QtCore import Signal, QThread, QCoreApplication
 from PySide6.QtGui import QTextCursor
 from arabic_reformer import is_diacritic, normalize_letter, alif_khunjariyah
 from cursor_position_info import CursorPositionInfo
@@ -70,6 +70,7 @@ class SpanInfoThread(QThread):
                         ch = normalize_letter(ch)
                         letters[ch] = letters.get(ch, 0) + 1
                         self.info.letters_in_selection += 1
+            QCoreApplication.processEvents()
         self.info.most_repeated_letter = max(letters.items(), key=lambda x: x[1], default="")
 
         try:
@@ -77,5 +78,3 @@ class SpanInfoThread(QThread):
             # try catch is for debug only - exception isn't thrown in non-debug mode
         except RuntimeError as e:
             print(e)
-
-

@@ -1,11 +1,13 @@
 import threading
 import traceback
 import re
+from datetime import datetime
 from enum import Enum, auto
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QDialog
 from gui.mushaf_view import Ui_MushafViewDialog
-from PySide6.QtCore import Qt, QMutex, QTimer
+from gui.spinning_loader import SpinningLoader
+from PySide6.QtCore import Qt, QMutex, QTimer, QCoreApplication
 from PySide6.QtGui import QCursor, QIntValidator
 from my_data_loader import MyDataLoader
 from validators import ArabicOnlyValidator
@@ -55,6 +57,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     MIN_VERSE = 1
     MAX_VERSE = 286
     REMOVE_THREAD_AFTER_MS = 1000
+    MIN_PAGES_FOR_WAITING = 100
     basmalah = "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ"
     verse_num_pattern = re.compile(r"\((\d{,3})\)")
     CURRENT_SURAH_STATS_MUTEX = QMutex()
@@ -67,6 +70,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.setWindowFlags(self.windowFlags() |
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
+        self.spinner = SpinningLoader()
         self.df = MyDataLoader.get_data()
         self._current_page = 1
         self._current_surah = 1
@@ -160,6 +164,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def clear_selection_info(self):
         self.selectionStartLabel.setText("")
         self.selectionEndLabel.setText("")
+        self.selectionStartInfo = None
+        self.selectionEndInfo = None
 
     def beam_cursor(self):
         self.textBrowser.viewport().setProperty("cursor", QCursor(Qt.CursorShape.IBeamCursor))
@@ -419,6 +425,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         caller_thread.result_ready.disconnect(self.span_info_completed)
         QTimer.singleShot(MyMushafViewDialog.REMOVE_THREAD_AFTER_MS, lambda: self.remove_thread(caller_thread))
         self.wordsInSelection.setText(str(span_info.words_in_selection))
+        self.finished_waiting()
         # print(f"{count.words_in_selection = }")
 
     def selection_start_button_clicked(self):
@@ -469,7 +476,10 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             return
         span_thread.result_ready.connect(self.span_info_completed)
         self.add_thread(span_thread)
+
         span_thread.start()
+        if selection_type == SelectionType.BY_REF and self.selectionEndInfo - self.selectionStartInfo >= MyMushafViewDialog.MIN_PAGES_FOR_WAITING:
+            self.waiting()
 
     def get_selection_info(self, snap_to_beginning_of_word=True) -> CursorPositionInfo | None:
         selection_start, selection_end = self.textBrowser.textCursor().selectionStart(), self.textBrowser.textCursor().selectionEnd()
@@ -542,3 +552,45 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def restart_stats_button_clicked(self):
         for widget in self.stats_widgets:
             widget.setText("0")
+
+    def enable_inputs(self,
+                      page_input: bool = True,
+                      surah_num: bool = True,
+                      verse_num_1: bool = True,
+                      surah_name: bool = True,
+                      verse_num_2: bool = True,):
+        if page_input:
+            self.pageInput.setEnabled(True)
+        if surah_num:
+            self.surahNumInput.setEnabled(True)
+        if verse_num_1:
+            self.verseInput.setEnabled(True)
+        if surah_name:
+            self.surahNameInput.setEnabled(True)
+        if verse_num_2:
+            self.verseInput_2.setEnabled(True)
+
+    def disable_inputs(self,
+                       page_input: bool = True,
+                       surah_num: bool = True,
+                       verse_num_1: bool = True,
+                       surah_name: bool = True,
+                       verse_num_2: bool = True,):
+        if page_input:
+            self.pageInput.setEnabled(False)
+        if surah_num:
+            self.surahNumInput.setEnabled(False)
+        if verse_num_1:
+            self.verseInput.setEnabled(False)
+        if surah_name:
+            self.surahNameInput.setEnabled(False)
+        if verse_num_2:
+            self.verseInput_2.setEnabled(False)
+
+    def waiting(self):
+        self.spinner.start()
+        self.disable_inputs()
+
+    def finished_waiting(self):
+        self.spinner.stop()
+        self.enable_inputs()

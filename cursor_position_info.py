@@ -23,10 +23,10 @@ class CursorPositionInfo:
 
     def clear(self):
         self.surah_name = None
-        self.surah_num = 0
-        self.verse_num = 0
-        self.page_num = 0
-        self.word_num_in_verse = 0
+        self.surah_num = None
+        self.verse_num = None
+        self.page_num = None
+        self.word_num_in_verse = None
         self.word = None
 
     def __gt__(self, other):
@@ -72,6 +72,12 @@ class CursorPositionInfo:
     def __le__(self, other):
         # less or equal
         return self.__lt__(other) or self.__eq__(other)
+
+    def __add__(self, other):
+        return self.page_num + other.page_num
+
+    def __sub__(self, other):
+        return self.page_num - other.page_num
 
     def __repr__(self):
         return (f"{self.page_num = }\n"
