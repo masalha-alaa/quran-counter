@@ -1,8 +1,8 @@
 from .alif import Alif
 from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end, alif_maksura,
-                      _special_diacritics, diacritics_regex,
+                      _special_diacritics, diacritics_regex, _tatweel_character,
                       _prohibited_characters, _alifs, _d, diacritics_regex_compiled, alif_khunjariyah,
-                      alamaat_waqf_regex)
+                      alamaat_waqf_regex, _hamzas)
 from .la import La
 from .utils import _connects_from_left, _connects_from_right, is_alif
 
@@ -40,8 +40,8 @@ def reform_text(txt, text_may_contain_diacritics=False):
             return txt_[current_idx - 1]
 
         for j in range(1, MAX_CONSECUTIVE_DIACRITICS + 2):
-            if current_idx - j >= 0 and not is_diacritic(txt_[current_idx - j]):
-                return txt_[current_idx - j]
+            if (prev_idx := current_idx - j) >= 0 and (txt_[prev_idx] == _tatweel_character or not is_diacritic(txt_[prev_idx])):
+                return txt_[prev_idx]
         return None
 
     reformed = list(txt)
@@ -155,11 +155,13 @@ def reform_regex(p, alif_variations=True,
             new_p += "[يى]"
         elif ta_variations and ch in ["ت", "ة"]:
             new_p += "[تة]"
+        elif ch == "ء":
+            new_p += f"[{''.join(_hamzas)}]"
         else:
             new_p += ch
         if ch == " ":
             new_p += alamaat_waqf_regex
-        elif not is_diacritic(ch):
+        elif ch == _tatweel_character or not is_diacritic(ch):
             # not diacritics
             new_p += f"{diacritics_regex}{{,{MAX_CONSECUTIVE_DIACRITICS}}}"
     return new_p

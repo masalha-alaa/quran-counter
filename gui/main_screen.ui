@@ -83,7 +83,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            <string notr="true"/>
           </property>
           <property name="maxLength">
-           <number>30</number>
+           <number>20</number>
           </property>
          </widget>
         </item>
