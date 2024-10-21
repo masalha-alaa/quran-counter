@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1096</width>
-    <height>867</height>
+    <width>1140</width>
+    <height>873</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,7 +88,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,0,0,0,0,0">
+         <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,0,0,0,0,0,0,0">
           <property name="spacing">
            <number>6</number>
           </property>
@@ -159,9 +159,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="maintainOrderCheckbox">
+           <widget class="QCheckBox" name="wordPermutationsCheckbox">
             <property name="toolTip">
-             <string>محافظة على ترتيب الكلمات</string>
+             <string>ترتيب الكلمات غير الزامي</string>
             </property>
             <property name="styleSheet">
              <string notr="true">font: 18pt;</string>
@@ -175,12 +175,32 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             </property>
             <property name="iconSize">
              <size>
-              <width>36</width>
-              <height>36</height>
+              <width>27</width>
+              <height>27</height>
              </size>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_8">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox">
+            <property name="toolTip">
+             <string>&quot;ال&quot; التعريف خيارية</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: 18pt;</string>
+            </property>
+            <property name="text">
+             <string>ال؟</string>
             </property>
            </widget>
           </item>
@@ -407,8 +427,8 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>58</width>
-          <height>48</height>
+          <width>40</width>
+          <height>20</height>
          </size>
         </property>
        </spacer>
@@ -1063,7 +1083,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1096</width>
+     <width>1140</width>
      <height>42</height>
     </rect>
    </property>

@@ -9,7 +9,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
 from my_data_loader import MyDataLoader
 from gui.main_screen import Ui_MainWindow
-from validators import ArabicOnlyValidator, MaxWordsValidator
+from validators import CompositeValidator
 from my_finder_thread import FinderThread
 from emphasizer import emphasize_span, CssColors
 from arabic_reformer import reform_text, is_alif, alif_maksura
@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         self.verse_tab_wrapper = TabWrapper(self.ui.ayatTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
         self.surah_tab_wrapper = TabWrapper(self.ui.surahTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
         self.word_tab_wrapper = TabWrapper(self.ui.wordsTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
-        self._max_words_validator = MaxWordsValidator(None if self.ui.maintainOrderCheckbox.isChecked() else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
+        self._composite_validator = CompositeValidator(None if not self.ui.wordPermutationsCheckbox.isChecked() else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
         self._current_lang = None
         self._apply_language(AppLang.ARABIC)
         self.cursor = None
@@ -126,7 +126,7 @@ class MainWindow(QMainWindow):
     def _setup_events(self):
         self.ui.searchOptionsButtonGroup.buttonToggled.connect(self._search_options_radio_buttons_changed)
         self.ui.tabWidget.currentChanged.connect(self._tab_changed)
-        self.ui.maintainOrderCheckbox.stateChanged.connect(self._maintain_words_order_state_changed)
+        self.ui.wordPermutationsCheckbox.stateChanged.connect(self._maintain_words_order_state_changed)
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
         self.ui.alifAlifMaksuraCheckbox.stateChanged.connect(self._alif_variations_state_changed)
@@ -145,8 +145,9 @@ class MainWindow(QMainWindow):
         self.ui.wordsSortPushButton.clicked.connect(self._sort_word_results_clicked)
 
     def _setup_validators(self):
-        self.ui.searchWord.setValidator(ArabicOnlyValidator())
-        self.ui.searchWord.setValidator(self._max_words_validator)
+        self.ui.searchWord.setValidator(self._composite_validator)
+        # self.ui.searchWord.setValidator(ArabicOnlyValidator())
+        # self.ui.searchWord.setValidator(self._max_words_validator)
 
     def _setup_fonts(self):
         # Load the custom font
@@ -295,9 +296,9 @@ class MainWindow(QMainWindow):
         self._populate_surah_results()
 
     def _maintain_words_order_state_changed(self, state):
-        self._max_words_validator.max_words = None if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Checked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER
+        self._composite_validator.set_max_words(None if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Unchecked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
         self.ui.searchWord.setFocus()
-        if qt_state == Qt.CheckState.Unchecked and len((words := self.search_word.split())) > 2:
+        if qt_state == Qt.CheckState.Checked and len((words := self.search_word.split())) > 2:
             self.ui.searchWord.setText(' '.join(words[:MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER]))
         else:
             self._search_word_text_changed(self.search_word)
@@ -448,7 +449,7 @@ class MainWindow(QMainWindow):
                                self.ui.alifAlifMaksuraCheckbox.isChecked() and self.ui.alifAlifMaksuraCheckbox.isEnabled(),
                                self.ui.yaAlifMaksuraCheckbox.isChecked() and self.ui.yaAlifMaksuraCheckbox.isEnabled(),
                                self.ui.finalTaCheckbox.isChecked() and self.ui.finalTaCheckbox.isEnabled(),
-                               self.ui.maintainOrderCheckbox.isChecked() and self.ui.maintainOrderCheckbox.isEnabled(),
+                               not (self.ui.wordPermutationsCheckbox.isChecked() and self.ui.wordPermutationsCheckbox.isEnabled()),
                                self.full_word_checkbox,
                                self.beginning_of_word_checkbox,
                                self.ending_of_word_checkbox,
@@ -577,7 +578,7 @@ class MainWindow(QMainWindow):
             self.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
             self.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
             self.ui.finalTaCheckbox.setEnabled(not is_checked)
-            self.ui.maintainOrderCheckbox.setEnabled(not is_checked)
+            self.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
 
         if not is_checked:
             return

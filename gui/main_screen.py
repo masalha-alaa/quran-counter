@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1096, 867)
+        MainWindow.resize(1140, 873)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
@@ -127,16 +127,29 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.line_7)
 
-        self.maintainOrderCheckbox = QCheckBox(self.centralwidget)
-        self.maintainOrderCheckbox.setObjectName(u"maintainOrderCheckbox")
-        self.maintainOrderCheckbox.setStyleSheet(u"font: 18pt;")
+        self.wordPermutationsCheckbox = QCheckBox(self.centralwidget)
+        self.wordPermutationsCheckbox.setObjectName(u"wordPermutationsCheckbox")
+        self.wordPermutationsCheckbox.setStyleSheet(u"font: 18pt;")
         icon = QIcon()
         icon.addFile(u":/in-order-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.maintainOrderCheckbox.setIcon(icon)
-        self.maintainOrderCheckbox.setIconSize(QSize(36, 36))
-        self.maintainOrderCheckbox.setChecked(True)
+        self.wordPermutationsCheckbox.setIcon(icon)
+        self.wordPermutationsCheckbox.setIconSize(QSize(27, 27))
+        self.wordPermutationsCheckbox.setChecked(False)
 
-        self.horizontalLayout_8.addWidget(self.maintainOrderCheckbox)
+        self.horizontalLayout_8.addWidget(self.wordPermutationsCheckbox)
+
+        self.line_8 = QFrame(self.centralwidget)
+        self.line_8.setObjectName(u"line_8")
+        self.line_8.setFrameShape(QFrame.Shape.VLine)
+        self.line_8.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout_8.addWidget(self.line_8)
+
+        self.checkBox = QCheckBox(self.centralwidget)
+        self.checkBox.setObjectName(u"checkBox")
+        self.checkBox.setStyleSheet(u"font: 18pt;")
+
+        self.horizontalLayout_8.addWidget(self.checkBox)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_8)
@@ -242,7 +255,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout_20)
 
-        self.horizontalSpacer = QSpacerItem(58, 48, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
@@ -648,7 +661,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1096, 42))
+        self.menubar.setGeometry(QRect(0, 0, 1140, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
         icon4 = QIcon()
@@ -704,9 +717,13 @@ class Ui_MainWindow(object):
         self.yaAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
         self.finalTaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0640\u062a / \u0640\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.maintainOrderCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u0645\u062d\u0627\u0641\u0638\u0629 \u0639\u0644\u0649 \u062a\u0631\u062a\u064a\u0628 \u0627\u0644\u0643\u0644\u0645\u0627\u062a", None))
+        self.wordPermutationsCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u062a\u0631\u062a\u064a\u0628 \u0627\u0644\u0643\u0644\u0645\u0627\u062a \u063a\u064a\u0631 \u0627\u0644\u0632\u0627\u0645\u064a", None))
 #endif // QT_CONFIG(tooltip)
-        self.maintainOrderCheckbox.setText("")
+        self.wordPermutationsCheckbox.setText("")
+#if QT_CONFIG(tooltip)
+        self.checkBox.setToolTip(QCoreApplication.translate("MainWindow", u"\"\u0627\u0644\" \u0627\u0644\u062a\u0639\u0631\u064a\u0641 \u062e\u064a\u0627\u0631\u064a\u0629", None))
+#endif // QT_CONFIG(tooltip)
+        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u061f", None))
 #if QT_CONFIG(tooltip)
         self.beginningOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
