@@ -175,8 +175,8 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             </property>
             <property name="iconSize">
              <size>
-              <width>27</width>
-              <height>27</height>
+              <width>26</width>
+              <height>26</height>
              </size>
             </property>
             <property name="checked">
@@ -192,7 +192,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="optionalAlTarifCheckbox">
             <property name="toolTip">
              <string>&quot;ال&quot; التعريف خيارية</string>
             </property>

@@ -133,7 +133,7 @@ class Ui_MainWindow(object):
         icon = QIcon()
         icon.addFile(u":/in-order-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.wordPermutationsCheckbox.setIcon(icon)
-        self.wordPermutationsCheckbox.setIconSize(QSize(27, 27))
+        self.wordPermutationsCheckbox.setIconSize(QSize(26, 26))
         self.wordPermutationsCheckbox.setChecked(False)
 
         self.horizontalLayout_8.addWidget(self.wordPermutationsCheckbox)
@@ -145,11 +145,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.line_8)
 
-        self.checkBox = QCheckBox(self.centralwidget)
-        self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setStyleSheet(u"font: 18pt;")
+        self.optionalAlTarifCheckbox = QCheckBox(self.centralwidget)
+        self.optionalAlTarifCheckbox.setObjectName(u"optionalAlTarifCheckbox")
+        self.optionalAlTarifCheckbox.setStyleSheet(u"font: 18pt;")
 
-        self.horizontalLayout_8.addWidget(self.checkBox)
+        self.horizontalLayout_8.addWidget(self.optionalAlTarifCheckbox)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_8)
@@ -721,9 +721,9 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.wordPermutationsCheckbox.setText("")
 #if QT_CONFIG(tooltip)
-        self.checkBox.setToolTip(QCoreApplication.translate("MainWindow", u"\"\u0627\u0644\" \u0627\u0644\u062a\u0639\u0631\u064a\u0641 \u062e\u064a\u0627\u0631\u064a\u0629", None))
+        self.optionalAlTarifCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\"\u0627\u0644\" \u0627\u0644\u062a\u0639\u0631\u064a\u0641 \u062e\u064a\u0627\u0631\u064a\u0629", None))
 #endif // QT_CONFIG(tooltip)
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u061f", None))
+        self.optionalAlTarifCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u061f", None))
 #if QT_CONFIG(tooltip)
         self.beginningOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)

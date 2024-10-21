@@ -60,6 +60,10 @@ class MainWindow(QMainWindow):
         self._surah_results_list_uuid = uuid.uuid4().hex
         self._word_results_list_uuid = uuid.uuid4().hex
         self.ui.setupUi(self)
+        
+        self.ui.optionalAlTarifCheckbox.setVisible(False)  # TODO: Enable and implement functionality
+        self.ui.line_8.setVisible(False)  # TODO: Remove
+
         self.ui.tabWidget.setCurrentIndex(0)
         self.verse_tab_wrapper = TabWrapper(self.ui.ayatTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
         self.surah_tab_wrapper = TabWrapper(self.ui.surahTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
@@ -130,6 +134,7 @@ class MainWindow(QMainWindow):
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
         self.ui.alifAlifMaksuraCheckbox.stateChanged.connect(self._alif_variations_state_changed)
+        self.ui.optionalAlTarifCheckbox.stateChanged.connect(self._optional_al_tarif_state_changed)
         self.ui.searchWord.textChanged.connect(self._search_word_text_changed)
         self.ui.foundVerses.verticalScrollBar().actionTriggered.connect(self.before_scroll)
         self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
@@ -295,6 +300,11 @@ class MainWindow(QMainWindow):
     def _toggle_all_surah_results(self, state):
         self._populate_surah_results()
 
+    def _optional_al_tarif_state_changed(self, state):
+        # TODO: implement
+        # self._search_word_text_changed(self.search_word)
+        self.ui.searchWord.setFocus()
+
     def _maintain_words_order_state_changed(self, state):
         self._composite_validator.set_max_words(None if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Unchecked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
         self.ui.searchWord.setFocus()
@@ -449,6 +459,7 @@ class MainWindow(QMainWindow):
                                self.ui.alifAlifMaksuraCheckbox.isChecked() and self.ui.alifAlifMaksuraCheckbox.isEnabled(),
                                self.ui.yaAlifMaksuraCheckbox.isChecked() and self.ui.yaAlifMaksuraCheckbox.isEnabled(),
                                self.ui.finalTaCheckbox.isChecked() and self.ui.finalTaCheckbox.isEnabled(),
+                               self.ui.optionalAlTarifCheckbox.isChecked() and self.ui.optionalAlTarifCheckbox.isEnabled(),
                                not (self.ui.wordPermutationsCheckbox.isChecked() and self.ui.wordPermutationsCheckbox.isEnabled()),
                                self.full_word_checkbox,
                                self.beginning_of_word_checkbox,
@@ -578,6 +589,7 @@ class MainWindow(QMainWindow):
             self.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
             self.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
             self.ui.finalTaCheckbox.setEnabled(not is_checked)
+            self.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
             self.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
 
         if not is_checked:

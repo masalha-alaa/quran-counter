@@ -20,6 +20,7 @@ class FinderThread(QThread):
         self.ya_variations = None
         self.ta_variations = None
         self.maintain_words_order = None
+        self.optional_al_tarif = None
         self.full_word = None
         self.beginning_of_word_flag = None
         self.end_of_word_flag = None
@@ -34,6 +35,7 @@ class FinderThread(QThread):
                  ya_variations,
                  ta_variations,
                  maintain_words_order,
+                 optional_al_tarif,  # TODO: Currently ignored, need to implement
                  full_word,
                  beginning_of_word_flag,
                  end_of_word_flag,
@@ -43,6 +45,7 @@ class FinderThread(QThread):
         self.ya_variations = ya_variations
         self.ta_variations = ta_variations
         self.maintain_words_order = maintain_words_order
+        self.optional_al_tarif = optional_al_tarif
         self.full_word = full_word
         self.beginning_of_word_flag = beginning_of_word_flag
         self.end_of_word_flag = end_of_word_flag

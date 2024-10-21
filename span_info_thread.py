@@ -4,6 +4,7 @@ from PySide6.QtGui import QTextCursor
 from arabic_reformer import is_diacritic, normalize_letter, alif_khunjariyah
 from cursor_position_info import CursorPositionInfo
 from my_data_loader import MyDataLoader
+from arabic_reformer import rub_el_hizb_mark
 
 
 class SpanInfo:
@@ -53,7 +54,7 @@ class SpanInfoThread(QThread):
         letters = {}
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):
-                if not is_diacritic(word):
+                if not is_diacritic(word) and word != rub_el_hizb_mark:
                     if word in self.waikanna:
                         if self.count_waikaana_as_two_words:
                             self.info.words_in_selection += 2

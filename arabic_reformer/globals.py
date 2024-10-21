@@ -11,7 +11,7 @@ _n_to_m_conversion = "\u06E2"
 rub_el_hizb_mark = "\u06DE"
 alif_maksura = "ى"
 _special_diacritics = ["\uFC60", "\uFC61", "\uFC62", "\u0640", "\u06DF", "\u06EA"] + [
-    alif_khunjariyah] + _alamaat_waqf + _long_harakat + [_n_to_m_conversion] + [rub_el_hizb_mark]
+    alif_khunjariyah] + _alamaat_waqf + _long_harakat + [_n_to_m_conversion]
 diacritics_regex = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
 diacritics_regex_compiled = re_compile(diacritics_regex)
 _prohibited_characters = ["\u0640"]  # TODO?
