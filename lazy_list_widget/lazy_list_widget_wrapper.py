@@ -42,7 +42,7 @@ class SortingThread(QThread):
 
 
 class LazyListWidgetWrapper:
-    REMOVE_THREAD_AFTER_MS = 1000
+    REMOVE_THREAD_AFTER_MS = 500
     # RUNNING_THREADS_MUTEX = QMutex()
 
     def __init__(self, parent: QListWidget, subtext_getter: AbstractSubtextGetter, default_items_load=30,

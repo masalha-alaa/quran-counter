@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
     ITEM_LOAD = 20
     MAX_WORDS_IF_NOT_MAINTAIN_ORDER = 2
     _exhausted = object()
-    REMOVE_THREAD_AFTER_MS = 1000
+    REMOVE_THREAD_AFTER_MS = 500
     # RUNNING_THREADS_MUTEX = QMutex()
 
     def __init__(self):
@@ -411,6 +411,7 @@ class MainWindow(QMainWindow):
     def _remove_thread(self, thread):
         # MainWindow.RUNNING_THREADS_MUTEX.lock()
         self.running_threads.remove(thread)
+        # print(f"{len(self.running_threads) = }")
         # MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
     def refresh_matches(self):

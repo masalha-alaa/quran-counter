@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
         self.searchWord.setSizePolicy(sizePolicy1)
         self.searchWord.setMaximumSize(QSize(16777215, 16777215))
         self.searchWord.setStyleSheet(u"")
-        self.searchWord.setMaxLength(20)
+        self.searchWord.setMaxLength(40)
 
         self.verticalLayout.addWidget(self.searchWord)
 

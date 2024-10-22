@@ -86,6 +86,7 @@ class FinderThread(QThread):
                     new_text = rf"{new_text}" + end_of_word
 
         self._final_word = new_text
+        # print(self._final_word)
         self._words_num = num_of_search_words
 
     def _find_in_surah(self, row, w):
@@ -106,6 +107,8 @@ class FinderThread(QThread):
                 # [(surah_num, verse_num, verse, [spans]), (...), ...]
                 all_matches.append((int(row.name)+1, i + 1, verse, matches_in_verse))
                 number_of_matches += len(matches_in_verse)
+            # if i % 100 == 0:
+            #     QCoreApplication.processEvents()
         return (all_matches if all_matches else None), number_of_matches, len(all_matches) > 0, len(all_matches)
 
     def _find_word(self, w):

@@ -56,7 +56,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     LAST_SURAH = 114
     MIN_VERSE = 1
     MAX_VERSE = 286
-    REMOVE_THREAD_AFTER_MS = 1000
+    REMOVE_THREAD_AFTER_MS = 500
     MIN_PAGES_FOR_WAITING = 100
     basmalah = "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ"
     verse_num_pattern = re.compile(r"\((\d{,3})\)")
