@@ -39,6 +39,6 @@ class WordBoundsFinderThread(QThread):
                     counts[word][-1].extend((word_start, word_end))
                 else:
                     counts[word].append([surah_num, verse_num, word_start, word_end])
-        self._matches.clear()
+        self._matches = []
         self.result_ready.emit([CustomRow(f"{w}:\t\t{sum(((len(lst) - 2) // 2) for lst in data)}", data) for w,data in counts.items()], self)
         # print(f"word bounds end {id(self)}")

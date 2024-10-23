@@ -543,7 +543,7 @@ class MainWindow(QMainWindow):
         self.lazy_surah_results_list.sort()
         current_sorting = self.lazy_surah_results_list.get_current_sorting()
         self.ui.sortMethodLabel.setText(translate_text(current_sorting.to_string()))
-        self.ui.sortPushButton.setEnabled(self._all_matches is not None and len(self._all_matches) > 0)
+        self.ui.sortPushButton.setEnabled(counts is not None and len(counts) > 0)
 
     def surah_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
         total = sum(int(SurahResultsSubtextGetter.ptrn.search(item.text()).group(3)) for item in selected_items)
@@ -574,7 +574,7 @@ class MainWindow(QMainWindow):
         self.lazy_word_results_list.sort()
         current_sorting = self.lazy_word_results_list.get_current_sorting()
         self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
-        self.ui.wordsSortPushButton.setEnabled(self._all_matches is not None and len(self._all_matches) > 0)
+        self.ui.wordsSortPushButton.setEnabled(counts is not None and len(counts) > 0)
 
     def word_bounds_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
         total = sum(int(WordBoundsResultsSubtextGetter.ptrn.search(item.text()).group(2)) for item in selected_items)

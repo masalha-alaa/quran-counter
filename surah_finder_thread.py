@@ -34,6 +34,6 @@ class SurahFinderThread(QThread):
             matches_num, verse_nums_and_spans = count
             rows.append(CustomRow(f"{surah_name} <{surah_num}>:\t\t{matches_num}", verse_nums_and_spans))
 
-        self._matches.clear()
+        self._matches = []
         self.result_ready.emit(rows, self)
         # print(f"surah end {id(self)}")
