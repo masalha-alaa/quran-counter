@@ -84,9 +84,9 @@ class MainWindow(QMainWindow):
         # self._finder_thread.result_ready.connect(self.on_word_found_complete)
 
         self._prev_scrolling_value = 0
-        self._all_matches = None
+        self._all_matches = []
         self._filtered_matches_iter = None
-        self._filtered_matches_idx = None
+        self._filtered_matches_idx = []
         self._adding_items = False
         # [f"<span style=\"color: {c.value};\">" for c in color]
 
@@ -438,18 +438,14 @@ class MainWindow(QMainWindow):
             self.verse_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
             self.surah_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
             self.word_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
-            match self.ui.tabWidget.currentIndex():
-                case TabIndex.VERSES.value:
-                    self.ui.filterButton.setEnabled(False)
-                    self.ui.sortPushButton.setEnabled(False)
-                    self.ui.wordsSortPushButton.setEnabled(False)
-                    self.ui.foundVerses.clear()
-                case TabIndex.SURAHS.value:
-                    self.lazy_surah_results_list.clear()
-                    self.lazy_surah_results_list.save_values([])
-                case TabIndex.WORDS.value:
-                    self.lazy_word_results_list.clear()
-                    self.lazy_word_results_list.save_values([])
+            self.ui.filterButton.setEnabled(False)
+            self.ui.sortPushButton.setEnabled(False)
+            self.ui.wordsSortPushButton.setEnabled(False)
+            self.ui.foundVerses.clear()
+            self.lazy_surah_results_list.clear()
+            self.lazy_surah_results_list.save_values([])
+            self.lazy_word_results_list.clear()
+            self.lazy_word_results_list.save_values([])
             return
 
         if self.ui.rootRadioButton.isChecked():

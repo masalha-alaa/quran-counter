@@ -12,7 +12,7 @@ class WordBoundsFinderThread(QThread):
 
     def __init__(self, diacritics_sensitive=True):
         super().__init__()
-        self._matches = None
+        self._matches = []
         self._diacritics_sensitive = diacritics_sensitive
 
     def set_data(self, matches, diacritics_sensitive):
@@ -39,6 +39,6 @@ class WordBoundsFinderThread(QThread):
                     counts[word][-1].extend((word_start, word_end))
                 else:
                     counts[word].append([surah_num, verse_num, word_start, word_end])
-        self._matches = None
+        self._matches.clear()
         self.result_ready.emit([CustomRow(f"{w}:\t\t{sum(((len(lst) - 2) // 2) for lst in data)}", data) for w,data in counts.items()], self)
         # print(f"word bounds end {id(self)}")

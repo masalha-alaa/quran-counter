@@ -145,11 +145,11 @@ class LazyListWidgetWrapper:
 
         if how_many is None:
             how_many = self._default_items_load
-        for i in range(how_many):
+        for _ in range(how_many):
             if (row := next(self._rows_iter, self._exhausted)) is self._exhausted:
                 return _done()
             # self.list_widget.addItem(self._row_widget(row, self.subtext_getter, self.get_current_sorting))
-            self.list_widget.addItem(self._row_widget(row, i+1))
+            self.list_widget.addItem(self._row_widget(row, self.list_widget.count() + 1))
             # self.list_widget.addItem(row.label)
         return _done()
 

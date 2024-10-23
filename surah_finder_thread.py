@@ -8,7 +8,7 @@ class SurahFinderThread(QThread):
 
     def __init__(self, surah_index: dict, include_zeros=False):
         super().__init__()
-        self._matches = None
+        self._matches = []
         self._surah_index = surah_index
         self._include_zeros = include_zeros
 
@@ -34,6 +34,6 @@ class SurahFinderThread(QThread):
             matches_num, verse_nums_and_spans = count
             rows.append(CustomRow(f"{surah_name} <{surah_num}>:\t\t{matches_num}", verse_nums_and_spans))
 
-        self._matches = None
+        self._matches.clear()
         self.result_ready.emit(rows, self)
         # print(f"surah end {id(self)}")
