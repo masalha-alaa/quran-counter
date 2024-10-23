@@ -18,6 +18,16 @@ class SpanInfo:
         self.words_from_beginning_of_quran = 0
         self.words_in_selection = 0
 
+    def __repr__(self):
+        return (f"{self.surah_name = }\n"
+                f"{self.letters_from_beginning_of_surah = }\n"
+                f"{self.letters_from_beginning_of_quran = }\n"
+                f"{self.letters_in_selection = }\n"
+                f"{self.most_repeated_letter = }\n"
+                f"{self.words_from_beginning_of_surah = }\n"
+                f"{self.words_from_beginning_of_quran = }\n"
+                f"{self.words_in_selection = }\n")
+
 
 class SpanInfoThread(QThread):
     result_ready = Signal(SpanInfo, float, QThread)

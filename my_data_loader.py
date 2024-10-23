@@ -1,7 +1,7 @@
 import pandas as pd
 from yaml import safe_load
 from json import load as j_load
-from my_utils import resource_path
+from my_utils import resource_path, AppLang
 from difflib import get_close_matches
 
 
@@ -19,7 +19,8 @@ class MyDataLoader:
     page_surah_verses = None
     surah_num_to_name_map = None
     surah_name_to_num_map = None
-    surah_num_to_name_eng = None
+    surah_num_to_name_map_eng = None
+    surah_name_to_num_map_eng = None
     waw_words = None
     FIRST_SURAH = 1
     LAST_SURAH = 114
@@ -30,9 +31,10 @@ class MyDataLoader:
         if MyDataLoader.df is None:
             config = safe_load(open(resource_path("config.yml"), mode='r'))
             pages = j_load(open(resource_path('data/surah-num-page-map.json')))
-            MyDataLoader.surah_num_to_name_eng = j_load(open(resource_path('data/surah-map-en.json'), encoding='utf-8'))
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
             MyDataLoader.surah_name_to_num_map = {v:k for k,v in MyDataLoader.surah_num_to_name_map.items()}
+            MyDataLoader.surah_num_to_name_map_eng = j_load(open(resource_path('data/surah-map-en.json'), encoding='utf-8'))
+            MyDataLoader.surah_name_to_num_map_eng = {v: k for k, v in MyDataLoader.surah_num_to_name_map_eng.items()}
             MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
             MyDataLoader.df.set_index("surah", drop=False, inplace=True)
             MyDataLoader.waw_words = set(j_load(open(resource_path('data/waw_words.json'), encoding='utf-8')))
@@ -49,22 +51,34 @@ class MyDataLoader:
         return MyDataLoader.surah_num_to_name_map.get(str(surah_num))
 
     @staticmethod
-    def get_surah_num(surah_name):
+    def get_surah_num(surah_name, source_language: AppLang = AppLang.ARABIC):
+        if source_language == AppLang.ENGLISH:
+            if (num := MyDataLoader.surah_name_to_num_map_eng.get(str(surah_name))) is None:
+                return MyDataLoader.surah_name_to_num_map_eng.get(MyDataLoader._get_closest_surah_name_en(surah_name))
+            return num
+
         if (num := MyDataLoader.surah_name_to_num_map.get(str(surah_name))) is None:
             return MyDataLoader.surah_name_to_num_map.get(MyDataLoader._get_closest_surah_name(surah_name))
         return num
 
     @staticmethod
     def get_surah_name_eng(surah_num):
-        return MyDataLoader.surah_num_to_name_eng.get(str(surah_num))
+        return MyDataLoader.surah_num_to_name_map_eng.get(str(surah_num))
 
     @staticmethod
     def arabic_surah_name_to_english_surah_name(arabic_surah_name):
-        MyDataLoader.get_surah_name_eng(MyDataLoader.get_surah_num(arabic_surah_name))
+        return MyDataLoader.get_surah_name_eng(MyDataLoader.get_surah_num(arabic_surah_name))
 
     @staticmethod
     def _get_closest_surah_name(surah_name):
         closest = get_close_matches(surah_name, MyDataLoader.surah_name_to_num_map.keys(), n=1, cutoff=0.80)
+        if closest:
+            return closest[0]
+        return None
+
+    @staticmethod
+    def _get_closest_surah_name_en(surah_name):
+        closest = get_close_matches(surah_name, MyDataLoader.surah_name_to_num_map_eng.keys(), n=1, cutoff=0.80)
         if closest:
             return closest[0]
         return None

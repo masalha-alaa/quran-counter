@@ -154,18 +154,18 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.lock()
         # letters num
         letters_num_new_text = (self.surahLettersNum.text() + ", " + f"{translate_text(span_info.surah_name)}: {span_info.letters_in_selection}").strip(", ")
-        letters_num_sorted_results = sorted(letters_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        letters_num_sorted_results = sorted(letters_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0], self._current_lang))
         self.surahLettersNum.setText(", ".join(letters_num_sorted_results))
 
         # most repeated letter
         letter, repetitions = span_info.most_repeated_letter
         most_repeated_letter_new_text = (self.mostRepeatedLetter.text() + ", " + f"{translate_text(span_info.surah_name)}: '{letter}' ({repetitions})").strip(", ")
-        most_repeated_letter_sorted_results = sorted(most_repeated_letter_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        most_repeated_letter_sorted_results = sorted(most_repeated_letter_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0], self._current_lang))
         self.mostRepeatedLetter.setText(", ".join(most_repeated_letter_sorted_results))
 
         # surah words num
         surah_words_num_new_text = (self.surahWordsNum.text() + ", " + f"{translate_text(span_info.surah_name)}: {span_info.words_in_selection}").strip(", ")
-        surah_words_num_sorted_results = sorted(surah_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        surah_words_num_sorted_results = sorted(surah_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0], self._current_lang))
         self.surahWordsNum.setText(", ".join(surah_words_num_sorted_results))
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.unlock()
 
