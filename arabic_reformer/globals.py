@@ -10,6 +10,8 @@ alif_khunjariyah = "\u0670"  # ـٰ
 _n_to_m_conversion = "\u06E2"
 rub_el_hizb_mark = "\u06DE"
 alif_maksura = "ى"
+_ya_variations = ["ي", "ى"]
+_final_ta_variations = ["ت", "ة"]
 _hamza_above = "\u0654"
 _hamzas = ["\u0621", _hamza_above]
 _tatweel_character = "\u0640"
@@ -75,3 +77,10 @@ _d = {
     "ئ": (chr(0xFE8B), chr(0xFE8C), chr(0xFE8A)),
     "ء": (chr(0x0621), chr(0x0621), chr(0x0621)),
 }
+
+arabic_alphabit = [x for x in sum([[k] + [v_i for v_i in v] for k, v in _d.items() if k != 'invisible'] +
+                                  [_alifs] +
+                                  [_hamzas] +
+                                  [_ya_variations] +
+                                  [_final_ta_variations], [])
+                   if x is not None]

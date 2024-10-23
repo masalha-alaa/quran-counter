@@ -32,6 +32,7 @@ class MyDataLoader:
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
             MyDataLoader.surah_name_to_num_map = {v:k for k,v in MyDataLoader.surah_num_to_name_map.items()}
             MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
+            MyDataLoader.df.set_index("surah", drop=False, inplace=True)
             MyDataLoader.waw_words = set(j_load(open(resource_path('data/waw_words.json'), encoding='utf-8')))
             # TODO: save columns in df beforehand
             verses_col = config['data']['verses_column']

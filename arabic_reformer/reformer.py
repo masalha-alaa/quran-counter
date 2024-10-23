@@ -1,8 +1,9 @@
+from functools import lru_cache
 from .alif import Alif
 from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end, alif_maksura,
                       _special_diacritics, diacritics_regex, _tatweel_character,
                       _prohibited_characters, _alifs, _d, diacritics_regex_compiled, alif_khunjariyah,
-                      alamaat_waqf_regex, _hamzas)
+                      alamaat_waqf_regex, _hamzas, _ya_variations, _final_ta_variations)
 from .la import La
 from .utils import _connects_from_left, _connects_from_right, is_alif
 
@@ -11,8 +12,45 @@ def get_arabic_abc():
     return [k for k in _d.keys() if k != "invisible"]
 
 
-def reform_char(ch):
-    return _d.get(ch, ch)
+@lru_cache(maxsize=len(_d) * 2)
+def reform_char(ch,
+                alif_variations=True,
+                alif_alif_maksura_variations=False,
+                ya_variations=False,
+                ta_variations=False):
+    reformed_char = ""
+    if is_alif(ch) and (alif_variations or alif_alif_maksura_variations):
+        variations = []
+        if alif_variations:
+            variations.extend(_alifs)
+        if alif_alif_maksura_variations:
+            variations.append(alif_maksura)
+        reformed_char += f"[{''.join(variations)}]"
+    elif ch == alif_maksura and (ya_variations or alif_alif_maksura_variations):
+        variations = []
+        if ya_variations:
+            variations.extend(_ya_variations)
+        if alif_alif_maksura_variations:
+            variations.append(alif_maksura)
+            if alif_variations:
+                variations.extend(_alifs)
+            else:
+                variations.append("ا")
+        reformed_char += f"[{''.join(variations)}]"
+    elif ya_variations and ch in _ya_variations:
+        reformed_char += f"[{''.join(_ya_variations)}]"
+    elif ta_variations and ch in _final_ta_variations:
+        reformed_char += f"[{''.join(_final_ta_variations)}]"
+    elif ch == "ء":
+        reformed_char += f"[{''.join(_hamzas)}]"
+    else:
+        reformed_char += ch
+    if ch == " ":
+        reformed_char += alamaat_waqf_regex
+    elif ch == _tatweel_character or not is_diacritic(ch):
+        # not diacritics
+        reformed_char += f"{diacritics_regex}{{,{MAX_CONSECUTIVE_DIACRITICS}}}"
+    return reformed_char
 
 
 def is_diacritic(ch):
@@ -133,37 +171,11 @@ def reform_regex(p, alif_variations=True,
                  ta_variations=False):
     new_p = ""
     for ch in p:
-        if is_alif(ch) and (alif_variations or alif_alif_maksura_variations):
-            variations = []
-            if alif_variations:
-                variations.extend(_alifs)
-            if alif_alif_maksura_variations:
-                variations.append(alif_maksura)
-            new_p += f"[{''.join(variations)}]"
-        elif ch == alif_maksura and (ya_variations or alif_alif_maksura_variations):
-            variations = []
-            if ya_variations:
-                variations.extend(["ي", "ى"])
-            if alif_alif_maksura_variations:
-                variations.append(alif_maksura)
-                if alif_variations:
-                    variations.extend(_alifs)
-                else:
-                    variations.append("ا")
-            new_p += f"[{''.join(variations)}]"
-        elif ya_variations and ch in ["ي", "ى"]:
-            new_p += "[يى]"
-        elif ta_variations and ch in ["ت", "ة"]:
-            new_p += "[تة]"
-        elif ch == "ء":
-            new_p += f"[{''.join(_hamzas)}]"
-        else:
-            new_p += ch
-        if ch == " ":
-            new_p += alamaat_waqf_regex
-        elif ch == _tatweel_character or not is_diacritic(ch):
-            # not diacritics
-            new_p += f"{diacritics_regex}{{,{MAX_CONSECUTIVE_DIACRITICS}}}"
+        new_p += reform_char(ch,
+                             alif_variations=alif_variations,
+                             alif_alif_maksura_variations=alif_alif_maksura_variations,
+                             ya_variations=ya_variations,
+                             ta_variations=ta_variations)
     return new_p
 
 

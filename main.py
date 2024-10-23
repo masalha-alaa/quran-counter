@@ -1,5 +1,6 @@
 import sys
 import re
+from datetime import datetime
 from enum import Enum
 from yaml import safe_load
 import uuid
@@ -51,6 +52,8 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.running_threads = set()
+        self._thread_id = 0
+        self._last_thread_id = -1
         self.spinner = SpinningLoader()
         # TODO: Settings dialog...
         self._translator = QTranslator()
@@ -452,16 +455,14 @@ class MainWindow(QMainWindow):
         if self.ui.rootRadioButton.isChecked():
             self.waiting()
 
-        # TODO: Need to verify threads finish in the right order!
-        #       Test while removing characters from a long word
-        #       ==> Tried and they do finish in the right order, but idk if we can count on it
-        finder_thread = FinderThread()
+        finder_thread = FinderThread(self._thread_id)
+        self._thread_id = datetime.now().timestamp()
         finder_thread.set_data(new_text,
                                self.ui.alifAlifMaksuraCheckbox.isChecked() and self.ui.alifAlifMaksuraCheckbox.isEnabled(),
                                self.ui.yaAlifMaksuraCheckbox.isChecked() and self.ui.yaAlifMaksuraCheckbox.isEnabled(),
                                self.ui.finalTaCheckbox.isChecked() and self.ui.finalTaCheckbox.isEnabled(),
-                               self.ui.optionalAlTarifCheckbox.isChecked() and self.ui.optionalAlTarifCheckbox.isEnabled(),
                                not (self.ui.wordPermutationsCheckbox.isChecked() and self.ui.wordPermutationsCheckbox.isEnabled()),
+                               self.ui.optionalAlTarifCheckbox.isChecked() and self.ui.optionalAlTarifCheckbox.isEnabled(),
                                self.full_word_checkbox,
                                self.beginning_of_word_checkbox,
                                self.ending_of_word_checkbox,
@@ -470,8 +471,11 @@ class MainWindow(QMainWindow):
         self._add_thread(finder_thread)
         finder_thread.start()
 
-    def on_word_found_complete(self, initial_word, words_num, result, caller_thread):
-        # print(initial_word)
+    def on_word_found_complete(self, initial_word, words_num, result, thread_id, caller_thread):
+        if thread_id < self._last_thread_id:
+            return
+        self._last_thread_id = thread_id
+        # print(f"{thread_id} - {initial_word}")
         caller_thread.result_ready.disconnect(self.on_word_found_complete)
         QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result

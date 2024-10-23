@@ -45,7 +45,7 @@ class Disambiguator:
         )
         return response.choices[0].message.content
 
-    @cached(cache={}, key=lambda word, verses, verses_ref, meaning, query: hashkey(word, verses_ref, meaning))
+    @cached(cache={}, key=lambda self, word, meaning, verses_ref, verses: hashkey(word, verses_ref, meaning))
     def get_relevant_verses(self, word, meaning, verses_ref, verses):
         """
         :param verses_ref: for caching purposes only

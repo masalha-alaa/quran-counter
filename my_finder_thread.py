@@ -1,17 +1,28 @@
 from functools import lru_cache
+# import regex as re
 import re
 from my_data_loader import MyDataLoader
-from PySide6.QtCore import Signal, QThread
-from arabic_reformer import reform_regex, alamaat_waqf_regex
+from PySide6.QtCore import Signal, QThread, QMutex
+from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, arabic_alphabit
 from nltk.stem.isri import ISRIStemmer
 from itertools import permutations
 
 
 class FinderThread(QThread):
-    result_ready = Signal(str, int, tuple, QThread)
+    class SingleCache:
+        def __init__(self):
+            self.key = ""
+            self.value = ""
 
-    def __init__(self):
+    MY_CACHE_MUTEX = QMutex()
+    result_ready = Signal(str, int, tuple, float, QThread)
+    dia_or_waqf = rf"(?:(?={re.escape(alamaat_waqf_regex)})|(?={re.escape(diacritics_regex)}))"
+    char_followed_by_dia_or_waqf = re.compile(rf"\[?[{''.join(arabic_alphabit)+' '}]+\]?{dia_or_waqf}")
+    my_cache = SingleCache()
+
+    def __init__(self, thread_id=None):
         super().__init__()
+        self._thread_id = thread_id
         self.df = MyDataLoader.get_data()
         self._working_col = MyDataLoader.get_working_col()
         self.arabic_stemmer = ISRIStemmer()
@@ -86,7 +97,6 @@ class FinderThread(QThread):
                     new_text = rf"{new_text}" + end_of_word
 
         self._final_word = new_text
-        # print(self._final_word)
         self._words_num = num_of_search_words
 
     def _find_in_surah(self, row, w):
@@ -102,7 +112,7 @@ class FinderThread(QThread):
                     cumsum.append(cumsum[j] + len(split_verse[j]) + 1)
                 matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(w, self._get_root(word))]
             else:
-                matches_in_verse = [m.span(1) for m in re.finditer(w, verse, flags=re.M)]
+                matches_in_verse = [m.span(1) for m in re.finditer(w, verse)]
             if matches_in_verse:
                 # [(surah_num, verse_num, verse, [spans]), (...), ...]
                 all_matches.append((int(row.name)+1, i + 1, verse, matches_in_verse))
@@ -111,12 +121,48 @@ class FinderThread(QThread):
             #     QCoreApplication.processEvents()
         return (all_matches if all_matches else None), number_of_matches, len(all_matches) > 0, len(all_matches)
 
-    def _find_word(self, w):
-        spans, number_of_matches, found_in_surah, number_of_verses = zip(*self.df.apply(lambda row: self._find_in_surah(row, w), axis=1))  # NOTE: index is not retained
+    def _actually_find_word(self, w, surah_nums=None):
+        if surah_nums is None:
+            data = self.df
+        else:
+            data = self.df.loc[surah_nums]
+        if data.empty:
+            spans, number_of_matches, index_mask, number_of_verses = [], [], [], []
+        else:
+            spans, number_of_matches, index_mask, number_of_verses = zip(*data.apply(lambda row: self._find_in_surah(row, w), axis=1))  # NOTE: index is not retained
         # spans = chain.from_iterable(tup for lst in spans if lst is not None for tup in lst)
         # spans = (tup for lst in spans if lst is not None for tup in lst)
         spans = [tup for lst in spans if lst is not None for tup in lst]
-        return spans, sum(number_of_matches), sum(found_in_surah), sum(number_of_verses)
+        # return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[np.array(index_mask)].index
+        return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[list(index_mask)].index
+
+    def _find_word(self, w):
+        # get prefix of word (everything excluding last letter and its harakat)
+        *_, prefix_idx = FinderThread.char_followed_by_dia_or_waqf.finditer(w)
+        prefix = w[:prefix_idx.span()[0]]
+
+        # check if prefix is cached, and take cache if available
+        # (the cache is the sura numbers the prefix was found it)
+        FinderThread.MY_CACHE_MUTEX.lock()
+        if FinderThread.my_cache.key == prefix:
+            prefix_surah_idx_cache = FinderThread.my_cache.value
+            FinderThread.MY_CACHE_MUTEX.unlock()
+        else:
+            prefix_surah_idx_cache = None
+        FinderThread.MY_CACHE_MUTEX.unlock()
+
+        # search word in relevant surahs (cached surah numbers, or all surahs if no cache)
+        results = self._actually_find_word(w, prefix_surah_idx_cache)
+        surah_nums = results[-1]
+        # cache results for next time
+        if len(prefix) > 0:
+            FinderThread.MY_CACHE_MUTEX.lock()
+            FinderThread.my_cache.key = w[:-1]
+            FinderThread.my_cache.value = surah_nums
+            FinderThread.MY_CACHE_MUTEX.unlock()
+
+        spans, total_number_of_matches, index_mask, total_number_of_verses, _ = results
+        return spans, total_number_of_matches, sum(index_mask), total_number_of_verses
 
     @lru_cache(maxsize=256)
     def _get_root(self, w):
@@ -129,5 +175,5 @@ class FinderThread(QThread):
         words_num = self._words_num
         if word:
             result = self._find_word(word)
-            self.result_ready.emit(self.initial_word, words_num, result, self)
+            self.result_ready.emit(self.initial_word, words_num, result, self._thread_id, self)
         # print(f"finder end {id(self)}")
