@@ -45,7 +45,7 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="527"/>
-        <location filename="../main_screen.ui" line="772"/>
+        <location filename="../main_screen.ui" line="778"/>
         <source>سور</source>
         <translation type="unfinished"></translation>
     </message>
@@ -56,13 +56,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="891"/>
-        <location filename="../main_screen.ui" line="1046"/>
+        <location filename="../main_screen.ui" line="900"/>
+        <location filename="../main_screen.ui" line="1058"/>
         <source>مجموع النتائج المختارة:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="742"/>
+        <location filename="../main_screen.ui" line="748"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
     </message>
@@ -92,44 +92,60 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="805"/>
-        <location filename="../main_screen.ui" line="959"/>
+        <location filename="../main_screen.ui" line="659"/>
+        <source>تصفية النتائج بمساعدة ChatGPT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="682"/>
+        <source>الغاء التصفية</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="794"/>
+        <location filename="../main_screen.ui" line="951"/>
+        <source>اضغط لتغيير طريقة الترتيب</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main_screen.ui" line="814"/>
+        <location filename="../main_screen.ui" line="971"/>
         <source>طريقة الترتيب</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="851"/>
+        <location filename="../main_screen.ui" line="860"/>
         <source>جميع
 النتائج</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="882"/>
+        <location filename="../main_screen.ui" line="891"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="926"/>
+        <location filename="../main_screen.ui" line="935"/>
         <source>كلمات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="995"/>
+        <location filename="../main_screen.ui" line="1007"/>
         <source>حركات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1027"/>
+        <location filename="../main_screen.ui" line="1039"/>
         <source>* ادخل حرفين او اكثر للبحث.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1037"/>
+        <location filename="../main_screen.ui" line="1049"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1127"/>
+        <location filename="../main_screen.ui" line="1139"/>
         <source>تصفّح</source>
         <translation type="unfinished"></translation>
     </message>
@@ -139,17 +155,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1092"/>
+        <location filename="../main_screen.ui" line="1104"/>
         <source>اللغة / Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1117"/>
+        <location filename="../main_screen.ui" line="1129"/>
         <source>العربية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="1122"/>
+        <location filename="../main_screen.ui" line="1134"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>

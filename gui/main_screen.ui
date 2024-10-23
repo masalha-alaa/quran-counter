@@ -58,7 +58,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string extracomment="Search"/>
+           <string/>
           </property>
           <property name="text">
            <string>الكلمة</string>
@@ -226,7 +226,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <widget class="QRadioButton" name="beginningOfWordRadioButton">
           <property name="toolTip">
-           <string extracomment="Beginning of word"/>
+           <string/>
           </property>
           <property name="text">
            <string>بداية كلمة</string>
@@ -269,7 +269,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <widget class="QRadioButton" name="endOfWordRadioButton">
           <property name="toolTip">
-           <string extracomment="End of word"/>
+           <string/>
           </property>
           <property name="text">
            <string>نهاية كلمة</string>
@@ -312,7 +312,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <widget class="QRadioButton" name="fullWordRadioButton">
           <property name="toolTip">
-           <string extracomment="Full word"/>
+           <string/>
           </property>
           <property name="text">
            <string>كلمة كاملة</string>
@@ -465,7 +465,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="toolTip">
-           <string extracomment="Count"/>
+           <string/>
           </property>
           <property name="text">
            <string>العدد</string>
@@ -521,7 +521,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <widget class="QLabel" name="label_4">
           <property name="toolTip">
-           <string extracomment="Surahs"/>
+           <string/>
           </property>
           <property name="text">
            <string>سور</string>
@@ -577,7 +577,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         <item>
          <widget class="QLabel" name="label_5">
           <property name="toolTip">
-           <string extracomment="Verses"/>
+           <string/>
           </property>
           <property name="text">
            <string>آيات</string>
@@ -636,7 +636,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <attribute name="title">
@@ -654,6 +654,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <widget class="QPushButton" name="filterButton">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>تصفية النتائج بمساعدة ChatGPT</string>
               </property>
               <property name="text">
                <string/>
@@ -674,6 +677,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <widget class="QPushButton" name="clearFilterButton">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>الغاء التصفية</string>
               </property>
               <property name="text">
                <string/>
@@ -736,7 +742,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
               <item>
                <widget class="QCheckBox" name="colorizeCheckbox">
                 <property name="toolTip">
-                 <string extracomment="Colorize"/>
+                 <string/>
                 </property>
                 <property name="text">
                  <string>تلوين</string>
@@ -783,6 +789,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <widget class="QPushButton" name="sortPushButton">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>اضغط لتغيير طريقة الترتيب</string>
               </property>
               <property name="text">
                <string/>
@@ -845,7 +854,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
               <item>
                <widget class="QCheckBox" name="allResultsCheckbox">
                 <property name="toolTip">
-                 <string extracomment="Colorize"/>
+                 <string/>
                 </property>
                 <property name="text">
                  <string>جميع
@@ -937,6 +946,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <widget class="QPushButton" name="wordsSortPushButton">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>اضغط لتغيير طريقة الترتيب</string>
               </property>
               <property name="text">
                <string/>
