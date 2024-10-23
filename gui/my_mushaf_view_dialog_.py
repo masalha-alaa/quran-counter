@@ -80,6 +80,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.stats_widgets = [self.wordsInSelection,]
 
         self.running_threads = set()
+        self._thread_id = -1
+        self._last_thread_id = -1
         self.current_surah_stats = SurahStats()
         self.last_selection_type: None | SelectionType = None
         self.nextPushButton.clicked.connect(self.next_button_clicked)
@@ -133,7 +135,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.add_thread(span_thread)
             span_thread.start()
 
-    def current_surah_stats_callback(self, span_info: SpanInfo, caller_thread: SpanInfoThread):
+    def current_surah_stats_callback(self, span_info: SpanInfo, thread_id, caller_thread: SpanInfoThread):
         caller_thread.result_ready.disconnect(self.current_surah_stats_callback)
         QTimer.singleShot(MyMushafViewDialog.REMOVE_THREAD_AFTER_MS, lambda: self.remove_thread(caller_thread))
 
@@ -415,15 +417,17 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def on_cursor_position_changed(self):
         if self.valid_selection():
             # print(span)
-            # TODO: Not sure a thread is needed here but ok
-            # TODO: Need to verify threads finish in the right order!
             self.start_span_info_thread(SelectionType.BY_TEXT)
         # else:
         #     self.clear_results()
 
-    def span_info_completed(self, span_info: SpanInfo, caller_thread: SpanInfoThread):
+    def span_info_completed(self, span_info: SpanInfo, thread_id, caller_thread: SpanInfoThread):
         caller_thread.result_ready.disconnect(self.span_info_completed)
         QTimer.singleShot(MyMushafViewDialog.REMOVE_THREAD_AFTER_MS, lambda: self.remove_thread(caller_thread))
+        if thread_id < self._last_thread_id:
+            return
+        self._last_thread_id = thread_id
+
         self.wordsInSelection.setText(str(span_info.words_in_selection))
         self.finished_waiting()
         # print(f"{count.words_in_selection = }")
@@ -466,7 +470,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def start_span_info_thread(self, selection_type: SelectionType):
         self.last_selection_type = selection_type
-        span_thread = SpanInfoThread(count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
+        self._thread_id = datetime.now().timestamp()
+        span_thread = SpanInfoThread(self._thread_id,
+                                     count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
                                      count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked())
         if selection_type == SelectionType.BY_TEXT:
             span_thread.from_text(self.textBrowser.textCursor().selection().toPlainText())

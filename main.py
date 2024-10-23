@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.running_threads = set()
-        self._thread_id = 0
+        self._thread_id = -1
         self._last_thread_id = -1
         self.spinner = SpinningLoader()
         # TODO: Settings dialog...
@@ -455,8 +455,8 @@ class MainWindow(QMainWindow):
         if self.ui.rootRadioButton.isChecked():
             self.waiting()
 
-        finder_thread = FinderThread(self._thread_id)
         self._thread_id = datetime.now().timestamp()
+        finder_thread = FinderThread(self._thread_id)
         finder_thread.set_data(new_text,
                                self.ui.alifAlifMaksuraCheckbox.isChecked() and self.ui.alifAlifMaksuraCheckbox.isEnabled(),
                                self.ui.yaAlifMaksuraCheckbox.isChecked() and self.ui.yaAlifMaksuraCheckbox.isEnabled(),
@@ -471,13 +471,13 @@ class MainWindow(QMainWindow):
         self._add_thread(finder_thread)
         finder_thread.start()
 
-    def on_word_found_complete(self, initial_word, words_num, result, thread_id, caller_thread):
+    def on_word_found_complete(self, initial_word, words_num, result, thread_id, caller_thread: FinderThread):
+        caller_thread.result_ready.disconnect(self.on_word_found_complete)
+        QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
         if thread_id < self._last_thread_id:
             return
         self._last_thread_id = thread_id
-        # print(f"{thread_id} - {initial_word}")
-        caller_thread.result_ready.disconnect(self.on_word_found_complete)
-        QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
+
         self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result
         self.matches_number = str(number_of_matches)
         self.matches_number_surahs = str(number_of_surahs)

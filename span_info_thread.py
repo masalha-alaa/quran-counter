@@ -20,7 +20,7 @@ class SpanInfo:
 
 
 class SpanInfoThread(QThread):
-    result_ready = Signal(SpanInfo, QThread)
+    result_ready = Signal(SpanInfo, float, QThread)
     verse_mark_regex_ptrn = re.compile(r"[\d()]")
     waikanna = ["وَيْكَأَنَّ", "وَيْكَأَنَّهُۥ"]
 
@@ -74,7 +74,7 @@ class SpanInfoThread(QThread):
         self.info.most_repeated_letter = max(letters.items(), key=lambda x: x[1], default="")
 
         try:
-            self.result_ready.emit(self.info, self)
+            self.result_ready.emit(self.info, self._thread_id, self)
             # try catch is for debug only - exception isn't thrown in non-debug mode
         except RuntimeError as e:
             print(e)
