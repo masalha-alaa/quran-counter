@@ -5,6 +5,7 @@ from cachetools.keys import hashkey
 import openai
 from arabic_reformer import reform_regex
 from ast import literal_eval
+from my_utils import AppLang, translate_text
 
 
 class Disambiguator:
@@ -31,10 +32,10 @@ class Disambiguator:
         # self._gpt_model = "GPT-4o mini"
 
     @cached(cache=LRUCache(maxsize=128))
-    def get_chatgpt_response(self, word):
-        template = f"Write the different meanings of the Arabic word '{word}' in Arabic."
+    def get_chatgpt_response(self, word, language: AppLang):
+        template = f"Write the different meanings of the Arabic word '{word}' in {language.name.title()}."
         template += "\n"
-        template += "The final result must be only a dictionary s.t. the keys are 'meaning_1', 'meaning_2', 'meaning_3'... And the values are the meanings in Arabic. Don not write any English word, do not write aything other than the requested dictionary."
+        template += f"The final result must be only a dictionary s.t. the keys are 'meaning_1', 'meaning_2', 'meaning_3'... And the values are the meanings in {language.name.title()}. Do not write any word in another language, do not write anything other than the requested dictionary."
         response = openai.chat.completions.create(
             # model="gpt-3.5-turbo",
             model="gpt-4",

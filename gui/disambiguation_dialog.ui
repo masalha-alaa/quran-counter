@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>668</width>
+    <width>647</width>
     <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>توضيح</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(59, 59, 59);

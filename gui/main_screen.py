@@ -35,15 +35,25 @@ class Ui_MainWindow(object):
 "font: 400 20pt \"Calibri\";")
         self.arabicLangButton = QAction(MainWindow)
         self.arabicLangButton.setObjectName(u"arabicLangButton")
+        self.arabicLangButton.setText(u"\u0627\u0644\u0639\u0631\u0628\u064a\u0629")
+        self.arabicLangButton.setIconText(u"\u0627\u0644\u0639\u0631\u0628\u064a\u0629")
+#if QT_CONFIG(tooltip)
+        self.arabicLangButton.setToolTip(u"\u0627\u0644\u0639\u0631\u0628\u064a\u0629")
+#endif // QT_CONFIG(tooltip)
         self.englishLangButton = QAction(MainWindow)
         self.englishLangButton.setObjectName(u"englishLangButton")
+        self.englishLangButton.setText(u"English")
+        self.englishLangButton.setIconText(u"English")
+#if QT_CONFIG(tooltip)
+        self.englishLangButton.setToolTip(u"English")
+#endif // QT_CONFIG(tooltip)
         self.mushafNavigationButton = QAction(MainWindow)
         self.mushafNavigationButton.setObjectName(u"mushafNavigationButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_21 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_21.setSpacing(18)
-        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
+        self.verticalLayout_22 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_22.setSpacing(10)
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -83,6 +93,7 @@ class Ui_MainWindow(object):
         self.alifAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
         self.alifAlifMaksuraCheckbox.setObjectName(u"alifAlifMaksuraCheckbox")
         self.alifAlifMaksuraCheckbox.setStyleSheet(u"font: 18pt;")
+        self.alifAlifMaksuraCheckbox.setText(u"\u0627 / \u0649")
 
         self.horizontalLayout_8.addWidget(self.alifAlifMaksuraCheckbox)
 
@@ -97,6 +108,7 @@ class Ui_MainWindow(object):
         self.yaAlifMaksuraCheckbox.setObjectName(u"yaAlifMaksuraCheckbox")
         self.yaAlifMaksuraCheckbox.setEnabled(True)
         self.yaAlifMaksuraCheckbox.setStyleSheet(u"font: 18pt;")
+        self.yaAlifMaksuraCheckbox.setText(u"\u0649 / \u064a")
 
         self.horizontalLayout_8.addWidget(self.yaAlifMaksuraCheckbox)
 
@@ -117,6 +129,7 @@ class Ui_MainWindow(object):
         font.setItalic(False)
         self.finalTaCheckbox.setFont(font)
         self.finalTaCheckbox.setStyleSheet(u"font: 18pt;")
+        self.finalTaCheckbox.setText(u"\u0640\u062a / \u0640\u0629")
 
         self.horizontalLayout_8.addWidget(self.finalTaCheckbox)
 
@@ -130,6 +143,7 @@ class Ui_MainWindow(object):
         self.wordPermutationsCheckbox = QCheckBox(self.centralwidget)
         self.wordPermutationsCheckbox.setObjectName(u"wordPermutationsCheckbox")
         self.wordPermutationsCheckbox.setStyleSheet(u"font: 18pt;")
+        self.wordPermutationsCheckbox.setText(u"")
         icon = QIcon()
         icon.addFile(u":/in-order-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.wordPermutationsCheckbox.setIcon(icon)
@@ -148,6 +162,7 @@ class Ui_MainWindow(object):
         self.optionalAlTarifCheckbox = QCheckBox(self.centralwidget)
         self.optionalAlTarifCheckbox.setObjectName(u"optionalAlTarifCheckbox")
         self.optionalAlTarifCheckbox.setStyleSheet(u"font: 18pt;")
+        self.optionalAlTarifCheckbox.setText(u"\u0627\u0644\u061f")
 
         self.horizontalLayout_8.addWidget(self.optionalAlTarifCheckbox)
 
@@ -260,14 +275,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_21.addLayout(self.horizontalLayout)
+        self.verticalLayout_22.addLayout(self.horizontalLayout)
 
         self.line_6 = QFrame(self.centralwidget)
         self.line_6.setObjectName(u"line_6")
         self.line_6.setFrameShape(QFrame.Shape.HLine)
         self.line_6.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_21.addWidget(self.line_6)
+        self.verticalLayout_22.addWidget(self.line_6)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -360,7 +375,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_21.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_22.addLayout(self.horizontalLayout_2)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -516,11 +531,20 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_11.addLayout(self.horizontalLayout_9)
 
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_8 = QLabel(self.surahTab)
         self.label_8.setObjectName(u"label_8")
         self.label_8.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
 
-        self.verticalLayout_11.addWidget(self.label_8)
+        self.horizontalLayout_4.addWidget(self.label_8)
+
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer_8)
+
+
+        self.verticalLayout_11.addLayout(self.horizontalLayout_4)
 
         self.horizontalLayout_13 = QHBoxLayout()
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
@@ -614,17 +638,31 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addLayout(self.verticalLayout_15)
 
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.verticalLayout_21 = QVBoxLayout()
+        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
         self.minimum_letters_restriction_lbl = QLabel(self.wordsTab)
         self.minimum_letters_restriction_lbl.setObjectName(u"minimum_letters_restriction_lbl")
         self.minimum_letters_restriction_lbl.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
 
-        self.verticalLayout_5.addWidget(self.minimum_letters_restriction_lbl)
+        self.verticalLayout_21.addWidget(self.minimum_letters_restriction_lbl)
 
         self.label_7 = QLabel(self.wordsTab)
         self.label_7.setObjectName(u"label_7")
         self.label_7.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
 
-        self.verticalLayout_5.addWidget(self.label_7)
+        self.verticalLayout_21.addWidget(self.label_7)
+
+
+        self.horizontalLayout_14.addLayout(self.verticalLayout_21)
+
+        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_9)
+
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_14)
 
         self.horizontalLayout_12 = QHBoxLayout()
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
@@ -652,18 +690,19 @@ class Ui_MainWindow(object):
 
         self.tabWidget.addTab(self.wordsTab, "")
 
-        self.verticalLayout_21.addWidget(self.tabWidget)
+        self.verticalLayout_22.addWidget(self.tabWidget)
 
-        self.verticalLayout_21.setStretch(0, 1)
-        self.verticalLayout_21.setStretch(1, 1)
-        self.verticalLayout_21.setStretch(2, 1)
-        self.verticalLayout_21.setStretch(3, 8)
+        self.verticalLayout_22.setStretch(0, 1)
+        self.verticalLayout_22.setStretch(1, 1)
+        self.verticalLayout_22.setStretch(2, 1)
+        self.verticalLayout_22.setStretch(3, 8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 1140, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
+        self.menu_Language.setTitle(u"\u0627\u0644\u0644\u063a\u0629 / Language")
         icon4 = QIcon()
         icon4.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.menu_Language.setIcon(icon4)
@@ -705,25 +744,27 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.arabicLangButton.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0639\u0631\u0628\u064a\u0629", None))
-        self.englishLangButton.setText(QCoreApplication.translate("MainWindow", u"English", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u0639\u062f\u0651\u0627\u062f \u0627\u0644\u0642\u0631\u0622\u0646 \u0627\u0644\u0643\u0631\u064a\u0645", None))
         self.mushafNavigationButton.setText(QCoreApplication.translate("MainWindow", u"\u062a\u0635\u0641\u0651\u062d", None))
 #if QT_CONFIG(tooltip)
         self.label.setToolTip("")
 #endif // QT_CONFIG(tooltip)
-        self.label.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0643\u0644\u0645\u0629", None))
-        self.alifAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0627 / \u0649", None))
-        self.yaAlifMaksuraCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0649 / \u064a", None))
-        self.finalTaCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0640\u062a / \u0640\u0629", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"\u0628\u062d\u062b", None))
+#if QT_CONFIG(tooltip)
+        self.alifAlifMaksuraCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062f\u0645 \u0627\u0644\u062a\u0641\u0631\u064a\u0642 \u0628\u064a\u0646 '\u0627' / '\u0649'", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.yaAlifMaksuraCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062f\u0645 \u0627\u0644\u062a\u0641\u0631\u064a\u0642 \u0628\u064a\u0646 '\u0649' / '\u064a'", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.finalTaCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062f\u0645 \u0627\u0644\u062a\u0641\u0631\u064a\u0642 \u0628\u064a\u0646 '\u0640\u062a' / '\u0640\u0629'", None))
+#endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.wordPermutationsCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u062a\u0631\u062a\u064a\u0628 \u0627\u0644\u0643\u0644\u0645\u0627\u062a \u063a\u064a\u0631 \u0627\u0644\u0632\u0627\u0645\u064a", None))
 #endif // QT_CONFIG(tooltip)
-        self.wordPermutationsCheckbox.setText("")
 #if QT_CONFIG(tooltip)
         self.optionalAlTarifCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\"\u0627\u0644\" \u0627\u0644\u062a\u0639\u0631\u064a\u0641 \u062e\u064a\u0627\u0631\u064a\u0629", None))
 #endif // QT_CONFIG(tooltip)
-        self.optionalAlTarifCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u061f", None))
 #if QT_CONFIG(tooltip)
         self.beginningOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
@@ -786,7 +827,6 @@ class Ui_MainWindow(object):
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629.", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.wordsTab), QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a", None))
-        self.menu_Language.setTitle(QCoreApplication.translate("MainWindow", u"\u0627\u0644\u0644\u063a\u0629 / Language", None))
         self.mushafViewButton.setTitle("")
     # retranslateUi
 

@@ -1,12 +1,13 @@
 from my_data_loader import MyDataLoader
 from gui.base_detailed_display_dialog import BaseDetailedDisplayDialog
+from my_utils import AppLang
 
 
 class MyWordDetailedDisplayDialog(BaseDetailedDisplayDialog):
     _exhausted = object()
 
-    def __init__(self, items_to_load=25):
-        super(MyWordDetailedDisplayDialog, self).__init__(items_to_load)
+    def __init__(self, language: None | AppLang, items_to_load=25):
+        super(MyWordDetailedDisplayDialog, self).__init__(language, items_to_load)
 
     def _append(self, row_metadata):
         surah_num, verse_num = row_metadata[0], row_metadata[1]

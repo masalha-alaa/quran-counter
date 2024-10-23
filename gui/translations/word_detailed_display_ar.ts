@@ -5,7 +5,7 @@
     <name>DetailedWordDisplayDialog</name>
     <message>
         <location filename="../word_detailed_display.ui" line="17"/>
-        <source>Dialog</source>
+        <source>تفاصيل موسّعة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

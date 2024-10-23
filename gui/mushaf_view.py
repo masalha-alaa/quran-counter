@@ -25,25 +25,20 @@ class Ui_MushafViewDialog(object):
     def setupUi(self, MushafViewDialog):
         if not MushafViewDialog.objectName():
             MushafViewDialog.setObjectName(u"MushafViewDialog")
-        MushafViewDialog.resize(1127, 885)
+        MushafViewDialog.resize(1132, 885)
         MushafViewDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
 "font: 400 18pt \"Calibri\";")
         self.verticalLayout_4 = QVBoxLayout(MushafViewDialog)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_11 = QHBoxLayout()
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.line = QFrame(MushafViewDialog)
-        self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.Shape.VLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.horizontalLayout_11.addWidget(self.line)
-
         self.verticalLayout_10 = QVBoxLayout()
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.frame_2 = QFrame(MushafViewDialog)
@@ -53,45 +48,44 @@ class Ui_MushafViewDialog(object):
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.verticalLayout_11 = QVBoxLayout(self.frame_2)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.horizontalLayout_16 = QHBoxLayout()
-        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.selectionStartButton = QPushButton(self.frame_2)
+        self.selectionStartButton.setObjectName(u"selectionStartButton")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.selectionStartButton.sizePolicy().hasHeightForWidth())
+        self.selectionStartButton.setSizePolicy(sizePolicy)
+        self.selectionStartButton.setAutoDefault(False)
 
-        self.horizontalLayout_16.addItem(self.horizontalSpacer_4)
+        self.gridLayout.addWidget(self.selectionStartButton, 0, 1, 1, 1)
+
+        self.selectionEndButton = QPushButton(self.frame_2)
+        self.selectionEndButton.setObjectName(u"selectionEndButton")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.selectionEndButton.sizePolicy().hasHeightForWidth())
+        self.selectionEndButton.setSizePolicy(sizePolicy1)
+        self.selectionEndButton.setAutoDefault(False)
+
+        self.gridLayout.addWidget(self.selectionEndButton, 1, 1, 1, 1)
 
         self.selectionStartLabel = QLabel(self.frame_2)
         self.selectionStartLabel.setObjectName(u"selectionStartLabel")
 
-        self.horizontalLayout_16.addWidget(self.selectionStartLabel)
-
-        self.selectionStartButton = QPushButton(self.frame_2)
-        self.selectionStartButton.setObjectName(u"selectionStartButton")
-        self.selectionStartButton.setAutoDefault(False)
-
-        self.horizontalLayout_16.addWidget(self.selectionStartButton)
-
-
-        self.verticalLayout_11.addLayout(self.horizontalLayout_16)
-
-        self.horizontalLayout_17 = QHBoxLayout()
-        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_17.addItem(self.horizontalSpacer_5)
+        self.gridLayout.addWidget(self.selectionStartLabel, 0, 0, 1, 1)
 
         self.selectionEndLabel = QLabel(self.frame_2)
         self.selectionEndLabel.setObjectName(u"selectionEndLabel")
 
-        self.horizontalLayout_17.addWidget(self.selectionEndLabel)
+        self.gridLayout.addWidget(self.selectionEndLabel, 1, 0, 1, 1)
 
-        self.selectionEndButton = QPushButton(self.frame_2)
-        self.selectionEndButton.setObjectName(u"selectionEndButton")
-        self.selectionEndButton.setAutoDefault(False)
+        self.gridLayout.setColumnStretch(0, 3)
+        self.gridLayout.setColumnStretch(1, 1)
 
-        self.horizontalLayout_17.addWidget(self.selectionEndButton)
-
-
-        self.verticalLayout_11.addLayout(self.horizontalLayout_17)
+        self.verticalLayout_11.addLayout(self.gridLayout)
 
         self.label_16 = QLabel(self.frame_2)
         self.label_16.setObjectName(u"label_16")
@@ -285,7 +279,8 @@ class Ui_MushafViewDialog(object):
 
         self.horizontalLayout_11.addLayout(self.verticalLayout_2)
 
-        self.horizontalLayout_11.setStretch(2, 4)
+        self.horizontalLayout_11.setStretch(0, 3)
+        self.horizontalLayout_11.setStretch(1, 4)
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_11)
 
@@ -359,16 +354,17 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
+        self.verticalLayout.setStretch(0, 6)
 
         self.verticalLayout_4.addLayout(self.verticalLayout)
 
         self.frame = QFrame(MushafViewDialog)
         self.frame.setObjectName(u"frame")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
-        self.frame.setSizePolicy(sizePolicy)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy2)
         self.frame.setStyleSheet(u"font-size: 11pt;")
         self.frame.setLocale(QLocale(QLocale.Arabic, QLocale.Israel))
         self.frame.setFrameShape(QFrame.Box)
@@ -418,16 +414,19 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.label_3 = QLabel(self.frame_3)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy2)
         self.label_3.setStyleSheet(u"font: bold;")
 
         self.verticalLayout_13.addWidget(self.label_3)
 
         self.surahLettersNum = QLabel(self.frame_3)
         self.surahLettersNum.setObjectName(u"surahLettersNum")
-        sizePolicy.setHeightForWidth(self.surahLettersNum.sizePolicy().hasHeightForWidth())
-        self.surahLettersNum.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.surahLettersNum.sizePolicy().hasHeightForWidth())
+        self.surahLettersNum.setSizePolicy(sizePolicy2)
+#if QT_CONFIG(tooltip)
+        self.surahLettersNum.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
         self.surahLettersNum.setLayoutDirection(Qt.LeftToRight)
         self.surahLettersNum.setLocale(QLocale(QLocale.Arabic, QLocale.Israel))
         self.surahLettersNum.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
@@ -447,16 +446,19 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
         self.label_13 = QLabel(self.frame_3)
         self.label_13.setObjectName(u"label_13")
-        sizePolicy.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
-        self.label_13.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
+        self.label_13.setSizePolicy(sizePolicy2)
         self.label_13.setStyleSheet(u"font: bold;")
 
         self.verticalLayout_14.addWidget(self.label_13)
 
         self.mostRepeatedLetter = QLabel(self.frame_3)
         self.mostRepeatedLetter.setObjectName(u"mostRepeatedLetter")
-        sizePolicy.setHeightForWidth(self.mostRepeatedLetter.sizePolicy().hasHeightForWidth())
-        self.mostRepeatedLetter.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.mostRepeatedLetter.sizePolicy().hasHeightForWidth())
+        self.mostRepeatedLetter.setSizePolicy(sizePolicy2)
+#if QT_CONFIG(tooltip)
+        self.mostRepeatedLetter.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
 
         self.verticalLayout_14.addWidget(self.mostRepeatedLetter)
 
@@ -467,16 +469,19 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.label_12 = QLabel(self.frame_3)
         self.label_12.setObjectName(u"label_12")
-        sizePolicy.setHeightForWidth(self.label_12.sizePolicy().hasHeightForWidth())
-        self.label_12.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.label_12.sizePolicy().hasHeightForWidth())
+        self.label_12.setSizePolicy(sizePolicy2)
         self.label_12.setStyleSheet(u"font: bold;")
 
         self.verticalLayout_9.addWidget(self.label_12)
 
         self.wordsInSelection = QLabel(self.frame_3)
         self.wordsInSelection.setObjectName(u"wordsInSelection")
-        sizePolicy.setHeightForWidth(self.wordsInSelection.sizePolicy().hasHeightForWidth())
-        self.wordsInSelection.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.wordsInSelection.sizePolicy().hasHeightForWidth())
+        self.wordsInSelection.setSizePolicy(sizePolicy2)
+#if QT_CONFIG(tooltip)
+        self.wordsInSelection.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
         self.wordsInSelection.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.verticalLayout_9.addWidget(self.wordsInSelection)
@@ -489,16 +494,19 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.label_2 = QLabel(self.frame_3)
         self.label_2.setObjectName(u"label_2")
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy2)
         self.label_2.setStyleSheet(u"font: bold;")
 
         self.verticalLayout_12.addWidget(self.label_2)
 
         self.surahWordsNum = QLabel(self.frame_3)
         self.surahWordsNum.setObjectName(u"surahWordsNum")
-        sizePolicy.setHeightForWidth(self.surahWordsNum.sizePolicy().hasHeightForWidth())
-        self.surahWordsNum.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.surahWordsNum.sizePolicy().hasHeightForWidth())
+        self.surahWordsNum.setSizePolicy(sizePolicy2)
+#if QT_CONFIG(tooltip)
+        self.surahWordsNum.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
         self.surahWordsNum.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
         self.verticalLayout_12.addWidget(self.surahWordsNum)
@@ -548,9 +556,7 @@ class Ui_MushafViewDialog(object):
         QWidget.setTabOrder(self.goToRefButton, self.surahNameInput)
         QWidget.setTabOrder(self.surahNameInput, self.verseInput_2)
         QWidget.setTabOrder(self.verseInput_2, self.goToRef_2)
-        QWidget.setTabOrder(self.goToRef_2, self.selectionStartButton)
-        QWidget.setTabOrder(self.selectionStartButton, self.selectionEndButton)
-        QWidget.setTabOrder(self.selectionEndButton, self.textBrowser)
+        QWidget.setTabOrder(self.goToRef_2, self.textBrowser)
         QWidget.setTabOrder(self.textBrowser, self.surahNumDisplay)
         QWidget.setTabOrder(self.surahNumDisplay, self.pageNumDisplay)
         QWidget.setTabOrder(self.pageNumDisplay, self.nextPushButton)
@@ -565,11 +571,11 @@ class Ui_MushafViewDialog(object):
     # setupUi
 
     def retranslateUi(self, MushafViewDialog):
-        MushafViewDialog.setWindowTitle(QCoreApplication.translate("MushafViewDialog", u"Dialog", None))
-        self.selectionStartLabel.setText("")
+        MushafViewDialog.setWindowTitle(QCoreApplication.translate("MushafViewDialog", u"\u0645\u062a\u0635\u0641\u062d \u0627\u0644\u0642\u0631\u0622\u0646", None))
         self.selectionStartButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u062a\u062d\u062f\u064a\u062f", None))
-        self.selectionEndLabel.setText("")
         self.selectionEndButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0646\u0647\u0627\u064a\u0629 \u0627\u0644\u062a\u062d\u062f\u064a\u062f", None))
+        self.selectionStartLabel.setText("")
+        self.selectionEndLabel.setText("")
         self.label_16.setText(QCoreApplication.translate("MushafViewDialog", u"1. \u0627\u062e\u062a\u0631 \u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u062a\u062d\u062f\u064a\u062f \u0641\u064a \u0627\u0644\u0633\u0648\u0631\u0629, \u062b\u0645 \u0627\u0636\u063a\u0637 \"\u0628\u062f\u0627\u064a\u0629 \u0627\u0644\u062a\u062d\u062f\u064a\u062f\".\n"
 "2. \u0627\u062e\u062a\u0631 \u0646\u0647\u0627\u064a\u0629 \u0627\u0644\u062a\u062d\u062f\u064a\u062f (\u0641\u064a \u0646\u0641\u0633 \u0627\u0644\u0635\u0641\u062d\u0629 \u0627\u0648 \u063a\u064a\u0631\u0647\u0627), \u062b\u0645 \u0627\u0636\u063a\u0637 \"\u0646\u0647\u0627\u064a\u0629 \u0627\u0644\u062a\u062d\u062f\u064a\u062f\".", None))
         self.goToPageButton.setText("")
@@ -605,6 +611,9 @@ class Ui_MushafViewDialog(object):
 #endif // QT_CONFIG(tooltip)
         self.label_2.setText(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0643\u0644\u0645\u0627\u062a \u0627\u0644\u0633\u0648\u0631\u0629", None))
         self.surahWordsNum.setText("")
+#if QT_CONFIG(tooltip)
+        self.resetStatsButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0645\u062d\u0648 \u0627\u0644\u0646\u062a\u0627\u0626\u062c", None))
+#endif // QT_CONFIG(tooltip)
         self.resetStatsButton.setText("")
     # retranslateUi
 

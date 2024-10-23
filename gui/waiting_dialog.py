@@ -48,7 +48,7 @@ class Ui_WaitingDialog(object):
     # setupUi
 
     def retranslateUi(self, WaitingDialog):
-        WaitingDialog.setWindowTitle(QCoreApplication.translate("WaitingDialog", u"Dialog", None))
+        WaitingDialog.setWindowTitle(QCoreApplication.translate("WaitingDialog", u"\u0627\u0646\u062a\u0638\u0627\u0631", None))
         self.label.setText(QCoreApplication.translate("WaitingDialog", u"\u0627\u0644\u0631\u062c\u0627\u0621 \u0627\u0644\u0627\u0646\u062a\u0638\u0627\u0631...", None))
     # retranslateUi
 

@@ -28,11 +28,7 @@ from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
 from surah_results_subtext_getter import SurahResultsSubtextGetter
 from tab_wrapper import TabWrapper
 from gui.spinning_loader import SpinningLoader
-
-
-class AppLang(Enum):
-    ARABIC = "ar"
-    ENGLISH = "en"
+from my_utils import AppLang, translate_text
 
 
 class TabIndex(Enum):
@@ -57,6 +53,7 @@ class MainWindow(QMainWindow):
         self.spinner = SpinningLoader()
         # TODO: Settings dialog...
         self._translator = QTranslator()
+        self._dynamic_translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
         self._surah_index = safe_load(open("surah_index.yml", encoding='utf-8', mode='r'))
@@ -91,14 +88,14 @@ class MainWindow(QMainWindow):
         # [f"<span style=\"color: {c.value};\">" for c in color]
 
         self._disambiguator = Disambiguator(open("open_ai_key.txt", mode='r').read())
-        self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator)
+        self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator, self._current_lang)
 
-        self.waiting_dialog = MyWaitingDialog()
+        self.waiting_dialog = MyWaitingDialog(self._current_lang)
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
 
-        self.detailed_word_display_dialog = MyWordDetailedDisplayDialog()
-        self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog()
-        self.mushaf_view_display = MyMushafViewDialog()
+        self.detailed_word_display_dialog = MyWordDetailedDisplayDialog(self._current_lang)
+        self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog(self._current_lang)
+        self.mushaf_view_display = MyMushafViewDialog(self._current_lang)
 
         self.lazy_surah_results_list = LazyListWidgetWrapper(self.ui.surahResultsListWidget, subtext_getter=SurahResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NUMBER, CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
         self.lazy_surah_results_list.set_item_selection_changed_callback(self.surah_results_selection_changed)
@@ -111,8 +108,9 @@ class MainWindow(QMainWindow):
         self.ui.wordSum.setText(str(0))
 
     def _apply_language(self, lang):
-        if lang != self._current_lang and self._translator.load(f"gui/translations/main_screen_{lang.value}.qm"):
+        if lang != self._current_lang and self._translator.load(f"gui/translations/main_screen_{lang.value}.qm") and self._dynamic_translator.load(f"gui/translations/dynamic_translations_{lang.value}.qm"):
             app.installTranslator(self._translator)
+            app.installTranslator(self._dynamic_translator)
             self.ui.retranslateUi(self)
             self.set_font_for_language(lang)
             self._current_lang = lang
@@ -125,7 +123,7 @@ class MainWindow(QMainWindow):
         if lang == AppLang.ARABIC:
             size = 20
         elif lang == AppLang.ENGLISH:
-            size = 12
+            size = 14
 
         styleSheet = self._font_ptrn.sub(rf'\1 {weight} {size}pt "{font}"\2', styleSheet)
         self.setStyleSheet(styleSheet)
@@ -171,6 +169,8 @@ class MainWindow(QMainWindow):
             # self.ui.foundVerses.setFont(naskh_font)
 
     def _view_mushaf(self):
+        if self._translator.load(f"gui/translations/mushaf_view_{self._current_lang.value}.qm"):
+            self.mushaf_view_display.set_language(self._current_lang)
         self.mushaf_view_display.exec()
 
     def before_scroll(self):
@@ -334,6 +334,9 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def _filter_button_clicked(self):
+        if self._translator.load(f"gui/translations/disambig_dlg_{self._current_lang.value}.qm"):
+            self.disambiguation_dialog.set_language(self._current_lang)
+
         self.disambiguation_dialog.set_data(self.search_word)
         self.disambiguation_dialog.response_signal.connect(self._handle_disambiguation_dialog_response)
         if self.disambiguation_dialog.exec() == QDialog.DialogCode.Accepted:
@@ -350,7 +353,7 @@ class MainWindow(QMainWindow):
         def _surah_sorting_done():
             self.ui.sortPushButton.setEnabled(True)
             current_sorting = self.lazy_surah_results_list.get_current_sorting()
-            self.ui.sortMethodLabel.setText(current_sorting.to_string())
+            self.ui.sortMethodLabel.setText(translate_text(current_sorting.to_string()))
 
         self.ui.sortPushButton.setEnabled(False)
         self.lazy_surah_results_list.set_sorting_done_callback(_surah_sorting_done)
@@ -361,20 +364,22 @@ class MainWindow(QMainWindow):
         def _word_sorting_done():
             self.ui.wordsSortPushButton.setEnabled(True)
             current_sorting = self.lazy_word_results_list.get_current_sorting()
-            self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
+            self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
 
         self.ui.wordsSortPushButton.setEnabled(False)
         self.lazy_word_results_list.set_sorting_done_callback(_word_sorting_done)
         self.lazy_word_results_list.switch_order()
         self.lazy_word_results_list.sort()
         current_sorting = self.lazy_word_results_list.get_current_sorting()
-        self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
+        self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
 
     @Slot(str)
     def _handle_disambiguation_dialog_response(self, selected_meaning):
         # print("_handle_disambiguation_dialog_response")
         self.disambiguation_dialog.response_signal.disconnect(self._handle_disambiguation_dialog_response)
         if selected_meaning.strip():
+            if self._translator.load(f"gui/translations/waiting_dlg_{self._current_lang.value}.qm"):
+                self.waiting_dialog.set_language(self._current_lang)
             self.waiting_dialog.open()
             self.ask_gpt_for_relevant_verses(self.search_word, self._all_matches, selected_meaning)
 
@@ -537,7 +542,7 @@ class MainWindow(QMainWindow):
         # self.lazy_surah_results_list.load_more_items()
         self.lazy_surah_results_list.sort()
         current_sorting = self.lazy_surah_results_list.get_current_sorting()
-        self.ui.sortMethodLabel.setText(current_sorting.to_string())
+        self.ui.sortMethodLabel.setText(translate_text(current_sorting.to_string()))
         self.ui.sortPushButton.setEnabled(self._all_matches is not None and len(self._all_matches) > 0)
 
     def surah_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
@@ -568,7 +573,7 @@ class MainWindow(QMainWindow):
         # self.lazy_word_results_list.load_more_items()
         self.lazy_word_results_list.sort()
         current_sorting = self.lazy_word_results_list.get_current_sorting()
-        self.ui.wordSortMethodLabel.setText(current_sorting.to_string())
+        self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
         self.ui.wordsSortPushButton.setEnabled(self._all_matches is not None and len(self._all_matches) > 0)
 
     def word_bounds_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
@@ -576,11 +581,15 @@ class MainWindow(QMainWindow):
         self.ui.wordSum.setText(str(total))
 
     def word_bounds_results_item_double_clicked(self, item: CustomRow):
+        if self._translator.load(f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
+            self.detailed_word_display_dialog.set_language(self._current_lang)
         self.detailed_word_display_dialog.set_data(item)
         # self.detailed_word_display_dialog.open()
         self.detailed_word_display_dialog.exec()
 
     def surah_results_item_double_clicked(self, item: CustomRow):
+        if self._translator.load(f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
+            self.detailed_surah_display_dialog.set_language(self._current_lang)
         self.detailed_surah_display_dialog.set_data(item)
         # self.detailed_word_display_dialog.open()
         self.detailed_surah_display_dialog.exec()

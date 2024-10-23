@@ -5,7 +5,7 @@
     <name>DidsambiguationDialog</name>
     <message>
         <location filename="../disambiguation_dialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>توضيح</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

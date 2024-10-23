@@ -5,7 +5,7 @@
     <name>WaitingDialog</name>
     <message>
         <location filename="../waiting_dialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>انتظار</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

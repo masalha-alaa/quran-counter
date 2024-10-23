@@ -68,7 +68,7 @@ class Ui_DetailedWordDisplayDialog(object):
     # setupUi
 
     def retranslateUi(self, DetailedWordDisplayDialog):
-        DetailedWordDisplayDialog.setWindowTitle(QCoreApplication.translate("DetailedWordDisplayDialog", u"Dialog", None))
+        DetailedWordDisplayDialog.setWindowTitle(QCoreApplication.translate("DetailedWordDisplayDialog", u"\u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629", None))
         self.colorizeCheckbox.setText(QCoreApplication.translate("DetailedWordDisplayDialog", u"\u062a\u0644\u0648\u064a\u0646", None))
     # retranslateUi
 

@@ -23,7 +23,7 @@ class Ui_DidsambiguationDialog(object):
     def setupUi(self, DidsambiguationDialog):
         if not DidsambiguationDialog.objectName():
             DidsambiguationDialog.setObjectName(u"DidsambiguationDialog")
-        DidsambiguationDialog.resize(668, 391)
+        DidsambiguationDialog.resize(647, 391)
         DidsambiguationDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
 "font: 400 14pt \"Calibri\";")
@@ -107,7 +107,7 @@ class Ui_DidsambiguationDialog(object):
     # setupUi
 
     def retranslateUi(self, DidsambiguationDialog):
-        DidsambiguationDialog.setWindowTitle(QCoreApplication.translate("DidsambiguationDialog", u"Dialog", None))
+        DidsambiguationDialog.setWindowTitle(QCoreApplication.translate("DidsambiguationDialog", u"\u062a\u0648\u0636\u064a\u062d", None))
         self.instructionsWordLabel.setText(QCoreApplication.translate("DidsambiguationDialog", u"'\u0627\u0644\u0643\u0644\u0645\u0629'", None))
         self.instructionsLabel.setText(QCoreApplication.translate("DidsambiguationDialog", u"\u0627\u062e\u062a\u0631 \u0627\u0644\u0645\u0639\u0646\u0649 \u0627\u0644\u0645\u0646\u0627\u0633\u0628 \u0644\u0643\u0644\u0645\u0629", None))
         self.cancelButton.setText(QCoreApplication.translate("DidsambiguationDialog", u"\u0625\u0644\u063a\u0627\u0621", None))

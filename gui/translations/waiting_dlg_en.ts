@@ -2,16 +2,16 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ar_EG">
 <context>
-    <name>Dialog</name>
+    <name>WaitingDialog</name>
     <message>
         <location filename="../waiting_dialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <source>انتظار</source>
+        <translation>Wait</translation>
     </message>
     <message>
         <location filename="../waiting_dialog.ui" line="33"/>
         <source>الرجاء الانتظار...</source>
-        <translation type="unfinished"></translation>
+        <translation>Please wait...</translation>
     </message>
 </context>
 </TS>

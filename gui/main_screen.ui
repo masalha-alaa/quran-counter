@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>عدّاد القرآن الكريم</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::RightToLeft</enum>
@@ -22,9 +22,9 @@ color: rgb(207, 207, 207);
 font: 400 20pt &quot;Calibri&quot;;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_21" stretch="1,1,1,8">
+   <layout class="QVBoxLayout" name="verticalLayout_22" stretch="1,1,1,8">
     <property name="spacing">
-     <number>18</number>
+     <number>10</number>
     </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -61,7 +61,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            <string/>
           </property>
           <property name="text">
-           <string>الكلمة</string>
+           <string>بحث</string>
           </property>
          </widget>
         </item>
@@ -94,11 +94,14 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           </property>
           <item>
            <widget class="QCheckBox" name="alifAlifMaksuraCheckbox">
+            <property name="toolTip">
+             <string>عدم التفريق بين 'ا' / 'ى'</string>
+            </property>
             <property name="styleSheet">
              <string notr="true">font: 18pt;</string>
             </property>
             <property name="text">
-             <string>ا / ى</string>
+             <string notr="true">ا / ى</string>
             </property>
            </widget>
           </item>
@@ -114,11 +117,14 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="toolTip">
+             <string>عدم التفريق بين 'ى' / 'ي'</string>
+            </property>
             <property name="styleSheet">
              <string notr="true">font: 18pt;</string>
             </property>
             <property name="text">
-             <string>ى / ي</string>
+             <string notr="true">ى / ي</string>
             </property>
            </widget>
           </item>
@@ -143,11 +149,14 @@ font: 400 20pt &quot;Calibri&quot;;</string>
               <bold>false</bold>
              </font>
             </property>
+            <property name="toolTip">
+             <string>عدم التفريق بين 'ـت' / 'ـة'</string>
+            </property>
             <property name="styleSheet">
              <string notr="true">font: 18pt;</string>
             </property>
             <property name="text">
-             <string>ـت / ـة</string>
+             <string notr="true">ـت / ـة</string>
             </property>
            </widget>
           </item>
@@ -167,7 +176,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string notr="true">font: 18pt;</string>
             </property>
             <property name="text">
-             <string/>
+             <string notr="true"/>
             </property>
             <property name="icon">
              <iconset resource="resources/resources.qrc">
@@ -200,7 +209,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string notr="true">font: 18pt;</string>
             </property>
             <property name="text">
-             <string>ال؟</string>
+             <string notr="true">ال؟</string>
             </property>
            </widget>
           </item>
@@ -883,14 +892,31 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            </layout>
           </item>
           <item>
-           <widget class="QLabel" name="label_8">
-            <property name="styleSheet">
-             <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
-            </property>
-            <property name="text">
-             <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="styleSheet">
+               <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+              </property>
+              <property name="text">
+               <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,1,8">
@@ -1031,24 +1057,45 @@ font: 400 20pt &quot;Calibri&quot;;</string>
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="minimum_letters_restriction_lbl">
-          <property name="styleSheet">
-           <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
-          </property>
-          <property name="text">
-           <string>* ادخل حرفين او اكثر للبحث.</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="styleSheet">
-           <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
-          </property>
-          <property name="text">
-           <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_14">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_21">
+            <item>
+             <widget class="QLabel" name="minimum_letters_restriction_lbl">
+              <property name="styleSheet">
+               <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+              </property>
+              <property name="text">
+               <string>* ادخل حرفين او اكثر للبحث.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="styleSheet">
+               <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+              </property>
+              <property name="text">
+               <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,1,8">
@@ -1101,7 +1148,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
    </property>
    <widget class="QMenu" name="menu_Language">
     <property name="title">
-     <string>اللغة / Language</string>
+     <string notr="true">اللغة / Language</string>
     </property>
     <property name="icon">
      <iconset resource="resources/resources.qrc">
@@ -1126,12 +1173,24 @@ font: 400 20pt &quot;Calibri&quot;;</string>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="arabicLangButton">
    <property name="text">
-    <string>العربية</string>
+    <string notr="true">العربية</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">العربية</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">العربية</string>
    </property>
   </action>
   <action name="englishLangButton">
    <property name="text">
-    <string>English</string>
+    <string notr="true">English</string>
+   </property>
+   <property name="iconText">
+    <string notr="true">English</string>
+   </property>
+   <property name="toolTip">
+    <string notr="true">English</string>
    </property>
   </action>
   <action name="mushafNavigationButton">

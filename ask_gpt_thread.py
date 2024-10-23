@@ -21,13 +21,15 @@ class AskGptThread(QThread):
         self.word = None
         self.meaning = None
         self.verses = None
+        self.language = None
 
     def _reset_input(self):
         self.word = None
         self.verses = None
         self.meaning = None
 
-    def set_command_get_meanings(self, word):
+    def set_command_get_meanings(self, word, language):
+        self.language = language
         self.word = word
         self.command = AskGptThread.Command.GET_MEANINGS
 
@@ -50,10 +52,9 @@ class AskGptThread(QThread):
         relevant_verses = self.disambiguator.get_relevant_verses(self.word, self.meaning, verse_refs, verses)
         return relevant_verses
 
-
     def _ask_gpt_for_meanings(self):
         # TODO: Exception handling
-        gpt_results = json.loads(self.disambiguator.get_chatgpt_response(self.word))
+        gpt_results = json.loads(self.disambiguator.get_chatgpt_response(self.word, self.language))
         return gpt_results
 
     def run(self):

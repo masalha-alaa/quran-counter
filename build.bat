@@ -30,5 +30,9 @@ pyside6-lupdate gui/mushaf_view.ui -ts gui/translations/mushaf_view_ar.ts
 pyside6-lrelease gui/translations/mushaf_view_ar.ts
 pyside6-lrelease gui/translations/mushaf_view_en.ts
 
+REM dynamic_translations
+pyside6-lrelease gui/translations/dynamic_translations_ar.ts
+pyside6-lrelease gui/translations/dynamic_translations_en.ts
+
 pyside6-rcc gui\resources\resources.qrc -o resources_rc.py
 deactivate

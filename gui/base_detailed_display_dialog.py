@@ -8,12 +8,15 @@ from my_data_loader import MyDataLoader
 from PySide6.QtCore import Qt
 from arabic_reformer import reform_text
 from emphasizer import emphasize_span, CssColors
+from my_utils import AppLang
 
 
 class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
-    def __init__(self, items_to_load=25):
+    def __init__(self, language: None | AppLang, items_to_load=25):
         super(BaseDetailedDisplayDialog, self).__init__()
         self.setupUi(self)
+        self._current_lang = None
+        self._apply_language(language)
         self.setWindowFlags(self.windowFlags() |
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
@@ -26,6 +29,15 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
         self.textBrowser.verticalScrollBar().actionTriggered.connect(self.before_scroll)
         self.textBrowser.verticalScrollBar().valueChanged.connect(self.after_scroll)
         # TODO: Make dialog title as the word in self._row_data.label
+
+    def set_language(self, lang):
+        self._apply_language(lang)
+
+    def _apply_language(self, lang):
+        if lang != self._current_lang:
+            self.retranslateUi(self)
+            # self.set_font_for_language(lang)
+            self._current_lang = lang
 
     @property
     def _exhausted(self):

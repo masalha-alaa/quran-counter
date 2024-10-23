@@ -14,6 +14,7 @@ from validators import ArabicOnlyValidator
 from span_info_thread import SpanInfo, SpanInfoThread
 from cursor_position_info import CursorPositionInfo
 from PySide6.QtWidgets import QApplication
+from my_utils import AppLang, translate_text
 
 
 class SurahInPage:
@@ -64,12 +65,14 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     # CURRENT_SURAH_STATS_MUTEX = threading.Lock()
     # RUNNING_THREADS_MUTEX = QMutex()
 
-    def __init__(self):
+    def __init__(self, language: None | AppLang):
         super(MyMushafViewDialog, self).__init__()
         self.setupUi(self)
         self.setWindowFlags(self.windowFlags() |
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
+        self._current_lang = None
+        self._apply_language(language)
         self.spinner = SpinningLoader()
         self.df = MyDataLoader.get_data()
         self._current_page = 1
@@ -102,6 +105,15 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.waykaannaTwoWordsCheckbox.stateChanged.connect(self.waykaanna_two_words_checkbox_state_changed)
 
         self._setup_validators()
+
+    def set_language(self, lang):
+        self._apply_language(lang)
+
+    def _apply_language(self, lang):
+        if lang != self._current_lang:
+            self.retranslateUi(self)
+            # self.set_font_for_language(lang)
+            self._current_lang = lang
 
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
@@ -141,18 +153,18 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.lock()
         # letters num
-        letters_num_new_text = (self.surahLettersNum.text() + ", " + f"{span_info.surah_name}: {span_info.letters_in_selection}").strip(", ")
+        letters_num_new_text = (self.surahLettersNum.text() + ", " + f"{translate_text(span_info.surah_name)}: {span_info.letters_in_selection}").strip(", ")
         letters_num_sorted_results = sorted(letters_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
         self.surahLettersNum.setText(", ".join(letters_num_sorted_results))
 
         # most repeated letter
         letter, repetitions = span_info.most_repeated_letter
-        most_repeated_letter_new_text = (self.mostRepeatedLetter.text() + ", " + f"{span_info.surah_name}: '{letter}' ({repetitions})").strip(", ")
+        most_repeated_letter_new_text = (self.mostRepeatedLetter.text() + ", " + f"{translate_text(span_info.surah_name)}: '{letter}' ({repetitions})").strip(", ")
         most_repeated_letter_sorted_results = sorted(most_repeated_letter_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
         self.mostRepeatedLetter.setText(", ".join(most_repeated_letter_sorted_results))
 
         # surah words num
-        surah_words_num_new_text = (self.surahWordsNum.text() + ", " + f"{span_info.surah_name}: {span_info.words_in_selection}").strip(", ")
+        surah_words_num_new_text = (self.surahWordsNum.text() + ", " + f"{translate_text(span_info.surah_name)}: {span_info.words_in_selection}").strip(", ")
         surah_words_num_sorted_results = sorted(surah_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
         self.surahWordsNum.setText(", ".join(surah_words_num_sorted_results))
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.unlock()
@@ -439,8 +451,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                 self.selectionEndInfo = None
                 self.selectionEndLabel.clear()
             surah_name, verse_num, word = self.selectionStartInfo.surah_name, self.selectionStartInfo.verse_num, self.selectionStartInfo.word
-            aya = "اية"
-            self.selectionStartLabel.setText(f"[{surah_name} - {aya} {verse_num} - {word}]")
+            aya = translate_text("اية")
+            self.selectionStartLabel.setText(f"[{translate_text(surah_name)} - {aya} {verse_num} - {word}]")
             if self.selectionEndInfo is not None and self.selectionStartInfo < self.selectionEndInfo:
                 self.start_span_info_thread(SelectionType.BY_REF)
         self.textBrowser.setFocus()
@@ -453,8 +465,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                 self.selectionStartInfo = None
                 self.selectionStartLabel.clear()
             surah_name, verse_num, word = self.selectionEndInfo.surah_name, self.selectionEndInfo.verse_num, self.selectionEndInfo.word
-            aya = "اية"
-            self.selectionEndLabel.setText(f"[{surah_name} - {aya} {verse_num} - {word}]")
+            aya = translate_text("اية")
+            self.selectionEndLabel.setText(f"[{translate_text(surah_name)} - {aya} {verse_num} - {word}]")
             if self.selectionStartInfo is not None and self.selectionEndInfo > self.selectionStartInfo:
                 self.start_span_info_thread(SelectionType.BY_REF)
 

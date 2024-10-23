@@ -4,20 +4,32 @@ from PySide6.QtCore import Signal, Slot, QThread
 from gui.disambiguation_dialog import Ui_DidsambiguationDialog
 from gui.spinning_loader import SpinningLoader
 from ask_gpt_thread import AskGptThread
+from my_utils import AppLang
 
 
 class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
     response_signal = Signal(str)
 
-    def __init__(self, disambiguator):
+    def __init__(self, disambiguator, language: None | AppLang):
         super(MyDidsambiguationDialog, self).__init__()
         self.setupUi(self)
+        self._current_lang = None
+        self._apply_language(language)
         self.spinner = SpinningLoader()
         self.spinnerParentLayout.addWidget(self.spinner)
         self._setup_events()
         self.disambiguator = disambiguator
         self.worker = AskGptThread(disambiguator)  # GPT claims i can't reuse a thread, but it's working...
         self._word = None
+
+    def set_language(self, lang):
+        self._apply_language(lang)
+
+    def _apply_language(self, lang):
+        if lang != self._current_lang:
+            self.retranslateUi(self)
+            # self.set_font_for_language(lang)
+            self._current_lang = lang
 
     def set_data(self, word):
         self._word = word
@@ -47,7 +59,7 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
     def ask_gpt_for_meanings(self, word):
         self.resultsListWidget.clear()
         self.spinner.start()
-        self.worker.set_command_get_meanings(word)
+        self.worker.set_command_get_meanings(word, self._current_lang)
         self.worker.meanings_result_ready.connect(self.on_ask_gpt_for_meanings_completed)  # Connect signal to slot
         self.worker.start()
 
