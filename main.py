@@ -29,7 +29,7 @@ from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
 from surah_results_subtext_getter import SurahResultsSubtextGetter
 from tab_wrapper import TabWrapper
 from gui.spinning_loader import SpinningLoader
-from my_utils import AppLang, translate_text
+from my_utils import AppLang, translate_text, resource_path, load_translation
 
 
 class TabIndex(Enum):
@@ -57,7 +57,7 @@ class MainWindow(QMainWindow):
         self._dynamic_translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
-        self._surah_index = safe_load(open("surah_index.yml", encoding='utf-8', mode='r'))
+        self._surah_index = safe_load(open(resource_path("surah_index.yml"), encoding='utf-8', mode='r'))
         self._surah_results_list_uuid = uuid.uuid4().hex
         self._word_results_list_uuid = uuid.uuid4().hex
         self.ui.setupUi(self)
@@ -88,7 +88,7 @@ class MainWindow(QMainWindow):
         self._adding_items = False
         # [f"<span style=\"color: {c.value};\">" for c in color]
 
-        self._disambiguator = Disambiguator(open("open_ai_key.txt", mode='r').read())
+        self._disambiguator = Disambiguator("open_ai_key.txt")
         # self._disambiguator = Disambiguator("TEST")
         self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator, self._current_lang)
 
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow):
         self.ui.wordSum.setText(str(0))
 
     def _apply_language(self, lang):
-        if lang != self._current_lang and self._translator.load(f"gui/translations/main_screen_{lang.value}.qm") and self._dynamic_translator.load(f"gui/translations/dynamic_translations_{lang.value}.qm"):
+        if lang != self._current_lang and load_translation(self._translator, f"gui/translations/main_screen_{lang.value}.qm") and load_translation(self._dynamic_translator, f"gui/translations/dynamic_translations_{lang.value}.qm"):
             app.installTranslator(self._translator)
             app.installTranslator(self._dynamic_translator)
             self.ui.retranslateUi(self)
@@ -172,7 +172,7 @@ class MainWindow(QMainWindow):
             # self.ui.foundVerses.setFont(naskh_font)
 
     def _view_mushaf(self):
-        if self._translator.load(f"gui/translations/mushaf_view_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, f"gui/translations/mushaf_view_{self._current_lang.value}.qm"):
             self.mushaf_view_display.set_language(self._current_lang)
         self.mushaf_view_display.exec()
 
@@ -343,7 +343,7 @@ class MainWindow(QMainWindow):
             self.show_gpt_activation_dialog()
 
     def show_disambiguation_dialog(self):
-        if self._translator.load(f"gui/translations/disambig_dlg_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, f"gui/translations/disambig_dlg_{self._current_lang.value}.qm"):
             self.disambiguation_dialog.set_language(self._current_lang)
 
         self.disambiguation_dialog.set_data(self.search_word)
@@ -354,7 +354,7 @@ class MainWindow(QMainWindow):
             pass
 
     def show_gpt_activation_dialog(self):
-        if self._translator.load(f"gui/translations/openai_key_setup_dialog_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, f"gui/translations/openai_key_setup_dialog_{self._current_lang.value}.qm"):
             self.activate_gpt_dialog.set_language(self._current_lang)
         if self.activate_gpt_dialog.exec() == QDialog.DialogCode.Accepted:
             self._disambiguator.set_activated(True)
@@ -394,7 +394,7 @@ class MainWindow(QMainWindow):
         # print("_handle_disambiguation_dialog_response")
         self.disambiguation_dialog.response_signal.disconnect(self._handle_disambiguation_dialog_response)
         if selected_meaning.strip():
-            if self._translator.load(f"gui/translations/waiting_dlg_{self._current_lang.value}.qm"):
+            if load_translation(self._translator, f"gui/translations/waiting_dlg_{self._current_lang.value}.qm"):
                 self.waiting_dialog.set_language(self._current_lang)
             self.waiting_dialog.open()
             self.ask_gpt_for_relevant_verses(self.search_word, self._all_matches, selected_meaning)
@@ -597,14 +597,14 @@ class MainWindow(QMainWindow):
         self.ui.wordSum.setText(str(total))
 
     def word_bounds_results_item_double_clicked(self, item: CustomRow):
-        if self._translator.load(f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
             self.detailed_word_display_dialog.set_language(self._current_lang)
         self.detailed_word_display_dialog.set_data(item)
         # self.detailed_word_display_dialog.open()
         self.detailed_word_display_dialog.exec()
 
     def surah_results_item_double_clicked(self, item: CustomRow):
-        if self._translator.load(f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
             self.detailed_surah_display_dialog.set_language(self._current_lang)
         self.detailed_surah_display_dialog.set_data(item)
         # self.detailed_word_display_dialog.open()

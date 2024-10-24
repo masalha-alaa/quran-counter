@@ -11,6 +11,6 @@ gui/__pycache__/
 recordings/
 research.ipynb
 issues.txt
-open_ai_key.txt
+open_ai_key_backup.txt
 color-test.html
 gui/translations/*.qm

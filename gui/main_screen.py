@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'main_screen.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.8.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -432,7 +432,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.foundVerses = QTextBrowser(self.ayatTab)
         self.foundVerses.setObjectName(u"foundVerses")
-        self.foundVerses.viewport().setProperty("cursor", QCursor(Qt.CursorShape.IBeamCursor))
+        self.foundVerses.viewport().setProperty(u"cursor", QCursor(Qt.CursorShape.IBeamCursor))
         self.foundVerses.setStyleSheet(u"font-family: 'Noto Naskh Arabic'; font-size: 17pt;")
 
         self.verticalLayout_17.addWidget(self.foundVerses)

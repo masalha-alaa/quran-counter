@@ -21,3 +21,6 @@ def resource_path(relative_path):
 def translate_text(text):
     return QCoreApplication.translate("Dynamic", text)
 
+
+def load_translation(translator, path):
+    return translator.load(resource_path(path))

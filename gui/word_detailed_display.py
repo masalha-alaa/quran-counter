@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'word_detailed_display.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.8.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -37,7 +37,7 @@ class Ui_DetailedWordDisplayDialog(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.textBrowser = QTextBrowser(DetailedWordDisplayDialog)
         self.textBrowser.setObjectName(u"textBrowser")
-        self.textBrowser.viewport().setProperty("cursor", QCursor(Qt.CursorShape.IBeamCursor))
+        self.textBrowser.viewport().setProperty(u"cursor", QCursor(Qt.CursorShape.IBeamCursor))
         self.textBrowser.setStyleSheet(u"font-family: 'Noto Naskh Arabic'; font-size: 17pt;")
         self.textBrowser.setLocale(QLocale(QLocale.Arabic, QLocale.Israel))
 
