@@ -4,13 +4,14 @@ from PySide6.QtGui import QPainter, QColor, QPen
 
 
 class SpinningLoader(QWidget):
-    def __init__(self):
+    def __init__(self, radius=20):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
 
         self.hide()
+        self.radius = radius
         self.setMinimumSize(24, 24)  # Set minimum size for the widget
         self.angle = 0  # Angle for rotation
         self.timer = QTimer()
@@ -39,7 +40,7 @@ class SpinningLoader(QWidget):
 
         # Draw a spinning circle
         center = self.rect().center()
-        radius = 20  # Radius of the circle
+        radius = self.radius  # Radius of the circle
         pen = QPen(QColor(0, 150, 150))
         pen.setWidth(4)
         painter.setPen(pen)  # Green color for the spinner

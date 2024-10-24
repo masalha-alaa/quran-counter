@@ -5,31 +5,37 @@ from cachetools.keys import hashkey
 import openai
 from arabic_reformer import reform_regex
 from ast import literal_eval
-from my_utils import AppLang, translate_text
+from my_utils import AppLang
+from activate_gpt_thread import ActivateGptThread
 
 
 class Disambiguator:
     # MAX_WORDS = (8192 / (1000/750))  # 6144
     MAX_WORDS = 700
+    remove_ref = re.compile(r"^\d{,3}:\d{,3}:\s+", flags=re.M)
 
     def __init__(self, openai_key=None):
-        if openai_key is None:
-            self._key = openai_key
-        elif os.path.exists(openai_key):
-            self._key = open(openai_key, mode='r').read()
-        elif isinstance(openai_key, str):
-            self._key = openai_key
+        self.activate_gpt_thread = ActivateGptThread()
+        self._activated = False
+        if openai_key is not None:
+            self.activate_gpt_thread.set_key(openai_key)
+            self.activate_gpt_thread.activation_result.connect(self.gpt_activation_signal)
+            self.activate_gpt_thread.start()
 
-        if self._key:
-            openai.api_key = self._key
-
-        self.remove_ref = re.compile(r"^\d{,3}:\d{,3}:\s+", flags=re.M)
-
-        # TODO: settings to choose model
         # self._gpt_model = "gpt-3.5-turbo"
         self._gpt_model = "gpt-4"
+        # self._gpt_model = "chatgpt-4o-latest"
         # self._gpt_model = "GPT-4o"
         # self._gpt_model = "GPT-4o mini"
+
+    def is_activated(self) -> bool:
+        return self._activated
+
+    def set_activated(self, is_activated):
+        self._activated = is_activated
+
+    def gpt_activation_signal(self, activated):
+        self._activated = activated
 
     @cached(cache=LRUCache(maxsize=128))
     def get_chatgpt_response(self, word, language: AppLang):
@@ -60,7 +66,7 @@ class Disambiguator:
                 verses_for_prompt.append([])
                 verse_counter = 0
                 words_count = 0
-            verses_for_prompt[-1].append(f"{verse_counter + 1}. {self.remove_ref.sub('', verse)}")
+            verses_for_prompt[-1].append(f"{verse_counter + 1}. {Disambiguator.remove_ref.sub('', verse)}")
             verse_counter += 1
 
         # TODO: Use flags from checkboxes

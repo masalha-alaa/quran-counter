@@ -20,6 +20,16 @@ class ArabicOnlyValidator(QValidator):
             return QValidator.State.Invalid, input, pos
 
 
+class OpenAiKeyValidator(QValidator):
+    def validate(self, input, pos):
+        abc = QRegularExpression("[a-zA-Z0-9_/-]+")
+
+        if abc.match(input).hasMatch():
+            return QValidator.State.Acceptable, input, pos
+        else:
+            return QValidator.State.Invalid, input, pos
+
+
 class MaxWordsValidator(QValidator):
     def __init__(self, max_words=None):
         super().__init__()

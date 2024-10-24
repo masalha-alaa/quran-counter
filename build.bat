@@ -24,6 +24,12 @@ pyside6-lupdate gui/word_detailed_display.ui -ts gui/translations/word_detailed_
 pyside6-lrelease gui/translations/word_detailed_display_ar.ts
 pyside6-lrelease gui/translations/word_detailed_display_en.ts
 
+REM openai_key_setup dialog
+pyside6-uic .\gui\openai_key_setup_dialog.ui -o .\gui\openai_key_setup_dialog.py
+pyside6-lupdate gui/openai_key_setup_dialog.ui -ts gui/translations/openai_key_setup_dialog_ar.ts
+pyside6-lrelease gui/translations/openai_key_setup_dialog_ar.ts
+pyside6-lrelease gui/translations/openai_key_setup_dialog_en.ts
+
 REM mushaf_view dialog
 pyside6-uic .\gui\mushaf_view.ui -o .\gui\mushaf_view.py
 pyside6-lupdate gui/mushaf_view.ui -ts gui/translations/mushaf_view_ar.ts

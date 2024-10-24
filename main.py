@@ -21,6 +21,7 @@ from gui.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
 from gui.my_mushaf_view_dialog_ import MyMushafViewDialog
 from disambiguator import Disambiguator
 from ask_gpt_thread import AskGptThread
+from gui.my_openai_key_setup_dialog import MyOpenAiKeySetupDialog
 from word_bounds_finder_thread import WordBoundsFinderThread
 from surah_finder_thread import SurahFinderThread
 from lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
@@ -88,10 +89,12 @@ class MainWindow(QMainWindow):
         # [f"<span style=\"color: {c.value};\">" for c in color]
 
         self._disambiguator = Disambiguator(open("open_ai_key.txt", mode='r').read())
+        # self._disambiguator = Disambiguator("TEST")
         self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator, self._current_lang)
 
         self.waiting_dialog = MyWaitingDialog(self._current_lang)
         self.ask_gpt_thread = AskGptThread(self._disambiguator)
+        self.activate_gpt_dialog = MyOpenAiKeySetupDialog(self._current_lang)
 
         self.detailed_word_display_dialog = MyWordDetailedDisplayDialog(self._current_lang)
         self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog(self._current_lang)
@@ -334,6 +337,12 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def _filter_button_clicked(self):
+        if self._disambiguator.is_activated():
+            self.show_disambiguation_dialog()
+        else:
+            self.show_gpt_activation_dialog()
+
+    def show_disambiguation_dialog(self):
         if self._translator.load(f"gui/translations/disambig_dlg_{self._current_lang.value}.qm"):
             self.disambiguation_dialog.set_language(self._current_lang)
 
@@ -343,6 +352,13 @@ class MainWindow(QMainWindow):
             pass
         else:
             pass
+
+    def show_gpt_activation_dialog(self):
+        if self._translator.load(f"gui/translations/openai_key_setup_dialog_{self._current_lang.value}.qm"):
+            self.activate_gpt_dialog.set_language(self._current_lang)
+        if self.activate_gpt_dialog.exec() == QDialog.DialogCode.Accepted:
+            self._disambiguator.set_activated(True)
+            self.show_disambiguation_dialog()
 
     def _clear_filter_button_clicked(self):
         self._filtered_matches_idx = range(len(self._all_matches))
