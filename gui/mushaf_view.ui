@@ -583,7 +583,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           </layout>
          </item>
          <item row="2" column="3">
-          <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,0,0">
+          <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,0">
            <property name="spacing">
             <number>6</number>
            </property>
@@ -624,19 +624,6 @@ font: 400 18pt &quot;Calibri&quot;;</string>
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
             </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </item>

@@ -453,10 +453,6 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_12.addWidget(self.surahWordsNum)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_12.addItem(self.verticalSpacer_2)
-
 
         self.gridLayout_2.addLayout(self.verticalLayout_12, 2, 3, 1, 1)
 

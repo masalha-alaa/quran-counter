@@ -31,27 +31,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="773"/>
+        <location filename="../mushaf_view.ui" line="760"/>
         <source>عبارات تظهر فقط في هذه السورة - اضغط لمشاهدة المزيد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="815"/>
+        <location filename="../mushaf_view.ui" line="802"/>
         <source>عبارات حصرية للسورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="696"/>
+        <location filename="../mushaf_view.ui" line="683"/>
         <source>عدد جميع الأحرف, مع تكرار</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="702"/>
+        <location filename="../mushaf_view.ui" line="689"/>
         <source>عدد أحرف السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="654"/>
+        <location filename="../mushaf_view.ui" line="641"/>
         <source>جميع الكلمات داخل التحديد, مع تكرار</source>
         <translation type="unfinished"></translation>
     </message>
@@ -61,7 +61,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="741"/>
+        <location filename="../mushaf_view.ui" line="728"/>
         <source>محو النتائج</source>
         <translation type="unfinished"></translation>
     </message>
@@ -91,7 +91,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="676"/>
+        <location filename="../mushaf_view.ui" line="663"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -117,7 +117,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="660"/>
+        <location filename="../mushaf_view.ui" line="647"/>
         <source>كلمات داخل التحديد</source>
         <translation type="unfinished"></translation>
     </message>
