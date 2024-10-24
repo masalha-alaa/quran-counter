@@ -52,6 +52,13 @@ class SelectionType(Enum):
     BY_PAGE = auto()
 
 
+class MySpanInfoMetaData:
+    def __init__(self, surah_id=0, total_surahs=0, get_exclusive=False):
+        self.current_surah_id = surah_id
+        self.total_surahs_in_page = total_surahs
+        self.get_exclusive = get_exclusive
+
+
 class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     FIRST_PAGE = 1
     LAST_PAGE = 604
@@ -152,7 +159,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.exclusive_words_bi = load(open(resource_path("data/exclusive_per_surah_bi.json"), mode='r', encoding='utf-8'))
         self.exclusive_words_tri = load(open(resource_path("data/exclusive_per_surah_tri.json"), mode='r', encoding='utf-8'))
 
-    def get_current_surah_stats(self, clear_current=False):
+    def get_current_surah_stats(self, clear_current=False, get_exclusive_phrases=True):
         if clear_current:
             self.surahLettersNum.setText("")
             self.mostRepeatedLetter.setText("")
@@ -161,7 +168,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             span_thread = SpanInfoThread(surah_name=surah.surah_name,
                                          count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
                                          count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked(),
-                                         metadata=(i, len(self.page.surahs)))
+                                         metadata=MySpanInfoMetaData(i,
+                                                                     len(self.page.surahs),
+                                                                     get_exclusive_phrases))
             span_thread.from_text('\n'.join(MyDataLoader.get_surah(surah.surah_num)))
             span_thread.result_ready.connect(self.current_surah_stats_callback)
             self.add_thread(span_thread)
@@ -192,21 +201,22 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
         # surah exclusive phrases
         # Surah x: a (#), bc (#), def (#)
-        span_info.surah_exclusive_words = self.exclusive_words_uni[str(span_info.surah_num)]
-        span_info.surah_exclusive_bigrams = self.exclusive_words_bi[str(span_info.surah_num)]
-        span_info.surah_exclusive_trigrams = self.exclusive_words_tri[str(span_info.surah_num)]
+        if span_info.metadata.get_exclusive:
+            span_info.surah_exclusive_words = self.exclusive_words_uni[str(span_info.surah_num)]
+            span_info.surah_exclusive_bigrams = self.exclusive_words_bi[str(span_info.surah_num)]
+            span_info.surah_exclusive_trigrams = self.exclusive_words_tri[str(span_info.surah_num)]
 
-        uni = span_info.surah_exclusive_uni_random
-        bi = span_info.surah_exclusive_bi_random
-        tri = span_info.surah_exclusive_tri_random
-        txt = f"{span_info.surah_name}: {uni}, {bi}, {tri}"
-        match span_info.metadata[0]:
-            case 0:
-                self.exclusivePhrasesInSurah1.setText(txt)
-            case 1:
-                self.exclusivePhrasesInSurah2.setText(txt)
-            case 2:
-                self.exclusivePhrasesInSurah3.setText(txt)
+            uni = span_info.surah_exclusive_uni_random
+            bi = span_info.surah_exclusive_bi_random
+            tri = span_info.surah_exclusive_tri_random
+            txt = f"{span_info.surah_name}: {uni}, {bi}, {tri}"
+            match span_info.metadata.current_surah_id:
+                case 0:
+                    self.exclusivePhrasesInSurah1.setText(txt)
+                case 1:
+                    self.exclusivePhrasesInSurah2.setText(txt)
+                case 2:
+                    self.exclusivePhrasesInSurah3.setText(txt)
 
         # --- MUTEX UNLOCK ---
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.unlock()
@@ -597,7 +607,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         if self.last_selection_type == SelectionType.NO_SELECTION:
             return
         if self.last_selection_type == SelectionType.BY_PAGE:
-            self.get_current_surah_stats(clear_current=True)
+            self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
 
@@ -605,12 +615,12 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         if self.last_selection_type == SelectionType.NO_SELECTION:
             return
         if self.last_selection_type == SelectionType.BY_PAGE:
-            self.get_current_surah_stats(clear_current=True)
+            self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
 
     def exclusive_words_frame_clicked(self):
-        print("exclusive_words_frame_clicked")
+        pass
 
     def restart_stats_button_clicked(self):
         for widget in self.stats_widgets:

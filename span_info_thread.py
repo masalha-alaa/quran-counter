@@ -9,6 +9,7 @@ from enum import Enum, auto
 from json import load
 from random import choice
 
+
 class NGrams(Enum):
     UNIGRAMS = auto()
     BIGRAMS = auto()
