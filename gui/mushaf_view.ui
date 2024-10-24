@@ -560,12 +560,12 @@ font: 400 18pt &quot;Calibri&quot;;</string>
               <string notr="true">font: bold;</string>
              </property>
              <property name="text">
-              <string>الحرف الأكثر تكرارًا في السورة</string>
+              <string>الكلمة الأكثر تكرارًا في السورة</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="mostRepeatedLetter">
+            <widget class="QLabel" name="mostRepeatedWord">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>

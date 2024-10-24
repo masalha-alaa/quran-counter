@@ -25,6 +25,7 @@ class SpanInfo:
         self.letters_from_beginning_of_quran = 0
         self.letters_in_selection = 0
         self.most_repeated_letter = ""
+        self.most_repeated_word = ""  # TODO: Must do with no tashkeel
         self.words_from_beginning_of_surah = 0
         self.words_from_beginning_of_quran = 0
         self.words_in_selection = 0
@@ -53,6 +54,7 @@ class SpanInfo:
                 f"{self.letters_from_beginning_of_quran = }\n"
                 f"{self.letters_in_selection = }\n"
                 f"{self.most_repeated_letter = }\n"
+                f"{self.most_repeated_word = }\n"
                 f"{self.words_from_beginning_of_surah = }\n"
                 f"{self.words_from_beginning_of_quran = }\n"
                 f"{self.words_in_selection = }\n"
@@ -98,6 +100,7 @@ class SpanInfoThread(QThread):
         self.info.surah_name = self._surah_name
         self.info.surah_num = MyDataLoader.get_surah_num(self.info.surah_name)
         letters = {}
+        words = {}
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):
                 if not is_diacritic(word) and word != rub_el_hizb_mark:
@@ -110,6 +113,7 @@ class SpanInfoThread(QThread):
                         self.info.words_in_selection += 2
                     else:
                         self.info.words_in_selection += 1
+                    words[word] = words.get(word, 0) + 1  # TODO: Should take waw into account
 
                 for ch in word:
                     if ch == alif_khunjariyah or not is_diacritic(ch):
@@ -118,6 +122,7 @@ class SpanInfoThread(QThread):
                         self.info.letters_in_selection += 1
             QCoreApplication.processEvents()
         self.info.most_repeated_letter = max(letters.items(), key=lambda x: x[1], default="")
+        self.info.most_repeated_word = max(words.items(), key=lambda x: x[1], default="")
 
         try:
             self.result_ready.emit(self.info, self._thread_id, self)

@@ -31,6 +31,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mushaf_view.ui" line="563"/>
+        <source>الكلمة الأكثر تكرارًا في السورة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mushaf_view.ui" line="760"/>
         <source>عبارات تظهر فقط في هذه السورة - اضغط لمشاهدة المزيد</source>
         <translation type="unfinished"></translation>
@@ -63,11 +68,6 @@
     <message>
         <location filename="../mushaf_view.ui" line="728"/>
         <source>محو النتائج</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mushaf_view.ui" line="563"/>
-        <source>الحرف الأكثر تكرارًا في السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

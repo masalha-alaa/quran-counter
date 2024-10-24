@@ -30,13 +30,6 @@ class SurahInPage:
         self.verses_start_idx = 0
 
 
-class SurahStats:
-    def __init__(self):
-        self.words_count = 0
-        self.letters_count = 0
-        self.most_repeated_letter = None
-
-
 class Page:
     def __init__(self):
         self.surahs: list[SurahInPage] = []
@@ -94,7 +87,6 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.running_threads = set()
         self._thread_id = -1
         self._last_thread_id = -1
-        self.current_surah_stats = SurahStats()
         self.last_selection_type: None | SelectionType = None
         self.nextPushButton.clicked.connect(self.next_button_clicked)
         self.prevPushButton.clicked.connect(self.prev_button_clicked)
@@ -162,7 +154,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def get_current_surah_stats(self, clear_current=False, get_exclusive_phrases=True):
         if clear_current:
             self.surahLettersNum.setText("")
-            self.mostRepeatedLetter.setText("")
+            # self.mostRepeatedLetter.setText("")
+            self.mostRepeatedWord.setText("")
             self.surahWordsNum.setText("")
         for i, surah in enumerate(self.page.surahs):
             span_thread = SpanInfoThread(surah_name=surah.surah_name,
@@ -188,11 +181,17 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         letters_num_sorted_results = sorted(letters_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
         self.surahLettersNum.setText(", ".join(letters_num_sorted_results))
 
-        # most repeated letter
-        letter, repetitions = span_info.most_repeated_letter
-        most_repeated_letter_new_text = (self.mostRepeatedLetter.text() + ", " + f"{span_info.surah_name}: '{letter}' ({repetitions})").strip(", ")
-        most_repeated_letter_sorted_results = sorted(most_repeated_letter_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
-        self.mostRepeatedLetter.setText(", ".join(most_repeated_letter_sorted_results))
+        # # most repeated letter
+        # letter, repetitions = span_info.most_repeated_letter
+        # most_repeated_letter_new_text = (self.mostRepeatedLetter.text() + ", " + f"{span_info.surah_name}: '{letter}' ({repetitions})").strip(", ")
+        # most_repeated_letter_sorted_results = sorted(most_repeated_letter_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        # self.mostRepeatedLetter.setText(", ".join(most_repeated_letter_sorted_results))
+
+        # most repeated word
+        word, repetitions = span_info.most_repeated_word
+        most_repeated_word_new_text = (self.mostRepeatedWord.text() + ", " + f"{span_info.surah_name}: '{word}' ({repetitions})").strip(", ")
+        most_repeated_word_sorted_results = sorted(most_repeated_word_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        self.mostRepeatedWord.setText(", ".join(most_repeated_word_sorted_results))
 
         # surah words num
         surah_words_num_new_text = (self.surahWordsNum.text() + ", " + f"{span_info.surah_name}: {span_info.words_in_selection}").strip(", ")
@@ -224,7 +223,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def clear_results(self):
         self.wordsInSelection.setText("0")
         self.surahLettersNum.setText("")
-        self.mostRepeatedLetter.setText("")
+        # self.mostRepeatedLetter.setText("")
+        self.mostRepeatedWord.setText("")
         self.surahWordsNum.setText("")
 
     def clear_selection_info(self):

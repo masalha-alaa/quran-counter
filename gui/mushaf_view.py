@@ -418,15 +418,15 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_14.addWidget(self.label_13)
 
-        self.mostRepeatedLetter = QLabel(self.frame_3)
-        self.mostRepeatedLetter.setObjectName(u"mostRepeatedLetter")
-        sizePolicy2.setHeightForWidth(self.mostRepeatedLetter.sizePolicy().hasHeightForWidth())
-        self.mostRepeatedLetter.setSizePolicy(sizePolicy2)
+        self.mostRepeatedWord = QLabel(self.frame_3)
+        self.mostRepeatedWord.setObjectName(u"mostRepeatedWord")
+        sizePolicy2.setHeightForWidth(self.mostRepeatedWord.sizePolicy().hasHeightForWidth())
+        self.mostRepeatedWord.setSizePolicy(sizePolicy2)
 #if QT_CONFIG(tooltip)
-        self.mostRepeatedLetter.setToolTip(u"")
+        self.mostRepeatedWord.setToolTip(u"")
 #endif // QT_CONFIG(tooltip)
 
-        self.verticalLayout_14.addWidget(self.mostRepeatedLetter)
+        self.verticalLayout_14.addWidget(self.mostRepeatedWord)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_14, 2, 2, 1, 1)
@@ -624,8 +624,8 @@ class Ui_MushafViewDialog(object):
         self.prevPushButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0633\u0627\u0628\u0642", None))
         self.wawIsAWordCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\"  \u0643\u0644\u0645\u0629 \u0645\u0646\u0641\u0631\u062f\u0629\"", None))
         self.waykaannaTwoWordsCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\u064a\u0643\u0623\u0646\"  \u0643\u0644\u0645\u062a\u0627\u0646\"", None))
-        self.label_13.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u062d\u0631\u0641 \u0627\u0644\u0623\u0643\u062b\u0631 \u062a\u0643\u0631\u0627\u0631\u064b\u0627 \u0641\u064a \u0627\u0644\u0633\u0648\u0631\u0629", None))
-        self.mostRepeatedLetter.setText("")
+        self.label_13.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0643\u0644\u0645\u0629 \u0627\u0644\u0623\u0643\u062b\u0631 \u062a\u0643\u0631\u0627\u0631\u064b\u0627 \u0641\u064a \u0627\u0644\u0633\u0648\u0631\u0629", None))
+        self.mostRepeatedWord.setText("")
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u062c\u0645\u064a\u0639 \u0627\u0644\u0643\u0644\u0645\u0627\u062a, \u0645\u0639 \u062a\u0643\u0631\u0627\u0631", None))
 #endif // QT_CONFIG(tooltip)
