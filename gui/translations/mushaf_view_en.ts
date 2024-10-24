@@ -31,6 +31,16 @@
         <translation>Surah</translation>
     </message>
     <message>
+        <location filename="../mushaf_view.ui" line="773"/>
+        <source>عبارات تظهر فقط في هذه السورة - اضغط لمشاهدة المزيد</source>
+        <translation>Phrases that appear only in this Surah - Click to see more</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="815"/>
+        <source>عبارات حصرية للسورة</source>
+        <translation>Exclusive phrases</translation>
+    </message>
+    <message>
         <location filename="../mushaf_view.ui" line="583"/>
         <source>عدد جميع الأحرف, مع تكرار</source>
         <translation>Surah letters count, with repetition</translation>

@@ -68,6 +68,7 @@ class Ui_OpenAiKeySetupDialog(object):
         self.label_3 = QLabel(OpenAiKeySetupDialog)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setText(u"<a href=\"https://platform.openai.com/api-keys\"><span style=\"color:deepskyblue;\">https://platform.openai.com/api-keys</span></a>")
+        self.label_3.setOpenExternalLinks(True)
 
         self.verticalLayout.addWidget(self.label_3)
 

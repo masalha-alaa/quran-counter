@@ -24,12 +24,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../openai_key_setup_dialog.ui" line="115"/>
+        <location filename="../openai_key_setup_dialog.ui" line="118"/>
         <source>الغاء</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../openai_key_setup_dialog.ui" line="135"/>
+        <location filename="../openai_key_setup_dialog.ui" line="138"/>
         <source>تطبيق</source>
         <translation type="unfinished"></translation>
     </message>

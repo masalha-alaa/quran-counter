@@ -10,7 +10,8 @@ private/
 gui/__pycache__/
 recordings/
 research.ipynb
+prepare_exclusive_phrases.ipynb
 issues.txt
-open_ai_key_backup.txt
+open_ai_key.txt
 color-test.html
 gui/translations/*.qm

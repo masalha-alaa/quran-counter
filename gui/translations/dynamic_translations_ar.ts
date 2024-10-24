@@ -483,7 +483,7 @@
     
     <!-- OTHER [BEGIN] -->
     <message>
-        <source>اية</source>
+        <source>آية</source>
         <translation type="unfinished"></translation>
     </message>
     <!-- OTHER [END] -->

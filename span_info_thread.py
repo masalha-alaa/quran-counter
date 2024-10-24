@@ -5,11 +5,21 @@ from arabic_reformer import is_diacritic, normalize_letter, alif_khunjariyah
 from cursor_position_info import CursorPositionInfo
 from my_data_loader import MyDataLoader
 from arabic_reformer import rub_el_hizb_mark
+from enum import Enum, auto
+from json import load
+from random import choice
+
+class NGrams(Enum):
+    UNIGRAMS = auto()
+    BIGRAMS = auto()
+    TRIGRAMS = auto()
 
 
 class SpanInfo:
     def __init__(self):
         self.surah_name = ""
+        self.surah_num = ""
+        self.metadata = None
         self.letters_from_beginning_of_surah = 0
         self.letters_from_beginning_of_quran = 0
         self.letters_in_selection = 0
@@ -17,6 +27,24 @@ class SpanInfo:
         self.words_from_beginning_of_surah = 0
         self.words_from_beginning_of_quran = 0
         self.words_in_selection = 0
+        self.surah_exclusive_words = []
+        self.surah_exclusive_bigrams = []
+        self.surah_exclusive_trigrams = []
+
+    @property
+    def surah_exclusive_uni_random(self):
+        chosen = choice(self.surah_exclusive_words)
+        return f"{chosen[0]} ({chosen[1]})"
+
+    @property
+    def surah_exclusive_bi_random(self):
+        chosen = choice(self.surah_exclusive_bigrams)
+        return f"{chosen[0]} ({chosen[1]})"
+
+    @property
+    def surah_exclusive_tri_random(self):
+        chosen = choice(self.surah_exclusive_trigrams)
+        return f"{chosen[0]} ({chosen[1]})"
 
     def __repr__(self):
         return (f"{self.surah_name = }\n"
@@ -26,7 +54,11 @@ class SpanInfo:
                 f"{self.most_repeated_letter = }\n"
                 f"{self.words_from_beginning_of_surah = }\n"
                 f"{self.words_from_beginning_of_quran = }\n"
-                f"{self.words_in_selection = }\n")
+                f"{self.words_in_selection = }\n"
+                f"{self.surah_exclusive_words = }\n"
+                f"{self.surah_exclusive_bigrams = }\n"
+                f"{self.surah_exclusive_trigrams = }\n"
+                )
 
 
 class SpanInfoThread(QThread):
@@ -34,7 +66,8 @@ class SpanInfoThread(QThread):
     verse_mark_regex_ptrn = re.compile(r"[\d()]")
     waikanna = ["وَيْكَأَنَّ", "وَيْكَأَنَّهُۥ"]
 
-    def __init__(self, thread_id=0, surah_name="", count_waw_as_a_word=True, count_waikaana_as_two_words=True):
+    def __init__(self, thread_id=0, surah_name="", count_waw_as_a_word=True, count_waikaana_as_two_words=True,
+                 metadata=None):
         super().__init__()
         self._surah_name = surah_name
         self._thread_id = thread_id
@@ -42,6 +75,7 @@ class SpanInfoThread(QThread):
         self.count_waw_as_a_word = count_waw_as_a_word
         self.count_waikaana_as_two_words = count_waikaana_as_two_words
         self.info = SpanInfo()
+        self.info.metadata = metadata
 
     @property
     def thread_id(self) -> int:
@@ -61,6 +95,7 @@ class SpanInfoThread(QThread):
 
     def run(self):
         self.info.surah_name = self._surah_name
+        self.info.surah_num = MyDataLoader.get_surah_num(self.info.surah_name)
         letters = {}
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):

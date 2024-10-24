@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1132</width>
-    <height>885</height>
+    <width>1088</width>
+    <height>880</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -486,22 +486,9 @@ font: 400 18pt &quot;Calibri&quot;;</string>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,8">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
-        <item>
-         <spacer name="horizontalSpacer_7">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_18">
           <item>
@@ -558,103 +545,8 @@ font: 400 18pt &quot;Calibri&quot;;</string>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,9,7">
-         <item row="1" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_17">
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="resetStatsButton">
-             <property name="toolTip">
-              <string>محو النتائج</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="resources/resources.qrc">
-               <normaloff>:/reset-icon.png</normaloff>:/reset-icon.png</iconset>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <layout class="QVBoxLayout" name="verticalLayout_13" stretch="1,1,0">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>عدد جميع الأحرف, مع تكرار</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">font: bold;</string>
-             </property>
-             <property name="text">
-              <string>عدد أحرف السورة</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="surahLettersNum">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string notr="true"/>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="locale">
-              <locale language="Arabic" country="Israel"/>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="1">
+        <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,4,3,2">
+         <item row="2" column="2">
           <layout class="QVBoxLayout" name="verticalLayout_14">
            <item>
             <widget class="QLabel" name="label_13">
@@ -690,7 +582,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
            </item>
           </layout>
          </item>
-         <item row="2" column="2">
+         <item row="2" column="3">
           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,0,0">
            <property name="spacing">
             <number>6</number>
@@ -748,7 +640,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
            </item>
           </layout>
          </item>
-         <item row="1" column="2">
+         <item row="1" column="3">
           <layout class="QVBoxLayout" name="verticalLayout_9">
            <item>
             <widget class="QLabel" name="label_12">
@@ -790,6 +682,164 @@ font: 400 18pt &quot;Calibri&quot;;</string>
            </item>
           </layout>
          </item>
+         <item row="1" column="2">
+          <layout class="QVBoxLayout" name="verticalLayout_13" stretch="1,1">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>عدد جميع الأحرف, مع تكرار</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font: bold;</string>
+             </property>
+             <property name="text">
+              <string>عدد أحرف السورة</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="surahLettersNum">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string notr="true"/>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="locale">
+              <locale language="Arabic" country="Israel"/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout_17">
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QPushButton" name="resetStatsButton">
+             <property name="toolTip">
+              <string>محو النتائج</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="resources/resources.qrc">
+               <normaloff>:/reset-icon.png</normaloff>:/reset-icon.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1" rowspan="2">
+          <widget class="ClickableFrame" name="exclusiveWordsFrame">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="toolTip">
+            <string>عبارات تظهر فقط في هذه السورة - اضغط لمشاهدة المزيد</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Panel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,1,1,1">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>4</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>4</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item alignment="Qt::AlignTop">
+             <widget class="QLabel" name="label_7">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: bold;</string>
+              </property>
+              <property name="text">
+               <string>عبارات حصرية للسورة</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="exclusivePhrasesInSurah1">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="exclusivePhrasesInSurah2">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="exclusivePhrasesInSurah3">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -798,6 +848,14 @@ font: 400 18pt &quot;Calibri&quot;;</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableFrame</class>
+   <extends>QFrame</extends>
+   <header>gui/clickable_frame</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>pageInput</tabstop>
   <tabstop>goToPageButton</tabstop>

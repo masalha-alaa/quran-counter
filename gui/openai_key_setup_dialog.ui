@@ -77,6 +77,9 @@ font: 400 14pt &quot;Calibri&quot;;</string>
        <property name="text">
         <string notr="true">&lt;a href=&quot;https://platform.openai.com/api-keys&quot;&gt;&lt;span style=&quot;color:deepskyblue;&quot;&gt;https://platform.openai.com/api-keys&lt;/span&gt;&lt;/a&gt;</string>
        </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>

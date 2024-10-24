@@ -47,6 +47,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super(MainWindow, self).__init__()
+        self._setup_fonts()
         self.ui = Ui_MainWindow()
         self.running_threads = set()
         self._thread_id = -1
@@ -77,7 +78,6 @@ class MainWindow(QMainWindow):
         # self.set_text_with_cursor()
         self._setup_events()
         self._setup_validators()
-        # self._setup_fonts()
         # self._finder_thread = Finder()
         # self._finder_thread.result_ready.connect(self.on_word_found_complete)
 
@@ -160,16 +160,7 @@ class MainWindow(QMainWindow):
 
     def _setup_fonts(self):
         # Load the custom font
-        font_id = QFontDatabase.addApplicationFont("gui/NotoNaskhArabic-VariableFont_wght.ttf")
-
-        # Retrieve the font family name (you can get the exact name of the font family using QFontDatabase.families())
-        if font_id != -1:
-            font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
-            print(f"Loaded font: {font_family}")  # Print the font family name to verify
-
-            self.ui.foundVerses.setStyleSheet(f"font-family: '{font_family}'; font-size: 17;")
-            # naskh_font = QFont(font_family, 14)
-            # self.ui.foundVerses.setFont(naskh_font)
+        QFontDatabase.addApplicationFont(resource_path("fonts/NotoNaskhArabic-VariableFont_wght.ttf"))
 
     def _view_mushaf(self):
         if load_translation(self._translator, f"gui/translations/mushaf_view_{self._current_lang.value}.qm"):
