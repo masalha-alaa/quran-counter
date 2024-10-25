@@ -27,7 +27,7 @@ class Ui_MushafViewDialog(object):
     def setupUi(self, MushafViewDialog):
         if not MushafViewDialog.objectName():
             MushafViewDialog.setObjectName(u"MushafViewDialog")
-        MushafViewDialog.resize(1088, 880)
+        MushafViewDialog.resize(1099, 880)
         MushafViewDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
 "font: 400 18pt \"Calibri\";")
@@ -404,6 +404,7 @@ class Ui_MushafViewDialog(object):
 
         self.frame_3 = QFrame(self.frame)
         self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setStyleSheet(u"")
         self.frame_3.setFrameShape(QFrame.Box)
         self.frame_3.setFrameShadow(QFrame.Raised)
         self.gridLayout_2 = QGridLayout(self.frame_3)
@@ -418,6 +419,12 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_14.addWidget(self.label_13)
 
+        self.horizontalLayout_16 = QHBoxLayout()
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_16.addItem(self.horizontalSpacer_4)
+
         self.mostRepeatedWord = QLabel(self.frame_3)
         self.mostRepeatedWord.setObjectName(u"mostRepeatedWord")
         sizePolicy2.setHeightForWidth(self.mostRepeatedWord.sizePolicy().hasHeightForWidth())
@@ -425,8 +432,14 @@ class Ui_MushafViewDialog(object):
 #if QT_CONFIG(tooltip)
         self.mostRepeatedWord.setToolTip(u"")
 #endif // QT_CONFIG(tooltip)
+        self.mostRepeatedWord.setLayoutDirection(Qt.LeftToRight)
+        self.mostRepeatedWord.setStyleSheet(u"")
+        self.mostRepeatedWord.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.verticalLayout_14.addWidget(self.mostRepeatedWord)
+        self.horizontalLayout_16.addWidget(self.mostRepeatedWord)
+
+
+        self.verticalLayout_14.addLayout(self.horizontalLayout_16)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_14, 2, 2, 1, 1)
@@ -442,6 +455,12 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_12.addWidget(self.label_2)
 
+        self.horizontalLayout_17 = QHBoxLayout()
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_17.addItem(self.horizontalSpacer_5)
+
         self.surahWordsNum = QLabel(self.frame_3)
         self.surahWordsNum.setObjectName(u"surahWordsNum")
         sizePolicy2.setHeightForWidth(self.surahWordsNum.sizePolicy().hasHeightForWidth())
@@ -449,9 +468,12 @@ class Ui_MushafViewDialog(object):
 #if QT_CONFIG(tooltip)
         self.surahWordsNum.setToolTip(u"")
 #endif // QT_CONFIG(tooltip)
-        self.surahWordsNum.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.surahWordsNum.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.verticalLayout_12.addWidget(self.surahWordsNum)
+        self.horizontalLayout_17.addWidget(self.surahWordsNum)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_17)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_12, 2, 3, 1, 1)
@@ -466,6 +488,12 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_9.addWidget(self.label_12)
 
+        self.horizontalLayout_20 = QHBoxLayout()
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_20.addItem(self.horizontalSpacer_6)
+
         self.wordsInSelection = QLabel(self.frame_3)
         self.wordsInSelection.setObjectName(u"wordsInSelection")
         sizePolicy2.setHeightForWidth(self.wordsInSelection.sizePolicy().hasHeightForWidth())
@@ -475,7 +503,10 @@ class Ui_MushafViewDialog(object):
 #endif // QT_CONFIG(tooltip)
         self.wordsInSelection.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.verticalLayout_9.addWidget(self.wordsInSelection)
+        self.horizontalLayout_20.addWidget(self.wordsInSelection)
+
+
+        self.verticalLayout_9.addLayout(self.horizontalLayout_20)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_9, 1, 3, 1, 1)
@@ -490,21 +521,29 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_13.addWidget(self.label_3)
 
-        self.surahLettersNum = QLabel(self.frame_3)
-        self.surahLettersNum.setObjectName(u"surahLettersNum")
-        sizePolicy2.setHeightForWidth(self.surahLettersNum.sizePolicy().hasHeightForWidth())
-        self.surahLettersNum.setSizePolicy(sizePolicy2)
-#if QT_CONFIG(tooltip)
-        self.surahLettersNum.setToolTip(u"")
-#endif // QT_CONFIG(tooltip)
-        self.surahLettersNum.setLayoutDirection(Qt.LeftToRight)
-        self.surahLettersNum.setLocale(QLocale(QLocale.Arabic, QLocale.Israel))
-        self.surahLettersNum.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.horizontalLayout_21 = QHBoxLayout()
+        self.horizontalLayout_21.setObjectName(u"horizontalLayout_21")
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.verticalLayout_13.addWidget(self.surahLettersNum)
+        self.horizontalLayout_21.addItem(self.horizontalSpacer_7)
+
+        self.surahUniqueWords = QLabel(self.frame_3)
+        self.surahUniqueWords.setObjectName(u"surahUniqueWords")
+        sizePolicy2.setHeightForWidth(self.surahUniqueWords.sizePolicy().hasHeightForWidth())
+        self.surahUniqueWords.setSizePolicy(sizePolicy2)
+#if QT_CONFIG(tooltip)
+        self.surahUniqueWords.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
+        self.surahUniqueWords.setLayoutDirection(Qt.LeftToRight)
+        self.surahUniqueWords.setLocale(QLocale(QLocale.Arabic, QLocale.Israel))
+        self.surahUniqueWords.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_21.addWidget(self.surahUniqueWords)
+
+
+        self.verticalLayout_13.addLayout(self.horizontalLayout_21)
 
         self.verticalLayout_13.setStretch(0, 1)
-        self.verticalLayout_13.setStretch(1, 1)
 
         self.gridLayout_2.addLayout(self.verticalLayout_13, 1, 2, 1, 1)
 
@@ -566,9 +605,9 @@ class Ui_MushafViewDialog(object):
 
         self.gridLayout_2.addWidget(self.exclusiveWordsFrame, 1, 1, 2, 1)
 
-        self.gridLayout_2.setColumnStretch(1, 4)
-        self.gridLayout_2.setColumnStretch(2, 3)
-        self.gridLayout_2.setColumnStretch(3, 2)
+        self.gridLayout_2.setColumnStretch(1, 5)
+        self.gridLayout_2.setColumnStretch(2, 4)
+        self.gridLayout_2.setColumnStretch(3, 3)
 
         self.horizontalLayout_6.addWidget(self.frame_3)
 
@@ -625,22 +664,22 @@ class Ui_MushafViewDialog(object):
         self.wawIsAWordCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\"  \u0643\u0644\u0645\u0629 \u0645\u0646\u0641\u0631\u062f\u0629\"", None))
         self.waykaannaTwoWordsCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\u064a\u0643\u0623\u0646\"  \u0643\u0644\u0645\u062a\u0627\u0646\"", None))
         self.label_13.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0643\u0644\u0645\u0629 \u0627\u0644\u0623\u0643\u062b\u0631 \u062a\u0643\u0631\u0627\u0631\u064b\u0627 \u0641\u064a \u0627\u0644\u0633\u0648\u0631\u0629", None))
-        self.mostRepeatedWord.setText("")
+        self.mostRepeatedWord.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u062c\u0645\u064a\u0639 \u0627\u0644\u0643\u0644\u0645\u0627\u062a, \u0645\u0639 \u062a\u0643\u0631\u0627\u0631", None))
 #endif // QT_CONFIG(tooltip)
         self.label_2.setText(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0643\u0644\u0645\u0627\u062a \u0627\u0644\u0633\u0648\u0631\u0629", None))
-        self.surahWordsNum.setText("")
+        self.surahWordsNum.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
 #if QT_CONFIG(tooltip)
         self.label_12.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u062c\u0645\u064a\u0639 \u0627\u0644\u0643\u0644\u0645\u0627\u062a \u062f\u0627\u062e\u0644 \u0627\u0644\u062a\u062d\u062f\u064a\u062f, \u0645\u0639 \u062a\u0643\u0631\u0627\u0631", None))
 #endif // QT_CONFIG(tooltip)
         self.label_12.setText(QCoreApplication.translate("MushafViewDialog", u"\u0643\u0644\u0645\u0627\u062a \u062f\u0627\u062e\u0644 \u0627\u0644\u062a\u062d\u062f\u064a\u062f", None))
         self.wordsInSelection.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
 #if QT_CONFIG(tooltip)
-        self.label_3.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u062d\u0631\u0641, \u0645\u0639 \u062a\u0643\u0631\u0627\u0631", None))
+        self.label_3.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0627\u0644\u0643\u0644\u0645\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0644\u0641\u0629 (\u0628\u062f\u0648\u0646 \u062a\u0643\u0631\u0627\u0631)", None))
 #endif // QT_CONFIG(tooltip)
-        self.label_3.setText(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0623\u062d\u0631\u0641 \u0627\u0644\u0633\u0648\u0631\u0629", None))
-        self.surahLettersNum.setText("")
+        self.label_3.setText(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0627\u0644\u0643\u0644\u0645\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0644\u0641\u0629 \u0641\u064a \u0627\u0644\u0633\u0648\u0631\u0629", None))
+        self.surahUniqueWords.setText(QCoreApplication.translate("MushafViewDialog", u"0", None))
 #if QT_CONFIG(tooltip)
         self.resetStatsButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0645\u062d\u0648 \u0627\u0644\u0646\u062a\u0627\u0626\u062c", None))
 #endif // QT_CONFIG(tooltip)

@@ -24,14 +24,15 @@ class SpanInfo:
         self.letters_from_beginning_of_surah = 0
         self.letters_from_beginning_of_quran = 0
         self.letters_in_selection = 0
+        self.surah_unique_words_num = 0  # TODO: Must do with no tashkeel
         self.most_repeated_letter = ""
         self.most_repeated_word = ""  # TODO: Must do with no tashkeel
         self.words_from_beginning_of_surah = 0
         self.words_from_beginning_of_quran = 0
         self.words_in_selection = 0
-        self.surah_exclusive_words = []
-        self.surah_exclusive_bigrams = []
-        self.surah_exclusive_trigrams = []
+        self.surah_exclusive_words = []  # TODO: Must do with no tashkeel
+        self.surah_exclusive_bigrams = []  # TODO: Must do with no tashkeel
+        self.surah_exclusive_trigrams = []  # TODO: Must do with no tashkeel
 
     @property
     def surah_exclusive_uni_random(self):
@@ -53,6 +54,7 @@ class SpanInfo:
                 f"{self.letters_from_beginning_of_surah = }\n"
                 f"{self.letters_from_beginning_of_quran = }\n"
                 f"{self.letters_in_selection = }\n"
+                f"{self.surah_unique_words_num = }\n"
                 f"{self.most_repeated_letter = }\n"
                 f"{self.most_repeated_word = }\n"
                 f"{self.words_from_beginning_of_surah = }\n"
@@ -105,15 +107,19 @@ class SpanInfoThread(QThread):
             if not self.verse_mark_regex_ptrn.search(word):
                 if not is_diacritic(word) and word != rub_el_hizb_mark:
                     if word in self.waikanna:
+                        words[word] = words.get(word, 0) + 1
                         if self.count_waikaana_as_two_words:
                             self.info.words_in_selection += 2
                         else:
                             self.info.words_in_selection += 1
                     elif self.count_waw_as_a_word and word.startswith("و") and not MyDataLoader.is_waw_part_of_word(word):
                         self.info.words_in_selection += 2
+                        # [2:] because i'm assuming [1] is a diacritic that belongs to the waw
+                        words[word[:2]] = words.get(word[:2], 0) + 1
+                        words[word[2:]] = words.get(word[2:], 0) + 1
                     else:
                         self.info.words_in_selection += 1
-                    words[word] = words.get(word, 0) + 1  # TODO: Should take waw into account
+                        words[word] = words.get(word, 0) + 1
 
                 for ch in word:
                     if ch == alif_khunjariyah or not is_diacritic(ch):
@@ -123,6 +129,7 @@ class SpanInfoThread(QThread):
             QCoreApplication.processEvents()
         self.info.most_repeated_letter = max(letters.items(), key=lambda x: x[1], default="")
         self.info.most_repeated_word = max(words.items(), key=lambda x: x[1], default="")
+        self.info.surah_unique_words_num = len(words)
 
         try:
             self.result_ready.emit(self.info, self._thread_id, self)

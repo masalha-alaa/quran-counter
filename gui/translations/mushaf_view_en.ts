@@ -46,16 +46,6 @@
         <translation>Exclusive phrases</translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="583"/>
-        <source>عدد جميع الأحرف, مع تكرار</source>
-        <translation>Number of letters in Surah, with repetition</translation>
-    </message>
-    <message>
-        <location filename="../mushaf_view.ui" line="589"/>
-        <source>عدد أحرف السورة</source>
-        <translation>Surah's letter count</translation>
-    </message>
-    <message>
         <location filename="../mushaf_view.ui" line="674"/>
         <source>جميع الكلمات داخل التحديد, مع تكرار</source>
         <translation>Words inside selection, with repetition</translation>
@@ -64,6 +54,16 @@
         <location filename="../mushaf_view.ui" line="716"/>
         <source>عدد جميع الكلمات, مع تكرار</source>
         <translation>Number of words in Surah, with repetition</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="683"/>
+        <source>عدد الكلمات المختلفة (بدون تكرار)</source>
+        <translation>Number of unique words in Surah</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="689"/>
+        <source>عدد الكلمات المختلفة في السورة</source>
+        <translation>Unique words without repetition</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="777"/>
