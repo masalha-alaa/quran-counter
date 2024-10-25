@@ -463,6 +463,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def go_to_ref_by_surah_name_and_verse_num(self):
         prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
         surah_num = MyDataLoader.get_surah_num(self.surahNameInput.text())
+        if surah_num is None:
+            return
         if self.verseInput_2.text() and self.surahNameInput.text():
             self.current_page = self.show_verses_from_surah_verse_ref(surah_num, self.verseInput_2.text())
         elif self.surahNameInput.text():
