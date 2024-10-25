@@ -444,6 +444,7 @@ class MainWindow(QMainWindow):
 
     def _search_word_text_changed(self, new_text):
         self._all_matches = []
+        self._filtered_matches_idx = range(len(self._all_matches))
         self._filtered_matches_iter = None
         if (not (stripped := new_text.strip())) or (self.ui.rootRadioButton.isChecked() and (len(stripped) < 2 or len(stripped.split()) != 1)):
             self.clear_results()
