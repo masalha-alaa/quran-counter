@@ -381,7 +381,7 @@ class Ui_MushafViewDialog(object):
         self.wawIsAWordCheckbox.setObjectName(u"wawIsAWordCheckbox")
         self.wawIsAWordCheckbox.setLayoutDirection(Qt.RightToLeft)
         self.wawIsAWordCheckbox.setStyleSheet(u"font: bold;")
-        self.wawIsAWordCheckbox.setChecked(True)
+        self.wawIsAWordCheckbox.setChecked(False)
 
         self.verticalLayout_18.addWidget(self.wawIsAWordCheckbox)
 

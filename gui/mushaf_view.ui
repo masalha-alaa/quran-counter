@@ -503,7 +503,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string>و&quot;  كلمة منفردة&quot;</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
