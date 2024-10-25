@@ -19,6 +19,7 @@ _special_diacritics = ["\uFC60", "\uFC61", "\uFC62", _tatweel_character, "\u06DF
     alif_khunjariyah] + _alamaat_waqf + _long_harakat + [_n_to_m_conversion]
 diacritics_regex = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
 diacritics_regex_compiled = re_compile(diacritics_regex)
+diacritics_ending_regex_compiled = re_compile(f"{diacritics_regex}+$")
 # _prohibited_characters = ["\u0640"]  # TODO?
 _prohibited_characters = []  # TODO?
 

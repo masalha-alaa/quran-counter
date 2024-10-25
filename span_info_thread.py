@@ -8,6 +8,7 @@ from arabic_reformer import rub_el_hizb_mark
 from enum import Enum, auto
 from json import load
 from random import choice
+from my_dict import MyDict
 
 
 class NGrams(Enum):
@@ -102,7 +103,7 @@ class SpanInfoThread(QThread):
         self.info.surah_name = self._surah_name
         self.info.surah_num = MyDataLoader.get_surah_num(self.info.surah_name)
         letters = {}
-        words = {}
+        words = MyDict()
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):
                 if not is_diacritic(word) and word != rub_el_hizb_mark:

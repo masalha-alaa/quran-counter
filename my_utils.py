@@ -2,6 +2,7 @@ import os
 import sys
 from enum import Enum
 from PySide6.QtCore import QCoreApplication
+from arabic_reformer import is_diacritic
 
 class AppLang(Enum):
     ARABIC = "ar"
@@ -24,3 +25,9 @@ def translate_text(text):
 
 def load_translation(translator, path):
     return translator.load(resource_path(path))
+
+
+def equal_words(w1, w2):
+    if w1[:-1] == w2[:-1] and (w1[-1] == w2[-1] or (is_diacritic(w1[-1]) and is_diacritic(w2[-1]))):
+        return True
+    return False
