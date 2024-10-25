@@ -73,7 +73,7 @@ _d = {
     "ي": (chr(0xFEF3), chr(0xFEF4), chr(0xFEF2)),
     "ة": (None, None, chr(0xFE94)),
     "ى": (chr(0xFBE8), "ـ", chr(0xFEF0)),  # TODO: DEBUG
-    "ـ": (None, "ـ", chr(0xFEF0)),  # TODO: DEBUG
+    "ـ": (chr(0xFBE8), "ـ", chr(0xFEF0)),  # TODO: DEBUG
     "ئ": (chr(0xFE8B), chr(0xFE8C), chr(0xFE8A)),
     "ء": (chr(0x0621), chr(0x0621), chr(0x0621)),
 }

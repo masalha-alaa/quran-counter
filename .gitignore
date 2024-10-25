@@ -9,8 +9,7 @@ private/
 *.spec
 gui/__pycache__/
 recordings/
-research.ipynb
-prepare_exclusive_phrases.ipynb
+*.ipynb
 issues.txt
 open_ai_key.txt
 color-test.html
