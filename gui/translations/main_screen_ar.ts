@@ -48,7 +48,7 @@
     </message>
     <message>
         <location filename="../main_screen.ui" line="173"/>
-        <source>ترتيب الكلمات غير الزامي</source>
+        <source>بحث كلمتين مع امكانية عكس الترتيب</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -64,7 +64,9 @@ class FinderThread(QThread):
 
     def _prep_data(self):
         if self.root_flag:
-            new_text = self._get_root(self.initial_word)
+            new_text = self._get_root(self.initial_word).strip()
+        elif self.full_word:
+            new_text = self.initial_word.strip()
         else:
             new_text = self.initial_word
 

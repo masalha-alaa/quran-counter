@@ -170,7 +170,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           <item>
            <widget class="QCheckBox" name="wordPermutationsCheckbox">
             <property name="toolTip">
-             <string>ترتيب الكلمات غير الزامي</string>
+             <string>بحث كلمتين مع امكانية عكس الترتيب</string>
             </property>
             <property name="styleSheet">
              <string notr="true">font: 18pt;</string>

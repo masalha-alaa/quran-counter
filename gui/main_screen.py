@@ -760,7 +760,7 @@ class Ui_MainWindow(object):
         self.finalTaCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062f\u0645 \u0627\u0644\u062a\u0641\u0631\u064a\u0642 \u0628\u064a\u0646 '\u0640\u062a' / '\u0640\u0629'", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
-        self.wordPermutationsCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u062a\u0631\u062a\u064a\u0628 \u0627\u0644\u0643\u0644\u0645\u0627\u062a \u063a\u064a\u0631 \u0627\u0644\u0632\u0627\u0645\u064a", None))
+        self.wordPermutationsCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\u0628\u062d\u062b \u0643\u0644\u0645\u062a\u064a\u0646 \u0645\u0639 \u0627\u0645\u0643\u0627\u0646\u064a\u0629 \u0639\u0643\u0633 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.optionalAlTarifCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\"\u0627\u0644\" \u0627\u0644\u062a\u0639\u0631\u064a\u0641 \u062e\u064a\u0627\u0631\u064a\u0629", None))

@@ -305,7 +305,7 @@ class MainWindow(QMainWindow):
     def _maintain_words_order_state_changed(self, state):
         self._composite_validator.set_max_words(None if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Unchecked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
         self.ui.searchWord.setFocus()
-        if qt_state == Qt.CheckState.Checked and len((words := self.search_word.split())) > 2:
+        if qt_state == Qt.CheckState.Checked and len((words := self.search_word.split())) > MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER:
             self.ui.searchWord.setText(' '.join(words[:MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER]))
         else:
             self._search_word_text_changed(self.search_word)

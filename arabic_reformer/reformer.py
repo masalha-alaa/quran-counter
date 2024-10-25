@@ -19,7 +19,8 @@ def reform_char(ch,
                 ya_variations=False,
                 ta_variations=False):
     reformed_char = ""
-    if is_alif(ch) and (alif_variations or alif_alif_maksura_variations):
+    # if is_alif(ch) and (alif_variations or alif_alif_maksura_variations):
+    if ch == "ا" and (alif_variations or alif_alif_maksura_variations):
         variations = []
         if alif_variations:
             variations.extend(_alifs)
@@ -32,10 +33,10 @@ def reform_char(ch,
             variations.extend(_ya_variations)
         if alif_alif_maksura_variations:
             variations.append(alif_maksura)
-            if alif_variations:
-                variations.extend(_alifs)
-            else:
-                variations.append("ا")
+            # if alif_variations:
+            #     variations.extend(_alifs)
+            # else:
+            variations.append("ا")
         reformed_char += f"[{''.join(variations)}]"
     elif ya_variations and ch in _ya_variations:
         reformed_char += f"[{''.join(_ya_variations)}]"

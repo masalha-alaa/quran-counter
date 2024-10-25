@@ -47,14 +47,14 @@
         <translation>Colorize</translation>
     </message>
     <message>
+        <location filename="../main_screen.ui" line="173"/>
+        <source>بحث كلمتين مع امكانية عكس الترتيب</source>
+        <translation>Search 2 words in an unspecified order</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="14"/>
         <source>عدّاد القرآن الكريم</source>
         <translation>Holy-Quran Counter</translation>
-    </message>
-    <message>
-        <location filename="../main_screen.ui" line="173"/>
-        <source>ترتيب الكلمات غير الزامي</source>
-        <translation>Non-mandatory words order</translation>
     </message>
     <message>
         <location filename="../main_screen.ui" line="206"/>
