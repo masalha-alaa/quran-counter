@@ -2,8 +2,8 @@ from functools import lru_cache
 from .alif import Alif
 from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end, alif_maksura,
                       _special_diacritics, diacritics_regex, _tatweel_character,
-                      _prohibited_characters, _alifs, _d, diacritics_regex_compiled, alif_khunjariyah,
-                      alamaat_waqf_regex, _hamzas, _ya_variations, _final_ta_variations)
+                      _prohibited_characters, _alifs, _d, diacritics_regex_compiled, diacritics_ending_regex_compiled,
+                      alif_khunjariyah, alamaat_waqf_regex, _hamzas, _ya_variations, _final_ta_variations)
 from .la import La
 from .utils import _connects_from_left, _connects_from_right, is_alif
 
@@ -60,6 +60,10 @@ def is_diacritic(ch):
 
 def remove_diacritics(txt):
     return diacritics_regex_compiled.sub("", txt)
+
+
+def strip_last_diacritic(key):
+    return diacritics_ending_regex_compiled.sub("", key)
 
 
 def reform_text(txt, text_may_contain_diacritics=False):

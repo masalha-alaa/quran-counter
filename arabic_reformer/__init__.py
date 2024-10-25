@@ -5,5 +5,6 @@ from .globals import (diacritics_regex, alif_maksura,
 from .reformer import (get_arabic_abc, reform_char,
                        is_diacritic, reform_text,
                        reform_span, reform_regex,
-                       remove_diacritics, normalize_letter)
+                       remove_diacritics, normalize_letter,
+                       strip_last_diacritic)
 from .utils import is_alif
