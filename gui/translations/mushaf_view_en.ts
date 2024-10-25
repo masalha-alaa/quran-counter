@@ -31,6 +31,11 @@
         <translation>Surah</translation>
     </message>
     <message>
+        <location filename="../mushaf_view.ui" line="563"/>
+        <source>الكلمة الأكثر تكرارًا في السورة</source>
+        <translation>Surah's most repeated word</translation>
+    </message>
+    <message>
         <location filename="../mushaf_view.ui" line="773"/>
         <source>عبارات تظهر فقط في هذه السورة - اضغط لمشاهدة المزيد</source>
         <translation>Phrases that appear only in this Surah - Click to see more</translation>
@@ -43,12 +48,12 @@
     <message>
         <location filename="../mushaf_view.ui" line="583"/>
         <source>عدد جميع الأحرف, مع تكرار</source>
-        <translation>Surah letters count, with repetition</translation>
+        <translation>Number of letters in Surah, with repetition</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="589"/>
         <source>عدد أحرف السورة</source>
-        <translation>Surah letters count</translation>
+        <translation>Surah's letter count</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="674"/>
@@ -58,7 +63,7 @@
     <message>
         <location filename="../mushaf_view.ui" line="716"/>
         <source>عدد جميع الكلمات, مع تكرار</source>
-        <translation>Surah words count, with repetition</translation>
+        <translation>Number of words in Surah, with repetition</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="777"/>
@@ -120,7 +125,7 @@
     <message>
         <location filename="../mushaf_view.ui" line="722"/>
         <source>عدد كلمات السورة</source>
-        <translation>Surah words count</translation>
+        <translation>Surah's word count</translation>
     </message>
 </context>
 </TS>
