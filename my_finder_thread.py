@@ -112,7 +112,7 @@ class FinderThread(QThread):
                 cumsum = [0]
                 for j in range(len(split_verse)):
                     cumsum.append(cumsum[j] + len(split_verse[j]) + 1)
-                matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(w, self._get_root(word))]
+                matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(rf"{w}$", self._get_root(word))]
             else:
                 matches_in_verse = [m.span(1) for m in re.finditer(w, verse)]
             if matches_in_verse:
@@ -139,19 +139,23 @@ class FinderThread(QThread):
         return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[list(index_mask)].index
 
     def _find_word(self, w):
-        # get prefix of word (everything excluding last letter and its harakat)
-        *_, prefix_idx = FinderThread.char_followed_by_dia_or_waqf.finditer(w)
-        prefix = w[:prefix_idx.span()[0]]
+        if not self.root_flag:  # TODO: check if needed
+            # get prefix of word (everything excluding last letter and its harakat)
+            *_, prefix_idx = FinderThread.char_followed_by_dia_or_waqf.finditer(w)
+            prefix = w[:prefix_idx.span()[0]]
 
-        # check if prefix is cached, and take cache if available
-        # (the cache is the sura numbers the prefix was found it)
-        FinderThread.MY_CACHE_MUTEX.lock()
-        if FinderThread.my_cache.key == prefix:
-            prefix_surah_idx_cache = FinderThread.my_cache.value
+            # check if prefix is cached, and take cache if available
+            # (the cache is the sura numbers the prefix was found it)
+            FinderThread.MY_CACHE_MUTEX.lock()
+            if FinderThread.my_cache.key == prefix:
+                prefix_surah_idx_cache = FinderThread.my_cache.value
+                FinderThread.MY_CACHE_MUTEX.unlock()
+            else:
+                prefix_surah_idx_cache = None
             FinderThread.MY_CACHE_MUTEX.unlock()
         else:
+            prefix = ""
             prefix_surah_idx_cache = None
-        FinderThread.MY_CACHE_MUTEX.unlock()
 
         # search word in relevant surahs (cached surah numbers, or all surahs if no cache)
         results = self._actually_find_word(w, prefix_surah_idx_cache)
