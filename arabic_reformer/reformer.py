@@ -17,7 +17,8 @@ def reform_char(ch,
                 alif_variations=True,
                 alif_alif_maksura_variations=False,
                 ya_variations=False,
-                ta_variations=False):
+                ta_variations=False,
+                hamza_variations=True):
     reformed_char = ""
     # if is_alif(ch) and (alif_variations or alif_alif_maksura_variations):
     if ch == "ا" and (alif_variations or alif_alif_maksura_variations):
@@ -42,7 +43,7 @@ def reform_char(ch,
         reformed_char += f"[{''.join(_ya_variations)}]"
     elif ta_variations and ch in _final_ta_variations:
         reformed_char += f"[{''.join(_final_ta_variations)}]"
-    elif ch == "ء":
+    elif ch == "ء" and hamza_variations:
         reformed_char += f"[{''.join(_hamzas)}]"
     else:
         reformed_char += ch
@@ -173,14 +174,16 @@ def reform_span(txt, spans, text_may_contain_diacritics=False):
 def reform_regex(p, alif_variations=True,
                  alif_alif_maksura_variations=False,
                  ya_variations=False,
-                 ta_variations=False):
+                 ta_variations=False,
+                 hamza_variations=True):
     new_p = ""
     for ch in p:
         new_p += reform_char(ch,
                              alif_variations=alif_variations,
                              alif_alif_maksura_variations=alif_alif_maksura_variations,
                              ya_variations=ya_variations,
-                             ta_variations=ta_variations)
+                             ta_variations=ta_variations,
+                             hamza_variations=hamza_variations)
     return new_p
 
 
