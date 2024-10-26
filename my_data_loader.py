@@ -137,7 +137,7 @@ class MyDataLoader:
     @staticmethod
     def get_num_of_last_verse_in_surah(surah_num):
         # TODO: if too slow, create a post-processed json surah_num: num_of_verses
-        return int(MyDataLoader.page_surah_verses.loc[MyDataLoader.page_surah_verses['surah'] == int(surah_num), 'verses'][-1])
+        return int(MyDataLoader.page_surah_verses.loc[MyDataLoader.page_surah_verses['surah'] == int(surah_num), 'verses'].iloc[-1][-1])
 
     @staticmethod
     def get_verses_of_surah_verse_ref(surah_num, verse_num):
