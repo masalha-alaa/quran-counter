@@ -606,7 +606,7 @@ class MainWindow(QMainWindow):
     def _search_options_radio_buttons_changed(self, button, is_checked: bool):
         if button == self.ui.rootRadioButton:
             self.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
-            # self.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
+            self.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
             self.ui.finalTaCheckbox.setEnabled(not is_checked)
             self.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
             self.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
