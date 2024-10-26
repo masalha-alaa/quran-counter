@@ -349,9 +349,12 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def show_verses_from_page(self, page_num):
         self.textBrowser.clear()
-        self.pageNumDisplay.setText(str(page_num))
+        self.pageNumDisplay.setText(f"{translate_text('صفحة')} {page_num}")
+        self.juzzNumDisplay.setText(f"{translate_text('جزء')} {MyDataLoader.page_to_juzz(page_num)}")
 
         surahs_nums = []
+        surahs_names = []
+        verses_counts = []
         current_idx = 0
         self.page.clear()
         for data in MyDataLoader.get_verses_of_page(page_num):
@@ -360,6 +363,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             surah_num, verses_range, verses = data.surah_num, data.verses_range, data.verses
             has_next = data.has_next
             surahs_nums.append(str(surah_num))
+            verses_counts.append(str(MyDataLoader.get_number_of_verses(surah_num)))
             al_fatiha = surah_num == 1
             al_baqara_first_page = (surah_num == 2) and (verses_range[0] == 1)
             should_center = al_fatiha or al_baqara_first_page or surah_num >= 103
@@ -367,6 +371,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.textBrowser.setAlignment(Qt.AlignmentFlag.AlignCenter)
             needs_basmalah = self.needsBasmalah(surah_num) and verses_range[0] == 1
             surah_name = MyDataLoader.get_surah_name(surah_num)
+            surahs_names.append(surah_name)
             verses_start_offset += len(surah_name)
             if needs_basmalah:
                 self.textBrowser.insertHtml(
@@ -401,7 +406,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
         self.textBrowser.verticalScrollBar().setValue(0)
         self.beam_cursor()
-        self.surahNumDisplay.setText(", ".join(surahs_nums))
+        self.surahNumDisplay.setText(f"{translate_text('رقم')}: {', '.join(surahs_nums)}")
+        self.versesCountDisplay.setText(f"{translate_text('آيات')}: {', '.join(verses_counts)}")
+        self.surahNameDisplay.setText(", ".join(surahs_names))
 
         # print(self.textBrowser.toPlainText())
 

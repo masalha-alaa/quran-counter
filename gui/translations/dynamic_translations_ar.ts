@@ -486,6 +486,24 @@
         <source>آية</source>
         <translation type="unfinished"></translation>
     </message>
+    
+    <message>
+        <source>جزء</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>آيات</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>رقم</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>صفحة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    
     <!-- OTHER [END] -->
 </context>
 </TS>

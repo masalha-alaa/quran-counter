@@ -486,6 +486,23 @@
         <source>آية</source>
         <translation>Verse</translation>
     </message>
+    
+    <message>
+        <source>جزء</source>
+        <translation>Juz</translation>
+    </message>
+    <message>
+        <source>آيات</source>
+        <translation>Verses</translation>
+    </message>
+    <message>
+        <source>رقم</source>
+        <translation>No.</translation>
+    </message>
+    <message>
+        <source>صفحة</source>
+        <translation>Page</translation>
+    </message>
     <!-- OTHER [END] -->
 </context>
 </TS>

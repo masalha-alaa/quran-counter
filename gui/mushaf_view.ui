@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1099</width>
+    <width>1161</width>
     <height>880</height>
    </rect>
   </property>
@@ -396,47 +396,116 @@ font: 400 18pt &quot;Calibri&quot;;</string>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="spacing">
+        <number>0</number>
+       </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLineEdit" name="pageNumDisplay">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_15">
-           <property name="text">
-            <string>صفحة</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLineEdit" name="surahNumDisplay">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_14">
-           <property name="text">
-            <string>سورة</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QFrame" name="frame_4">
+         <property name="styleSheet">
+          <string notr="true">font-size: 16pt;</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="pageNumDisplay">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>الصفحة</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_7">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="surahNumDisplay">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>رقم السورة</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="surahNameDisplay">
+            <property name="styleSheet">
+             <string notr="true">font: bold;</string>
+            </property>
+            <property name="text">
+             <string>اسم السورة</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_5">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="versesCountDisplay">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>عدد الآيات</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="juzzNumDisplay">
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>جزء</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </item>
@@ -933,8 +1002,6 @@ font: 400 18pt &quot;Calibri&quot;;</string>
   <tabstop>verseInput_2</tabstop>
   <tabstop>goToRef_2</tabstop>
   <tabstop>textBrowser</tabstop>
-  <tabstop>surahNumDisplay</tabstop>
-  <tabstop>pageNumDisplay</tabstop>
   <tabstop>nextPushButton</tabstop>
   <tabstop>prevPushButton</tabstop>
   <tabstop>wawIsAWordCheckbox</tabstop>

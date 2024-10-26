@@ -20,20 +20,20 @@ class NGrams(Enum):
 class SpanInfo:
     def __init__(self):
         self.surah_name = ""
-        self.surah_num = ""
+        self.surah_num = 0
         self.metadata = None
         self.letters_from_beginning_of_surah = 0
         self.letters_from_beginning_of_quran = 0
         self.letters_in_selection = 0
-        self.surah_unique_words_num = 0  # TODO: Must do with no tashkeel
+        self.surah_unique_words_num = 0
         self.most_repeated_letter = ""
-        self.most_repeated_word = ""  # TODO: Must do with no tashkeel
+        self.most_repeated_word = ""
         self.words_from_beginning_of_surah = 0
         self.words_from_beginning_of_quran = 0
         self.words_in_selection = 0
-        self.surah_exclusive_words = []  # TODO: Must do with no tashkeel
-        self.surah_exclusive_bigrams = []  # TODO: Must do with no tashkeel
-        self.surah_exclusive_trigrams = []  # TODO: Must do with no tashkeel
+        self.surah_exclusive_words = []
+        self.surah_exclusive_bigrams = []
+        self.surah_exclusive_trigrams = []
 
     @property
     def surah_exclusive_uni_random(self):

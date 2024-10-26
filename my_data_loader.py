@@ -32,7 +32,7 @@ class MyDataLoader:
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
             MyDataLoader.surah_name_to_num_map = {v:k for k,v in MyDataLoader.surah_num_to_name_map.items()}
             MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
-            MyDataLoader.df.set_index("surah", drop=False, inplace=True)
+            MyDataLoader.df['total_verses'] = MyDataLoader.df['total_verses'].astype(int)
             MyDataLoader.waw_words = set(j_load(open(resource_path('data/waw_words.json'), encoding='utf-8')))
             # TODO: save columns in df beforehand
             verses_col = config['data']['verses_column']
@@ -63,15 +63,19 @@ class MyDataLoader:
     # df methods [BEGIN]
     @staticmethod
     def get_verse(surah_num, verse_num):
-        return MyDataLoader.df.loc[MyDataLoader.df['surah'] == int(surah_num), MyDataLoader._working_col].iloc[0][int(verse_num - 1)]
+        return MyDataLoader.df.loc[int(surah_num), MyDataLoader._working_col][int(verse_num - 1)]
 
     @staticmethod
     def get_verses(surah_num, verses_nums):
-        return [MyDataLoader.df.loc[MyDataLoader.df['surah'] == int(surah_num), MyDataLoader._working_col].iloc[0][v-1] for v in verses_nums]
+        return [MyDataLoader.df.loc[int(surah_num), MyDataLoader._working_col][v-1] for v in verses_nums]
+
+    @staticmethod
+    def get_number_of_verses(surah_num):
+        return MyDataLoader.df.loc[int(surah_num), 'total_verses']
 
     @staticmethod
     def get_surah(surah_num):
-        return MyDataLoader.df.loc[MyDataLoader.df['surah'] == int(surah_num), MyDataLoader._working_col].iloc[0]
+        return MyDataLoader.df.loc[int(surah_num), MyDataLoader._working_col]
 
     @staticmethod
     def get_data():
@@ -83,7 +87,7 @@ class MyDataLoader:
 
     @staticmethod
     def get_first_page_of_surah(surah_num):
-        return MyDataLoader.df.loc[MyDataLoader.df['surah'] == int(surah_num), 'page'].iloc[0]
+        return MyDataLoader.df.loc[int(surah_num), 'page']
 
     @staticmethod
     def iterate_over_verses_words(start_surah_num, start_verse_num, start_word_in_verse_num,
@@ -133,7 +137,7 @@ class MyDataLoader:
     @staticmethod
     def get_num_of_last_verse_in_surah(surah_num):
         # TODO: if too slow, create a post-processed json surah_num: num_of_verses
-        return int(MyDataLoader.page_surah_verses.loc[MyDataLoader.page_surah_verses['surah'] == int(surah_num), 'verses'].iloc[-1][-1])
+        return int(MyDataLoader.page_surah_verses.loc[MyDataLoader.page_surah_verses['surah'] == int(surah_num), 'verses'][-1])
 
     @staticmethod
     def get_verses_of_surah_verse_ref(surah_num, verse_num):
@@ -150,3 +154,71 @@ class MyDataLoader:
     def is_waw_part_of_word(word):
         return word in MyDataLoader.waw_words
     # waw-words methods [END]
+
+    # OTHER [BEGIN]
+    @staticmethod
+    def page_to_juzz(page):
+        page = int(page)
+        if page <= 21:
+            return 1
+        if page <= 41:
+            return 2
+        if page <= 61:
+            return 3
+        if page <= 81:
+            return 4
+        if page <= 101:
+            return 5
+        if page <= 120:
+            return 6
+        if page <= 141:
+            return 7
+        if page <= 161:
+            return 8
+        if page <= 181:
+            return 9
+        if page <= 200:
+            return 10
+        if page <= 221:
+            return 11
+        if page <= 241:
+            return 12
+        if page <= 261:
+            return 13
+        if page <= 281:
+            return 14
+        if page <= 301:
+            return 15
+        if page <= 321:
+            return 16
+        if page <= 341:
+            return 17
+        if page <= 361:
+            return 18
+        if page <= 381:
+            return 19
+        if page <= 401:
+            return 20
+        if page <= 421:
+            return 21
+        if page <= 441:
+            return 22
+        if page <= 461:
+            return 23
+        if page <= 481:
+            return 24
+        if page <= 501:
+            return 25
+        if page <= 521:
+            return 26
+        if page <= 541:
+            return 27
+        if page <= 561:
+            return 28
+        if page <= 581:
+            return 29
+        if page <= 604:
+            return 30
+        # Shouldn't get here
+        return 0
+    # OTHER [END]
