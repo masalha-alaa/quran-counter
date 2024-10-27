@@ -336,7 +336,7 @@ class Ui_MushafViewDialog(object):
 
         self.line_7 = QFrame(self.frame_4)
         self.line_7.setObjectName(u"line_7")
-        self.line_7.setStyleSheet(u"background-color: #16268d;")
+        self.line_7.setStyleSheet(u"background-color: #565656;")
         self.line_7.setLineWidth(2)
         self.line_7.setFrameShape(QFrame.Shape.VLine)
         self.line_7.setFrameShadow(QFrame.Shadow.Sunken)
@@ -353,8 +353,7 @@ class Ui_MushafViewDialog(object):
 
         self.line_6 = QFrame(self.frame_4)
         self.line_6.setObjectName(u"line_6")
-        self.line_6.setStyleSheet(u"background-color: #16268d;\n"
-"")
+        self.line_6.setStyleSheet(u"background-color: #565656;")
         self.line_6.setLineWidth(2)
         self.line_6.setFrameShape(QFrame.Shape.VLine)
         self.line_6.setFrameShadow(QFrame.Shadow.Sunken)
@@ -385,7 +384,7 @@ class Ui_MushafViewDialog(object):
 
         self.line_5 = QFrame(self.frame_4)
         self.line_5.setObjectName(u"line_5")
-        self.line_5.setStyleSheet(u"background-color: #16268d;")
+        self.line_5.setStyleSheet(u"background-color: #565656;")
         self.line_5.setFrameShape(QFrame.Shape.VLine)
         self.line_5.setFrameShadow(QFrame.Shadow.Sunken)
 
@@ -401,9 +400,8 @@ class Ui_MushafViewDialog(object):
 
         self.line = QFrame(self.frame_4)
         self.line.setObjectName(u"line")
-        self.line.setStyleSheet(u"background-color: #16268d;\n"
-"")
-        self.line.setLineWidth(2)
+        self.line.setStyleSheet(u"background-color: #565656;")
+        self.line.setLineWidth(1)
         self.line.setFrameShape(QFrame.Shape.VLine)
         self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
