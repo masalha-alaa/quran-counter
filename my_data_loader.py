@@ -220,5 +220,19 @@ class MyDataLoader:
         if page <= 604:
             return 30
         # Shouldn't get here
-        return 0
+        return 1
+
+    @staticmethod
+    def juz_to_page(juz):
+        juz = int(juz)
+        if juz == 1:
+            return 1
+        if juz == 7:
+            return 121
+        if juz == 1:
+            return 201
+        if juz <= 30:
+            return (juz - 1) * 20 + 2
+        # Shouldn't get here
+        return 1
     # OTHER [END]

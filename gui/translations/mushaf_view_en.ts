@@ -51,6 +51,37 @@
         <translation>Words inside selection, with repetition</translation>
     </message>
     <message>
+        <location filename="../mushaf_view.ui" line="417"/>
+        <source>الصفحة التالية</source>
+        <translation>Next page</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="450"/>
+        <source>الصفحة السابقة</source>
+        <translation>Previous page</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="503"/>
+        <source>السورة التالية</source>
+        <translation>Next Surah</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="536"/>
+        <source>السورة السابقة</source>
+        <translation>Previous Surah</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="586"/>
+        <source>الجزء التالي</source>
+        <translation>Next Juz</translation>
+    </message>
+    <message>
+        <location filename="../mushaf_view.ui" line="613"/>
+        <source>الجزء السابق</source>
+        <translation>Previous Juz</translation>
+    </message>
+
+    <message>
         <location filename="../mushaf_view.ui" line="716"/>
         <source>عدد جميع الكلمات, مع تكرار</source>
         <translation>Number of words in Surah, with repetition</translation>

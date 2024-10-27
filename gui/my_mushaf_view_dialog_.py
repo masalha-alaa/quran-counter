@@ -59,6 +59,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     LAST_SURAH = 114
     MIN_VERSE = 1
     MAX_VERSE = 286
+    FIRST_JUZ = 1
+    LAST_JUZ = 30
     REMOVE_THREAD_AFTER_MS = 500
     MIN_PAGES_FOR_WAITING = 100
     basmalah = "بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ"
@@ -92,6 +94,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.prevPushButton.clicked.connect(self.prev_button_clicked)
         self.nextSurahButton.clicked.connect(self.next_surah_button_clicked)
         self.prevSurahButton.clicked.connect(self.prev_surah_button_clicked)
+        self.nextJuzButton.clicked.connect(self.next_juz_button_clicked)
+        self.prevJuzButton.clicked.connect(self.prev_juz_button_clicked)
         self.goToPageButton.clicked.connect(self.go_to_page)
         self.goToRefButton.clicked.connect(self.go_to_ref_by_surah_num_and_verse_num)
         self.goToRef_2.clicked.connect(self.go_to_ref_by_surah_name_and_verse_num)
@@ -441,6 +445,20 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def prev_surah_button_clicked(self):
         if self.page.surahs[0].surah_num > self.FIRST_SURAH:
             self._current_page = MyDataLoader.get_first_page_of_surah(self.page.surahs[-1].surah_num - 1)
+            self.show_verses_from_page(self._current_page)
+            self.get_current_surah_stats(clear_current=True)
+
+    def next_juz_button_clicked(self):
+        current_juz = MyDataLoader.page_to_juzz(self.current_page)
+        if current_juz < self.LAST_JUZ:
+            self._current_page = MyDataLoader.juz_to_page(current_juz + 1)
+            self.show_verses_from_page(self._current_page)
+            self.get_current_surah_stats(clear_current=True)
+
+    def prev_juz_button_clicked(self):
+        current_juz = MyDataLoader.page_to_juzz(self.current_page)
+        if current_juz > self.FIRST_JUZ:
+            self._current_page = MyDataLoader.juz_to_page(current_juz - 1)
             self.show_verses_from_page(self._current_page)
             self.get_current_surah_stats(clear_current=True)
 

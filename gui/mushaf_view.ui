@@ -20,7 +20,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4" stretch="5,1">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="6,0,0">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="6,0">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -410,14 +410,34 @@ font: 400 18pt &quot;Calibri&quot;;</string>
          <property name="frameShadow">
           <enum>QFrame::Sunken</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0,1,0,0,1,0,0,1,0,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1,0,0,1,0,0,1,0,0,1,0,0,1,0">
+          <item>
+           <widget class="QPushButton" name="nextPushButton">
+            <property name="toolTip">
+             <string>الصفحة التالية</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/left-arrow-icon.png</normaloff>:/left-arrow-icon.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QLabel" name="pageNumDisplay">
             <property name="styleSheet">
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>الصفحة</string>
+             <string notr="true">الصفحة</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -425,7 +445,33 @@ font: 400 18pt &quot;Calibri&quot;;</string>
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="prevPushButton">
+            <property name="toolTip">
+             <string>الصفحة السابقة</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/right-arrow-icon.png</normaloff>:/right-arrow-icon.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="Line" name="line_7">
+            <property name="styleSheet">
+             <string notr="true">background-color: #16268d;</string>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -437,7 +483,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>رقم السورة</string>
+             <string notr="true">رقم السورة</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -446,6 +492,13 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           </item>
           <item>
            <widget class="Line" name="line_6">
+            <property name="styleSheet">
+             <string notr="true">background-color: #16268d;
+</string>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -453,6 +506,9 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           </item>
           <item>
            <widget class="QPushButton" name="nextSurahButton">
+            <property name="toolTip">
+             <string>السورة التالية</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -462,8 +518,8 @@ font: 400 18pt &quot;Calibri&quot;;</string>
             </property>
             <property name="iconSize">
              <size>
-              <width>16</width>
-              <height>16</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
            </widget>
@@ -474,7 +530,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string notr="true">font: bold;</string>
             </property>
             <property name="text">
-             <string>اسم السورة</string>
+             <string notr="true">اسم السورة</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -483,6 +539,9 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           </item>
           <item>
            <widget class="QPushButton" name="prevSurahButton">
+            <property name="toolTip">
+             <string>السورة السابقة</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -492,14 +551,17 @@ font: 400 18pt &quot;Calibri&quot;;</string>
             </property>
             <property name="iconSize">
              <size>
-              <width>16</width>
-              <height>16</height>
+              <width>20</width>
+              <height>20</height>
              </size>
             </property>
            </widget>
           </item>
           <item>
            <widget class="Line" name="line_5">
+            <property name="styleSheet">
+             <string notr="true">background-color: #16268d;</string>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -511,7 +573,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>عدد الآيات</string>
+             <string notr="true">عدد الآيات</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -520,8 +582,29 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           </item>
           <item>
            <widget class="Line" name="line">
+            <property name="styleSheet">
+             <string notr="true">background-color: #16268d;
+</string>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="nextJuzButton">
+            <property name="toolTip">
+             <string>الجزء التالي</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/left-arrow-icon.png</normaloff>:/left-arrow-icon.png</iconset>
             </property>
            </widget>
           </item>
@@ -531,38 +614,34 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>جزء</string>
+             <string notr="true">جزء</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="prevJuzButton">
+            <property name="toolTip">
+             <string>الجزء السابق</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/right-arrow-icon.png</normaloff>:/right-arrow-icon.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </widget>
+          </item>
          </layout>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
-       <item>
-        <widget class="QPushButton" name="nextPushButton">
-         <property name="text">
-          <string>التالي</string>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="prevPushButton">
-         <property name="text">
-          <string>السابق</string>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
         </widget>
        </item>
       </layout>
@@ -1036,8 +1115,6 @@ font: 400 18pt &quot;Calibri&quot;;</string>
   <tabstop>verseInput_2</tabstop>
   <tabstop>goToRef_2</tabstop>
   <tabstop>textBrowser</tabstop>
-  <tabstop>nextPushButton</tabstop>
-  <tabstop>prevPushButton</tabstop>
   <tabstop>wawIsAWordCheckbox</tabstop>
   <tabstop>waykaannaTwoWordsCheckbox</tabstop>
   <tabstop>resetStatsButton</tabstop>

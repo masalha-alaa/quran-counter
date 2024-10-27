@@ -308,15 +308,36 @@ class Ui_MushafViewDialog(object):
         self.frame_4.setFrameShadow(QFrame.Sunken)
         self.horizontalLayout_2 = QHBoxLayout(self.frame_4)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.nextPushButton = QPushButton(self.frame_4)
+        self.nextPushButton.setObjectName(u"nextPushButton")
+        icon1 = QIcon()
+        icon1.addFile(u":/left-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.nextPushButton.setIcon(icon1)
+        self.nextPushButton.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_2.addWidget(self.nextPushButton)
+
         self.pageNumDisplay = QLabel(self.frame_4)
         self.pageNumDisplay.setObjectName(u"pageNumDisplay")
         self.pageNumDisplay.setStyleSheet(u"")
+        self.pageNumDisplay.setText(u"\u0627\u0644\u0635\u0641\u062d\u0629")
         self.pageNumDisplay.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.pageNumDisplay)
 
+        self.prevPushButton = QPushButton(self.frame_4)
+        self.prevPushButton.setObjectName(u"prevPushButton")
+        icon2 = QIcon()
+        icon2.addFile(u":/right-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.prevPushButton.setIcon(icon2)
+        self.prevPushButton.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_2.addWidget(self.prevPushButton)
+
         self.line_7 = QFrame(self.frame_4)
         self.line_7.setObjectName(u"line_7")
+        self.line_7.setStyleSheet(u"background-color: #16268d;")
+        self.line_7.setLineWidth(2)
         self.line_7.setFrameShape(QFrame.Shape.VLine)
         self.line_7.setFrameShadow(QFrame.Shadow.Sunken)
 
@@ -325,12 +346,16 @@ class Ui_MushafViewDialog(object):
         self.surahNumDisplay = QLabel(self.frame_4)
         self.surahNumDisplay.setObjectName(u"surahNumDisplay")
         self.surahNumDisplay.setStyleSheet(u"")
+        self.surahNumDisplay.setText(u"\u0631\u0642\u0645 \u0627\u0644\u0633\u0648\u0631\u0629")
         self.surahNumDisplay.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.surahNumDisplay)
 
         self.line_6 = QFrame(self.frame_4)
         self.line_6.setObjectName(u"line_6")
+        self.line_6.setStyleSheet(u"background-color: #16268d;\n"
+"")
+        self.line_6.setLineWidth(2)
         self.line_6.setFrameShape(QFrame.Shape.VLine)
         self.line_6.setFrameShadow(QFrame.Shadow.Sunken)
 
@@ -338,31 +363,29 @@ class Ui_MushafViewDialog(object):
 
         self.nextSurahButton = QPushButton(self.frame_4)
         self.nextSurahButton.setObjectName(u"nextSurahButton")
-        icon1 = QIcon()
-        icon1.addFile(u":/left-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.nextSurahButton.setIcon(icon1)
-        self.nextSurahButton.setIconSize(QSize(16, 16))
+        self.nextSurahButton.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_2.addWidget(self.nextSurahButton)
 
         self.surahNameDisplay = QLabel(self.frame_4)
         self.surahNameDisplay.setObjectName(u"surahNameDisplay")
         self.surahNameDisplay.setStyleSheet(u"font: bold;")
+        self.surahNameDisplay.setText(u"\u0627\u0633\u0645 \u0627\u0644\u0633\u0648\u0631\u0629")
         self.surahNameDisplay.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.surahNameDisplay)
 
         self.prevSurahButton = QPushButton(self.frame_4)
         self.prevSurahButton.setObjectName(u"prevSurahButton")
-        icon2 = QIcon()
-        icon2.addFile(u":/right-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.prevSurahButton.setIcon(icon2)
-        self.prevSurahButton.setIconSize(QSize(16, 16))
+        self.prevSurahButton.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_2.addWidget(self.prevSurahButton)
 
         self.line_5 = QFrame(self.frame_4)
         self.line_5.setObjectName(u"line_5")
+        self.line_5.setStyleSheet(u"background-color: #16268d;")
         self.line_5.setFrameShape(QFrame.Shape.VLine)
         self.line_5.setFrameShadow(QFrame.Shadow.Sunken)
 
@@ -371,53 +394,52 @@ class Ui_MushafViewDialog(object):
         self.versesCountDisplay = QLabel(self.frame_4)
         self.versesCountDisplay.setObjectName(u"versesCountDisplay")
         self.versesCountDisplay.setStyleSheet(u"")
+        self.versesCountDisplay.setText(u"\u0639\u062f\u062f \u0627\u0644\u0622\u064a\u0627\u062a")
         self.versesCountDisplay.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.versesCountDisplay)
 
         self.line = QFrame(self.frame_4)
         self.line.setObjectName(u"line")
+        self.line.setStyleSheet(u"background-color: #16268d;\n"
+"")
+        self.line.setLineWidth(2)
         self.line.setFrameShape(QFrame.Shape.VLine)
         self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.horizontalLayout_2.addWidget(self.line)
 
+        self.nextJuzButton = QPushButton(self.frame_4)
+        self.nextJuzButton.setObjectName(u"nextJuzButton")
+        self.nextJuzButton.setIcon(icon1)
+
+        self.horizontalLayout_2.addWidget(self.nextJuzButton)
+
         self.juzzNumDisplay = QLabel(self.frame_4)
         self.juzzNumDisplay.setObjectName(u"juzzNumDisplay")
         self.juzzNumDisplay.setStyleSheet(u"")
+        self.juzzNumDisplay.setText(u"\u062c\u0632\u0621")
         self.juzzNumDisplay.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.juzzNumDisplay)
 
-        self.horizontalLayout_2.setStretch(0, 1)
-        self.horizontalLayout_2.setStretch(2, 1)
-        self.horizontalLayout_2.setStretch(5, 1)
-        self.horizontalLayout_2.setStretch(8, 1)
+        self.prevJuzButton = QPushButton(self.frame_4)
+        self.prevJuzButton.setObjectName(u"prevJuzButton")
+        self.prevJuzButton.setIcon(icon2)
+        self.prevJuzButton.setIconSize(QSize(20, 20))
+
+        self.horizontalLayout_2.addWidget(self.prevJuzButton)
+
+        self.horizontalLayout_2.setStretch(1, 1)
+        self.horizontalLayout_2.setStretch(4, 1)
+        self.horizontalLayout_2.setStretch(7, 1)
         self.horizontalLayout_2.setStretch(10, 1)
+        self.horizontalLayout_2.setStretch(13, 1)
 
         self.horizontalLayout_4.addWidget(self.frame_4)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_4)
-
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.nextPushButton = QPushButton(MushafViewDialog)
-        self.nextPushButton.setObjectName(u"nextPushButton")
-        self.nextPushButton.setAutoDefault(False)
-
-        self.horizontalLayout.addWidget(self.nextPushButton)
-
-        self.prevPushButton = QPushButton(MushafViewDialog)
-        self.prevPushButton.setObjectName(u"prevPushButton")
-        self.prevPushButton.setAutoDefault(False)
-
-        self.horizontalLayout.addWidget(self.prevPushButton)
-
-        self.horizontalLayout.setStretch(0, 1)
-        self.horizontalLayout.setStretch(1, 1)
-
-        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.verticalLayout.setStretch(0, 6)
 
@@ -689,9 +711,7 @@ class Ui_MushafViewDialog(object):
         QWidget.setTabOrder(self.surahNameInput, self.verseInput_2)
         QWidget.setTabOrder(self.verseInput_2, self.goToRef_2)
         QWidget.setTabOrder(self.goToRef_2, self.textBrowser)
-        QWidget.setTabOrder(self.textBrowser, self.nextPushButton)
-        QWidget.setTabOrder(self.nextPushButton, self.prevPushButton)
-        QWidget.setTabOrder(self.prevPushButton, self.wawIsAWordCheckbox)
+        QWidget.setTabOrder(self.textBrowser, self.wawIsAWordCheckbox)
         QWidget.setTabOrder(self.wawIsAWordCheckbox, self.waykaannaTwoWordsCheckbox)
         QWidget.setTabOrder(self.waykaannaTwoWordsCheckbox, self.resetStatsButton)
 
@@ -718,15 +738,30 @@ class Ui_MushafViewDialog(object):
         self.verseInput_2.setText("")
         self.label_17.setText(QCoreApplication.translate("MushafViewDialog", u"\u0631\u0642\u0645 \u0627\u0644\u0627\u064a\u0629", None))
         self.label_6.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0633\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))
-        self.pageNumDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0635\u0641\u062d\u0629", None))
-        self.surahNumDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0631\u0642\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))
+#if QT_CONFIG(tooltip)
+        self.nextPushButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0635\u0641\u062d\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629", None))
+#endif // QT_CONFIG(tooltip)
+        self.nextPushButton.setText("")
+#if QT_CONFIG(tooltip)
+        self.prevPushButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0635\u0641\u062d\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629", None))
+#endif // QT_CONFIG(tooltip)
+        self.prevPushButton.setText("")
+#if QT_CONFIG(tooltip)
+        self.nextSurahButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0633\u0648\u0631\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629", None))
+#endif // QT_CONFIG(tooltip)
         self.nextSurahButton.setText("")
-        self.surahNameDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0633\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))
+#if QT_CONFIG(tooltip)
+        self.prevSurahButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0633\u0648\u0631\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629", None))
+#endif // QT_CONFIG(tooltip)
         self.prevSurahButton.setText("")
-        self.versesCountDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0627\u0644\u0622\u064a\u0627\u062a", None))
-        self.juzzNumDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u062c\u0632\u0621", None))
-        self.nextPushButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u062a\u0627\u0644\u064a", None))
-        self.prevPushButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0633\u0627\u0628\u0642", None))
+#if QT_CONFIG(tooltip)
+        self.nextJuzButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u062c\u0632\u0621 \u0627\u0644\u062a\u0627\u0644\u064a", None))
+#endif // QT_CONFIG(tooltip)
+        self.nextJuzButton.setText("")
+#if QT_CONFIG(tooltip)
+        self.prevJuzButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u062c\u0632\u0621 \u0627\u0644\u0633\u0627\u0628\u0642", None))
+#endif // QT_CONFIG(tooltip)
+        self.prevJuzButton.setText("")
         self.wawIsAWordCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\"  \u0643\u0644\u0645\u0629 \u0645\u0646\u0641\u0631\u062f\u0629\"", None))
         self.waykaannaTwoWordsCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\u064a\u0643\u0623\u0646\"  \u0643\u0644\u0645\u062a\u0627\u0646\"", None))
         self.label_13.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0643\u0644\u0645\u0629 \u0627\u0644\u0623\u0643\u062b\u0631 \u062a\u0643\u0631\u0627\u0631\u064b\u0627 \u0641\u064a \u0627\u0644\u0633\u0648\u0631\u0629", None))
