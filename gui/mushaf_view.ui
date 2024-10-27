@@ -467,7 +467,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           <item>
            <widget class="Line" name="line_7">
             <property name="styleSheet">
-             <string notr="true">background-color: #16268d;</string>
+             <string notr="true"/>
             </property>
             <property name="lineWidth">
              <number>2</number>
@@ -493,8 +493,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           <item>
            <widget class="Line" name="line_6">
             <property name="styleSheet">
-             <string notr="true">background-color: #16268d;
-</string>
+             <string notr="true"/>
             </property>
             <property name="lineWidth">
              <number>2</number>
@@ -560,7 +559,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           <item>
            <widget class="Line" name="line_5">
             <property name="styleSheet">
-             <string notr="true">background-color: #16268d;</string>
+             <string notr="true"/>
             </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -583,8 +582,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
           <item>
            <widget class="Line" name="line">
             <property name="styleSheet">
-             <string notr="true">background-color: #16268d;
-</string>
+             <string notr="true"/>
             </property>
             <property name="lineWidth">
              <number>2</number>
