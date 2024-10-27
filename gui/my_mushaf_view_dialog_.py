@@ -444,7 +444,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def prev_surah_button_clicked(self):
         if self.page.surahs[0].surah_num > self.FIRST_SURAH:
-            self._current_page = MyDataLoader.get_first_page_of_surah(self.page.surahs[-1].surah_num - 1)
+            self._current_page = MyDataLoader.get_first_page_of_surah(self.page.surahs[0].surah_num - 1)
             self.show_verses_from_page(self._current_page)
             self.get_current_surah_stats(clear_current=True)
 
@@ -646,16 +646,16 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def waw_is_a_word_checkbox_state_changed(self, state):
         if self.last_selection_type == SelectionType.NO_SELECTION:
             return
-        if self.last_selection_type == SelectionType.BY_PAGE:
-            self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
+        # if self.last_selection_type == SelectionType.BY_PAGE:
+        self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
 
     def waykaanna_two_words_checkbox_state_changed(self, state):
         if self.last_selection_type == SelectionType.NO_SELECTION:
             return
-        if self.last_selection_type == SelectionType.BY_PAGE:
-            self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
+        # if self.last_selection_type == SelectionType.BY_PAGE:
+        self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
 
