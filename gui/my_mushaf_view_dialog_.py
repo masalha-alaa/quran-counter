@@ -90,6 +90,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.last_selection_type: None | SelectionType = None
         self.nextPushButton.clicked.connect(self.next_button_clicked)
         self.prevPushButton.clicked.connect(self.prev_button_clicked)
+        self.nextSurahButton.clicked.connect(self.next_surah_button_clicked)
+        self.prevSurahButton.clicked.connect(self.prev_surah_button_clicked)
         self.goToPageButton.clicked.connect(self.go_to_page)
         self.goToRefButton.clicked.connect(self.go_to_ref_by_surah_num_and_verse_num)
         self.goToRef_2.clicked.connect(self.go_to_ref_by_surah_name_and_verse_num)
@@ -429,6 +431,18 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
             if prev_surahs != new_surahs:
                 self.get_current_surah_stats(clear_current=True)
+
+    def next_surah_button_clicked(self):
+        if self.page.surahs[-1].surah_num < self.LAST_SURAH:
+            self._current_page = MyDataLoader.get_first_page_of_surah(self.page.surahs[-1].surah_num + 1)
+            self.show_verses_from_page(self._current_page)
+            self.get_current_surah_stats(clear_current=True)
+
+    def prev_surah_button_clicked(self):
+        if self.page.surahs[0].surah_num > self.FIRST_SURAH:
+            self._current_page = MyDataLoader.get_first_page_of_surah(self.page.surahs[-1].surah_num - 1)
+            self.show_verses_from_page(self._current_page)
+            self.get_current_surah_stats(clear_current=True)
 
     def go_to_ref(self):
         # current_focus = QApplication.focusWidget()

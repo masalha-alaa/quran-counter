@@ -336,12 +336,30 @@ class Ui_MushafViewDialog(object):
 
         self.horizontalLayout_2.addWidget(self.line_6)
 
+        self.nextSurahButton = QPushButton(self.frame_4)
+        self.nextSurahButton.setObjectName(u"nextSurahButton")
+        icon1 = QIcon()
+        icon1.addFile(u":/left-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.nextSurahButton.setIcon(icon1)
+        self.nextSurahButton.setIconSize(QSize(16, 16))
+
+        self.horizontalLayout_2.addWidget(self.nextSurahButton)
+
         self.surahNameDisplay = QLabel(self.frame_4)
         self.surahNameDisplay.setObjectName(u"surahNameDisplay")
         self.surahNameDisplay.setStyleSheet(u"font: bold;")
         self.surahNameDisplay.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.surahNameDisplay)
+
+        self.prevSurahButton = QPushButton(self.frame_4)
+        self.prevSurahButton.setObjectName(u"prevSurahButton")
+        icon2 = QIcon()
+        icon2.addFile(u":/right-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.prevSurahButton.setIcon(icon2)
+        self.prevSurahButton.setIconSize(QSize(16, 16))
+
+        self.horizontalLayout_2.addWidget(self.prevSurahButton)
 
         self.line_5 = QFrame(self.frame_4)
         self.line_5.setObjectName(u"line_5")
@@ -371,6 +389,11 @@ class Ui_MushafViewDialog(object):
 
         self.horizontalLayout_2.addWidget(self.juzzNumDisplay)
 
+        self.horizontalLayout_2.setStretch(0, 1)
+        self.horizontalLayout_2.setStretch(2, 1)
+        self.horizontalLayout_2.setStretch(5, 1)
+        self.horizontalLayout_2.setStretch(8, 1)
+        self.horizontalLayout_2.setStretch(10, 1)
 
         self.horizontalLayout_4.addWidget(self.frame_4)
 
@@ -592,9 +615,9 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout_17.setContentsMargins(-1, 0, -1, -1)
         self.resetStatsButton = QPushButton(self.frame_3)
         self.resetStatsButton.setObjectName(u"resetStatsButton")
-        icon1 = QIcon()
-        icon1.addFile(u":/reset-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.resetStatsButton.setIcon(icon1)
+        icon3 = QIcon()
+        icon3.addFile(u":/reset-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.resetStatsButton.setIcon(icon3)
 
         self.verticalLayout_17.addWidget(self.resetStatsButton)
 
@@ -697,7 +720,9 @@ class Ui_MushafViewDialog(object):
         self.label_6.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0633\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))
         self.pageNumDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0635\u0641\u062d\u0629", None))
         self.surahNumDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0631\u0642\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))
+        self.nextSurahButton.setText("")
         self.surahNameDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0633\u0645 \u0627\u0644\u0633\u0648\u0631\u0629", None))
+        self.prevSurahButton.setText("")
         self.versesCountDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0627\u0644\u0622\u064a\u0627\u062a", None))
         self.juzzNumDisplay.setText(QCoreApplication.translate("MushafViewDialog", u"\u062c\u0632\u0621", None))
         self.nextPushButton.setText(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u062a\u0627\u0644\u064a", None))

@@ -8,5 +8,7 @@
         <file>search-icon.png</file>
         <file>reset-icon.png</file>
         <file>in-order-icon.png</file>
+        <file>right-arrow-icon.png</file>
+        <file>left-arrow-icon.png</file>
     </qresource>
 </RCC>

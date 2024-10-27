@@ -410,7 +410,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
          <property name="frameShadow">
           <enum>QFrame::Sunken</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0,1,0,0,1,0,0,1,0,1">
           <item>
            <widget class="QLabel" name="pageNumDisplay">
             <property name="styleSheet">
@@ -452,6 +452,23 @@ font: 400 18pt &quot;Calibri&quot;;</string>
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="nextSurahButton">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/left-arrow-icon.png</normaloff>:/left-arrow-icon.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>16</width>
+              <height>16</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QLabel" name="surahNameDisplay">
             <property name="styleSheet">
              <string notr="true">font: bold;</string>
@@ -461,6 +478,23 @@ font: 400 18pt &quot;Calibri&quot;;</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="prevSurahButton">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources/resources.qrc">
+              <normaloff>:/right-arrow-icon.png</normaloff>:/right-arrow-icon.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>16</width>
+              <height>16</height>
+             </size>
             </property>
            </widget>
           </item>

@@ -22,27 +22,27 @@
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="367"/>
-        <location filename="../mushaf_view.ui" line="460"/>
+        <location filename="../mushaf_view.ui" line="477"/>
         <source>اسم السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="635"/>
+        <location filename="../mushaf_view.ui" line="669"/>
         <source>الكلمة الأكثر تكرارًا في السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="909"/>
+        <location filename="../mushaf_view.ui" line="943"/>
         <source>عبارات تظهر فقط في هذه السورة - اضغط لمشاهدة المزيد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="951"/>
+        <location filename="../mushaf_view.ui" line="985"/>
         <source>عبارات حصرية للسورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="756"/>
+        <location filename="../mushaf_view.ui" line="790"/>
         <source>جميع الكلمات داخل التحديد, مع تكرار</source>
         <translation type="unfinished"></translation>
     </message>
@@ -52,60 +52,60 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="480"/>
+        <location filename="../mushaf_view.ui" line="514"/>
         <source>عدد الآيات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="500"/>
+        <location filename="../mushaf_view.ui" line="534"/>
         <source>جزء</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="697"/>
+        <location filename="../mushaf_view.ui" line="731"/>
         <source>عدد جميع الكلمات, مع تكرار</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="815"/>
+        <location filename="../mushaf_view.ui" line="849"/>
         <source>عدد الكلمات المختلفة (بدون تكرار)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="821"/>
+        <location filename="../mushaf_view.ui" line="855"/>
         <source>عدد الكلمات المختلفة في السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="877"/>
+        <location filename="../mushaf_view.ui" line="911"/>
         <source>محو النتائج</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="572"/>
+        <location filename="../mushaf_view.ui" line="606"/>
         <source>و&quot;  كلمة منفردة&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="588"/>
+        <location filename="../mushaf_view.ui" line="622"/>
         <source>ويكأن&quot;  كلمتان&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="517"/>
+        <location filename="../mushaf_view.ui" line="551"/>
         <source>التالي</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="527"/>
+        <location filename="../mushaf_view.ui" line="561"/>
         <source>السابق</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="672"/>
-        <location filename="../mushaf_view.ui" line="734"/>
-        <location filename="../mushaf_view.ui" line="793"/>
-        <location filename="../mushaf_view.ui" line="858"/>
+        <location filename="../mushaf_view.ui" line="706"/>
+        <location filename="../mushaf_view.ui" line="768"/>
+        <location filename="../mushaf_view.ui" line="827"/>
+        <location filename="../mushaf_view.ui" line="892"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -131,12 +131,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="762"/>
+        <location filename="../mushaf_view.ui" line="796"/>
         <source>كلمات داخل التحديد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="703"/>
+        <location filename="../mushaf_view.ui" line="737"/>
         <source>عدد كلمات السورة</source>
         <translation type="unfinished"></translation>
     </message>
