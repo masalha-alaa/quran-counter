@@ -108,11 +108,11 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.selectionStartButton.clicked.connect(self.selection_start_button_clicked)
         self.selectionEndButton.clicked.connect(self.selection_end_button_clicked)
 
-        self.exclusiveWordsFrame.clicked.connect(self.exclusive_words_frame_clicked)
         self.exclusive_words_uni = None
         self.exclusive_words_bi = None
         self.exclusive_words_tri = None
         self.resetStatsButton.clicked.connect(self.restart_stats_button_clicked)
+        self.refreshExclusiveWordsButton.clicked.connect(self.refresh_exclusive_words_buton_clicked)
         self.wawIsAWordCheckbox.stateChanged.connect(self.waw_is_a_word_checkbox_state_changed)
         self.waykaannaTwoWordsCheckbox.stateChanged.connect(self.waykaanna_two_words_checkbox_state_changed)
 
@@ -206,24 +206,27 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         # surah exclusive phrases
         # Surah x: a (#), bc (#), def (#)
         if span_info.metadata.get_exclusive:
-            span_info.surah_exclusive_words = self.exclusive_words_uni[str(span_info.surah_num)]
-            span_info.surah_exclusive_bigrams = self.exclusive_words_bi[str(span_info.surah_num)]
-            span_info.surah_exclusive_trigrams = self.exclusive_words_tri[str(span_info.surah_num)]
-
-            uni = span_info.surah_exclusive_uni_random
-            bi = span_info.surah_exclusive_bi_random
-            tri = span_info.surah_exclusive_tri_random
-            txt = f"{span_info.surah_name}: {uni}, {bi}, {tri}"
-            match span_info.metadata.current_surah_id:
-                case 0:
-                    self.exclusivePhrasesInSurah1.setText(txt)
-                case 1:
-                    self.exclusivePhrasesInSurah2.setText(txt)
-                case 2:
-                    self.exclusivePhrasesInSurah3.setText(txt)
+            self.fill_exclusive_words(span_info)
 
         # --- MUTEX UNLOCK ---
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.unlock()
+
+    def fill_exclusive_words(self, span_info):
+        span_info.surah_exclusive_words = self.exclusive_words_uni[str(span_info.surah_num)]
+        span_info.surah_exclusive_bigrams = self.exclusive_words_bi[str(span_info.surah_num)]
+        span_info.surah_exclusive_trigrams = self.exclusive_words_tri[str(span_info.surah_num)]
+
+        uni = span_info.surah_exclusive_uni_random
+        bi = span_info.surah_exclusive_bi_random
+        tri = span_info.surah_exclusive_tri_random
+        txt = f"{span_info.surah_name}: {uni}, {bi}, {tri}"
+        match span_info.metadata.current_surah_id:
+            case 0:
+                self.exclusivePhrasesInSurah1.setText(txt)
+            case 1:
+                self.exclusivePhrasesInSurah2.setText(txt)
+            case 2:
+                self.exclusivePhrasesInSurah3.setText(txt)
 
     def clear_results(self):
         self.wordsInSelection.setText("0")
@@ -659,12 +662,17 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
 
-    def exclusive_words_frame_clicked(self):
-        pass
-
     def restart_stats_button_clicked(self):
         for widget in self.stats_widgets:
             widget.setText("0")
+
+    def refresh_exclusive_words_buton_clicked(self):
+        for i, surah in enumerate(self.page.surahs):
+            span_info = SpanInfo()
+            span_info.surah_num = surah.surah_num
+            span_info.surah_name = surah.surah_name
+            span_info.metadata = MySpanInfoMetaData(i)
+            self.fill_exclusive_words(span_info)
 
     def enable_inputs(self,
                       page_input: bool = True,
