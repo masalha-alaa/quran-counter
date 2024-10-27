@@ -182,13 +182,14 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         # --- MUTEX LOCK ---
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.lock()
 
+        unique_words_percent = int(span_info.surah_unique_words_num) / int(span_info.words_in_selection) * 100
         if span_info.metadata.total_surahs_in_page == 1:
-            self.surahUniqueWords.setText(f"{span_info.surah_unique_words_num}")
+            self.surahUniqueWords.setText(f"{span_info.surah_unique_words_num} ({unique_words_percent:.0f}%)")
             self.mostRepeatedWord.setText(f"{span_info.most_repeated_word[0]} ({span_info.most_repeated_word[1]})")
             self.surahWordsNum.setText(f"{span_info.words_in_selection}")
         else:
             # unique words num
-            unique_words_num_new_text = (self.surahUniqueWords.text() + ", " + f"{span_info.surah_name}: {span_info.surah_unique_words_num}").strip(", ")
+            unique_words_num_new_text = (self.surahUniqueWords.text() + ", " + f"{span_info.surah_name}: {span_info.surah_unique_words_num} ({unique_words_percent:.0f}%)").strip(", ")
             unique_words_num_sorted_results = sorted(unique_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
             self.surahUniqueWords.setText(", ".join(unique_words_num_sorted_results))
 
