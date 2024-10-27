@@ -1127,7 +1127,16 @@ font: 400 18pt &quot;Calibri&quot;;</string>
   <tabstop>surahNameInput</tabstop>
   <tabstop>verseInput_2</tabstop>
   <tabstop>goToRef_2</tabstop>
+  <tabstop>selectionStartButton</tabstop>
+  <tabstop>selectionEndButton</tabstop>
   <tabstop>textBrowser</tabstop>
+  <tabstop>prevJuzButton</tabstop>
+  <tabstop>nextJuzButton</tabstop>
+  <tabstop>prevSurahButton</tabstop>
+  <tabstop>nextSurahButton</tabstop>
+  <tabstop>prevPushButton</tabstop>
+  <tabstop>nextPushButton</tabstop>
+  <tabstop>resetStatsButton</tabstop>
   <tabstop>wawIsAWordCheckbox</tabstop>
   <tabstop>waykaannaTwoWordsCheckbox</tabstop>
  </tabstops>
