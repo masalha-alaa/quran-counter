@@ -470,7 +470,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string notr="true">background-color: #565656;</string>
             </property>
             <property name="lineWidth">
-             <number>2</number>
+             <number>1</number>
             </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -496,7 +496,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string notr="true">background-color: #565656;</string>
             </property>
             <property name="lineWidth">
-             <number>2</number>
+             <number>1</number>
             </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
