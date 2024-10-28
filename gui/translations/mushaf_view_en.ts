@@ -80,7 +80,11 @@
         <source>الجزء السابق</source>
         <translation>Previous Juz</translation>
     </message>
-
+    <message>
+        <location filename="../mushaf_view.ui" line="800"/>
+        <source>عبارات اخرى</source>
+        <translation>Show more phrases</translation>
+    </message>
     <message>
         <location filename="../mushaf_view.ui" line="716"/>
         <source>عدد جميع الكلمات, مع تكرار</source>
