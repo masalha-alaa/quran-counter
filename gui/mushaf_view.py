@@ -749,7 +749,8 @@ class Ui_MushafViewDialog(object):
         QWidget.setTabOrder(self.nextSurahButton, self.prevPushButton)
         QWidget.setTabOrder(self.prevPushButton, self.nextPushButton)
         QWidget.setTabOrder(self.nextPushButton, self.resetStatsButton)
-        QWidget.setTabOrder(self.resetStatsButton, self.wawIsAWordCheckbox)
+        QWidget.setTabOrder(self.resetStatsButton, self.refreshExclusiveWordsButton)
+        QWidget.setTabOrder(self.refreshExclusiveWordsButton, self.wawIsAWordCheckbox)
         QWidget.setTabOrder(self.wawIsAWordCheckbox, self.waykaannaTwoWordsCheckbox)
 
         self.retranslateUi(MushafViewDialog)

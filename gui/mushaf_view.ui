@@ -1197,6 +1197,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
   <tabstop>prevPushButton</tabstop>
   <tabstop>nextPushButton</tabstop>
   <tabstop>resetStatsButton</tabstop>
+  <tabstop>refreshExclusiveWordsButton</tabstop>
   <tabstop>wawIsAWordCheckbox</tabstop>
   <tabstop>waykaannaTwoWordsCheckbox</tabstop>
  </tabstops>
