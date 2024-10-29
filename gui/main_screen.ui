@@ -735,7 +735,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_17">
               <item>
-               <widget class="QTextBrowser" name="foundVerses">
+               <widget class="LazyTextBrowser" name="foundVerses">
                 <property name="cursor" stdset="0">
                  <cursorShape>IBeamCursor</cursorShape>
                 </property>
@@ -1199,6 +1199,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LazyTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>gui.lazy_text_browser_widget.lazy_text_browser</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>searchWord</tabstop>
   <tabstop>beginningOfWordRadioButton</tabstop>

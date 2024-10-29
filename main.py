@@ -12,8 +12,7 @@ from my_data_loader import MyDataLoader
 from gui.main_screen import Ui_MainWindow
 from validators import CompositeValidator
 from my_finder_thread import FinderThread
-from emphasizer import emphasize_span, CssColors
-from arabic_reformer import reform_text, is_alif, alif_maksura
+from arabic_reformer import is_alif, alif_maksura
 from gui.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.my_waiting_dialog import MyWaitingDialog
 from gui.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
@@ -62,6 +61,7 @@ class MainWindow(QMainWindow):
         self._surah_results_list_uuid = uuid.uuid4().hex
         self._word_results_list_uuid = uuid.uuid4().hex
         self.ui.setupUi(self)
+        self.found_verses.set_colorize(self.ui.colorizeCheckbox.isChecked())
         
         self.ui.optionalAlTarifCheckbox.setVisible(False)  # TODO: Enable and implement functionality
         self.ui.line_8.setVisible(False)  # TODO: Remove
@@ -83,9 +83,6 @@ class MainWindow(QMainWindow):
 
         self._prev_scrolling_value = 0
         self._all_matches = []
-        self._filtered_matches_iter = None
-        self._filtered_matches_idx = []
-        self._adding_items = False
         # [f"<span style=\"color: {c.value};\">" for c in color]
 
         self._disambiguator = Disambiguator("open_ai_key.txt")
@@ -140,12 +137,10 @@ class MainWindow(QMainWindow):
         self.ui.alifAlifMaksuraCheckbox.stateChanged.connect(self._alif_variations_state_changed)
         self.ui.optionalAlTarifCheckbox.stateChanged.connect(self._optional_al_tarif_state_changed)
         self.ui.searchWord.textChanged.connect(self._search_word_text_changed)
-        self.ui.foundVerses.verticalScrollBar().actionTriggered.connect(self.before_scroll)
-        self.ui.foundVerses.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.ui.arabicLangButton.triggered.connect(lambda: self._apply_language(AppLang.ARABIC))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
-        self.ui.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
+        self.ui.colorizeCheckbox.stateChanged.connect(self._colorize_toggled)
         self.ui.diacriticsCheckbox.stateChanged.connect(self._toggle_diacritics)
         self.ui.allResultsCheckbox.stateChanged.connect(self._toggle_all_surah_results)
         self.ui.filterButton.clicked.connect(self._filter_button_clicked)
@@ -162,54 +157,14 @@ class MainWindow(QMainWindow):
         # Load the custom font
         QFontDatabase.addApplicationFont(resource_path("fonts/NotoNaskhArabic-VariableFont_wght.ttf"))
 
+    @property
+    def found_verses(self):
+        return self.ui.foundVerses
+
     def _view_mushaf(self):
         if load_translation(self._translator, f"gui/translations/mushaf_view_{self._current_lang.value}.qm"):
             self.mushaf_view_display.set_language(self._current_lang)
         self.mushaf_view_display.exec()
-
-    def before_scroll(self):
-        scrollbar = self.ui.foundVerses.verticalScrollBar()
-        self._prev_scrolling_value = scrollbar.value()
-
-    def after_scroll(self):
-        if self._adding_items or ((scrollbar := self.ui.foundVerses.verticalScrollBar()).value() < self._prev_scrolling_value):
-            return "break"
-        """Check if we need to load more widgets when scrolling."""
-        current_val = scrollbar.value()
-        # print(f"{scrollbar.value()}/{scrollbar.maximum()}")
-        if scrollbar.value() > 0.85 * scrollbar.maximum():  # At the bottom
-            self.load_more_items(MainWindow.ITEM_LOAD)
-            scrollbar.setValue(min(scrollbar.maximum(), current_val))
-
-    def load_more_items(self, items_to_load, prevent_scrolling=False):
-        def _done():
-            if prevent_scrolling:
-                scrollbar.setValue(current_scroll_value)
-            self._adding_items = False
-            return
-
-        self._adding_items = True
-        scrollbar = self.ui.foundVerses.verticalScrollBar()
-        current_scroll_value = scrollbar.value()
-        for _ in range(items_to_load):
-            if (item := next(self._filtered_matches_iter, MainWindow._exhausted)) is MainWindow._exhausted:
-                return _done()
-            surah_num, verse_num, verse, spans = item
-            ref = f"{surah_num}:{verse_num}"
-            if self.ui.colorizeCheckbox.isChecked():
-                verse = self.reform_and_color(verse, spans)
-            line = f"<p>{ref}: {verse}</p>"
-            # line = f"{ref}: {verse}"
-            self.ui.foundVerses.append(line)
-
-        return _done()
-
-    def reform_and_color(self, verse, spans):
-        verse = reform_text(verse, text_may_contain_diacritics=True)
-        # TODO: shouldn't we reform only span +-? See reformer.reform_span() -- didn't work so good
-        # verse = self.reformer.reform_span(verse, spans, text_may_contain_diacritics=True)
-        verse = emphasize_span(verse, spans, capitalize=False, underline=False, color=CssColors.CYAN, css=True)
-        return verse
 
     # search word
     @property
@@ -251,22 +206,10 @@ class MainWindow(QMainWindow):
     def matches_number_verses(self, match_count):
         self.ui.matchesNumberVerses.setText(match_count)
 
-    def clear_results(self, clear_verses=False):
+    def clear_results(self):
         self.matches_number = ""
         self.matches_number_surahs = ""
         self.matches_number_verses = ""
-        if clear_verses:
-            self.ui.foundVerses.clear()
-
-    # found verses
-    @property
-    def found_verses(self):
-        return self.ui.foundVerses.toPlainText()
-
-    @found_verses.setter
-    def found_verses(self, verses):
-        self.ui.foundVerses.setHtml(verses)
-        # self.ui.foundVerses.addItems(verses)
 
     # full word
     @property
@@ -284,12 +227,8 @@ class MainWindow(QMainWindow):
         return self.ui.endOfWordRadioButton.isChecked()
 
     # EVENTS
-    def _toggle_colorize(self, state):
-        # self._search_word_text_changed(self.search_word)
-        # return
-        self.ui.foundVerses.clear()
-        self._filtered_matches_iter = iter([self._all_matches[idx] for idx in self._filtered_matches_idx])
-        self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
+    def _colorize_toggled(self, state):
+        self.found_verses.reset_iter_and_refresh(self._all_matches, state)
 
     def _toggle_diacritics(self, state):
         self._populate_word_results(self.search_word)
@@ -327,11 +266,23 @@ class MainWindow(QMainWindow):
         self.ui.searchWord.setFocus()
 
     @Slot()
+    def _clear_filter_button_clicked(self):
+        self.filter_text_browser(range(len(self._all_matches)))
+        self.ui.clearFilterButton.setEnabled(False)
+
+    @Slot()
     def _filter_button_clicked(self):
         if self._disambiguator.is_activated():
             self.show_disambiguation_dialog()
         else:
             self.show_gpt_activation_dialog()
+
+    def show_gpt_activation_dialog(self):
+        if load_translation(self._translator, f"gui/translations/openai_key_setup_dialog_{self._current_lang.value}.qm"):
+            self.activate_gpt_dialog.set_language(self._current_lang)
+        if self.activate_gpt_dialog.exec() == QDialog.DialogCode.Accepted:
+            self._disambiguator.set_activated(True)
+            self.show_disambiguation_dialog()
 
     def show_disambiguation_dialog(self):
         if load_translation(self._translator, f"gui/translations/disambig_dlg_{self._current_lang.value}.qm"):
@@ -343,42 +294,6 @@ class MainWindow(QMainWindow):
             pass
         else:
             pass
-
-    def show_gpt_activation_dialog(self):
-        if load_translation(self._translator, f"gui/translations/openai_key_setup_dialog_{self._current_lang.value}.qm"):
-            self.activate_gpt_dialog.set_language(self._current_lang)
-        if self.activate_gpt_dialog.exec() == QDialog.DialogCode.Accepted:
-            self._disambiguator.set_activated(True)
-            self.show_disambiguation_dialog()
-
-    def _clear_filter_button_clicked(self):
-        self._filtered_matches_idx = range(len(self._all_matches))
-        self.filter_text_browser()
-        self.ui.clearFilterButton.setEnabled(False)
-
-    def _sort_surah_results_clicked(self):
-        def _surah_sorting_done():
-            self.ui.sortPushButton.setEnabled(True)
-            current_sorting = self.lazy_surah_results_list.get_current_sorting()
-            self.ui.sortMethodLabel.setText(translate_text(current_sorting.to_string()))
-
-        self.ui.sortPushButton.setEnabled(False)
-        self.lazy_surah_results_list.set_sorting_done_callback(_surah_sorting_done)
-        self.lazy_surah_results_list.switch_order()
-        self.lazy_surah_results_list.sort()
-
-    def _sort_word_results_clicked(self):
-        def _word_sorting_done():
-            self.ui.wordsSortPushButton.setEnabled(True)
-            current_sorting = self.lazy_word_results_list.get_current_sorting()
-            self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
-
-        self.ui.wordsSortPushButton.setEnabled(False)
-        self.lazy_word_results_list.set_sorting_done_callback(_word_sorting_done)
-        self.lazy_word_results_list.switch_order()
-        self.lazy_word_results_list.sort()
-        current_sorting = self.lazy_word_results_list.get_current_sorting()
-        self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
 
     @Slot(str)
     def _handle_disambiguation_dialog_response(self, selected_meaning):
@@ -405,18 +320,39 @@ class MainWindow(QMainWindow):
         #       Need to put an eye on this
         caller_thread.relevant_verses_result_ready.disconnect(self.on_ask_gpt_for_relevant_verses_completed)
         self.waiting_dialog.reject()
-        self._filtered_matches_idx = results
+        self.filter_text_browser(results)
         self.ui.clearFilterButton.setEnabled(True)
-        self.filter_text_browser()
 
-    def filter_text_browser(self):
-        # TODO: Maybe a numpy array would serve index selection better
-        self._filtered_matches_iter = iter([self._all_matches[idx] for idx in self._filtered_matches_idx])
-        self.ui.foundVerses.clear()
+    def filter_text_browser(self, indices: list | range):
         self.clear_results()
-        # self.ui.filterButton.setEnabled(False)
-        self.refresh_matches()
-        self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
+        matches_num, matched_verses_num, surah_count = self.found_verses.save_values_and_refresh(self._all_matches, indices)
+        self.matches_number = str(matches_num)
+        self.matches_number_surahs = str(surah_count)
+        self.matches_number_verses = str(matched_verses_num)
+
+    def _sort_surah_results_clicked(self):
+        def _surah_sorting_done():
+            self.ui.sortPushButton.setEnabled(True)
+            current_sorting = self.lazy_surah_results_list.get_current_sorting()
+            self.ui.sortMethodLabel.setText(translate_text(current_sorting.to_string()))
+
+        self.ui.sortPushButton.setEnabled(False)
+        self.lazy_surah_results_list.set_sorting_done_callback(_surah_sorting_done)
+        self.lazy_surah_results_list.switch_order()
+        self.lazy_surah_results_list.sort()
+
+    def _sort_word_results_clicked(self):
+        def _word_sorting_done():
+            self.ui.wordsSortPushButton.setEnabled(True)
+            current_sorting = self.lazy_word_results_list.get_current_sorting()
+            self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
+
+        self.ui.wordsSortPushButton.setEnabled(False)
+        self.lazy_word_results_list.set_sorting_done_callback(_word_sorting_done)
+        self.lazy_word_results_list.switch_order()
+        self.lazy_word_results_list.sort()
+        current_sorting = self.lazy_word_results_list.get_current_sorting()
+        self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
 
     def _add_thread(self, thread):
         # MainWindow.RUNNING_THREADS_MUTEX.lock()
@@ -429,24 +365,9 @@ class MainWindow(QMainWindow):
         # print(f"{len(self.running_threads) = }")
         # MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
-    def refresh_matches(self):
-        # TODO: make background thread if takes too much time
-        self.matches_number_verses = str(len(self._filtered_matches_idx))
-        surahs = set()
-        matches_num = 0
-        for idx in self._filtered_matches_idx:
-            surah_num, _, verse, spans = self._all_matches[idx]
-            surahs.add(surah_num)
-            matches_num += len(spans)
-
-        self.matches_number = str(matches_num)
-        self.matches_number_surahs = str(len(surahs))
-
     def _search_word_text_changed(self, new_text):
         self.ui.filterButton.setEnabled(False)
         self._all_matches = []
-        self._filtered_matches_idx = range(len(self._all_matches))
-        self._filtered_matches_iter = None
         if (not (stripped := new_text.strip())) or (self.ui.rootRadioButton.isChecked() and (len(stripped) < 2 or len(stripped.split()) != 1)):
             self.clear_results()
             self.verse_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
@@ -455,7 +376,9 @@ class MainWindow(QMainWindow):
             self.ui.filterButton.setEnabled(False)
             self.ui.sortPushButton.setEnabled(False)
             self.ui.wordsSortPushButton.setEnabled(False)
-            self.ui.foundVerses.clear()
+
+            # self.found_verses.clear()  # it's done inside
+            self.found_verses.save_values_and_refresh([], [])
             self.lazy_surah_results_list.clear()
             self.lazy_surah_results_list.save_values([])
             self.lazy_word_results_list.clear()
@@ -527,12 +450,8 @@ class MainWindow(QMainWindow):
 
     def _populate_verses_results(self, number_of_matches):
         self.verse_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
-        self._filtered_matches_idx = range(len(self._all_matches))
-        self._filtered_matches_iter = iter(self._all_matches)
+        self.found_verses.save_values_and_refresh(self._all_matches, range(len(self._all_matches)))
         self.ui.filterButton.setEnabled((number_of_matches > 0) and len(self.search_word.split()) == 1)
-
-        self.ui.foundVerses.clear()
-        self.load_more_items(MainWindow.ITEM_LOAD, prevent_scrolling=True)
 
     def _populate_surah_results(self):
         self.surah_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())

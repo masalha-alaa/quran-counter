@@ -39,9 +39,10 @@ class Disambiguator:
 
     @cached(cache=LRUCache(maxsize=128))
     def get_chatgpt_response(self, word, language: AppLang):
+        pbuh = "PBUH" if language == AppLang.ENGLISH else "ﷺ"
         template = f"Write the different meanings of the Arabic word '{word}' in {language.name.title()}."
         template += "\n"
-        template += f"The final result must be only a dictionary s.t. the keys are 'meaning_1', 'meaning_2', 'meaning_3'... And the values are the meanings in {language.name.title()}. Do not write any word in another language, do not write anything other than the requested dictionary."
+        template += f"The final result must be only a dictionary s.t. the keys are 'meaning_1', 'meaning_2', 'meaning_3'... And the values are the meanings in {language.name.title()}. Do not write any word in another language, do not write anything other than the requested dictionary. If you mention the name of the prophet PBUH, follow it with {pbuh}."
         response = openai.chat.completions.create(
             # model="gpt-3.5-turbo",
             model="gpt-4",
@@ -81,7 +82,7 @@ class Disambiguator:
             prompt += "\n"
             prompt += "If the given word doesn't appear in any variation, skip the verse."
             prompt += "\n"
-            prompt += f"Second, return a Python list consisting of the numbers of the verses in which the meaning of the word '{word.strip()}' that you inferred corresponds to the following meaning: '{meaning}'."
+            prompt += f"Second, return a Python list consisting of the numbers of the verses in which you are pretty confident that the meaning of the word '{word.strip()}' that you inferred corresponds to the following meaning: '{meaning}'."
             prompt += "\n"
             prompt += "Do not return the inferred meanings (they are just for helping you in the task). I only need the numbers of the verses."
             prompt += "\n"
@@ -101,7 +102,7 @@ class Disambiguator:
                     {"role": "system", "content": "Respond in a valid python list only."},
                     {"role": "user", "content": prompt.strip()}],
                 max_tokens=500,  # Adjust according to your needs
-                temperature=0.7,  # Adjust for creativity vs. determinism
+                temperature=0.5,  # Adjust for creativity vs. determinism
             )
             # TODO: exception handling
             # print(f"gpt response = {response.choices[0].message.content}")

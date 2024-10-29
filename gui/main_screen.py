@@ -20,8 +20,9 @@ from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QFrame,
     QHBoxLayout, QLabel, QLineEdit, QListWidget,
     QListWidgetItem, QMainWindow, QMenu, QMenuBar,
     QPushButton, QRadioButton, QSizePolicy, QSpacerItem,
-    QStatusBar, QTabWidget, QTextBrowser, QVBoxLayout,
-    QWidget)
+    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
+
+from gui.lazy_text_browser_widget.lazy_text_browser import LazyTextBrowser
 import resources_rc
 
 class Ui_MainWindow(object):
@@ -430,7 +431,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.verticalLayout_17 = QVBoxLayout()
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
-        self.foundVerses = QTextBrowser(self.ayatTab)
+        self.foundVerses = LazyTextBrowser(self.ayatTab)
         self.foundVerses.setObjectName(u"foundVerses")
         self.foundVerses.viewport().setProperty(u"cursor", QCursor(Qt.CursorShape.IBeamCursor))
         self.foundVerses.setStyleSheet(u"font-family: 'Noto Naskh Arabic'; font-size: 17pt;")
