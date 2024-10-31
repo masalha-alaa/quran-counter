@@ -1,5 +1,5 @@
 import re
-from lazy_list_widget import AbstractSubtextGetter
+from my_widgets.lazy_list_widget import AbstractSubtextGetter
 
 
 class SurahResultsSubtextGetter(AbstractSubtextGetter):

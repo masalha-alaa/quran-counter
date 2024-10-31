@@ -13,4 +13,4 @@ recordings/
 issues.txt
 open_ai_key.txt
 color-test.html
-gui/translations/*.qm
+translations/*.qm

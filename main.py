@@ -5,30 +5,30 @@ from enum import Enum
 from yaml import safe_load
 import uuid
 from PySide6.QtCore import Slot
-from PySide6.QtCore import Qt, QTranslator, QThread, QMutex, QTimer
+from PySide6.QtCore import Qt, QTranslator, QThread, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
-from my_data_loader import MyDataLoader
-from gui.main_screen import Ui_MainWindow
-from validators import CompositeValidator
-from my_finder_thread import FinderThread
+from my_utils.my_data_loader import MyDataLoader
+from gui.main_window.main_screen import Ui_MainWindow
+from text_validators.composite_validator import CompositeValidator
+from worker_threads.my_finder_thread import FinderThread
 from arabic_reformer import is_alif, alif_maksura
-from gui.my_disambiguation_dialog import MyDidsambiguationDialog
-from gui.my_waiting_dialog import MyWaitingDialog
-from gui.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
-from gui.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
-from gui.my_mushaf_view_dialog_ import MyMushafViewDialog
-from disambiguator import Disambiguator
-from ask_gpt_thread import AskGptThread
-from gui.my_openai_key_setup_dialog import MyOpenAiKeySetupDialog
-from word_bounds_finder_thread import WordBoundsFinderThread
-from surah_finder_thread import SurahFinderThread
-from lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
+from gui.disambiguation_dialog.my_disambiguation_dialog import MyDidsambiguationDialog
+from gui.waiting_dialog.my_waiting_dialog import MyWaitingDialog
+from gui.detailed_display_dialog.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
+from gui.detailed_display_dialog.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
+from gui.mushaf_view_dialog.my_mushaf_view_dialog_ import MyMushafViewDialog
+from chat_gpt.disambiguator import Disambiguator
+from chat_gpt.ask_gpt_thread import AskGptThread
+from gui.openai_key_setup_dialog.my_openai_key_setup_dialog import MyOpenAiKeySetupDialog
+from worker_threads.word_bounds_finder_thread import WordBoundsFinderThread
+from worker_threads.surah_finder_thread import SurahFinderThread
+from my_widgets.lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
 from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
 from surah_results_subtext_getter import SurahResultsSubtextGetter
-from tab_wrapper import TabWrapper
-from gui.spinning_loader import SpinningLoader
-from my_utils import AppLang, translate_text, resource_path, load_translation
+from my_widgets.tab_wrapper import TabWrapper
+from my_widgets.spinning_loader import SpinningLoader
+from my_utils.utils import AppLang, translate_text, resource_path, load_translation
 
 
 class TabIndex(Enum):
@@ -108,7 +108,7 @@ class MainWindow(QMainWindow):
         self.ui.wordSum.setText(str(0))
 
     def _apply_language(self, lang):
-        if lang != self._current_lang and load_translation(self._translator, f"gui/translations/main_screen_{lang.value}.qm") and load_translation(self._dynamic_translator, f"gui/translations/dynamic_translations_{lang.value}.qm"):
+        if lang != self._current_lang and load_translation(self._translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and load_translation(self._dynamic_translator, resource_path(f"translations/dynamic_translations_{lang.value}.qm")):
             app.installTranslator(self._translator)
             app.installTranslator(self._dynamic_translator)
             self.ui.retranslateUi(self)
@@ -162,7 +162,7 @@ class MainWindow(QMainWindow):
         return self.ui.foundVerses
 
     def _view_mushaf(self):
-        if load_translation(self._translator, f"gui/translations/mushaf_view_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, resource_path(f"translations/mushaf_view_{self._current_lang.value}.qm")):
             self.mushaf_view_display.set_language(self._current_lang)
         self.mushaf_view_display.exec()
 
@@ -278,14 +278,14 @@ class MainWindow(QMainWindow):
             self.show_gpt_activation_dialog()
 
     def show_gpt_activation_dialog(self):
-        if load_translation(self._translator, f"gui/translations/openai_key_setup_dialog_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, resource_path(f"translations/openai_key_setup_dialog_{self._current_lang.value}.qm")):
             self.activate_gpt_dialog.set_language(self._current_lang)
         if self.activate_gpt_dialog.exec() == QDialog.DialogCode.Accepted:
             self._disambiguator.set_activated(True)
             self.show_disambiguation_dialog()
 
     def show_disambiguation_dialog(self):
-        if load_translation(self._translator, f"gui/translations/disambig_dlg_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, resource_path(f"translations/disambig_dlg_{self._current_lang.value}.qm")):
             self.disambiguation_dialog.set_language(self._current_lang)
 
         self.disambiguation_dialog.set_data(self.search_word)
@@ -300,7 +300,7 @@ class MainWindow(QMainWindow):
         # print("_handle_disambiguation_dialog_response")
         self.disambiguation_dialog.response_signal.disconnect(self._handle_disambiguation_dialog_response)
         if selected_meaning.strip():
-            if load_translation(self._translator, f"gui/translations/waiting_dlg_{self._current_lang.value}.qm"):
+            if load_translation(self._translator, resource_path(f"translations/waiting_dlg_{self._current_lang.value}.qm")):
                 self.waiting_dialog.set_language(self._current_lang)
             self.waiting_dialog.open()
             self.ask_gpt_for_relevant_verses(self.search_word, self._all_matches, selected_meaning)
@@ -509,14 +509,14 @@ class MainWindow(QMainWindow):
         self.ui.wordSum.setText(str(total))
 
     def word_bounds_results_item_double_clicked(self, item: CustomRow):
-        if load_translation(self._translator, f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, resource_path(f"translations/word_detailed_display_{self._current_lang.value}.qm")):
             self.detailed_word_display_dialog.set_language(self._current_lang)
         self.detailed_word_display_dialog.set_data(item)
         # self.detailed_word_display_dialog.open()
         self.detailed_word_display_dialog.exec()
 
     def surah_results_item_double_clicked(self, item: CustomRow):
-        if load_translation(self._translator, f"gui/translations/word_detailed_display_{self._current_lang.value}.qm"):
+        if load_translation(self._translator, resource_path(f"translations/word_detailed_display_{self._current_lang.value}.qm")):
             self.detailed_surah_display_dialog.set_language(self._current_lang)
         self.detailed_surah_display_dialog.set_data(item)
         # self.detailed_word_display_dialog.open()

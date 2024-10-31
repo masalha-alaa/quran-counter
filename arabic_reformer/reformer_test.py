@@ -2,7 +2,7 @@ from arabic_reformer import reform_text, reform_regex, normalize_letter
 
 if __name__ == '__main__':
     import re
-    from emphasizer import emphasize_span, CssColors
+    from my_utils.emphasizer import emphasize_span, CssColors
 
     print(reform_regex("الليل"))
 

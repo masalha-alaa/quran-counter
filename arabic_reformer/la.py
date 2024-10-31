@@ -1,4 +1,6 @@
 class La:
+    LAM = "\u0644"  # ل
+
     LAM_CONNECTED_FROM_LEFT = 0  # لـ
     LAM_CONNECTED_FROM_BOTH_SIDES = 1  # ـلـ
     LAM_CONNECTED_FROM_BOTH_RIGHT = 2  # ـل

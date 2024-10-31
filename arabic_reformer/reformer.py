@@ -1,7 +1,7 @@
 from functools import lru_cache
 from .alif import Alif
 from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end, alif_maksura,
-                      _special_diacritics, diacritics_regex, _tatweel_character,
+                      _special_diacritics, diacritics_regex, _tatweel_character, _hamza,
                       _prohibited_characters, _alifs, _d, diacritics_regex_compiled, diacritics_ending_regex_compiled,
                       alif_khunjariyah, alamaat_waqf_regex, _hamzas, _ya_variations, _final_ta_variations)
 from .la import La
@@ -37,13 +37,13 @@ def reform_char(ch,
             # if alif_variations:
             #     variations.extend(_alifs)
             # else:
-            variations.append("ا")
+            variations.append(Alif.ALIF)  # "ا"
         reformed_char += f"[{''.join(variations)}]"
     elif ya_variations and ch in _ya_variations:
         reformed_char += f"[{''.join(_ya_variations)}]"
     elif ta_variations and ch in _final_ta_variations:
         reformed_char += f"[{''.join(_final_ta_variations)}]"
-    elif ch == "ء" and hamza_variations:
+    elif ch == _hamza and hamza_variations:
         reformed_char += f"[{''.join(_hamzas)}]"
     else:
         reformed_char += ch
@@ -106,7 +106,7 @@ def reform_text(txt, text_may_contain_diacritics=False):
             # potential to connect from both sides
             if prv_can_connect_from_left and nxt_can_connect_from_right:
                 # middle
-                if ch == "ل" and is_alif(nxt_char):
+                if ch == La.LAM and is_alif(nxt_char):  # ل
                     match nxt_char:
                         case Alif.ALIF:
                             # ـلا
@@ -124,7 +124,7 @@ def reform_text(txt, text_may_contain_diacritics=False):
                     reformed[i] = _d[ch][1]
             elif not prv_can_connect_from_left and nxt_can_connect_from_right:
                 # beginning
-                if ch == "ل" and is_alif(nxt_char):
+                if ch == La.LAM and is_alif(nxt_char):  # ل
                     match nxt_char:
                         case Alif.ALIF:
                             # لا
@@ -149,7 +149,7 @@ def reform_text(txt, text_may_contain_diacritics=False):
             # potential to connect only from right side
             if prv_can_connect_from_left:
                 # end
-                if is_alif(ch) and prv_char == "ل":
+                if is_alif(ch) and prv_char == La.LAM:  # ل
                     reformed[i] = _d['invisible']
                 else:
                     reformed[i] = _d[ch][2]
@@ -189,9 +189,9 @@ def reform_regex(p, alif_variations=True,
 
 def normalize_letter(ch):
     if is_alif(ch) or ch == alif_khunjariyah:
-        return "ا"
-    if ch in ["ي", "ى"]:
-        return "ي"
-    if ch in ["ت", "ة"]:
-        return "ت"
+        return "\u0627"  # "ا"
+    if ch in ['\u064a', '\u0649']:  # ["ي", "ى"]
+        return "\u064a"  # ي
+    if ch in ['\u062a', '\u0629']:  # ["ت", "ة"]
+        return "\u062a"  # ت
     return ch
