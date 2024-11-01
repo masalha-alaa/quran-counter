@@ -1,40 +1,20 @@
 import sys
 import re
 from datetime import datetime
-from enum import Enum
-from yaml import safe_load
 import uuid
-from PySide6.QtCore import Slot
 from PySide6.QtCore import Qt, QTranslator, QThread, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QFontDatabase
 from my_utils.my_data_loader import MyDataLoader
+from  my_utils.shared_data import SharedData
 from gui.main_window.main_screen import Ui_MainWindow
 from text_validators.composite_validator import CompositeValidator
 from worker_threads.my_finder_thread import FinderThread
 from arabic_reformer import is_alif, alif_maksura
-from gui.disambiguation_dialog.my_disambiguation_dialog import MyDidsambiguationDialog
-from gui.waiting_dialog.my_waiting_dialog import MyWaitingDialog
-from gui.detailed_display_dialog.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
-from gui.detailed_display_dialog.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
 from gui.mushaf_view_dialog.my_mushaf_view_dialog_ import MyMushafViewDialog
-from chat_gpt.disambiguator import Disambiguator
-from chat_gpt.ask_gpt_thread import AskGptThread
-from gui.openai_key_setup_dialog.my_openai_key_setup_dialog import MyOpenAiKeySetupDialog
-from worker_threads.word_bounds_finder_thread import WordBoundsFinderThread
-from worker_threads.surah_finder_thread import SurahFinderThread
-from my_widgets.lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
-from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
-from surah_results_subtext_getter import SurahResultsSubtextGetter
-from my_widgets.tab_wrapper import TabWrapper
 from my_widgets.spinning_loader import SpinningLoader
-from my_utils.utils import AppLang, translate_text, resource_path, load_translation
-
-
-class TabIndex(Enum):
-    VERSES = 0
-    SURAHS = 1
-    WORDS = 2
+from my_utils.utils import AppLang, resource_path, load_translation
+from tabs_manager.tabs_manager import TabsManager
 
 
 class MainWindow(QMainWindow):
@@ -57,63 +37,35 @@ class MainWindow(QMainWindow):
         self._dynamic_translator = QTranslator()
         self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
-        self._surah_index = safe_load(open(resource_path("surah_index.yml"), encoding='utf-8', mode='r'))
         self._surah_results_list_uuid = uuid.uuid4().hex
         self._word_results_list_uuid = uuid.uuid4().hex
         self.ui.setupUi(self)
-        self.found_verses.set_colorize(self.ui.colorizeCheckbox.isChecked())
-        
+
         self.ui.optionalAlTarifCheckbox.setVisible(False)  # TODO: Enable and implement functionality
         self.ui.line_8.setVisible(False)  # TODO: Remove
 
-        self.ui.tabWidget.setCurrentIndex(0)
-        self.verse_tab_wrapper = TabWrapper(self.ui.ayatTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
-        self.surah_tab_wrapper = TabWrapper(self.ui.surahTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
-        self.word_tab_wrapper = TabWrapper(self.ui.wordsTab, latest_radio_button=self.ui.searchOptionsButtonGroup.checkedId())
         self._composite_validator = CompositeValidator(None if not self.ui.wordPermutationsCheckbox.isChecked() else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
-        self._current_lang = None
-        self._apply_language(AppLang.ARABIC)
+        self.tabs_manager = TabsManager(self.ui)
+        self._apply_language(AppLang.DEFAULT_LANGUAGE)
         self.cursor = None
-        self.minimum_letters_restriction_lbl_stylesheet = self.ui.minimum_letters_restriction_lbl.styleSheet()
-        # self.set_text_with_cursor()
         self._setup_events()
         self._setup_validators()
-        # self._finder_thread = Finder()
-        # self._finder_thread.result_ready.connect(self.on_word_found_complete)
 
         self._prev_scrolling_value = 0
-        self._all_matches = []
-        # [f"<span style=\"color: {c.value};\">" for c in color]
+        SharedData.all_matches = []
 
-        self._disambiguator = Disambiguator("open_ai_key.txt")
-        # self._disambiguator = Disambiguator("TEST")
-        self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator, self._current_lang)
+        self.mushaf_view_display = MyMushafViewDialog(SharedData.app_language)
 
-        self.waiting_dialog = MyWaitingDialog(self._current_lang)
-        self.ask_gpt_thread = AskGptThread(self._disambiguator)
-        self.activate_gpt_dialog = MyOpenAiKeySetupDialog(self._current_lang)
-
-        self.detailed_word_display_dialog = MyWordDetailedDisplayDialog(self._current_lang)
-        self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog(self._current_lang)
-        self.mushaf_view_display = MyMushafViewDialog(self._current_lang)
-
-        self.lazy_surah_results_list = LazyListWidgetWrapper(self.ui.surahResultsListWidget, subtext_getter=SurahResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NUMBER, CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
-        self.lazy_surah_results_list.set_item_selection_changed_callback(self.surah_results_selection_changed)
-        self.lazy_surah_results_list.set_item_double_clicked_callback(self.surah_results_item_double_clicked)
         self.ui.surahResultsSum.setText(str(0))
-
-        self.lazy_word_results_list = LazyListWidgetWrapper(self.ui.wordResultsListWidget, subtext_getter=WordBoundsResultsSubtextGetter(), supported_methods=[CustomResultsSortEnum.BY_NAME, CustomResultsSortEnum.BY_RESULT_ASCENDING, CustomResultsSortEnum.BY_RESULT_DESCENDING])
-        self.lazy_word_results_list.set_item_selection_changed_callback(self.word_bounds_results_selection_changed)
-        self.lazy_word_results_list.set_item_double_clicked_callback(self.word_bounds_results_item_double_clicked)
         self.ui.wordSum.setText(str(0))
 
     def _apply_language(self, lang):
-        if lang != self._current_lang and load_translation(self._translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and load_translation(self._dynamic_translator, resource_path(f"translations/dynamic_translations_{lang.value}.qm")):
+        if lang != SharedData.app_language and load_translation(self._translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and load_translation(self._dynamic_translator, resource_path(f"translations/dynamic_translations_{lang.value}.qm")):
             app.installTranslator(self._translator)
             app.installTranslator(self._dynamic_translator)
             self.ui.retranslateUi(self)
             self.set_font_for_language(lang)
-            self._current_lang = lang
+            SharedData.app_language = lang
 
     def set_font_for_language(self, lang):
         styleSheet = self.styleSheet()
@@ -130,7 +82,7 @@ class MainWindow(QMainWindow):
 
     def _setup_events(self):
         self.ui.searchOptionsButtonGroup.buttonToggled.connect(self._search_options_radio_buttons_changed)
-        self.ui.tabWidget.currentChanged.connect(self._tab_changed)
+        # self.ui.tabWidget.currentChanged.connect(self._tab_changed)
         self.ui.wordPermutationsCheckbox.stateChanged.connect(self._maintain_words_order_state_changed)
         self.ui.finalTaCheckbox.stateChanged.connect(self._final_ta_state_changed)
         self.ui.yaAlifMaksuraCheckbox.stateChanged.connect(self._ya_alif_maksura_state_changed)
@@ -140,13 +92,6 @@ class MainWindow(QMainWindow):
         self.ui.arabicLangButton.triggered.connect(lambda: self._apply_language(AppLang.ARABIC))
         self.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         self.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
-        self.ui.colorizeCheckbox.stateChanged.connect(self._colorize_toggled)
-        self.ui.diacriticsCheckbox.stateChanged.connect(self._toggle_diacritics)
-        self.ui.allResultsCheckbox.stateChanged.connect(self._toggle_all_surah_results)
-        self.ui.filterButton.clicked.connect(self._filter_button_clicked)
-        self.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
-        self.ui.sortPushButton.clicked.connect(self._sort_surah_results_clicked)
-        self.ui.wordsSortPushButton.clicked.connect(self._sort_word_results_clicked)
 
     def _setup_validators(self):
         self.ui.searchWord.setValidator(self._composite_validator)
@@ -157,23 +102,15 @@ class MainWindow(QMainWindow):
         # Load the custom font
         QFontDatabase.addApplicationFont(resource_path("fonts/NotoNaskhArabic-VariableFont_wght.ttf"))
 
-    @property
-    def found_verses(self):
-        return self.ui.foundVerses
-
     def _view_mushaf(self):
-        if load_translation(self._translator, resource_path(f"translations/mushaf_view_{self._current_lang.value}.qm")):
-            self.mushaf_view_display.set_language(self._current_lang)
+        if load_translation(self._translator, resource_path(f"translations/mushaf_view_{SharedData.app_language.value}.qm")):
+            self.mushaf_view_display.set_language(SharedData.app_language)
         self.mushaf_view_display.exec()
 
     # search word
     @property
     def search_word(self):
         return self.ui.searchWord.text()
-
-    # @search_word.setter
-    # def search_word(self, match_count):
-    #     self.ui.searchWord.setText(match_count)
 
     # matches number
     @property
@@ -227,14 +164,6 @@ class MainWindow(QMainWindow):
         return self.ui.endOfWordRadioButton.isChecked()
 
     # EVENTS
-    def _colorize_toggled(self, state):
-        self.found_verses.reset_iter_and_refresh(self._all_matches, state)
-
-    def _toggle_diacritics(self, state):
-        self._populate_word_results(self.search_word)
-
-    def _toggle_all_surah_results(self, state):
-        self._populate_surah_results()
 
     def _optional_al_tarif_state_changed(self, state):
         # TODO: implement
@@ -250,13 +179,15 @@ class MainWindow(QMainWindow):
             self._search_word_text_changed(self.search_word)
 
     def _final_ta_state_changed(self, state):
-        if any(word.endswith(("ت", "ة")) for word in self.search_word.split()):
+        # ['\u062a', '\u0629'] == ["ت", "ة"]
+        if any(word.endswith(('\u062a', '\u0629')) for word in self.search_word.split()):
             self._search_word_text_changed(self.search_word)
         self.ui.searchWord.setFocus()
 
     def _ya_alif_maksura_state_changed(self, state):
         # if any(word.endswith(("ي", "يء", "ى", "ىء")) for word in self.search_word.split()):
-        if any(ch in ['ي', 'ى'] for ch in self.search_word):
+        #['\u064a', '\u0649'] == ["ي", "ى"]
+        if any(ch in ['\u064a', '\u0649'] for ch in self.search_word):
             self._search_word_text_changed(self.search_word)
         self.ui.searchWord.setFocus()
 
@@ -264,95 +195,6 @@ class MainWindow(QMainWindow):
         if any((is_alif(ch) or alif_maksura == ch) for ch in self.search_word):
             self._search_word_text_changed(self.search_word)
         self.ui.searchWord.setFocus()
-
-    @Slot()
-    def _clear_filter_button_clicked(self):
-        self.filter_text_browser(range(len(self._all_matches)))
-        self.ui.clearFilterButton.setEnabled(False)
-
-    @Slot()
-    def _filter_button_clicked(self):
-        if self._disambiguator.is_activated():
-            self.show_disambiguation_dialog()
-        else:
-            self.show_gpt_activation_dialog()
-
-    def show_gpt_activation_dialog(self):
-        if load_translation(self._translator, resource_path(f"translations/openai_key_setup_dialog_{self._current_lang.value}.qm")):
-            self.activate_gpt_dialog.set_language(self._current_lang)
-        if self.activate_gpt_dialog.exec() == QDialog.DialogCode.Accepted:
-            self._disambiguator.set_activated(True)
-            self.show_disambiguation_dialog()
-
-    def show_disambiguation_dialog(self):
-        if load_translation(self._translator, resource_path(f"translations/disambig_dlg_{self._current_lang.value}.qm")):
-            self.disambiguation_dialog.set_language(self._current_lang)
-
-        self.disambiguation_dialog.set_data(self.search_word)
-        self.disambiguation_dialog.response_signal.connect(self._handle_disambiguation_dialog_response)
-        if self.disambiguation_dialog.exec() == QDialog.DialogCode.Accepted:
-            pass
-        else:
-            pass
-
-    @Slot(str)
-    def _handle_disambiguation_dialog_response(self, selected_meaning):
-        # print("_handle_disambiguation_dialog_response")
-        self.disambiguation_dialog.response_signal.disconnect(self._handle_disambiguation_dialog_response)
-        if selected_meaning.strip():
-            if load_translation(self._translator, resource_path(f"translations/waiting_dlg_{self._current_lang.value}.qm")):
-                self.waiting_dialog.set_language(self._current_lang)
-            self.waiting_dialog.open()
-            self.ask_gpt_for_relevant_verses(self.search_word, self._all_matches, selected_meaning)
-
-    def ask_gpt_for_relevant_verses(self, word, verses, meaning):
-        self.ask_gpt_thread.set_command_get_relevant_verses(word,
-                                                verses,
-                                                meaning)
-        self.ask_gpt_thread.relevant_verses_result_ready.connect(self.on_ask_gpt_for_relevant_verses_completed)
-        self.ask_gpt_thread.start()
-
-    @Slot(list, QThread)
-    def on_ask_gpt_for_relevant_verses_completed(self, results, caller_thread: AskGptThread):
-        # print("FINAL RESULTS:")
-        # print(results)
-        # TODO: One time GPT returned the verse refs as they appear in the Holy Quran (x:y, x:y, ...)
-        #       Need to put an eye on this
-        caller_thread.relevant_verses_result_ready.disconnect(self.on_ask_gpt_for_relevant_verses_completed)
-        self.waiting_dialog.reject()
-        self.filter_text_browser(results)
-        self.ui.clearFilterButton.setEnabled(True)
-
-    def filter_text_browser(self, indices: list | range):
-        self.clear_results()
-        matches_num, matched_verses_num, surah_count = self.found_verses.save_values_and_refresh(self._all_matches, indices)
-        self.matches_number = str(matches_num)
-        self.matches_number_surahs = str(surah_count)
-        self.matches_number_verses = str(matched_verses_num)
-
-    def _sort_surah_results_clicked(self):
-        def _surah_sorting_done():
-            self.ui.sortPushButton.setEnabled(True)
-            current_sorting = self.lazy_surah_results_list.get_current_sorting()
-            self.ui.sortMethodLabel.setText(translate_text(current_sorting.to_string()))
-
-        self.ui.sortPushButton.setEnabled(False)
-        self.lazy_surah_results_list.set_sorting_done_callback(_surah_sorting_done)
-        self.lazy_surah_results_list.switch_order()
-        self.lazy_surah_results_list.sort()
-
-    def _sort_word_results_clicked(self):
-        def _word_sorting_done():
-            self.ui.wordsSortPushButton.setEnabled(True)
-            current_sorting = self.lazy_word_results_list.get_current_sorting()
-            self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
-
-        self.ui.wordsSortPushButton.setEnabled(False)
-        self.lazy_word_results_list.set_sorting_done_callback(_word_sorting_done)
-        self.lazy_word_results_list.switch_order()
-        self.lazy_word_results_list.sort()
-        current_sorting = self.lazy_word_results_list.get_current_sorting()
-        self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
 
     def _add_thread(self, thread):
         # MainWindow.RUNNING_THREADS_MUTEX.lock()
@@ -362,27 +204,18 @@ class MainWindow(QMainWindow):
     def _remove_thread(self, thread):
         # MainWindow.RUNNING_THREADS_MUTEX.lock()
         self.running_threads.remove(thread)
-        # print(f"{len(self.running_threads) = }")
         # MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
     def _search_word_text_changed(self, new_text):
         self.ui.filterButton.setEnabled(False)
-        self._all_matches = []
+        SharedData.all_matches = []
         if (not (stripped := new_text.strip())) or (self.ui.rootRadioButton.isChecked() and (len(stripped) < 2 or len(stripped.split()) != 1)):
             self.clear_results()
-            self.verse_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
-            self.surah_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
-            self.word_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
+            self.tabs_manager.refresh_tabs_config()
             self.ui.filterButton.setEnabled(False)
             self.ui.sortPushButton.setEnabled(False)
             self.ui.wordsSortPushButton.setEnabled(False)
-
-            # self.found_verses.clear()  # it's done inside
-            self.found_verses.save_values_and_refresh([], [])
-            self.lazy_surah_results_list.clear()
-            self.lazy_surah_results_list.save_values([])
-            self.lazy_word_results_list.clear()
-            self.lazy_word_results_list.save_values([])
+            self.tabs_manager.clear_tabs_results()
             return
 
         if self.ui.rootRadioButton.isChecked():
@@ -411,19 +244,12 @@ class MainWindow(QMainWindow):
             return
         self._last_thread_id = thread_id
 
-        self._all_matches, number_of_matches, number_of_surahs, number_of_verses = result
+        SharedData.all_matches, number_of_matches, number_of_surahs, number_of_verses = result
         self.matches_number = str(number_of_matches)
         self.matches_number_surahs = str(number_of_surahs)
         self.matches_number_verses = str(number_of_verses)
 
-        match self.ui.tabWidget.currentIndex():
-            case TabIndex.VERSES.value:
-                self._populate_verses_results(number_of_matches)
-            case TabIndex.SURAHS.value:
-                self._populate_surah_results()
-            case TabIndex.WORDS.value:
-                self._populate_word_results(initial_word)
-
+        self.tabs_manager.on_word_found_complete(initial_word, number_of_matches)
         self.finished_waiting()
 
     def waiting(self):
@@ -434,93 +260,6 @@ class MainWindow(QMainWindow):
         self.spinner.stop()
         self.ui.searchWord.setEnabled(True)
         self.ui.searchWord.setFocus()
-
-    def _tab_changed(self, tab_index):
-        current_word, current_radio = self.search_word, self.ui.searchOptionsButtonGroup.checkedId()
-        match tab_index:
-            case TabIndex.VERSES.value:
-                if self.verse_tab_wrapper.config_changed(current_word, current_radio):
-                    self._populate_verses_results(self.matches_number)
-            case TabIndex.SURAHS.value:
-                if self.surah_tab_wrapper.config_changed(current_word, current_radio):
-                    self._populate_surah_results()
-            case TabIndex.WORDS.value:
-                if self.word_tab_wrapper.config_changed(current_word, current_radio):
-                    self._populate_word_results(self.search_word)
-
-    def _populate_verses_results(self, number_of_matches):
-        self.verse_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
-        self.found_verses.save_values_and_refresh(self._all_matches, range(len(self._all_matches)))
-        self.ui.filterButton.setEnabled((number_of_matches > 0) and len(self.search_word.split()) == 1)
-
-    def _populate_surah_results(self):
-        self.surah_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
-        surah_finder_thread = SurahFinderThread(self._surah_index, self.ui.allResultsCheckbox.isChecked())
-        surah_finder_thread.set_data(self._all_matches, self.ui.allResultsCheckbox.isChecked())
-        surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
-        self._add_thread(surah_finder_thread)
-        surah_finder_thread.start()
-
-    def on_find_surahs_completed(self, counts, caller_thread):
-        caller_thread.result_ready.disconnect(self.on_find_surahs_completed)
-        QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
-
-        # self.lazy_surah_results_list.clear()
-        self.lazy_surah_results_list.save_values(counts)
-        # self.lazy_surah_results_list.load_more_items()
-        self.lazy_surah_results_list.sort()
-        current_sorting = self.lazy_surah_results_list.get_current_sorting()
-        self.ui.sortMethodLabel.setText(translate_text(current_sorting.to_string()))
-        self.ui.sortPushButton.setEnabled(counts is not None and len(counts) > 0)
-
-    def surah_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
-        total = sum(int(SurahResultsSubtextGetter.ptrn.search(item.text()).group(3)) for item in selected_items)
-        self.ui.surahResultsSum.setText(str(total))
-
-    def _populate_word_results(self, initial_word):
-        if len(initial_word.strip()) < 2:
-            self.lazy_word_results_list.clear()
-            self.lazy_word_results_list.save_values([])
-            self.ui.minimum_letters_restriction_lbl.setStyleSheet(f"{self.minimum_letters_restriction_lbl_stylesheet} color: red;")
-            return
-        self.ui.minimum_letters_restriction_lbl.setStyleSheet(self.minimum_letters_restriction_lbl_stylesheet)
-
-        self.word_tab_wrapper.update_config(self.search_word, self.ui.searchOptionsButtonGroup.checkedId())
-        word_bounds_finder_thread = WordBoundsFinderThread(self.ui.diacriticsCheckbox.isChecked())
-        word_bounds_finder_thread.set_data(self._all_matches, self.ui.diacriticsCheckbox.isChecked())
-        word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
-        self._add_thread(word_bounds_finder_thread)
-        word_bounds_finder_thread.start()
-
-    def on_find_word_bounds_completed(self, counts, caller_thread: WordBoundsFinderThread):
-        caller_thread.result_ready.disconnect(self.on_find_word_bounds_completed)
-        QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self._remove_thread(caller_thread))
-
-        # self.lazy_word_results_list.clear()
-        self.lazy_word_results_list.save_values(counts)
-        # self.lazy_word_results_list.load_more_items()
-        self.lazy_word_results_list.sort()
-        current_sorting = self.lazy_word_results_list.get_current_sorting()
-        self.ui.wordSortMethodLabel.setText(translate_text(current_sorting.to_string()))
-        self.ui.wordsSortPushButton.setEnabled(counts is not None and len(counts) > 0)
-
-    def word_bounds_results_selection_changed(self, selected_items: list[CustomListWidgetItem]):
-        total = sum(int(WordBoundsResultsSubtextGetter.ptrn.search(item.text()).group(2)) for item in selected_items)
-        self.ui.wordSum.setText(str(total))
-
-    def word_bounds_results_item_double_clicked(self, item: CustomRow):
-        if load_translation(self._translator, resource_path(f"translations/word_detailed_display_{self._current_lang.value}.qm")):
-            self.detailed_word_display_dialog.set_language(self._current_lang)
-        self.detailed_word_display_dialog.set_data(item)
-        # self.detailed_word_display_dialog.open()
-        self.detailed_word_display_dialog.exec()
-
-    def surah_results_item_double_clicked(self, item: CustomRow):
-        if load_translation(self._translator, resource_path(f"translations/word_detailed_display_{self._current_lang.value}.qm")):
-            self.detailed_surah_display_dialog.set_language(self._current_lang)
-        self.detailed_surah_display_dialog.set_data(item)
-        # self.detailed_word_display_dialog.open()
-        self.detailed_surah_display_dialog.exec()
 
     def _search_options_radio_buttons_changed(self, button, is_checked: bool):
         if button == self.ui.rootRadioButton:

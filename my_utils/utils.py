@@ -7,6 +7,7 @@ from arabic_reformer import is_diacritic
 class AppLang(Enum):
     ARABIC = "ar"
     ENGLISH = "en"
+    DEFAULT_LANGUAGE = ARABIC
 
 
 def resource_path(relative_path):
