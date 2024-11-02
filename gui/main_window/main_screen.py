@@ -17,10 +17,11 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QFrame,
-    QHBoxLayout, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QRadioButton, QSizePolicy, QSpacerItem,
-    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
+    QHBoxLayout, QLabel, QLayout, QLineEdit,
+    QListWidget, QListWidgetItem, QMainWindow, QMenu,
+    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
+    QSlider, QSpacerItem, QStatusBar, QTabWidget,
+    QVBoxLayout, QWidget)
 
 from my_widgets.lazy_text_browser_widget.lazy_text_browser import LazyTextBrowser
 import resources_rc
@@ -270,6 +271,58 @@ class Ui_MainWindow(object):
 
 
         self.horizontalLayout.addLayout(self.verticalLayout_20)
+
+        self.verticalLayout_18 = QVBoxLayout()
+        self.verticalLayout_18.setSpacing(0)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.verticalSpacer_21 = QSpacerItem(20, 37, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+
+        self.verticalLayout_18.addItem(self.verticalSpacer_21)
+
+        self.similarWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.similarWordRadioButton)
+        self.similarWordRadioButton.setObjectName(u"similarWordRadioButton")
+
+        self.verticalLayout_18.addWidget(self.similarWordRadioButton)
+
+        self.horizontalLayout_15 = QHBoxLayout()
+        self.horizontalLayout_15.setSpacing(10)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.horizontalLayout_15.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.horizontalLayout_15.setContentsMargins(-1, -1, 19, -1)
+        self.similarityThresholdSlider = QSlider(self.centralwidget)
+        self.similarityThresholdSlider.setObjectName(u"similarityThresholdSlider")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.similarityThresholdSlider.sizePolicy().hasHeightForWidth())
+        self.similarityThresholdSlider.setSizePolicy(sizePolicy2)
+        self.similarityThresholdSlider.setMinimum(1)
+        self.similarityThresholdSlider.setMaximum(5)
+        self.similarityThresholdSlider.setPageStep(2)
+        self.similarityThresholdSlider.setValue(1)
+        self.similarityThresholdSlider.setOrientation(Qt.Horizontal)
+        self.similarityThresholdSlider.setInvertedAppearance(True)
+        self.similarityThresholdSlider.setInvertedControls(False)
+        self.similarityThresholdSlider.setTickPosition(QSlider.NoTicks)
+
+        self.horizontalLayout_15.addWidget(self.similarityThresholdSlider)
+
+        self.similarityThresholdLabel = QLabel(self.centralwidget)
+        self.similarityThresholdLabel.setObjectName(u"similarityThresholdLabel")
+        self.similarityThresholdLabel.setStyleSheet(u"font-size: 15pt;")
+        self.similarityThresholdLabel.setText(u"1")
+        self.similarityThresholdLabel.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.similarityThresholdLabel.setMargin(1)
+        self.similarityThresholdLabel.setIndent(-1)
+
+        self.horizontalLayout_15.addWidget(self.similarityThresholdLabel)
+
+
+        self.verticalLayout_18.addLayout(self.horizontalLayout_15)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_18)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -780,6 +833,13 @@ class Ui_MainWindow(object):
         self.fullWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
         self.rootRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0630\u0631", None))
         self.noRestrictionsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0646 \u063a\u064a\u0631 \u062a\u0642\u064a\u064a\u062f", None))
+        self.similarWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0645\u0634\u0627\u0628\u0647\u0629", None))
+#if QT_CONFIG(tooltip)
+        self.similarityThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062a\u0628\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.similarityThresholdLabel.setToolTip("")
+#endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
 #endif // QT_CONFIG(tooltip)

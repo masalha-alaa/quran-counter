@@ -12,6 +12,9 @@ class CompositeValidator(QValidator):
     def set_max_words(self, value):
         self._max_words_validator.max_words = value
 
+    def get_max_words(self):
+        return self._max_words_validator.max_words
+
     def validate(self, input, pos):
         arabic_validator_result, _, _ = self._arabic_validator.validate(input, pos)
         max_words_validator_result, _, _ = self._max_words_validator.validate(input, pos)

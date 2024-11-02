@@ -3,9 +3,10 @@ from functools import lru_cache
 import re
 from my_utils.my_data_loader import MyDataLoader
 from PySide6.QtCore import Signal, QThread, QMutex
-from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, arabic_alphabit
+from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, arabic_alphabit, remove_diacritics
 from nltk.stem.isri import ISRIStemmer
 from itertools import permutations
+from difflib import SequenceMatcher
 
 
 class FinderThread(QThread):
@@ -18,6 +19,8 @@ class FinderThread(QThread):
     result_ready = Signal(str, int, tuple, float, QThread)
     dia_or_waqf = rf"(?:(?={re.escape(alamaat_waqf_regex)})|(?={re.escape(diacritics_regex)}))"
     char_followed_by_dia_or_waqf = re.compile(rf"\[?[{''.join(arabic_alphabit)+' '}]+\]?{dia_or_waqf}")
+    MIN_CLOSE_MATCH_RAW_THRESHOLD = 6
+    MAX_CLOSE_MATCH_RAW_THRESHOLD = 10
     my_cache = SingleCache()
 
     def __init__(self, thread_id=None):
@@ -36,6 +39,9 @@ class FinderThread(QThread):
         self.beginning_of_word_flag = None
         self.end_of_word_flag = None
         self.root_flag = None
+        self.close_match = None
+        self.close_match_threshold = None
+        self._default_close_match_threshold = 6
 
         self._final_word = None
         self._words_num = None
@@ -50,7 +56,9 @@ class FinderThread(QThread):
                  full_word,
                  beginning_of_word_flag,
                  end_of_word_flag,
-                 root_flag):
+                 root_flag,
+                 close_match,
+                 close_match_threshold:int=None):
         self.initial_word = word
         self.alif_alif_maksura_variations = alif_alif_maksura_variations
         self.ya_variations = ya_variations
@@ -61,25 +69,28 @@ class FinderThread(QThread):
         self.beginning_of_word_flag = beginning_of_word_flag
         self.end_of_word_flag = end_of_word_flag
         self.root_flag = root_flag
+        self.close_match = close_match
+        self.close_match_threshold = (close_match_threshold if isinstance(close_match_threshold, int) else self._default_close_match_threshold) / 10
 
     def _prep_data(self):
         if self.root_flag:
             new_text = self._get_root(self.initial_word).strip()
-        elif self.full_word:
+        elif self.full_word or self.close_match:
             new_text = self.initial_word.strip()
         else:
             new_text = self.initial_word
 
         # ignore diacritics
         # TODO: make checkbox?
-        new_text = reform_regex(new_text,
-                                alif_alif_maksura_variations=self.alif_alif_maksura_variations,
-                                ya_variations=self.ya_variations,
-                                ta_variations=self.ta_variations)
+        if not self.close_match:
+            new_text = reform_regex(new_text,
+                                    alif_alif_maksura_variations=self.alif_alif_maksura_variations,
+                                    ya_variations=self.ya_variations,
+                                    ta_variations=self.ta_variations)
 
         num_of_search_words = len(new_text.split())
 
-        if not self.root_flag:
+        if not (self.root_flag or self.close_match):
             if not self.maintain_words_order and num_of_search_words > 1:
                 separator = f" {alamaat_waqf_regex}"
                 new_text = '|'.join([separator.join(perm) for perm in permutations(new_text.split(separator))])
@@ -101,6 +112,19 @@ class FinderThread(QThread):
         self._final_word = new_text
         self._words_num = num_of_search_words
 
+    def my_get_close_matches(self, word, sentence, threshold=0.6):
+        matches = []
+        offset = 0
+        SEPARATOR = ' '
+        for i, w in enumerate(sentence.split(SEPARATOR)):  # assuming one space separator
+            ratio = SequenceMatcher(None, word, remove_diacritics(w)).ratio()
+            if ratio >= threshold:
+                match = (offset, offset + len(w))
+                matches.append(match)
+            offset += len(w) + len(SEPARATOR)
+        return matches
+
+
     def _find_in_surah(self, row, w):
         verses_clean_split = row[self._working_col]
         number_of_matches = 0
@@ -113,6 +137,8 @@ class FinderThread(QThread):
                 for j in range(len(split_verse)):
                     cumsum.append(cumsum[j] + len(split_verse[j]) + 1)
                 matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(rf"{w}$", self._get_root(word))]
+            elif self.close_match:
+                matches_in_verse = self.my_get_close_matches(w, verse, threshold=self.close_match_threshold)
             else:
                 matches_in_verse = [m.span(1) for m in re.finditer(w, verse)]
             if matches_in_verse:
@@ -139,7 +165,7 @@ class FinderThread(QThread):
         return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[list(index_mask)].index
 
     def _find_word(self, w):
-        if not self.root_flag:  # TODO: check if needed
+        if not (self.root_flag or self.close_match):  # TODO: check if needed
             # get prefix of word (everything excluding last letter and its harakat)
             *_, prefix_idx = FinderThread.char_followed_by_dia_or_waqf.finditer(w)
             prefix = w[:prefix_idx.span()[0]]

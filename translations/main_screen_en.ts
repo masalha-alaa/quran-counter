@@ -67,6 +67,16 @@
         <translation>Root</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="456"/>
+        <source>كلمة مشابهة</source>
+        <translation>Similar word</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="483"/>
+        <source>عتبة التشابه</source>
+        <translation>Similarity threshold</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="668"/>
         <source>تصفية النتائج بمساعدة ChatGPT</source>
         <translation>Filter results using ChatGPT</translation>

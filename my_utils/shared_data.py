@@ -1,9 +1,10 @@
 from my_utils.utils import AppLang
 from PySide6.QtCore import QTranslator
+from gui.main_window.main_screen import Ui_MainWindow
 
 
 class SharedDataMeta(type):
-    ui = None
+    ui:Ui_MainWindow = None
 
     # search word
     @property

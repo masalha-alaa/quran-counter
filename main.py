@@ -2,6 +2,7 @@ import sys
 import re
 from datetime import datetime
 import uuid
+from PySide6.QtTest import QTest
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtGui import QFontDatabase
@@ -13,13 +14,15 @@ from worker_threads.my_finder_thread import FinderThread
 from arabic_reformer import is_alif, alif_maksura
 from gui.mushaf_view_dialog.my_mushaf_view_dialog_ import MyMushafViewDialog
 from my_widgets.spinning_loader import SpinningLoader
-from my_utils.utils import AppLang, resource_path, load_translation
+from my_utils.utils import AppLang, resource_path, load_translation, scale, ScaleRounding
 from tabs_management.tabs_manager import TabsManager
 
 
 class MainWindow(QMainWindow):
     ITEM_LOAD = 20
     MAX_WORDS_IF_NOT_MAINTAIN_ORDER = 2
+    MAX_WORDS_IF_ROOT = 1
+    MAX_WORDS_IF_SIMILAR_WORD = 1
     _exhausted = object()
     REMOVE_THREAD_AFTER_MS = 500
     # RUNNING_THREADS_MUTEX = QMutex()
@@ -42,7 +45,10 @@ class MainWindow(QMainWindow):
         SharedData.ui.optionalAlTarifCheckbox.setVisible(False)  # TODO: Enable and implement functionality
         SharedData.ui.line_8.setVisible(False)  # TODO: Remove
 
-        self._composite_validator = CompositeValidator(None if not SharedData.ui.wordPermutationsCheckbox.isChecked() else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
+        SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
+        SharedData.ui.similarityThresholdLabel.setText(str(SharedData.ui.similarityThresholdSlider.value()))
+        max_words = self._get_max_words_for_search_option()
+        self._composite_validator = CompositeValidator(max_words)
         self.tabs_manager = TabsManager()
         self._apply_language(AppLang.DEFAULT_LANGUAGE)
         self.cursor = None
@@ -90,6 +96,7 @@ class MainWindow(QMainWindow):
         SharedData.ui.arabicLangButton.triggered.connect(lambda: self._apply_language(AppLang.ARABIC))
         SharedData.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         SharedData.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
+        SharedData.ui.similarityThresholdSlider.valueChanged.connect(self._similarity_threshold_changed)
 
     def _setup_validators(self):
         SharedData.ui.searchWord.setValidator(self._composite_validator)
@@ -99,6 +106,19 @@ class MainWindow(QMainWindow):
     def _setup_fonts(self):
         # Load the custom font
         QFontDatabase.addApplicationFont(resource_path("fonts/NotoNaskhArabic-VariableFont_wght.ttf"))
+
+    def _get_max_words_for_search_option(self):
+        match SharedData.ui.searchOptionsButtonGroup.checkedButton():
+            case SharedData.ui.rootRadioButton:
+                max_words = MainWindow.MAX_WORDS_IF_ROOT
+            case SharedData.ui.similarWordRadioButton:
+                max_words = MainWindow.MAX_WORDS_IF_SIMILAR_WORD
+            case _:
+                if SharedData.ui.wordPermutationsCheckbox.isChecked():
+                    max_words = MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER
+                else:
+                    max_words = None
+        return max_words
 
     def _view_mushaf(self):
         if load_translation(SharedData.translator, resource_path(f"translations/mushaf_view_{SharedData.app_language.value}.qm")):
@@ -118,10 +138,16 @@ class MainWindow(QMainWindow):
         SharedData.ui.searchWord.setFocus()
 
     def _maintain_words_order_state_changed(self, state):
-        self._composite_validator.set_max_words(None if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Unchecked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER)
+        new_max_words = self._composite_validator.get_max_words() if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Unchecked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER
+        self._composite_validator.set_max_words(new_max_words)
+        self._finetune_search_text()
         SharedData.ui.searchWord.setFocus()
-        if qt_state == Qt.CheckState.Checked and len((words := SharedData.search_word.split())) > MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER:
-            SharedData.ui.searchWord.setText(' '.join(words[:MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER]))
+
+    def _finetune_search_text(self, max_words:str|int|None='auto'):
+        if max_words == 'auto':
+            max_words = self._get_max_words_for_search_option()
+        if max_words is not None and len((words := SharedData.search_word.split())) > max_words:
+            SharedData.ui.searchWord.setText(' '.join(words[:max_words]))
         else:
             self._search_word_text_changed(SharedData.search_word)
 
@@ -156,7 +182,7 @@ class MainWindow(QMainWindow):
     def _search_word_text_changed(self, new_text):
         SharedData.ui.filterButton.setEnabled(False)
         SharedData.all_matches = []
-        if (not (stripped := new_text.strip())) or (SharedData.ui.rootRadioButton.isChecked() and (len(stripped) < 2 or len(stripped.split()) != 1)):
+        if (not (stripped := new_text.strip())) or ((SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked()) and (len(stripped) < 2 or len(stripped.split()) != 1)):
             self.clear_results()
             self.tabs_manager.refresh_tabs_config()
             SharedData.ui.filterButton.setEnabled(False)
@@ -165,7 +191,7 @@ class MainWindow(QMainWindow):
             self.tabs_manager.clear_tabs_results()
             return
 
-        if SharedData.ui.rootRadioButton.isChecked():
+        if SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked():
             self.waiting()
 
         self._thread_id = datetime.now().timestamp()
@@ -179,7 +205,14 @@ class MainWindow(QMainWindow):
                                SharedData.full_word_checkbox,
                                SharedData.beginning_of_word_checkbox,
                                SharedData.ending_of_word_checkbox,
-                               SharedData.ui.rootRadioButton.isChecked())
+                               SharedData.ui.rootRadioButton.isChecked(),
+                               SharedData.ui.similarWordRadioButton.isChecked(),
+                               scale(int(SharedData.ui.similarityThresholdLabel.text()),
+                                     SharedData.ui.similarityThresholdSlider.minimum(),
+                                     SharedData.ui.similarityThresholdSlider.maximum(),
+                                     FinderThread.MIN_CLOSE_MATCH_RAW_THRESHOLD,
+                                     FinderThread.MAX_CLOSE_MATCH_RAW_THRESHOLD,
+                                     rounding=ScaleRounding.FLOOR) if SharedData.ui.similarWordRadioButton.isChecked() else None)
         finder_thread.result_ready.connect(self.on_txt_found_complete)
         self._add_thread(finder_thread)
         finder_thread.start()
@@ -201,12 +234,39 @@ class MainWindow(QMainWindow):
 
     def waiting(self):
         SharedData.ui.searchWord.setEnabled(False)
+        SharedData.ui.similarityThresholdSlider.setEnabled(False)
         self.spinner.start()
 
     def finished_waiting(self):
         self.spinner.stop()
         SharedData.ui.searchWord.setEnabled(True)
+        SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
+        if SharedData.ui.similarityThresholdSlider.isEnabled():
+            # a trick to restore the blue color on the slider handle (setFocus() didn't work)
+            self._simulate_click_on_slider_handle(SharedData.ui.similarityThresholdSlider)
         SharedData.ui.searchWord.setFocus()
+
+    def _simulate_click_on_slider_handle(self, slider):
+        # Get the slider handle position based on its current value
+        handle_pos = slider.rect().center()  # Default to center if no other method is available
+
+        # For horizontal sliders
+        if slider.orientation() == Qt.Orientation.Horizontal:
+            # Map the value to the x-coordinate of the handle within the slider's range
+            handle_x = int((slider.value() - slider.minimum()) / (slider.maximum() - slider.minimum()) * slider.width())
+            handle_pos = slider.mapToGlobal(slider.rect().topLeft()) + slider.rect().topLeft()
+            handle_pos.setX(handle_x)
+
+        # For vertical sliders
+        elif slider.orientation() == Qt.Orientation.Vertical:
+            # Map the value to the y-coordinate of the handle within the slider's range
+            handle_y = int(
+                (slider.value() - slider.minimum()) / (slider.maximum() - slider.minimum()) * slider.height())
+            handle_pos = slider.mapToGlobal(slider.rect().topLeft()) + slider.rect().topLeft()
+            handle_pos.setY(handle_y)
+
+        # Simulate the click at the handle position
+        QTest.mouseClick(slider, Qt.MouseButton.LeftButton, pos=handle_pos)
 
     def _search_options_radio_buttons_changed(self, button, is_checked: bool):
         if button == SharedData.ui.rootRadioButton:
@@ -215,10 +275,24 @@ class MainWindow(QMainWindow):
             SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
             SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
             SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
+        elif button == SharedData.ui.similarWordRadioButton:
+            SharedData.ui.similarityThresholdSlider.setEnabled(is_checked)
+            SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
+            SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
+            SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
 
         if not is_checked:
             return
 
+        new_max_words = self._get_max_words_for_search_option()
+        self._composite_validator.set_max_words(new_max_words)
+        self._finetune_search_text(new_max_words)
+        SharedData.ui.searchWord.setFocus()
+
+    def _similarity_threshold_changed(self, value):
+        SharedData.ui.similarityThresholdLabel.setText(str(value))
         self._search_word_text_changed(SharedData.search_word)
 
 
