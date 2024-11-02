@@ -14,7 +14,7 @@ from arabic_reformer import is_alif, alif_maksura
 from gui.mushaf_view_dialog.my_mushaf_view_dialog_ import MyMushafViewDialog
 from my_widgets.spinning_loader import SpinningLoader
 from my_utils.utils import AppLang, resource_path, load_translation
-from tabs.tabs_manager import TabsManager
+from tabs_management.tabs_manager import TabsManager
 
 
 class MainWindow(QMainWindow):

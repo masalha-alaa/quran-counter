@@ -3,7 +3,7 @@ from my_utils.utils import  translate_text, resource_path, load_translation
 from my_utils.shared_data import SharedData
 from gui.detailed_display_dialog.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
 from my_widgets.lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
-from word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
+from tabs_management.word_bounds_results_subtext_getter import WordBoundsResultsSubtextGetter
 from worker_threads.word_bounds_finder_thread import WordBoundsFinderThread
 
 

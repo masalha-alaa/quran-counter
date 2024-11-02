@@ -1,10 +1,10 @@
 from enum import Enum
-from tabs.verse_tab_wrapper import VerseTabWrapper
-from tabs.surah_tab_wrapper import SurahTabWrapper
+from tabs_management.verse_tab_wrapper import VerseTabWrapper
+from tabs_management.surah_tab_wrapper import SurahTabWrapper
 from my_utils.shared_data import SharedData
 from PySide6.QtCore import QTranslator
 
-from tabs.word_tab_wrapper import WordTabWrapper
+from tabs_management.word_tab_wrapper import WordTabWrapper
 
 
 class TabIndex(Enum):

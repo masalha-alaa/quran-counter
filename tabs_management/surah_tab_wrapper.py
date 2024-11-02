@@ -1,6 +1,6 @@
 from yaml import safe_load
 from my_widgets.lazy_list_widget import LazyListWidgetWrapper, CustomListWidgetItem, CustomResultsSortEnum, CustomRow
-from surah_results_subtext_getter import SurahResultsSubtextGetter
+from tabs_management.surah_results_subtext_getter import SurahResultsSubtextGetter
 from my_widgets.tab_wrapper import TabWrapper
 from my_utils.shared_data import SharedData
 from worker_threads.surah_finder_thread import SurahFinderThread
