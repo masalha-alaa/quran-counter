@@ -179,7 +179,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string notr="true"/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/in-order-icon.png</normaloff>:/in-order-icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -671,7 +671,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources/resources.qrc">
+               <iconset resource="../resources/resources.qrc">
                 <normaloff>:/filter-icon.png</normaloff>:/filter-icon.png</iconset>
               </property>
               <property name="iconSize">
@@ -694,7 +694,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources/resources.qrc">
+               <iconset resource="../resources/resources.qrc">
                 <normaloff>:/clear-filter-icon.png</normaloff>:/clear-filter-icon.png</iconset>
               </property>
               <property name="iconSize">
@@ -806,7 +806,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources/resources.qrc">
+               <iconset resource="../resources/resources.qrc">
                 <normaloff>:/sort-icon.png</normaloff>:/sort-icon.png</iconset>
               </property>
               <property name="iconSize">
@@ -980,7 +980,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
                <string/>
               </property>
               <property name="icon">
-               <iconset resource="resources/resources.qrc">
+               <iconset resource="../resources/resources.qrc">
                 <normaloff>:/sort-icon.png</normaloff>:/sort-icon.png</iconset>
               </property>
               <property name="iconSize">
@@ -1151,7 +1151,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
      <string notr="true">اللغة / Language</string>
     </property>
     <property name="icon">
-     <iconset resource="resources/resources.qrc">
+     <iconset resource="../resources/resources.qrc">
       <normaloff>:/language-icon.png</normaloff>:/language-icon.png</iconset>
     </property>
     <addaction name="arabicLangButton"/>
@@ -1162,7 +1162,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
      <string/>
     </property>
     <property name="icon">
-     <iconset resource="resources/resources.qrc">
+     <iconset resource="../resources/resources.qrc">
       <normaloff>:/book-icon.png</normaloff>:/book-icon.png</iconset>
     </property>
     <addaction name="mushafNavigationButton"/>
@@ -1223,7 +1223,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
   <tabstop>colorizeCheckbox</tabstop>
  </tabstops>
  <resources>
-  <include location="resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
  <buttongroups>

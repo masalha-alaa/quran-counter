@@ -145,7 +145,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources/resources.qrc">
+                  <iconset resource="../resources/resources.qrc">
                    <normaloff>:/search-icon.png</normaloff>:/search-icon.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -212,7 +212,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources/resources.qrc">
+                    <iconset resource="../resources/resources.qrc">
                      <normaloff>:/search-icon.png</normaloff>:/search-icon.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -304,7 +304,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources/resources.qrc">
+                <iconset resource="../resources/resources.qrc">
                  <normaloff>:/search-icon.png</normaloff>:/search-icon.png</iconset>
                </property>
                <property name="iconSize">
@@ -420,7 +420,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/left-arrow-icon.png</normaloff>:/left-arrow-icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -456,7 +456,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/right-arrow-icon.png</normaloff>:/right-arrow-icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -518,7 +518,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/left-arrow-icon.png</normaloff>:/left-arrow-icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -554,7 +554,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/right-arrow-icon.png</normaloff>:/right-arrow-icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -613,7 +613,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/left-arrow-icon.png</normaloff>:/left-arrow-icon.png</iconset>
             </property>
             <property name="autoDefault">
@@ -643,7 +643,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources/resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/right-arrow-icon.png</normaloff>:/right-arrow-icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -803,7 +803,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources/resources.qrc">
+                <iconset resource="../resources/resources.qrc">
                  <normaloff>:/reset-icon.png</normaloff>:/reset-icon.png</iconset>
                </property>
               </widget>
@@ -1042,7 +1042,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources/resources.qrc">
+                  <iconset resource="../resources/resources.qrc">
                    <normaloff>:/reset-icon.png</normaloff>:/reset-icon.png</iconset>
                  </property>
                 </widget>
@@ -1202,7 +1202,7 @@ font: 400 18pt &quot;Calibri&quot;;</string>
   <tabstop>waykaannaTwoWordsCheckbox</tabstop>
  </tabstops>
  <resources>
-  <include location="resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
