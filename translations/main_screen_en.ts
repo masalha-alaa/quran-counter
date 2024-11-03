@@ -62,6 +62,11 @@
         <translation>Optional definitive article &quot;ال&quot;</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="367"/>
+        <source>كلمات بنفس جذر كلمة البحث</source>
+        <translation>Words with the same root as the search word</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="367"/>
         <source>جذر</source>
         <translation>Root</translation>

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1140</width>
+    <width>1298</width>
     <height>873</height>
    </rect>
   </property>
@@ -363,6 +363,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
         </item>
         <item>
          <widget class="QRadioButton" name="rootRadioButton">
+          <property name="toolTip">
+           <string>كلمات بنفس جذر كلمة البحث</string>
+          </property>
           <property name="text">
            <string>جذر</string>
           </property>
@@ -1247,7 +1250,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1140</width>
+     <width>1298</width>
      <height>42</height>
     </rect>
    </property>
