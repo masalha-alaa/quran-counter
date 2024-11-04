@@ -1,7 +1,7 @@
 import re
-from PySide6.QtCore import Signal, QThread, QCoreApplication
+from PySide6.QtCore import Signal, QThread, QCoreApplication, QMutex
 from PySide6.QtGui import QTextCursor
-from arabic_reformer import is_diacritic, normalize_letter, alif_khunjariyah
+from arabic_reformer import is_diacritic, normalize_letter, alif_khunjariyah, remove_diacritics
 from models.cursor_position_info import CursorPositionInfo
 from my_utils.my_data_loader import MyDataLoader
 from arabic_reformer import rub_el_hizb_mark
@@ -67,18 +67,49 @@ class SpanInfo:
 
 
 class SpanInfoThread(QThread):
+    # RUNNING_THREADS_MUTEX = QMutex()
     result_ready = Signal(SpanInfo, float, QThread)
     verse_mark_regex_ptrn = re.compile(r"[\d()]")
     waikanna = ["وَيْكَأَنَّ", "وَيْكَأَنَّهُۥ"]
 
-    def __init__(self, thread_id=0, surah_name="", count_waw_as_a_word=True, count_waikaana_as_two_words=True,
+    class WawWordsMatrixCol(Enum):
+        WAW_PART_OF_WORD = 0
+        COUNT_WAW_SEPARATE = auto()
+        IS_HARF_MAANA = auto()
+        COUNT_HARF_MAANA = auto()
+
+    # [2:] because i'm assuming [1] is a diacritic that belongs to the waw
+    waw_words_count_matrix = lambda idx, word: {
+        (False, False, False, False): [None, word],
+        (False, False, False, True): [None, word],
+        (False, False, True, False): [None, None],
+        (False, False, True, True): [None, word],
+        (False, True, False, False): [word[:2], word[2:]],
+        (False, True, False, True): [word[:2], word[2:]],
+        (False, True, True, False): [word[:2], None],
+        (False, True, True, True): [word[:2], word[2:]],
+        (True, False, False, False): [None, word],
+        (True, False, False, True): [None, word],
+        (True, False, True, False): [None, None],
+        (True, False, True, True): [None, word],
+        (True, True, False, False): [None, word],
+        (True, True, False, True): [None, word],
+        (True, True, True, False): [None, None],
+        (True, True, True, True): [None, word],
+    }[idx]
+
+    def __init__(self, thread_id=0, surah_name="",
+                 count_waw_as_a_word=True,
+                 count_waikaana_as_two_words=True,
+                 count_huroof_maani=True,
                  metadata=None):
         super().__init__()
         self._surah_name = surah_name
         self._thread_id = thread_id
         self.text_iter = None
-        self.count_waw_as_a_word = count_waw_as_a_word
+        self.count_waw_as_a_sep_word = count_waw_as_a_word
         self.count_waikaana_as_two_words = count_waikaana_as_two_words
+        self.count_huroof_maani = count_huroof_maani
         self.info = SpanInfo()
         self.info.metadata = metadata
 
@@ -103,6 +134,7 @@ class SpanInfoThread(QThread):
         self.info.surah_num = MyDataLoader.get_surah_num(self.info.surah_name)
         letters = {}
         words = MyDict()
+        waw_words_matrix_idx = [False] * len(SpanInfoThread.WawWordsMatrixCol)
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):
                 if not is_diacritic(word) and word != rub_el_hizb_mark:
@@ -112,11 +144,38 @@ class SpanInfoThread(QThread):
                             self.info.words_in_selection += 2
                         else:
                             self.info.words_in_selection += 1
-                    elif self.count_waw_as_a_word and word.startswith("و") and not MyDataLoader.is_waw_part_of_word(word):
-                        self.info.words_in_selection += 2
-                        # [2:] because i'm assuming [1] is a diacritic that belongs to the waw
-                        words[word[:2]] = words.get(word[:2], 0) + 1
-                        words[word[2:]] = words.get(word[2:], 0) + 1
+                    elif word.startswith("و"):
+                        word_after_waw = word[2:]  # [2:] because i'm assuming [1] is a diacritic that belongs to the waw
+                        # if we're asked to count waw as part of word, then no need to check if it's part of word, just count 1.
+                        waw_part_of_word = not self.count_waw_as_a_sep_word or MyDataLoader.is_waw_part_of_word(word)
+                        # if we're asked to count huroof maani, don't check if it's a harf maana, just count it.
+                        is_harf_maana = self.count_huroof_maani or MyDataLoader.is_harf_maani(word_after_waw)
+                        waw_words_matrix_idx[SpanInfoThread.WawWordsMatrixCol.WAW_PART_OF_WORD.value] = waw_part_of_word
+                        waw_words_matrix_idx[SpanInfoThread.WawWordsMatrixCol.COUNT_WAW_SEPARATE.value] = self.count_waw_as_a_sep_word
+                        waw_words_matrix_idx[SpanInfoThread.WawWordsMatrixCol.IS_HARF_MAANA.value] = is_harf_maana
+                        waw_words_matrix_idx[SpanInfoThread.WawWordsMatrixCol.COUNT_HARF_MAANA.value] = self.count_huroof_maani
+                        waw, rest_of_word = SpanInfoThread.waw_words_count_matrix(tuple(waw_words_matrix_idx), word)
+
+                        # SpanInfoThread.RUNNING_THREADS_MUTEX.lock()
+                        # print()
+                        # print(f"{word = }")
+                        # print(f"{word[:2] = }")
+                        # print(f"{waw_part_of_word = }")
+                        # print(f"{self.count_waw_as_a_sep_word = }")
+                        # print(f"{is_harf_maana = }")
+                        # print(f"{self.count_huroof_maani = }")
+                        # print(f"{waw = }")
+                        # print(f"{rest_of_word = }")
+                        # SpanInfoThread.RUNNING_THREADS_MUTEX.unlock()
+
+                        if waw:
+                            self.info.words_in_selection += 1
+                            words[word] = words.get(waw, 0) + 1
+                        if rest_of_word:
+                            self.info.words_in_selection += 1
+                            words[rest_of_word] = words.get(rest_of_word, 0) + 1
+                    elif not self.count_huroof_maani and MyDataLoader.is_harf_maani(word):
+                        pass  # skip it
                     else:
                         self.info.words_in_selection += 1
                         words[word] = words.get(word, 0) + 1

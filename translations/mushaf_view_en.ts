@@ -81,6 +81,11 @@
         <translation>Previous Juz</translation>
     </message>
     <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="733"/>
+        <source>حروف معاني</source>
+        <translation>Grammatical particles</translation>
+    </message>
+    <message>
         <location filename="../mushaf_view.ui" line="800"/>
         <source>عبارات اخرى</source>
         <translation>Show more phrases</translation>

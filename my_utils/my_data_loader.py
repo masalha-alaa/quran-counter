@@ -1,7 +1,7 @@
 import pandas as pd
 from yaml import safe_load
 from json import load as j_load
-from my_utils.utils import resource_path, AppLang
+from my_utils.utils import resource_path, AppLang, equal_words
 from difflib import get_close_matches
 
 
@@ -20,6 +20,7 @@ class MyDataLoader:
     surah_num_to_name_map = None
     surah_name_to_num_map = None
     waw_words = None
+    huroof_maani = None
     FIRST_SURAH = 1
     LAST_SURAH = 114
     MIN_VERSE = 1
@@ -34,6 +35,7 @@ class MyDataLoader:
             MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
             MyDataLoader.df['total_verses'] = MyDataLoader.df['total_verses'].astype(int)
             MyDataLoader.waw_words = set(j_load(open(resource_path('data/waw_words.json'), encoding='utf-8')))
+            MyDataLoader.huroof_maani = set(j_load(open(resource_path('data/huroof-maani.json'), encoding='utf-8')))
             # TODO: save columns in df beforehand
             verses_col = config['data']['verses_column']
             MyDataLoader._working_col = f"{verses_col}_split"
@@ -153,6 +155,12 @@ class MyDataLoader:
     @staticmethod
     def is_waw_part_of_word(word):
         return word in MyDataLoader.waw_words
+    # waw-words methods [END]
+
+    # waw-words methods [BEGIN]
+    @staticmethod
+    def is_harf_maani(word):
+        return word in MyDataLoader.huroof_maani
     # waw-words methods [END]
 
     # OTHER [BEGIN]

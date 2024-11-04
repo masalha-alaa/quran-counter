@@ -25,7 +25,7 @@ class Ui_MushafViewDialog(object):
     def setupUi(self, MushafViewDialog):
         if not MushafViewDialog.objectName():
             MushafViewDialog.setObjectName(u"MushafViewDialog")
-        MushafViewDialog.resize(1143, 880)
+        MushafViewDialog.resize(1143, 858)
         MushafViewDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
 "font: 400 18pt \"Calibri\";")
@@ -479,6 +479,17 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_18.addWidget(self.waykaannaTwoWordsCheckbox)
 
+        self.huroofMaaniCheckbox = QCheckBox(self.frame)
+        self.huroofMaaniCheckbox.setObjectName(u"huroofMaaniCheckbox")
+#if QT_CONFIG(tooltip)
+        self.huroofMaaniCheckbox.setToolTip(u"\u062d\u062a\u0649 / \u062b\u0645 / \u0639\u0644\u0649 / \u0639\u0646 ...")
+#endif // QT_CONFIG(tooltip)
+        self.huroofMaaniCheckbox.setLayoutDirection(Qt.RightToLeft)
+        self.huroofMaaniCheckbox.setStyleSheet(u"font: bold;")
+        self.huroofMaaniCheckbox.setChecked(True)
+
+        self.verticalLayout_18.addWidget(self.huroofMaaniCheckbox)
+
         self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_18.addItem(self.verticalSpacer_4)
@@ -802,6 +813,7 @@ class Ui_MushafViewDialog(object):
         self.prevJuzButton.setText("")
         self.wawIsAWordCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\"  \u0643\u0644\u0645\u0629 \u0645\u0646\u0641\u0631\u062f\u0629\"", None))
         self.waykaannaTwoWordsCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\u064a\u0643\u0623\u0646\"  \u0643\u0644\u0645\u062a\u0627\u0646\"", None))
+        self.huroofMaaniCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u062d\u0631\u0648\u0641 \u0645\u0639\u0627\u0646\u064a", None))
 #if QT_CONFIG(tooltip)
         self.exclusiveWordsFrame.setToolTip("")
 #endif // QT_CONFIG(tooltip)

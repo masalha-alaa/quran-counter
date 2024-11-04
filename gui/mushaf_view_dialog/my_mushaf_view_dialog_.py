@@ -111,6 +111,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.refreshExclusiveWordsButton.clicked.connect(self.refresh_exclusive_words_buton_clicked)
         self.wawIsAWordCheckbox.stateChanged.connect(self.waw_is_a_word_checkbox_state_changed)
         self.waykaannaTwoWordsCheckbox.stateChanged.connect(self.waykaanna_two_words_checkbox_state_changed)
+        self.huroofMaaniCheckbox.stateChanged.connect(self.huroof_maani_checkbox_state_changed)
 
         self._setup_validators()
 
@@ -163,6 +164,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             span_thread = SpanInfoThread(surah_name=surah.surah_name,
                                          count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
                                          count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked(),
+                                         count_huroof_maani=self.huroofMaaniCheckbox.isChecked(),
                                          metadata=MySpanInfoMetaData(i,
                                                                      len(self.page.surahs),
                                                                      get_exclusive_phrases))
@@ -577,7 +579,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self._thread_id = datetime.now().timestamp()
         span_thread = SpanInfoThread(self._thread_id,
                                      count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
-                                     count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked())
+                                     count_waikaana_as_two_words=self.waykaannaTwoWordsCheckbox.isChecked(),
+                                     count_huroof_maani=self.huroofMaaniCheckbox.isChecked())
         if selection_type == SelectionType.BY_TEXT:
             span_thread.from_text(self.textBrowser.textCursor().selection().toPlainText())
         elif selection_type == SelectionType.BY_REF:
@@ -652,6 +655,14 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.start_span_info_thread(self.last_selection_type)
 
     def waykaanna_two_words_checkbox_state_changed(self, state):
+        if self.last_selection_type == SelectionType.NO_SELECTION:
+            return
+        # if self.last_selection_type == SelectionType.BY_PAGE:
+        self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
+        if self.valid_selection() or self.valid_selection_span():
+            self.start_span_info_thread(self.last_selection_type)
+
+    def huroof_maani_checkbox_state_changed(self, state):
         if self.last_selection_type == SelectionType.NO_SELECTION:
             return
         # if self.last_selection_type == SelectionType.BY_PAGE:

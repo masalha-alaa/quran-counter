@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1143</width>
-    <height>880</height>
+    <height>858</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -715,6 +715,25 @@ font: 400 18pt &quot;Calibri&quot;;</string>
             </property>
             <property name="text">
              <string>ويكأن&quot;  كلمتان&quot;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="huroofMaaniCheckbox">
+            <property name="toolTip">
+             <string notr="true">حتى / ثم / على / عن ...</string>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font: bold;</string>
+            </property>
+            <property name="text">
+             <string>حروف معاني</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
