@@ -14,7 +14,7 @@ from worker_threads.my_finder_thread import FinderThread
 from arabic_reformer import is_alif, alif_maksura
 from gui.mushaf_view_dialog.my_mushaf_view_dialog_ import MyMushafViewDialog
 from my_widgets.spinning_loader import SpinningLoader
-from my_utils.utils import AppLang, resource_path, load_translation, scale, ScaleRounding
+from my_utils.utils import AppLang, resource_path, load_translation, scale, ScaleRounding, translate_text
 from tabs_management.tabs_manager import TabsManager
 
 
@@ -49,8 +49,8 @@ class MainWindow(QMainWindow):
         SharedData.ui.similarityThresholdLabel.setText(str(SharedData.ui.similarityThresholdSlider.value()))
         max_words = self._get_max_words_for_search_option()
         self._composite_validator = CompositeValidator(max_words)
-        self.tabs_manager = TabsManager()
         self._apply_language(AppLang.DEFAULT_LANGUAGE)
+        self.tabs_manager = TabsManager()
         self.cursor = None
         self._setup_events()
         self._setup_validators()
@@ -68,6 +68,7 @@ class MainWindow(QMainWindow):
             app.installTranslator(SharedData.translator)
             app.installTranslator(SharedData.dynamic_translator)
             SharedData.ui.retranslateUi(self)
+            self.tabs_manager.retranslate_ui()
             self.set_font_for_language(lang)
             SharedData.app_language = lang
 
@@ -296,7 +297,10 @@ class MainWindow(QMainWindow):
         self._search_word_text_changed(SharedData.search_word)
 
 
+# import faulthandler
 if __name__ == "__main__":
+    # faulthandler.enable()
+
     app = QApplication(sys.argv)
 
     MyDataLoader()

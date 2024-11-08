@@ -379,7 +379,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.textBrowser.setAlignment(Qt.AlignmentFlag.AlignCenter)
             needs_basmalah = self.needsBasmalah(surah_num) and verses_range[0] == 1
             surah_name = MyDataLoader.get_surah_name(surah_num)
-            surahs_names.append(surah_name)
+            surahs_names.append(translate_text(surah_name))
             verses_start_offset += len(surah_name)
             if needs_basmalah:
                 self.textBrowser.insertHtml(

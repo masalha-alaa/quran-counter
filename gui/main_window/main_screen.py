@@ -16,11 +16,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QFrame,
-    QHBoxLayout, QLabel, QLayout, QLineEdit,
-    QListWidget, QListWidgetItem, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
-    QSlider, QSpacerItem, QStatusBar, QTabWidget,
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup, QCheckBox,
+    QFrame, QHBoxLayout, QHeaderView, QLabel,
+    QLayout, QLineEdit, QListWidget, QListWidgetItem,
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QRadioButton, QSizePolicy, QSlider, QSpacerItem,
+    QStatusBar, QTabWidget, QTableWidget, QTableWidgetItem,
     QVBoxLayout, QWidget)
 
 from my_widgets.lazy_text_browser_widget.lazy_text_browser import LazyTextBrowser
@@ -559,10 +560,40 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.horizontalLayout_10 = QHBoxLayout()
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.surahResultsListWidget = QListWidget(self.surahTab)
-        self.surahResultsListWidget.setObjectName(u"surahResultsListWidget")
+        self.surahResultsTableWidget = QTableWidget(self.surahTab)
+        self.surahResultsTableWidget.setObjectName(u"surahResultsTableWidget")
+        self.surahResultsTableWidget.setMouseTracking(True)
+        self.surahResultsTableWidget.setFocusPolicy(Qt.NoFocus)
+        self.surahResultsTableWidget.setStyleSheet(u"/*headers*/\n"
+"QHeaderView::section {\n"
+"        background-color: lightblue;\n"
+"        color: darkblue;\n"
+"    }\n"
+"/*headers when corresponding cell is selected*/\n"
+"QHeaderView::section:checked {\n"
+"        background-color: lightblue;\n"
+"        border: 1px outset darkgray;\n"
+"    }\n"
+"\n"
+"/*corner*/\n"
+"QTableCornerButton::section {\n"
+"    background-color: rgb(59, 59, 59);\n"
+"    }\n"
+"\n"
+"/*selected item*/\n"
+"QTableWidget::item:selected {\n"
+"        background-color: rgba(47, 74, 97, 1.0);\n"
+"        color: rgb(207, 207, 207);\n"
+"        border: none;\n"
+"    }\n"
+"")
+        self.surahResultsTableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.surahResultsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.surahResultsTableWidget.setSortingEnabled(True)
+        self.surahResultsTableWidget.horizontalHeader().setProperty(u"showSortIndicator", True)
+        self.surahResultsTableWidget.verticalHeader().setProperty(u"showSortIndicator", False)
 
-        self.horizontalLayout_10.addWidget(self.surahResultsListWidget)
+        self.horizontalLayout_10.addWidget(self.surahResultsTableWidget)
 
 
         self.horizontalLayout_9.addLayout(self.horizontalLayout_10)
@@ -791,7 +822,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

@@ -1,6 +1,7 @@
-from PySide6.QtCore import Signal, QThread
+from PySide6.QtCore import Signal, QThread, Qt
+from PySide6.QtWidgets import QTableWidgetItem
 from collections import defaultdict
-from my_widgets.lazy_list_widget import CustomRow
+from my_widgets.lazy_table_widget import SurahTableHeaders, CustomTableRow, TableDataType
 
 
 class SurahFinderThread(QThread):
@@ -32,7 +33,23 @@ class SurahFinderThread(QThread):
             if count[0] == 0 and not self._include_zeros:
                 continue
             matches_num, verse_nums_and_spans = count
-            rows.append(CustomRow(f"{surah_name} <{surah_num}>:\t\t{matches_num}", verse_nums_and_spans))
+            # results_cell = QTableWidgetItem(str(matches_num), TableDataType.INT)
+            # results_cell.setData(Qt.ItemDataRole.UserRole, verse_nums_and_spans)
+            row_results = [None] * len(SurahTableHeaders)
+            # row_results[SurahTableHeaders.SURAH_NAME_HEADER.value] = QTableWidgetItem(surah_name, TableDataType.STRING)
+            # row_results[SurahTableHeaders.SURAH_NUM_HEADER.value] = QTableWidgetItem(str(surah_num),  TableDataType.INT)
+            # row_results[SurahTableHeaders.RESULTS_HEADER.value] = results_cell
+            # rows.append(CustomTableRow(row_results))
+
+            row_results[SurahTableHeaders.SURAH_NAME_HEADER.value] = surah_name
+            row_results[SurahTableHeaders.SURAH_NUM_HEADER.value] = int(surah_num)
+            row_results[SurahTableHeaders.RESULTS_HEADER.value] = int(matches_num)
+            rows.append(CustomTableRow(row_results, verse_nums_and_spans))
+
+            # I have no idea why the following doesn't work (0xC0000374)
+            # rows.append([QTableWidgetItem(surah_name),
+            #                             QTableWidgetItem(surah_num),
+            #                             QTableWidgetItem(matches_num)])
 
         self._matches = []
         self.result_ready.emit(rows, self)

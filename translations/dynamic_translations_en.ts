@@ -462,6 +462,21 @@
     </message>
     <!-- SURAHS [END] -->
     
+    <!-- TABLE HEADERS [BEGIN] -->
+    <message>
+        <source>اسم السورة</source>
+        <translation>Surah</translation>
+    </message>
+    <message>
+        <source>رقم السورة</source>
+        <translation>Surah Number</translation>
+    </message>
+    <message>
+        <source>عدد النتائج</source>
+        <translation>Results</translation>
+    </message>
+    <!-- TABLE HEADERS [END] -->
+    
     <!-- SORTING METHODS [BEGIN] -->
     <message>
         <source>(رقم السورة)</source>

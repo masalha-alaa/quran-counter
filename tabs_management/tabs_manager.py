@@ -2,7 +2,6 @@ from enum import Enum
 from tabs_management.verse_tab_wrapper import VerseTabWrapper
 from tabs_management.surah_tab_wrapper import SurahTabWrapper
 from my_utils.shared_data import SharedData
-from PySide6.QtCore import QTranslator
 
 from tabs_management.word_tab_wrapper import WordTabWrapper
 
@@ -15,8 +14,6 @@ class TabIndex(Enum):
 
 class TabsManager:
     def __init__(self):
-        self._translator = QTranslator()
-
         self.verse_tab_wrapper = VerseTabWrapper(SharedData.ui.ayatTab, latest_radio_button=SharedData.ui.searchOptionsButtonGroup.checkedId())
         self.surah_tab_wrapper = SurahTabWrapper(SharedData.ui.surahTab, latest_radio_button=SharedData.ui.searchOptionsButtonGroup.checkedId())
         self.word_tab_wrapper = WordTabWrapper(SharedData.ui.wordsTab, latest_radio_button=SharedData.ui.searchOptionsButtonGroup.checkedId())
@@ -30,6 +27,9 @@ class TabsManager:
 
     def _setup_events(self):
         SharedData.ui.tabWidget.currentChanged.connect(self._tab_changed)
+
+    def retranslate_ui(self):
+        self.surah_tab_wrapper.retranslate_ui()
 
     def refresh_tabs_config(self):
         self.verse_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())

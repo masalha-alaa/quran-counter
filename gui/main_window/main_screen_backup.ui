@@ -962,54 +962,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_10">
               <item>
-               <widget class="QTableWidget" name="surahResultsTableWidget">
-                <property name="mouseTracking">
-                 <bool>true</bool>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">/*headers*/
-QHeaderView::section {
-        background-color: lightblue;
-        color: darkblue;
-    }
-/*headers when corresponding cell is selected*/
-QHeaderView::section:checked {
-        background-color: lightblue;
-        border: 1px outset darkgray;
-    }
-
-/*corner*/
-QTableCornerButton::section {
-    background-color: rgb(59, 59, 59);
-    }
-
-/*selected item*/
-QTableWidget::item:selected {
-        background-color: rgba(47, 74, 97, 1.0);
-        color: rgb(207, 207, 207);
-        border: none;
-    }
-</string>
-                </property>
-                <property name="editTriggers">
-                 <set>QAbstractItemView::NoEditTriggers</set>
-                </property>
-                <property name="selectionBehavior">
-                 <enum>QAbstractItemView::SelectRows</enum>
-                </property>
-                <property name="sortingEnabled">
-                 <bool>true</bool>
-                </property>
-                <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-                 <bool>true</bool>
-                </attribute>
-                <attribute name="verticalHeaderShowSortIndicator" stdset="0">
-                 <bool>false</bool>
-                </attribute>
-               </widget>
+               <widget class="QListWidget" name="surahResultsListWidget"/>
               </item>
              </layout>
             </item>

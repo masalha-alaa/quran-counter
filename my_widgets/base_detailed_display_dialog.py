@@ -1,3 +1,4 @@
+from typing import Any
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QDialog
 from gui.detailed_display_dialog.word_detailed_display_dialog import Ui_DetailedWordDisplayDialog
@@ -18,7 +19,7 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
         self.items_to_load = items_to_load
-        self._row_data: CustomRow | None = None
+        self._row_metadata:Any = None
         self._data_iter = None
         self._adding_items = False
         self._prev_scrolling_value = 0
@@ -42,16 +43,16 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
 
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
-        if self._row_data:
+        if self._row_metadata:
             self.load_more_items(self.items_to_load, prevent_scrolling=True)
 
-    def set_data(self, row_data: CustomRow):
+    def set_data(self, row_metadata:Any):
         self._clear()
-        self._row_data = row_data
+        self._row_metadata = row_metadata
         self._reset_iter()
 
     def _reset_iter(self):
-        self._data_iter = iter(self._row_data.metadata)
+        self._data_iter = iter(self._row_metadata)
 
     def load_more_items(self, items_to_load, prevent_scrolling=False):
         def _done():
