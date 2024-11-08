@@ -1,7 +1,8 @@
 from PySide6.QtCore import Signal, QThread, Qt
 from PySide6.QtWidgets import QTableWidgetItem
 from collections import defaultdict
-from my_widgets.lazy_table_widget import SurahTableHeaders, CustomTableRow, TableDataType
+from my_widgets.lazy_table_widget import CustomTableRow, TableDataType
+from tabs_management.surah_table_headers import SurahTableHeaders
 
 
 class SurahFinderThread(QThread):

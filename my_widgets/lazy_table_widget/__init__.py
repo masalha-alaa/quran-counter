@@ -1,5 +1,4 @@
 from .lazy_table_widget_wrapper import LazyTableWidgetWrapper
 from .custom_table_row import CustomTableRow
 from .custom_table_widget_item import CustomTableWidgetItem
-from .surah_table_headers import SurahTableHeaders
 from .table_data_type import TableDataType

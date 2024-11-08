@@ -10,7 +10,7 @@ from PySide6.QtGui import QColor
 from my_utils.utils import translate_text
 from .table_data_type import TableDataType
 from .custom_table_row import CustomTableRow
-from .surah_table_headers import SurahTableHeaders
+from tabs_management.surah_table_headers import SurahTableHeaders
 from .custom_table_widget_item import CustomTableWidgetItem
 
 

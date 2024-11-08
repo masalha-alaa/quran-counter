@@ -1,5 +1,6 @@
 from yaml import safe_load
-from my_widgets.lazy_table_widget import LazyTableWidgetWrapper, CustomTableWidgetItem, SurahTableHeaders
+from my_widgets.lazy_table_widget import LazyTableWidgetWrapper, CustomTableWidgetItem
+from tabs_management.surah_table_headers import SurahTableHeaders
 from PySide6.QtWidgets import QTableWidgetItem
 from tabs_management.surah_results_subtext_getter import SurahResultsSubtextGetter
 from my_widgets.tab_wrapper import TabWrapper
