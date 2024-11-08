@@ -962,7 +962,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_10">
               <item>
-               <widget class="QTableWidget" name="surahResultsTableWidget">
+               <widget class="SurahLazyTableWidget" name="surahResultsTableWidget">
                 <property name="mouseTracking">
                  <bool>true</bool>
                 </property>
@@ -1002,6 +1002,12 @@ QTableWidget::item:selected {
                 </property>
                 <property name="sortingEnabled">
                  <bool>true</bool>
+                </property>
+                <property name="rowCount">
+                 <number>0</number>
+                </property>
+                <property name="columnCount">
+                 <number>0</number>
                 </property>
                 <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
                  <bool>true</bool>
@@ -1178,7 +1184,54 @@ QTableWidget::item:selected {
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_11">
             <item>
-             <widget class="QListWidget" name="wordResultsListWidget"/>
+             <widget class="WordLazyTableWidget" name="wordResultsTableWidget">
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">/*headers*/
+QHeaderView::section {
+        background-color: lightblue;
+        color: darkblue;
+    }
+/*headers when corresponding cell is selected*/
+QHeaderView::section:checked {
+        background-color: lightblue;
+        border: 1px outset darkgray;
+    }
+
+/*corner*/
+QTableCornerButton::section {
+    background-color: rgb(59, 59, 59);
+    }
+
+/*selected item*/
+QTableWidget::item:selected {
+        background-color: rgba(47, 74, 97, 1.0);
+        color: rgb(207, 207, 207);
+        border: none;
+    }
+</string>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="tabKeyNavigation">
+               <bool>true</bool>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <property name="sortingEnabled">
+               <bool>true</bool>
+              </property>
+              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+               <bool>true</bool>
+              </attribute>
+             </widget>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -1359,6 +1412,16 @@ QTableWidget::item:selected {
    <class>LazyTextBrowser</class>
    <extends>QTextBrowser</extends>
    <header>my_widgets.lazy_text_browser_widget.lazy_text_browser</header>
+  </customwidget>
+  <customwidget>
+   <class>SurahLazyTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>my_widgets.surah_lazy_table_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>WordLazyTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>my_widgets.word_lazy_table_widget</header>
   </customwidget>
  </customwidgets>
  <tabstops>

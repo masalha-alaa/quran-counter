@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from typing import Callable, Any
 from enum import Enum
 
@@ -10,7 +11,7 @@ from PySide6.QtGui import QColor
 from my_utils.utils import translate_text
 from .table_data_type import TableDataType
 from .custom_table_row import CustomTableRow
-from tabs_management.surah_table_headers import SurahTableHeaders
+from tabs_management.table_headers import TableHeaders
 from .custom_table_widget_item import CustomTableWidgetItem
 
 
@@ -31,26 +32,25 @@ class SortingOrder(Enum):
         return SortingOrder(self ^ SortingOrder.DESCENDING)
 
 
-class LazyTableWidgetWrapper:
-    # TODO: Inherit from QTableWidget and use widget promotion. This wrapper is not needed.
+class MyLazyTableWidget(QTableWidget):
     REMOVE_THREAD_AFTER_MS = 500
     # RUNNING_THREADS_MUTEX = QMutex()
 
-    def __init__(self, parent: QTableWidget, headers, default_items_load=30):
+    def __init__(self, parent, default_items_load=30):
+        super().__init__(parent)
         self._exhausted = object()
         self._threads = set()
-        self._headers = headers
-        self._last_sorting_direction = [SortingOrder.INITIAL for _ in range(len(self._headers))]
-        self.table_widget = parent
-        self.table_widget.verticalScrollBar().valueChanged.connect(self.after_scroll)
-        self.table_widget.verticalScrollBar().actionTriggered.connect(self.before_scroll)
-        self.table_widget.horizontalHeader().sectionClicked.connect(self.on_header_clicked)
-        self.table_widget.cellEntered.connect(self.set_row_highlight)
+        self._headers = None
+        self._last_sorting_direction = None
+        self.verticalScrollBar().valueChanged.connect(self.after_scroll)
+        self.verticalScrollBar().actionTriggered.connect(self.before_scroll)
+        self.horizontalHeader().sectionClicked.connect(self.on_header_clicked)
+        self.cellEntered.connect(self.set_row_highlight)
 
         # self._qobject = QObject()
         # self._qobject.eventFilter = self._my_event_filter
-        # self.table_widget.installEventFilter(self._qobject)
-        # self.table_widget.horizontalHeader().installEventFilter(self._qobject)
+        # self.installEventFilter(self._qobject)
+        # self.horizontalHeader().installEventFilter(self._qobject)
         # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         ## GETTING THIS AFTER CLOSING THE APP:
         ## Process finished with exit code -1073741819 (0xC0000005)
@@ -64,28 +64,22 @@ class LazyTableWidgetWrapper:
         self._item_double_clicked_callback = None
         self._previous_row = -1
 
+    def set_headers(self, headers):
+        """
+        MUST BE CALLED AT THE BEGINNING
+        """
+        self._headers = headers
+        self._last_sorting_direction = [SortingOrder.INITIAL for _ in range(len(self._headers))]
+
     def add_thread(self, thread):
-        # LazyTableWidgetWrapper.RUNNING_THREADS_MUTEX.lock()
+        # LazyTableWidget.RUNNING_THREADS_MUTEX.lock()
         self._threads.add(thread)
-        # LazyTableWidgetWrapper.RUNNING_THREADS_MUTEX.unlock()
+        # LazyTableWidget.RUNNING_THREADS_MUTEX.unlock()
 
     def remove_thread(self, thread):
-        # LazyTableWidgetWrapper.RUNNING_THREADS_MUTEX.lock()
+        # LazyTableWidget.RUNNING_THREADS_MUTEX.lock()
         self._threads.remove(thread)
-        # LazyTableWidgetWrapper.RUNNING_THREADS_MUTEX.unlock()
-
-    def _my_event_filter(self, source, event):
-        # UNUSED (SEE COMMENTS ABOVE)
-        if ((source == self.table_widget and event.type() == QEvent.Type.Leave) or
-                (source == self.table_widget.horizontalHeader() and event.type() == QEvent.Type.Enter)):
-            if self._previous_row > -1:
-                for column in range(self.table_widget.columnCount()):
-                    color = QColor()
-                    color.setAlpha(0)
-                    self.table_widget.item(self._previous_row, column).setBackground(QColor(color))
-                self._previous_row = -1
-            return True
-        return False
+        # LazyTableWidget.RUNNING_THREADS_MUTEX.unlock()
 
     def set_row_highlight(self, row, _):
         """
@@ -94,12 +88,12 @@ class LazyTableWidgetWrapper:
 	        background-color: rgba(59,59,59,150);
         }
         """
-        for column in range(self.table_widget.columnCount()):
+        for column in range(self.columnCount()):
             if self._previous_row > -1:
                 color = QColor()
                 color.setAlpha(0)
-                self.table_widget.item(self._previous_row, column).setBackground(color)
-            if current_row := self.table_widget.item(row, column):
+                self.item(self._previous_row, column).setBackground(color)
+            if current_row := self.item(row, column):
                 color = QColor(0x35434f)
                 # color = QColor(0x536778)
                 color.setAlpha(150)
@@ -110,20 +104,20 @@ class LazyTableWidgetWrapper:
     def set_item_selection_changed_callback(self, callback: Callable[[list], None]):
         self._selection_changed_callback = callback
         if self._selection_changed_callback:
-            self.table_widget.itemSelectionChanged.connect(self._selection_changed)
+            self.itemSelectionChanged.connect(self._selection_changed)
 
     def disconnect_item_selection_changed_callback(self):
-        self.table_widget.itemSelectionChanged.disconnect(self._selection_changed)
+        self.itemSelectionChanged.disconnect(self._selection_changed)
 
     def _selection_changed(self):
         if self._selection_changed_callback:
-            self._selection_changed_callback(self.get_results_from_selected_items())
+            self._selection_changed_callback(self.get_selected_items())
 
-    def get_results_from_selected_items(self):
+    def get_selected_items(self):
         results = {}
-        for item in self.table_widget.selectedItems():
+        for item in self.selectedItems():
             row_id = item.row()
-            results[row_id] = self.table_widget.item(row_id, SurahTableHeaders.RESULTS_HEADER.value).text()
+            results[row_id] = [self.item(row_id, col) for col in range(self.columnCount())]
         return list(results.values())
 
     # SELECTION CALLBACKS [END]
@@ -132,32 +126,28 @@ class LazyTableWidgetWrapper:
     def set_item_double_clicked_callback(self, callback: Callable[[Any], None]):
         self._item_double_clicked_callback = callback
         if self._item_double_clicked_callback:
-            self.table_widget.itemDoubleClicked.connect(self._item_double_clicked)
+            self.itemDoubleClicked.connect(self._item_double_clicked)
 
     def disconnect_item_double_clicked_callback(self):
-        self.table_widget.itemDoubleClicked.disconnect(self._item_double_clicked)
+        self.itemDoubleClicked.disconnect(self._item_double_clicked)
 
     def _item_double_clicked(self, item: QTableWidgetItem):
         if self._item_double_clicked_callback:
-            self._item_double_clicked_callback(self.get_metadata_from_item(item))
-
-    def get_metadata_from_item(self, item: QTableWidgetItem):
-        row_id = item.row()
-        return self.table_widget.item(row_id, SurahTableHeaders.RESULTS_HEADER.value).data(Qt.ItemDataRole.UserRole)
+            self._item_double_clicked_callback(item)
 
     # DOUBLE CLICK CALLBACKS [END]
 
-    def on_header_clicked(self, col_idx:int|SurahTableHeaders):
+    def on_header_clicked(self, col_idx:int|TableHeaders):
         self.sort(col_idx)
 
-    def sort(self, col_idx:int|SurahTableHeaders):
-        if isinstance(col_idx, SurahTableHeaders):
+    def sort(self, col_idx:int|TableHeaders):
+        if isinstance(col_idx, TableHeaders):
             col_idx = col_idx.value
 
         reverse = self._last_sorting_direction[col_idx] == SortingOrder.ASCENDING
         self._rows.sort(key=lambda x:x[col_idx], reverse=reverse)
         self._rows_iter = iter(self._rows)
-        # self.table_widget.horizontalHeader().setSortIndicator(col_idx,
+        # self.horizontalHeader().setSortIndicator(col_idx,
         #                                                       self._last_sorting_direction[col_idx].convert_to_qt_sorting_type())
         self._last_sorting_direction[col_idx] = self._last_sorting_direction[col_idx].flip()
         for idx in range(len(self._last_sorting_direction)):
@@ -166,15 +156,15 @@ class LazyTableWidgetWrapper:
         self.clear()
         self.load_more_items()
         # sort again by qt just to show the arrow symbol
-        self.table_widget.sortByColumn(col_idx, self._last_sorting_direction[col_idx].convert_to_qt_sorting_type())
+        self.sortByColumn(col_idx, self._last_sorting_direction[col_idx].convert_to_qt_sorting_type())
 
     def before_scroll(self):
-        scrollbar = self.table_widget.verticalScrollBar()
+        scrollbar = self.verticalScrollBar()
         self._prev_scrolling_value = scrollbar.value()
 
     def after_scroll(self):
         if self._adding_items or (
-                (scrollbar := self.table_widget.verticalScrollBar()).value() < self._prev_scrolling_value):
+                (scrollbar := self.verticalScrollBar()).value() < self._prev_scrolling_value):
             return "break"
         current_val = scrollbar.value()
         if scrollbar.value() > 0.85 * scrollbar.maximum():  # At the bottom
@@ -190,17 +180,17 @@ class LazyTableWidgetWrapper:
         def _done():
             if prevent_scrolling:
                 scrollbar.setValue(current_scroll_value)
-            self.table_widget.resizeColumnsToContents()
-            self.table_widget.resizeRowsToContents()
-            # self.table_widget.resizeRowToContents(self.table_widget.rowCount() - 1)
+            self.resizeColumnsToContents()
+            self.resizeRowsToContents()
+            # self.resizeRowToContents(self.rowCount() - 1)
             self._adding_items = False
             return
 
         self._adding_items = True
-        if self.table_widget.rowCount() == 0:
-            self.table_widget.setColumnCount(len(self._headers))
-            self.table_widget.setHorizontalHeaderLabels(self.get_translated_headers())
-        scrollbar = self.table_widget.verticalScrollBar()
+        if self.rowCount() == 0:
+            self.setColumnCount(len(self._headers))
+            self.setHorizontalHeaderLabels(self.get_translated_headers())
+        scrollbar = self.verticalScrollBar()
         current_scroll_value = scrollbar.value()
 
         if how_many is None:
@@ -211,27 +201,29 @@ class LazyTableWidgetWrapper:
             self.append_row(row)
         return _done()
 
+    @abstractmethod
     def append_row(self, row: CustomTableRow):
+        """
+        Optionally override this method
+        """
         data = row.data
-        self.table_widget.insertRow(self.table_widget.rowCount())
+        self.insertRow(self.rowCount())
         for j in range(len(data)):
-            if SurahTableHeaders(j) == SurahTableHeaders.SURAH_NUM_HEADER:
-                item = CustomTableWidgetItem(str(data[j]), TableDataType.INT)
-            elif SurahTableHeaders(j) == SurahTableHeaders.RESULTS_HEADER:
-                item = CustomTableWidgetItem(str(data[j]), TableDataType.INT)
+            item = CustomTableWidgetItem(str(data[j]))
+            # set metadata in last col
+            is_last_col = j == len(data) - 1
+            if is_last_col:
                 item.setData(Qt.ItemDataRole.UserRole, row.metadata)
-            else:
-                item = CustomTableWidgetItem(str(data[j]), TableDataType.STRING)
 
-            self.table_widget.setItem(self.table_widget.rowCount()-1, j, item)
+            self.setItem(self.rowCount()-1, j, item)
 
     def clear(self):
         self._previous_row = -1
-        # self.table_widget.clearContents()
-        self.table_widget.setRowCount(0)
-        self.table_widget.setColumnCount(0)
-        # QTimer.singleShot(0, self.table_widget.clear)
-        self.table_widget.verticalScrollBar().setValue(0)
+        # self.clearContents()
+        self.setRowCount(0)
+        self.setColumnCount(0)
+        # QTimer.singleShot(0, self.clear)
+        self.verticalScrollBar().setValue(0)
 
     def reset_sorting_order(self):
         self._last_sorting_direction = [SortingOrder.INITIAL for _ in range(len(self._headers))]
@@ -240,6 +232,6 @@ class LazyTableWidgetWrapper:
         return [translate_text(header) for header in self._headers]
 
     def retranslate_ui(self):
-        self.table_widget.setHorizontalHeaderLabels(self.get_translated_headers())
-        # self.table_widget.resizeColumnsToContents()
-        # self.table_widget.resizeRowsToContents()
+        self.setHorizontalHeaderLabels(self.get_translated_headers())
+        # self.resizeColumnsToContents()
+        # self.resizeRowsToContents()

@@ -4,11 +4,6 @@ from arabic_reformer import reform_text
 
 
 class LazyTextBrowser(QTextBrowser):
-    # TODO: There's no consistency between the lazy loading classes in the tab widget.
-    #       This class uses inheritance, and the other two use a wrapper (LazyListWidgetWrapper).
-    #       I just wasn't familiar with the inheritance method (or "widget promotion" as QT calls it),
-    #       when I implemented the other two classes, so I made a wrapper.
-    #       At some point all three should implement the same method; not sure which one is more suitable.
     _exhausted = object()
 
     def __init__(self, parent=None):

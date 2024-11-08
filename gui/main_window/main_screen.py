@@ -18,13 +18,14 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup, QCheckBox,
     QFrame, QHBoxLayout, QHeaderView, QLabel,
-    QLayout, QLineEdit, QListWidget, QListWidgetItem,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QRadioButton, QSizePolicy, QSlider, QSpacerItem,
-    QStatusBar, QTabWidget, QTableWidget, QTableWidgetItem,
-    QVBoxLayout, QWidget)
+    QLayout, QLineEdit, QMainWindow, QMenu,
+    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
+    QSlider, QSpacerItem, QStatusBar, QTabWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 
 from my_widgets.lazy_text_browser_widget.lazy_text_browser import LazyTextBrowser
+from my_widgets.surah_lazy_table_widget import SurahLazyTableWidget
+from my_widgets.word_lazy_table_widget import WordLazyTableWidget
 import resources_rc
 
 class Ui_MainWindow(object):
@@ -560,7 +561,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.horizontalLayout_10 = QHBoxLayout()
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.surahResultsTableWidget = QTableWidget(self.surahTab)
+        self.surahResultsTableWidget = SurahLazyTableWidget(self.surahTab)
         self.surahResultsTableWidget.setObjectName(u"surahResultsTableWidget")
         self.surahResultsTableWidget.setMouseTracking(True)
         self.surahResultsTableWidget.setFocusPolicy(Qt.NoFocus)
@@ -590,6 +591,8 @@ class Ui_MainWindow(object):
         self.surahResultsTableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.surahResultsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.surahResultsTableWidget.setSortingEnabled(True)
+        self.surahResultsTableWidget.setRowCount(0)
+        self.surahResultsTableWidget.setColumnCount(0)
         self.surahResultsTableWidget.horizontalHeader().setProperty(u"showSortIndicator", True)
         self.surahResultsTableWidget.verticalHeader().setProperty(u"showSortIndicator", False)
 
@@ -697,10 +700,40 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_11 = QHBoxLayout()
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.wordResultsListWidget = QListWidget(self.wordsTab)
-        self.wordResultsListWidget.setObjectName(u"wordResultsListWidget")
+        self.wordResultsTableWidget = WordLazyTableWidget(self.wordsTab)
+        self.wordResultsTableWidget.setObjectName(u"wordResultsTableWidget")
+        self.wordResultsTableWidget.setMouseTracking(True)
+        self.wordResultsTableWidget.setFocusPolicy(Qt.NoFocus)
+        self.wordResultsTableWidget.setStyleSheet(u"/*headers*/\n"
+"QHeaderView::section {\n"
+"        background-color: lightblue;\n"
+"        color: darkblue;\n"
+"    }\n"
+"/*headers when corresponding cell is selected*/\n"
+"QHeaderView::section:checked {\n"
+"        background-color: lightblue;\n"
+"        border: 1px outset darkgray;\n"
+"    }\n"
+"\n"
+"/*corner*/\n"
+"QTableCornerButton::section {\n"
+"    background-color: rgb(59, 59, 59);\n"
+"    }\n"
+"\n"
+"/*selected item*/\n"
+"QTableWidget::item:selected {\n"
+"        background-color: rgba(47, 74, 97, 1.0);\n"
+"        color: rgb(207, 207, 207);\n"
+"        border: none;\n"
+"    }\n"
+"")
+        self.wordResultsTableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.wordResultsTableWidget.setTabKeyNavigation(True)
+        self.wordResultsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.wordResultsTableWidget.setSortingEnabled(True)
+        self.wordResultsTableWidget.horizontalHeader().setProperty(u"showSortIndicator", True)
 
-        self.horizontalLayout_11.addWidget(self.wordResultsListWidget)
+        self.horizontalLayout_11.addWidget(self.wordResultsTableWidget)
 
         self.verticalLayout_16 = QVBoxLayout()
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
@@ -822,7 +855,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

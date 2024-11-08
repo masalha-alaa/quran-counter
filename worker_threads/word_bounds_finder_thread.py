@@ -3,7 +3,8 @@ from functools import lru_cache
 from PySide6.QtCore import Signal, QThread
 from collections import defaultdict
 from arabic_reformer import diacritics_regex
-from my_widgets.lazy_list_widget import CustomRow
+from tabs_management.table_headers import WordTableHeaders
+from my_widgets.lazy_table_widget import CustomTableRow
 
 
 class WordBoundsFinderThread(QThread):
@@ -39,6 +40,14 @@ class WordBoundsFinderThread(QThread):
                     counts[word][-1].extend((word_start, word_end))
                 else:
                     counts[word].append([surah_num, verse_num, word_start, word_end])
+
+        rows = []
+        for w, data in counts.items():
+            row_results = [None] * len(WordTableHeaders)
+            row_results[WordTableHeaders.WORD_TEXT_HEADER.value] = w
+            row_results[WordTableHeaders.RESULTS_HEADER.value] = sum(((len(lst) - 2) // 2) for lst in data)
+            rows.append(CustomTableRow(row_results, data))
+
         self._matches = []
-        self.result_ready.emit([CustomRow(f"{w}:\t\t{sum(((len(lst) - 2) // 2) for lst in data)}", data) for w,data in counts.items()], self)
+        self.result_ready.emit(rows, self)
         # print(f"word bounds end {id(self)}")

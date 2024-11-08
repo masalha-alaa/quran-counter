@@ -1,4 +1,4 @@
-from .lazy_table_widget_wrapper import LazyTableWidgetWrapper
+from .my_lazy_table_widget import MyLazyTableWidget
 from .custom_table_row import CustomTableRow
 from .custom_table_widget_item import CustomTableWidgetItem
 from .table_data_type import TableDataType
