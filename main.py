@@ -187,8 +187,6 @@ class MainWindow(QMainWindow):
             self.clear_results()
             self.tabs_manager.refresh_tabs_config()
             SharedData.ui.filterButton.setEnabled(False)
-            SharedData.ui.sortPushButton.setEnabled(False)
-            SharedData.ui.wordsSortPushButton.setEnabled(False)
             self.tabs_manager.clear_tabs_results()
             return
 

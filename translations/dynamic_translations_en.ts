@@ -481,25 +481,6 @@
     </message>
     <!-- TABLE HEADERS [END] -->
     
-    <!-- SORTING METHODS [BEGIN] -->
-    <message>
-        <source>(رقم السورة)</source>
-        <translation>(Surah Number)</translation>
-    </message>
-    <message>
-        <source>(ترتيب ابجدي)</source>
-        <translation>(Alphabetical Order)</translation>
-    </message>
-    <message>
-        <source>(عدد النتائج صعودًا)</source>
-        <translation>(Count, ascending order)</translation>
-    </message>
-    <message>
-        <source>(عدد النتائج نزولًا)</source>
-        <translation>(Count, descending order)</translation>
-    </message>
-    <!-- SORTING METHODS [END] -->
-    
     <!-- OTHER [BEGIN] -->
     <message>
         <source>آية</source>

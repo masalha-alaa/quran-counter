@@ -525,37 +525,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_11 = QVBoxLayout()
         self.verticalLayout_11.setSpacing(5)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.horizontalLayout_6 = QHBoxLayout()
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.sortPushButton = QPushButton(self.surahTab)
-        self.sortPushButton.setObjectName(u"sortPushButton")
-        self.sortPushButton.setEnabled(False)
-        icon3 = QIcon()
-        icon3.addFile(u":/sort-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.sortPushButton.setIcon(icon3)
-        self.sortPushButton.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout_6.addWidget(self.sortPushButton)
-
-        self.sortMethodLabel = QLabel(self.surahTab)
-        self.sortMethodLabel.setObjectName(u"sortMethodLabel")
-
-        self.horizontalLayout_6.addWidget(self.sortMethodLabel)
-
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_6.addItem(self.horizontalSpacer_4)
-
-
-        self.verticalLayout_11.addLayout(self.horizontalLayout_6)
-
-        self.line_2 = QFrame(self.surahTab)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.Shape.HLine)
-        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.verticalLayout_11.addWidget(self.line_2)
-
         self.horizontalLayout_9 = QHBoxLayout()
         self.horizontalLayout_9.setSpacing(7)
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
@@ -669,35 +638,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_15 = QVBoxLayout()
         self.verticalLayout_15.setSpacing(5)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.horizontalLayout_7 = QHBoxLayout()
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.wordsSortPushButton = QPushButton(self.wordsTab)
-        self.wordsSortPushButton.setObjectName(u"wordsSortPushButton")
-        self.wordsSortPushButton.setEnabled(False)
-        self.wordsSortPushButton.setIcon(icon3)
-        self.wordsSortPushButton.setIconSize(QSize(24, 24))
-
-        self.horizontalLayout_7.addWidget(self.wordsSortPushButton)
-
-        self.wordSortMethodLabel = QLabel(self.wordsTab)
-        self.wordSortMethodLabel.setObjectName(u"wordSortMethodLabel")
-
-        self.horizontalLayout_7.addWidget(self.wordSortMethodLabel)
-
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout_7.addItem(self.horizontalSpacer_5)
-
-
-        self.verticalLayout_15.addLayout(self.horizontalLayout_7)
-
-        self.line = QFrame(self.wordsTab)
-        self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.Shape.HLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.verticalLayout_15.addWidget(self.line)
-
         self.horizontalLayout_11 = QHBoxLayout()
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.wordResultsTableWidget = WordLazyTableWidget(self.wordsTab)
@@ -821,14 +761,14 @@ class Ui_MainWindow(object):
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
         self.menu_Language.setTitle(u"\u0627\u0644\u0644\u063a\u0629 / Language")
-        icon4 = QIcon()
-        icon4.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.menu_Language.setIcon(icon4)
+        icon3 = QIcon()
+        icon3.addFile(u":/language-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.menu_Language.setIcon(icon3)
         self.mushafViewButton = QMenu(self.menubar)
         self.mushafViewButton.setObjectName(u"mushafViewButton")
-        icon5 = QIcon()
-        icon5.addFile(u":/book-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.mushafViewButton.setIcon(icon5)
+        icon4 = QIcon()
+        icon4.addFile(u":/book-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.mushafViewButton.setIcon(icon4)
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -855,7 +795,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -933,11 +873,6 @@ class Ui_MainWindow(object):
         self.colorizeCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062a\u0644\u0648\u064a\u0646", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.ayatTab), QCoreApplication.translate("MainWindow", u"\u0622\u064a\u0627\u062a", None))
 #if QT_CONFIG(tooltip)
-        self.sortPushButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0627\u0636\u063a\u0637 \u0644\u062a\u063a\u064a\u064a\u0631 \u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
-#endif // QT_CONFIG(tooltip)
-        self.sortPushButton.setText("")
-        self.sortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
-#if QT_CONFIG(tooltip)
         self.allResultsCheckbox.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.allResultsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0645\u064a\u0639\n"
@@ -945,11 +880,6 @@ class Ui_MainWindow(object):
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.surahTab), QCoreApplication.translate("MainWindow", u"\u0633\u0648\u0631", None))
-#if QT_CONFIG(tooltip)
-        self.wordsSortPushButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0627\u0636\u063a\u0637 \u0644\u062a\u063a\u064a\u064a\u0631 \u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
-#endif // QT_CONFIG(tooltip)
-        self.wordsSortPushButton.setText("")
-        self.wordSortMethodLabel.setText(QCoreApplication.translate("MainWindow", u"\u0637\u0631\u064a\u0642\u0629 \u0627\u0644\u062a\u0631\u062a\u064a\u0628", None))
         self.diacriticsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062d\u0631\u0643\u0627\u062a", None))
         self.minimum_letters_restriction_lbl.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u062f\u062e\u0644 \u062d\u0631\u0641\u064a\u0646 \u0627\u0648 \u0627\u0643\u062b\u0631 \u0644\u0644\u0628\u062d\u062b.", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629.", None))
