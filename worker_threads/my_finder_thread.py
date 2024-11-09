@@ -83,7 +83,7 @@ class FinderThread(QThread):
         if self.optional_al_tarif:
             al_tarif = "ال"
             optional_al_tarif = f"(?:{al_tarif})?"
-            new_text = ' '.join([(optional_al_tarif + w) if not w.startswith(al_tarif) else w[len(al_tarif):]
+            new_text = ' '.join([(optional_al_tarif + (w if not w.startswith(al_tarif) else w[len(al_tarif):]))
                         for w in re.split("\s+", new_text)])
 
         if not self.close_match:
