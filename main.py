@@ -194,6 +194,8 @@ class MainWindow(QMainWindow):
             self.tabs_manager.refresh_tabs_config()
             SharedData.ui.filterButton.setEnabled(False)
             self.tabs_manager.clear_tabs_results()
+            if SharedData.ui.regexRadioButton.isChecked():
+                SharedData.ui.searchWord.setStyleSheet("")
             return
 
         if SharedData.ui.regexRadioButton.isChecked():
