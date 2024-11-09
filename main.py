@@ -2,6 +2,7 @@ import sys
 import re
 from datetime import datetime
 import uuid
+from PySide6.QtGui import QValidator
 from PySide6.QtTest import QTest
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -10,6 +11,7 @@ from my_utils.my_data_loader import MyDataLoader
 from  my_utils.shared_data import SharedData
 from gui.main_window.main_screen import Ui_MainWindow
 from text_validators.composite_validator import CompositeValidator
+from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 from worker_threads.my_finder_thread import FinderThread
 from arabic_reformer import is_alif, alif_maksura
 from gui.mushaf_view_dialog.my_mushaf_view_dialog_ import MyMushafViewDialog
@@ -42,18 +44,17 @@ class MainWindow(QMainWindow):
         self._word_results_list_uuid = uuid.uuid4().hex
         SharedData.ui.setupUi(self)
 
-        # SharedData.ui.optionalAlTarifCheckbox.setVisible(False)  # TODO: Enable and implement functionality
-        # SharedData.ui.line_8.setVisible(False)  # TODO: Remove
-
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
         SharedData.ui.similarityThresholdLabel.setText(str(SharedData.ui.similarityThresholdSlider.value()))
         max_words = self._get_max_words_for_search_option()
         self._composite_validator = CompositeValidator(max_words)
+        self._regex_validator = ArabicWithRegexValidator()
         self._apply_language(AppLang.DEFAULT_LANGUAGE)
+        SharedData.ui.regexRadioButton.setToolTip(f"regex: {ArabicWithRegexValidator.SUPPORTED_REGEX_CHARS}")
         self.tabs_manager = TabsManager()
         self.cursor = None
         self._setup_events()
-        self._setup_validators()
+        self._set_validator(self._composite_validator if not SharedData.ui.regexRadioButton.isChecked() else self._regex_validator)
 
         self._prev_scrolling_value = 0
         SharedData.all_matches = []
@@ -99,10 +100,8 @@ class MainWindow(QMainWindow):
         SharedData.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
         SharedData.ui.similarityThresholdSlider.valueChanged.connect(self._similarity_threshold_changed)
 
-    def _setup_validators(self):
-        SharedData.ui.searchWord.setValidator(self._composite_validator)
-        # SharedData.ui.searchWord.setValidator(ArabicOnlyValidator())
-        # SharedData.ui.searchWord.setValidator(self._max_words_validator)
+    def _set_validator(self, validator):
+        SharedData.ui.searchWord.setValidator(validator)
 
     def _setup_fonts(self):
         # Load the custom font
@@ -134,7 +133,6 @@ class MainWindow(QMainWindow):
     # EVENTS
 
     def _optional_al_tarif_state_changed(self, state):
-        # TODO: implement
         self._search_word_text_changed(SharedData.search_word)
         SharedData.ui.searchWord.setFocus()
 
@@ -180,6 +178,14 @@ class MainWindow(QMainWindow):
         QTimer.singleShot(MainWindow.REMOVE_THREAD_AFTER_MS, lambda: self.running_threads.remove(thread))
         # MainWindow.RUNNING_THREADS_MUTEX.unlock()
 
+    def is_valid_regex(self, pattern):
+        try:
+            re.compile(pattern)
+            # not in SUPPORTED REGEX means do not allow one regex character
+            return not (pattern.startswith(("|", "(|",)) or pattern.endswith(("|", "|)")) or pattern in ArabicWithRegexValidator.SUPPORTED_REGEX_CHARS or "||" in pattern or "??" in pattern)
+        except re.error:
+            return False
+
     def _search_word_text_changed(self, new_text):
         SharedData.ui.filterButton.setEnabled(False)
         SharedData.all_matches = []
@@ -189,6 +195,13 @@ class MainWindow(QMainWindow):
             SharedData.ui.filterButton.setEnabled(False)
             self.tabs_manager.clear_tabs_results()
             return
+
+        if SharedData.ui.regexRadioButton.isChecked():
+            if self.is_valid_regex(new_text):
+                SharedData.ui.searchWord.setStyleSheet("")
+            else:
+                SharedData.ui.searchWord.setStyleSheet("background-color: rgba(255, 0, 0, 50);")
+                return
 
         if SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked():
             self.waiting()
@@ -205,6 +218,7 @@ class MainWindow(QMainWindow):
                                SharedData.beginning_of_word_checkbox,
                                SharedData.ending_of_word_checkbox,
                                SharedData.ui.rootRadioButton.isChecked(),
+                               SharedData.ui.regexRadioButton.isChecked(),
                                SharedData.ui.similarWordRadioButton.isChecked(),
                                scale(int(SharedData.ui.similarityThresholdLabel.text()),
                                      SharedData.ui.similarityThresholdSlider.minimum(),
@@ -281,6 +295,18 @@ class MainWindow(QMainWindow):
             SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
             SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
             SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
+        elif button == SharedData.ui.regexRadioButton:
+            self._set_validator(self._regex_validator if is_checked else self._composite_validator)
+            if not is_checked:
+                SharedData.ui.searchWord.setStyleSheet("")
+                if self._composite_validator.validate(SharedData.search_word, 0)[0] != QValidator.State.Acceptable:
+                    SharedData.ui.searchWord.clear()
+
+            SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
+            SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
+            SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
 
         if not is_checked:
             return

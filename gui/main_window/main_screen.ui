@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1298</width>
+    <width>1429</width>
     <height>873</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>عدّاد القرآن الكريم</string>
+  </property>
+  <property name="toolTip">
+   <string notr="true"/>
   </property>
   <property name="layoutDirection">
    <enum>Qt::RightToLeft</enum>
@@ -534,6 +537,52 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            </widget>
           </item>
          </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_23">
+        <item>
+         <spacer name="verticalSpacer_23">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="regexRadioButton">
+          <property name="toolTip">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>ريچيكس</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">searchOptionsButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_24">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -1242,7 +1291,7 @@ QTableWidget::item:selected {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1298</width>
+     <width>1429</width>
      <height>42</height>
     </rect>
    </property>
@@ -1321,16 +1370,28 @@ QTableWidget::item:selected {
   <tabstop>beginningOfWordRadioButton</tabstop>
   <tabstop>endOfWordRadioButton</tabstop>
   <tabstop>fullWordRadioButton</tabstop>
+  <tabstop>rootRadioButton</tabstop>
+  <tabstop>noRestrictionsRadioButton</tabstop>
+  <tabstop>similarWordRadioButton</tabstop>
+  <tabstop>similarityThresholdSlider</tabstop>
+  <tabstop>regexRadioButton</tabstop>
+  <tabstop>alifAlifMaksuraCheckbox</tabstop>
   <tabstop>yaAlifMaksuraCheckbox</tabstop>
   <tabstop>finalTaCheckbox</tabstop>
+  <tabstop>wordPermutationsCheckbox</tabstop>
+  <tabstop>optionalAlTarifCheckbox</tabstop>
   <tabstop>matchesNumber</tabstop>
   <tabstop>matchesNumberSurahs</tabstop>
   <tabstop>matchesNumberVerses</tabstop>
   <tabstop>tabWidget</tabstop>
+  <tabstop>foundVerses</tabstop>
   <tabstop>filterButton</tabstop>
   <tabstop>clearFilterButton</tabstop>
-  <tabstop>foundVerses</tabstop>
   <tabstop>colorizeCheckbox</tabstop>
+  <tabstop>allResultsCheckbox</tabstop>
+  <tabstop>surahResultsSum</tabstop>
+  <tabstop>diacriticsCheckbox</tabstop>
+  <tabstop>wordSum</tabstop>
  </tabstops>
  <resources>
   <include location="../resources/resources.qrc"/>

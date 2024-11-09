@@ -8,6 +8,8 @@ from nltk.stem.isri import ISRIStemmer
 from itertools import permutations
 from difflib import SequenceMatcher
 
+from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
+
 
 class FinderThread(QThread):
     class SingleCache:
@@ -39,6 +41,7 @@ class FinderThread(QThread):
         self.beginning_of_word_flag = None
         self.end_of_word_flag = None
         self.root_flag = None
+        self.regular_expression = None
         self.close_match = None
         self.close_match_threshold = None
         self._default_close_match_threshold = 6
@@ -57,6 +60,7 @@ class FinderThread(QThread):
                  beginning_of_word_flag,
                  end_of_word_flag,
                  root_flag,
+                 regular_expression,
                  close_match,
                  close_match_threshold:int=None):
         self.initial_word = word
@@ -69,6 +73,7 @@ class FinderThread(QThread):
         self.beginning_of_word_flag = beginning_of_word_flag
         self.end_of_word_flag = end_of_word_flag
         self.root_flag = root_flag
+        self.regular_expression = regular_expression
         self.close_match = close_match
         self.close_match_threshold = (close_match_threshold if isinstance(close_match_threshold, int) else self._default_close_match_threshold) / 10
 
@@ -79,6 +84,9 @@ class FinderThread(QThread):
             new_text = self.initial_word.strip()
         else:
             new_text = self.initial_word
+
+        # TODO: add safety checks to prevent unintended combinations (e.g. optional-al-tarif & regex together)
+        #       (right now it's prevented in gui in main.py)
 
         if self.optional_al_tarif:
             al_tarif = "ال"
@@ -91,11 +99,12 @@ class FinderThread(QThread):
                                     alif_alif_maksura_variations=self.alif_alif_maksura_variations,
                                     ya_variations=self.ya_variations,
                                     ta_variations=self.ta_variations,
-                                    chars_to_not_add_diacritics_to="()?:" if self.optional_al_tarif else None)
+                                    chars_to_not_add_diacritics_to=ArabicWithRegexValidator.SUPPORTED_REGEX_CHARS if (self.optional_al_tarif or self.regular_expression) else None,
+                                    alamat_waqf_after_space=not self.regular_expression)
 
         num_of_search_words = len(new_text.split())
 
-        if not (self.root_flag or self.close_match):
+        if not (self.root_flag or self.close_match or self.regular_expression):
             if not self.maintain_words_order and num_of_search_words > 1:
                 separator = f" {alamaat_waqf_regex}"
                 new_text = '|'.join([separator.join(perm) for perm in permutations(new_text.split(separator))])
@@ -113,9 +122,42 @@ class FinderThread(QThread):
                     new_text = beginning_of_word + rf"{new_text}"
                 if self.end_of_word_flag:
                     new_text = rf"{new_text}" + end_of_word
+        elif self.regular_expression:
+            new_text = f"({new_text})"
+            new_text = self.strip_extra_braces(new_text)
 
         self._final_word = new_text
         self._words_num = num_of_search_words
+
+    def strip_extra_braces(self, text):
+        remove_idx = set()
+        i, j = 1, len(text) - 2
+        found_braces = True
+        while i < j:
+            if text[i] == "(" and text[j] == ")":
+                if found_braces:
+                    remove_idx.update([i, j])
+                else:
+                    found_braces = True
+                i += 1
+                j -= 1
+            elif text[i] == "(":
+                found_braces = False
+                j -= 1
+            elif text[j] == ")":
+                found_braces = False
+                i += 1
+            else:
+                found_braces = False
+                i += 1
+                j -= 1
+        if remove_idx:
+            modified_text = ""
+            for i in range(len(text)):
+                if i not in remove_idx:
+                    modified_text += text[i]
+            return modified_text
+        return text
 
     def my_get_close_matches(self, word, sentence, threshold=0.6):
         matches = []
@@ -170,7 +212,7 @@ class FinderThread(QThread):
         return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[list(index_mask)].index
 
     def _find_word(self, w):
-        if not (self.root_flag or self.close_match):  # TODO: check if needed
+        if not (self.root_flag or self.close_match or self.regular_expression):  # TODO: check if needed
             # get prefix of word (everything excluding last letter and its harakat)
             *_, prefix_idx = FinderThread.char_followed_by_dia_or_waqf.finditer(w)
             prefix = w[:prefix_idx.span()[0]]

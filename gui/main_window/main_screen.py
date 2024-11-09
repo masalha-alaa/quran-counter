@@ -32,7 +32,10 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1298, 873)
+        MainWindow.resize(1429, 873)
+#if QT_CONFIG(tooltip)
+        MainWindow.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
@@ -325,6 +328,29 @@ class Ui_MainWindow(object):
 
 
         self.horizontalLayout.addLayout(self.verticalLayout_18)
+
+        self.verticalLayout_23 = QVBoxLayout()
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
+        self.verticalSpacer_23 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_23.addItem(self.verticalSpacer_23)
+
+        self.regexRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.regexRadioButton)
+        self.regexRadioButton.setObjectName(u"regexRadioButton")
+#if QT_CONFIG(tooltip)
+        self.regexRadioButton.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
+        self.regexRadioButton.setChecked(False)
+
+        self.verticalLayout_23.addWidget(self.regexRadioButton)
+
+        self.verticalSpacer_24 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_23.addItem(self.verticalSpacer_24)
+
+
+        self.horizontalLayout.addLayout(self.verticalLayout_23)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -757,7 +783,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1298, 42))
+        self.menubar.setGeometry(QRect(0, 0, 1429, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
         self.menu_Language.setTitle(u"\u0627\u0644\u0644\u063a\u0629 / Language")
@@ -776,16 +802,28 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.searchWord, self.beginningOfWordRadioButton)
         QWidget.setTabOrder(self.beginningOfWordRadioButton, self.endOfWordRadioButton)
         QWidget.setTabOrder(self.endOfWordRadioButton, self.fullWordRadioButton)
-        QWidget.setTabOrder(self.fullWordRadioButton, self.yaAlifMaksuraCheckbox)
+        QWidget.setTabOrder(self.fullWordRadioButton, self.rootRadioButton)
+        QWidget.setTabOrder(self.rootRadioButton, self.noRestrictionsRadioButton)
+        QWidget.setTabOrder(self.noRestrictionsRadioButton, self.similarWordRadioButton)
+        QWidget.setTabOrder(self.similarWordRadioButton, self.similarityThresholdSlider)
+        QWidget.setTabOrder(self.similarityThresholdSlider, self.regexRadioButton)
+        QWidget.setTabOrder(self.regexRadioButton, self.alifAlifMaksuraCheckbox)
+        QWidget.setTabOrder(self.alifAlifMaksuraCheckbox, self.yaAlifMaksuraCheckbox)
         QWidget.setTabOrder(self.yaAlifMaksuraCheckbox, self.finalTaCheckbox)
-        QWidget.setTabOrder(self.finalTaCheckbox, self.matchesNumber)
+        QWidget.setTabOrder(self.finalTaCheckbox, self.wordPermutationsCheckbox)
+        QWidget.setTabOrder(self.wordPermutationsCheckbox, self.optionalAlTarifCheckbox)
+        QWidget.setTabOrder(self.optionalAlTarifCheckbox, self.matchesNumber)
         QWidget.setTabOrder(self.matchesNumber, self.matchesNumberSurahs)
         QWidget.setTabOrder(self.matchesNumberSurahs, self.matchesNumberVerses)
         QWidget.setTabOrder(self.matchesNumberVerses, self.tabWidget)
-        QWidget.setTabOrder(self.tabWidget, self.filterButton)
+        QWidget.setTabOrder(self.tabWidget, self.foundVerses)
+        QWidget.setTabOrder(self.foundVerses, self.filterButton)
         QWidget.setTabOrder(self.filterButton, self.clearFilterButton)
-        QWidget.setTabOrder(self.clearFilterButton, self.foundVerses)
-        QWidget.setTabOrder(self.foundVerses, self.colorizeCheckbox)
+        QWidget.setTabOrder(self.clearFilterButton, self.colorizeCheckbox)
+        QWidget.setTabOrder(self.colorizeCheckbox, self.allResultsCheckbox)
+        QWidget.setTabOrder(self.allResultsCheckbox, self.surahResultsSum)
+        QWidget.setTabOrder(self.surahResultsSum, self.diacriticsCheckbox)
+        QWidget.setTabOrder(self.diacriticsCheckbox, self.wordSum)
 
         self.menubar.addAction(self.menu_Language.menuAction())
         self.menubar.addAction(self.mushafViewButton.menuAction())
@@ -795,7 +833,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -847,6 +885,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.similarityThresholdLabel.setToolTip("")
 #endif // QT_CONFIG(tooltip)
+        self.regexRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0631\u064a\u0686\u064a\u0643\u0633", None))
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
 #endif // QT_CONFIG(tooltip)
