@@ -18,7 +18,8 @@ def reform_char(ch,
                 alif_alif_maksura_variations=False,
                 ya_variations=False,
                 ta_variations=False,
-                hamza_variations=True):
+                hamza_variations=True,
+                chars_to_not_add_diacritics_to=None):
     reformed_char = ""
     # if is_alif(ch) and (alif_variations or alif_alif_maksura_variations):
     if ch == "ا" and (alif_variations or alif_alif_maksura_variations):
@@ -49,6 +50,8 @@ def reform_char(ch,
         reformed_char += ch
     if ch == " ":
         reformed_char += alamaat_waqf_regex
+    elif chars_to_not_add_diacritics_to and ch in chars_to_not_add_diacritics_to:
+        pass
     elif ch == _tatweel_character or not is_diacritic(ch):
         # not diacritics
         reformed_char += f"{diacritics_regex}{{,{MAX_CONSECUTIVE_DIACRITICS}}}"
@@ -175,7 +178,8 @@ def reform_regex(p, alif_variations=True,
                  alif_alif_maksura_variations=False,
                  ya_variations=False,
                  ta_variations=False,
-                 hamza_variations=True):
+                 hamza_variations=True,
+                 chars_to_not_add_diacritics_to=None):
     new_p = ""
     for ch in p:
         new_p += reform_char(ch,
@@ -183,7 +187,8 @@ def reform_regex(p, alif_variations=True,
                              alif_alif_maksura_variations=alif_alif_maksura_variations,
                              ya_variations=ya_variations,
                              ta_variations=ta_variations,
-                             hamza_variations=hamza_variations)
+                             hamza_variations=hamza_variations,
+                             chars_to_not_add_diacritics_to=chars_to_not_add_diacritics_to)
     return new_p
 
 

@@ -80,13 +80,18 @@ class FinderThread(QThread):
         else:
             new_text = self.initial_word
 
-        # ignore diacritics
-        # TODO: make checkbox?
+        if self.optional_al_tarif:
+            al_tarif = "ال"
+            optional_al_tarif = f"(?:{al_tarif})?"
+            new_text = ' '.join([(optional_al_tarif + w) if not w.startswith(al_tarif) else w[len(al_tarif):]
+                        for w in re.split("\s+", new_text)])
+
         if not self.close_match:
             new_text = reform_regex(new_text,
                                     alif_alif_maksura_variations=self.alif_alif_maksura_variations,
                                     ya_variations=self.ya_variations,
-                                    ta_variations=self.ta_variations)
+                                    ta_variations=self.ta_variations,
+                                    chars_to_not_add_diacritics_to="()?:" if self.optional_al_tarif else None)
 
         num_of_search_words = len(new_text.split())
 

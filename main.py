@@ -42,8 +42,8 @@ class MainWindow(QMainWindow):
         self._word_results_list_uuid = uuid.uuid4().hex
         SharedData.ui.setupUi(self)
 
-        SharedData.ui.optionalAlTarifCheckbox.setVisible(False)  # TODO: Enable and implement functionality
-        SharedData.ui.line_8.setVisible(False)  # TODO: Remove
+        # SharedData.ui.optionalAlTarifCheckbox.setVisible(False)  # TODO: Enable and implement functionality
+        # SharedData.ui.line_8.setVisible(False)  # TODO: Remove
 
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
         SharedData.ui.similarityThresholdLabel.setText(str(SharedData.ui.similarityThresholdSlider.value()))
@@ -135,7 +135,7 @@ class MainWindow(QMainWindow):
 
     def _optional_al_tarif_state_changed(self, state):
         # TODO: implement
-        # self._search_word_text_changed(SharedData.search_word)
+        self._search_word_text_changed(SharedData.search_word)
         SharedData.ui.searchWord.setFocus()
 
     def _maintain_words_order_state_changed(self, state):
