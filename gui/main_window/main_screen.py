@@ -17,11 +17,11 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup, QCheckBox,
-    QFrame, QHBoxLayout, QHeaderView, QLabel,
-    QLayout, QLineEdit, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QRadioButton, QSizePolicy,
-    QSlider, QSpacerItem, QStatusBar, QTabWidget,
-    QTableWidgetItem, QVBoxLayout, QWidget)
+    QFrame, QGridLayout, QHBoxLayout, QHeaderView,
+    QLabel, QLayout, QLineEdit, QMainWindow,
+    QMenu, QMenuBar, QPushButton, QRadioButton,
+    QSizePolicy, QSlider, QSpacerItem, QStatusBar,
+    QTabWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 from my_widgets.lazy_text_browser_widget.lazy_text_browser import LazyTextBrowser
 from my_widgets.surah_lazy_table_widget import SurahLazyTableWidget
@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1429, 873)
+        MainWindow.resize(1179, 873)
 #if QT_CONFIG(tooltip)
         MainWindow.setToolTip(u"")
 #endif // QT_CONFIG(tooltip)
@@ -58,19 +58,14 @@ class Ui_MainWindow(object):
         self.mushafNavigationButton.setObjectName(u"mushafNavigationButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_22 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_22.setSpacing(10)
-        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout.addItem(self.verticalSpacer_3)
-
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
@@ -176,114 +171,57 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_8)
 
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer_3)
+
 
         self.horizontalLayout.addLayout(self.verticalLayout)
 
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.line = QFrame(self.centralwidget)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.Shape.VLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_2.addItem(self.verticalSpacer)
+        self.horizontalLayout.addWidget(self.line)
 
-        self.beginningOfWordRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup = QButtonGroup(MainWindow)
-        self.searchOptionsButtonGroup.setObjectName(u"searchOptionsButtonGroup")
-        self.searchOptionsButtonGroup.addButton(self.beginningOfWordRadioButton)
-        self.beginningOfWordRadioButton.setObjectName(u"beginningOfWordRadioButton")
-
-        self.verticalLayout_2.addWidget(self.beginningOfWordRadioButton)
-
-        self.verticalSpacer_13 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_2.addItem(self.verticalSpacer_13)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout_2)
-
-        self.verticalLayout_3 = QVBoxLayout()
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_3.addItem(self.verticalSpacer_2)
-
-        self.endOfWordRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup.addButton(self.endOfWordRadioButton)
-        self.endOfWordRadioButton.setObjectName(u"endOfWordRadioButton")
-
-        self.verticalLayout_3.addWidget(self.endOfWordRadioButton)
-
-        self.verticalSpacer_14 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_3.addItem(self.verticalSpacer_14)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout_3)
-
-        self.verticalLayout_4 = QVBoxLayout()
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_4.addItem(self.verticalSpacer_4)
-
-        self.fullWordRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup.addButton(self.fullWordRadioButton)
-        self.fullWordRadioButton.setObjectName(u"fullWordRadioButton")
-
-        self.verticalLayout_4.addWidget(self.fullWordRadioButton)
-
-        self.verticalSpacer_15 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_4.addItem(self.verticalSpacer_15)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout_4)
-
-        self.verticalLayout_19 = QVBoxLayout()
-        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
-        self.verticalSpacer_17 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_19.addItem(self.verticalSpacer_17)
-
-        self.rootRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup.addButton(self.rootRadioButton)
-        self.rootRadioButton.setObjectName(u"rootRadioButton")
-
-        self.verticalLayout_19.addWidget(self.rootRadioButton)
-
-        self.verticalSpacer_18 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_19.addItem(self.verticalSpacer_18)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout_19)
-
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setVerticalSpacing(0)
+        self.gridLayout.setContentsMargins(-1, 30, -1, -1)
         self.verticalLayout_20 = QVBoxLayout()
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
-        self.verticalSpacer_19 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_20.addItem(self.verticalSpacer_19)
-
         self.noRestrictionsRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup = QButtonGroup(MainWindow)
+        self.searchOptionsButtonGroup.setObjectName(u"searchOptionsButtonGroup")
         self.searchOptionsButtonGroup.addButton(self.noRestrictionsRadioButton)
         self.noRestrictionsRadioButton.setObjectName(u"noRestrictionsRadioButton")
         self.noRestrictionsRadioButton.setChecked(True)
 
         self.verticalLayout_20.addWidget(self.noRestrictionsRadioButton)
 
-        self.verticalSpacer_20 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout_20.addItem(self.verticalSpacer_20)
+        self.verticalLayout_20.addItem(self.verticalSpacer_2)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_20)
+        self.gridLayout.addLayout(self.verticalLayout_20, 1, 0, 1, 1)
+
+        self.rootRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.rootRadioButton)
+        self.rootRadioButton.setObjectName(u"rootRadioButton")
+
+        self.gridLayout.addWidget(self.rootRadioButton, 0, 3, 1, 1)
+
+        self.beginningOfWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.beginningOfWordRadioButton)
+        self.beginningOfWordRadioButton.setObjectName(u"beginningOfWordRadioButton")
+
+        self.gridLayout.addWidget(self.beginningOfWordRadioButton, 0, 0, 1, 1)
 
         self.verticalLayout_18 = QVBoxLayout()
         self.verticalLayout_18.setSpacing(0)
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
-        self.verticalSpacer_21 = QSpacerItem(20, 37, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-
-        self.verticalLayout_18.addItem(self.verticalSpacer_21)
-
         self.similarWordRadioButton = QRadioButton(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.similarWordRadioButton)
         self.similarWordRadioButton.setObjectName(u"similarWordRadioButton")
@@ -327,14 +265,22 @@ class Ui_MainWindow(object):
         self.verticalLayout_18.addLayout(self.horizontalLayout_15)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_18)
+        self.gridLayout.addLayout(self.verticalLayout_18, 1, 1, 1, 1)
+
+        self.fullWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.fullWordRadioButton)
+        self.fullWordRadioButton.setObjectName(u"fullWordRadioButton")
+
+        self.gridLayout.addWidget(self.fullWordRadioButton, 0, 1, 1, 1)
+
+        self.endOfWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.endOfWordRadioButton)
+        self.endOfWordRadioButton.setObjectName(u"endOfWordRadioButton")
+
+        self.gridLayout.addWidget(self.endOfWordRadioButton, 0, 2, 1, 1)
 
         self.verticalLayout_23 = QVBoxLayout()
         self.verticalLayout_23.setObjectName(u"verticalLayout_23")
-        self.verticalSpacer_23 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_23.addItem(self.verticalSpacer_23)
-
         self.regexRadioButton = QRadioButton(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.regexRadioButton)
         self.regexRadioButton.setObjectName(u"regexRadioButton")
@@ -345,26 +291,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_23.addWidget(self.regexRadioButton)
 
-        self.verticalSpacer_24 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout_23.addItem(self.verticalSpacer_24)
+        self.verticalLayout_23.addItem(self.verticalSpacer)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_23)
+        self.gridLayout.addLayout(self.verticalLayout_23, 1, 2, 1, 1)
+
+
+        self.horizontalLayout.addLayout(self.gridLayout)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_22.addLayout(self.horizontalLayout)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
         self.line_6 = QFrame(self.centralwidget)
         self.line_6.setObjectName(u"line_6")
         self.line_6.setFrameShape(QFrame.Shape.HLine)
         self.line_6.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_22.addWidget(self.line_6)
+        self.verticalLayout_2.addWidget(self.line_6)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -457,7 +406,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_22.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -774,16 +723,16 @@ class Ui_MainWindow(object):
 
         self.tabWidget.addTab(self.wordsTab, "")
 
-        self.verticalLayout_22.addWidget(self.tabWidget)
+        self.verticalLayout_2.addWidget(self.tabWidget)
 
-        self.verticalLayout_22.setStretch(0, 1)
-        self.verticalLayout_22.setStretch(1, 1)
-        self.verticalLayout_22.setStretch(2, 1)
-        self.verticalLayout_22.setStretch(3, 8)
+        self.verticalLayout_2.setStretch(0, 1)
+        self.verticalLayout_2.setStretch(1, 1)
+        self.verticalLayout_2.setStretch(2, 1)
+        self.verticalLayout_2.setStretch(3, 8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1429, 42))
+        self.menubar.setGeometry(QRect(0, 0, 1179, 42))
         self.menu_Language = QMenu(self.menubar)
         self.menu_Language.setObjectName(u"menu_Language")
         self.menu_Language.setTitle(u"\u0627\u0644\u0644\u063a\u0629 / Language")
@@ -799,11 +748,7 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        QWidget.setTabOrder(self.searchWord, self.beginningOfWordRadioButton)
-        QWidget.setTabOrder(self.beginningOfWordRadioButton, self.endOfWordRadioButton)
-        QWidget.setTabOrder(self.endOfWordRadioButton, self.fullWordRadioButton)
-        QWidget.setTabOrder(self.fullWordRadioButton, self.rootRadioButton)
-        QWidget.setTabOrder(self.rootRadioButton, self.noRestrictionsRadioButton)
+        QWidget.setTabOrder(self.searchWord, self.noRestrictionsRadioButton)
         QWidget.setTabOrder(self.noRestrictionsRadioButton, self.similarWordRadioButton)
         QWidget.setTabOrder(self.similarWordRadioButton, self.similarityThresholdSlider)
         QWidget.setTabOrder(self.similarityThresholdSlider, self.regexRadioButton)
@@ -861,23 +806,15 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.optionalAlTarifCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\"\u0627\u0644\" \u0627\u0644\u062a\u0639\u0631\u064a\u0641 \u062e\u064a\u0627\u0631\u064a\u0629", None))
 #endif // QT_CONFIG(tooltip)
-#if QT_CONFIG(tooltip)
-        self.beginningOfWordRadioButton.setToolTip("")
-#endif // QT_CONFIG(tooltip)
-        self.beginningOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0628\u062f\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
-#if QT_CONFIG(tooltip)
-        self.endOfWordRadioButton.setToolTip("")
-#endif // QT_CONFIG(tooltip)
-        self.endOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0646\u0647\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
-#if QT_CONFIG(tooltip)
-        self.fullWordRadioButton.setToolTip("")
-#endif // QT_CONFIG(tooltip)
-        self.fullWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
+        self.noRestrictionsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0646 \u063a\u064a\u0631 \u062a\u0642\u064a\u064a\u062f", None))
 #if QT_CONFIG(tooltip)
         self.rootRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0628\u0646\u0641\u0633 \u062c\u0630\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0628\u062d\u062b", None))
 #endif // QT_CONFIG(tooltip)
         self.rootRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0630\u0631", None))
-        self.noRestrictionsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0646 \u063a\u064a\u0631 \u062a\u0642\u064a\u064a\u062f", None))
+#if QT_CONFIG(tooltip)
+        self.beginningOfWordRadioButton.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.beginningOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0628\u062f\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
         self.similarWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0645\u0634\u0627\u0628\u0647\u0629", None))
 #if QT_CONFIG(tooltip)
         self.similarityThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062a\u0628\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
@@ -885,6 +822,14 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.similarityThresholdLabel.setToolTip("")
 #endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.fullWordRadioButton.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.fullWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
+#if QT_CONFIG(tooltip)
+        self.endOfWordRadioButton.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.endOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0646\u0647\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
         self.regexRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0631\u064a\u0686\u064a\u0643\u0633", None))
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
