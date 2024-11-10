@@ -1,4 +1,5 @@
 from yaml import safe_load
+from datetime import datetime
 from my_widgets.surah_lazy_table_widget import SurahLazyTableWidget
 from tabs_management.table_headers import SurahTableHeaders
 from my_widgets.tab_wrapper import TabWrapper
@@ -14,6 +15,7 @@ from PySide6.QtWidgets import QTableWidgetItem
 class SurahTabWrapper(TabWrapper):
     def __init__(self, parent, latest_search_word='', latest_radio_button=''):
         super().__init__(parent, latest_search_word, latest_radio_button)
+        self._last_thread_id = -1
         self._surah_index = safe_load(open(resource_path("surah_index.yml"), encoding='utf-8', mode='r'))
         self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog(SharedData.app_language)
         self.lazy_surah_results_table:SurahLazyTableWidget|None = None
@@ -40,17 +42,21 @@ class SurahTabWrapper(TabWrapper):
 
     def populate_results(self):
         self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
-        surah_finder_thread = SurahFinderThread(self._surah_index, SharedData.ui.allResultsCheckbox.isChecked())
+        thread_id = datetime.now().timestamp()
+        surah_finder_thread = SurahFinderThread(self._surah_index, SharedData.ui.allResultsCheckbox.isChecked(), thread_id)
         surah_finder_thread.set_data(SharedData.all_matches, SharedData.ui.allResultsCheckbox.isChecked())
         surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
         self._add_thread(surah_finder_thread)
         surah_finder_thread.start()
 
-    def on_find_surahs_completed(self, counts, caller_thread):
+    def on_find_surahs_completed(self, counts, thread_id, caller_thread):
         caller_thread.result_ready.disconnect(self.on_find_surahs_completed)
         self._remove_thread(caller_thread)
-        # TODO: reject older threads?
+        # reject older threads?
+        if thread_id < self._last_thread_id:
+            return
 
+        self._last_thread_id = thread_id
         self.lazy_surah_results_table.clear()
         self.lazy_surah_results_table.save_values(counts)
         self.lazy_surah_results_table.sort(SurahTableHeaders.SURAH_NAME_HEADER)

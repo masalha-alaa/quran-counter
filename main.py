@@ -34,7 +34,6 @@ class MainWindow(QMainWindow):
         self._setup_fonts()
         SharedData.ui = Ui_MainWindow()
         self.running_threads = set()
-        self._thread_id = -1
         self._last_thread_id = -1
         self.spinner = SpinningLoader()
         # TODO: Settings dialog...
@@ -208,8 +207,8 @@ class MainWindow(QMainWindow):
         if SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked():
             self.waiting()
 
-        self._thread_id = datetime.now().timestamp()
-        finder_thread = FinderThread(self._thread_id)
+        thread_id = datetime.now().timestamp()
+        finder_thread = FinderThread(thread_id)
         finder_thread.set_data(new_text,
                                SharedData.ui.alifAlifMaksuraCheckbox.isChecked() and SharedData.ui.alifAlifMaksuraCheckbox.isEnabled(),
                                SharedData.ui.yaAlifMaksuraCheckbox.isChecked() and SharedData.ui.yaAlifMaksuraCheckbox.isEnabled(),
@@ -235,6 +234,7 @@ class MainWindow(QMainWindow):
     def on_txt_found_complete(self, initial_word, words_num, result, thread_id, caller_thread: FinderThread):
         caller_thread.result_ready.disconnect(self.on_txt_found_complete)
         self._remove_thread(caller_thread)
+        # reject older threads
         if thread_id < self._last_thread_id:
             return
         self._last_thread_id = thread_id

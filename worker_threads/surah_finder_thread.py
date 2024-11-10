@@ -6,10 +6,11 @@ from tabs_management.table_headers import SurahTableHeaders
 
 
 class SurahFinderThread(QThread):
-    result_ready = Signal(list, QThread)
+    result_ready = Signal(list, float, QThread)
 
-    def __init__(self, surah_index: dict, include_zeros=False):
+    def __init__(self, surah_index: dict, include_zeros=False, thread_id=None):
         super().__init__()
+        self._thread_id = thread_id
         self._matches = []
         self._surah_index = surah_index
         self._include_zeros = include_zeros
@@ -41,5 +42,5 @@ class SurahFinderThread(QThread):
             rows.append(CustomTableRow(row_results, verse_nums_and_spans))
 
         self._matches = []
-        self.result_ready.emit(rows, self)
+        self.result_ready.emit(rows, self._thread_id, self)
         # print(f"surah end {id(self)}")

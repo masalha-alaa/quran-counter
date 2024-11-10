@@ -1,3 +1,4 @@
+from datetime import datetime
 from my_widgets.tab_wrapper import TabWrapper
 from my_utils.utils import  resource_path, load_translation
 from my_utils.shared_data import SharedData
@@ -12,6 +13,7 @@ from PySide6.QtWidgets import QTableWidgetItem
 class WordTabWrapper(TabWrapper):
     def __init__(self, parent, latest_search_word='', latest_radio_button=''):
         super().__init__(parent, latest_search_word, latest_radio_button)
+        self._last_thread_id = -1
         self.detailed_word_display_dialog = MyWordDetailedDisplayDialog(SharedData.app_language)
         self.lazy_word_results_table = SharedData.ui.wordResultsTableWidget
         self.minimum_letters_restriction_lbl_stylesheet = SharedData.ui.minimum_letters_restriction_lbl.styleSheet()
@@ -43,17 +45,21 @@ class WordTabWrapper(TabWrapper):
         SharedData.ui.minimum_letters_restriction_lbl.setStyleSheet(self.minimum_letters_restriction_lbl_stylesheet)
 
         self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
-        word_bounds_finder_thread = WordBoundsFinderThread(SharedData.ui.diacriticsCheckbox.isChecked())
+        thread_id = datetime.now().timestamp()
+        word_bounds_finder_thread = WordBoundsFinderThread(SharedData.ui.diacriticsCheckbox.isChecked(), thread_id)
         word_bounds_finder_thread.set_data(SharedData.all_matches, SharedData.ui.diacriticsCheckbox.isChecked())
         word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
         self._add_thread(word_bounds_finder_thread)
         word_bounds_finder_thread.start()
 
-    def on_find_word_bounds_completed(self, counts, caller_thread: WordBoundsFinderThread):
+    def on_find_word_bounds_completed(self, counts, thread_id, caller_thread: WordBoundsFinderThread):
         caller_thread.result_ready.disconnect(self.on_find_word_bounds_completed)
         self._remove_thread(caller_thread)
-        # TODO: reject older threads?
+        # reject older threads?
+        if thread_id < self._last_thread_id:
+            return
 
+        self._last_thread_id = thread_id
         self.lazy_word_results_table.clear()
         self.lazy_word_results_table.save_values(counts)
         self.lazy_word_results_table.sort(WordTableHeaders.WORD_TEXT_HEADER)

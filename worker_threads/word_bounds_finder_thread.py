@@ -8,11 +8,12 @@ from my_widgets.lazy_table_widget import CustomTableRow
 
 
 class WordBoundsFinderThread(QThread):
-    result_ready = Signal(list, QThread)
+    result_ready = Signal(list, float, QThread)
     _diacritics_regex = re.compile(diacritics_regex)
 
-    def __init__(self, diacritics_sensitive=True):
+    def __init__(self, diacritics_sensitive=True, thread_id=None):
         super().__init__()
+        self._thread_id = thread_id
         self._matches = []
         self._diacritics_sensitive = diacritics_sensitive
 
@@ -49,5 +50,5 @@ class WordBoundsFinderThread(QThread):
             rows.append(CustomTableRow(row_results, data))
 
         self._matches = []
-        self.result_ready.emit(rows, self)
+        self.result_ready.emit(rows, self._thread_id, self)
         # print(f"word bounds end {id(self)}")
