@@ -82,6 +82,11 @@
         <translation>Similarity threshold</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="414"/>
+        <source>ريچيكس</source>
+        <translation>Regex</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="668"/>
         <source>تصفية النتائج بمساعدة ChatGPT</source>
         <translation>Filter results using ChatGPT</translation>
@@ -153,7 +158,7 @@ Results</translation>
     <message>
         <location filename="../main_screen.ui" line="407"/>
         <source>من غير تقييد</source>
-        <translation>No limitations</translation>
+        <translation>No restrictions</translation>
     </message>
     <message>
         <location filename="../main_screen.ui" line="64"/>
