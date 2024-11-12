@@ -657,6 +657,7 @@ class Ui_MainWindow(object):
         self.wordResultsTableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.wordResultsTableWidget.setTabKeyNavigation(True)
         self.wordResultsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.wordResultsTableWidget.setVerticalScrollMode(QAbstractItemView.ScrollPerItem)
         self.wordResultsTableWidget.setSortingEnabled(True)
         self.wordResultsTableWidget.horizontalHeader().setProperty(u"showSortIndicator", True)
 

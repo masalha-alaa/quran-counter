@@ -38,15 +38,17 @@ class MyLazyTableWidget(QTableWidget):
     LRM_CHAR = "\u200E"  # Left-To-Right Mark
     RLM_CHAR = "\u200E"  # Right-To-Left Mark
 
-    def __init__(self, parent, default_items_load=30):
+    def __init__(self, parent, default_items_load=30, rows_per_scroll=1):
         super().__init__(parent)
         self._exhausted = object()
         self._threads = set()
         self._headers = None
         self._tooltips = None
+        self._rows_per_scroll = rows_per_scroll
         self._last_sorting_direction = None
         self.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.verticalScrollBar().actionTriggered.connect(self.before_scroll)
+        self.verticalScrollBar().setSingleStep(1)
         self.horizontalHeader().sectionClicked.connect(self.on_header_clicked)
         self.cellEntered.connect(self.set_row_highlight)
 
@@ -66,6 +68,17 @@ class MyLazyTableWidget(QTableWidget):
         self._selection_changed_callback = None
         self._item_double_clicked_callback = None
         self._previous_row = -1
+
+    def wheelEvent(self, event):
+        scroll_amount = self._rows_per_scroll
+        delta = event.angleDelta().y()
+        if delta > 0:
+            self.verticalScrollBar().setValue(
+                self.verticalScrollBar().value() - scroll_amount)
+        else:
+            self.verticalScrollBar().setValue(
+                self.verticalScrollBar().value() + scroll_amount)
+        event.accept()
 
     def set_headers(self, headers, tooltips:list=None):
         """

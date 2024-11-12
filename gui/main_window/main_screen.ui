@@ -1030,6 +1030,9 @@ QTableWidget::item:selected {
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectRows</enum>
             </property>
+            <property name="verticalScrollMode">
+             <enum>QAbstractItemView::ScrollPerItem</enum>
+            </property>
             <property name="sortingEnabled">
              <bool>true</bool>
             </property>

@@ -37,7 +37,7 @@
     </message>
     <message>
         <location filename="../gui/main_window/main_screen.ui" line="941"/>
-        <location filename="../gui/main_window/main_screen.ui" line="1165"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1168"/>
         <source>مجموع النتائج المختارة:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,32 +108,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1055"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1058"/>
         <source>حركات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1075"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1078"/>
         <source>حَورَفَة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1088"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1091"/>
         <source>ترجمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1129"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1132"/>
         <source>* ادخل حرفين او اكثر للبحث.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1139"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1142"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1258"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1261"/>
         <source>تصفّح</source>
         <translation type="unfinished"></translation>
     </message>

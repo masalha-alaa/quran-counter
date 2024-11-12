@@ -4,6 +4,12 @@ from PySide6.QtGui import QTextOption
 
 
 class LeftToRightDelegate(QStyledItemDelegate):
+    # Both options work, but they miss up the hover highlight
+    # def initStyleOption(self, opt, index):
+    #     super().initStyleOption(opt, index)
+    #     if not opt.text.startswith('\u200e'):
+    #         opt.text = '\u200e' + opt.text
+
     def paint(self, painter, option, index):
         painter.save()
 
