@@ -36,12 +36,23 @@ class WordBoundsFinderThread(QThread):
                 # spaces = list(re.finditer(" ", verse[:span[0]]))
                 # word_id_first_match = len(spaces)
                 # word_start = spaces[-1].span()[1] if spaces else 0
-                word_id_first_match = len(re.findall(WordBoundsFinderThread._word_separator_regex, verse[:span[0]]))
+
+                # Strip rub el hizb mark at the beginning (lstrip and not rstrip although Arabic is RTL,
+                # because 'l' means "leading".
+                # 'r' means trailing btw.
+                word_id_first_match = len(re.findall(WordBoundsFinderThread._word_separator_regex, verse[:span[0]].lstrip(f"{rub_el_hizb_mark} ")))
                 word_start = verse.rfind(" ", 0, span[0]) + 1
                 word_end = verse.find(" ", span[1])
                 if word_end == -1:
                     word_end = len(verse)
                 word = verse[word_start:word_end]
+                # if int(surah_num) == 6 and int(verse_num) == 29:
+                #     print(verse)
+                #     print(span)
+                #     print(word_id_first_match)
+                #     print(word_start)
+                #     print(word_end)
+                #     print(word)
                 if not self._diacritics_sensitive:
                     word = self.remove_diacritics(word)
                 if word in counts and surah_num == counts[word][-1][0] and verse_num == counts[word][-1][1]:
