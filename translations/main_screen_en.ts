@@ -126,6 +126,16 @@ Results</translation>
         <translation>Diacritics</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1072"/>
+        <source>ترجمة</source>
+        <translation>Meaning</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1085"/>
+        <source>حَورَفَة</source>
+        <translation>Transliteration</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="1048"/>
         <source>* ادخل حرفين او اكثر للبحث.</source>
         <translation>* Type in at least two letters to search</translation>

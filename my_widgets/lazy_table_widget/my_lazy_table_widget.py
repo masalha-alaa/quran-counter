@@ -35,12 +35,15 @@ class SortingOrder(Enum):
 class MyLazyTableWidget(QTableWidget):
     REMOVE_THREAD_AFTER_MS = 500
     # RUNNING_THREADS_MUTEX = QMutex()
+    LRM_CHAR = "\u200E"  # Left-To-Right Mark
+    RLM_CHAR = "\u200E"  # Right-To-Left Mark
 
     def __init__(self, parent, default_items_load=30):
         super().__init__(parent)
         self._exhausted = object()
         self._threads = set()
         self._headers = None
+        self._tooltips = None
         self._last_sorting_direction = None
         self.verticalScrollBar().valueChanged.connect(self.after_scroll)
         self.verticalScrollBar().actionTriggered.connect(self.before_scroll)
@@ -64,12 +67,14 @@ class MyLazyTableWidget(QTableWidget):
         self._item_double_clicked_callback = None
         self._previous_row = -1
 
-    def set_headers(self, headers):
+    def set_headers(self, headers, tooltips:list=None):
         """
         MUST BE CALLED AT THE BEGINNING
         """
         self._headers = headers
         self._last_sorting_direction = [SortingOrder.INITIAL for _ in range(len(self._headers))]
+        if tooltips:
+            self._tooltips = tooltips
 
     def add_thread(self, thread):
         # LazyTableWidget.RUNNING_THREADS_MUTEX.lock()
@@ -190,6 +195,10 @@ class MyLazyTableWidget(QTableWidget):
         if self.rowCount() == 0:
             self.setColumnCount(len(self._headers))
             self.setHorizontalHeaderLabels(self.get_translated_headers())
+            if self._tooltips:
+                for i,t in enumerate(self._tooltips):
+                    if t:
+                        self.horizontalHeaderItem(i).setToolTip(t)
         scrollbar = self.verticalScrollBar()
         current_scroll_value = scrollbar.value()
 
@@ -217,6 +226,31 @@ class MyLazyTableWidget(QTableWidget):
 
             self.setItem(self.rowCount()-1, j, item)
 
+    def hide_column(self, col:int|TableHeaders):
+        if isinstance(col,TableHeaders):
+            col = col.value
+        if 0 <= col < self.columnCount():
+            self.setColumnHidden(col, True)
+
+    def show_column(self, col:int|TableHeaders):
+        if isinstance(col,TableHeaders):
+            col = col.value
+        if 0 <= col < self.columnCount():
+            self.setColumnHidden(col, False)
+
+    def toggle_column(self, col:int|TableHeaders):
+        if isinstance(col,TableHeaders):
+            col = col.value
+        if 0 <= col < self.columnCount():
+            self.setColumnHidden(col, not self.isColumnHidden(col))
+
+    def set_column_visibility(self, col:int|TableHeaders, visible):
+        if isinstance(col,TableHeaders):
+            col = col.value
+        if 0 <= col < self.columnCount() and self.isColumnHidden(col) == visible:
+            self.setColumnHidden(col, not visible)
+
+
     def clear(self):
         self._previous_row = -1
         # self.clearContents()
@@ -233,5 +267,5 @@ class MyLazyTableWidget(QTableWidget):
 
     def retranslate_ui(self):
         self.setHorizontalHeaderLabels(self.get_translated_headers())
-        # self.resizeColumnsToContents()
-        # self.resizeRowsToContents()
+        self.resizeColumnsToContents()
+        self.resizeRowsToContents()

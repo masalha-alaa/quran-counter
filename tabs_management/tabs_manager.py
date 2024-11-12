@@ -30,6 +30,7 @@ class TabsManager:
 
     def retranslate_ui(self):
         self.surah_tab_wrapper.retranslate_ui()
+        self.word_tab_wrapper.retranslate_ui()
 
     def refresh_tabs_config(self):
         self.verse_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())

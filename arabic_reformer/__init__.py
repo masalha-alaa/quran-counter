@@ -1,5 +1,5 @@
 from .globals import (diacritics_regex, alif_maksura,
-                      alif_khunjariyah, alamaat_waqf_regex,
+                      alif_khunjariyah, alamaat_waqf_regex, alamaat_waqf,
                       rub_el_hizb_mark, arabic_alphabit,
                       diacritics_regex_compiled, diacritics_ending_regex_compiled)
 from .reformer import (get_arabic_abc, reform_char,

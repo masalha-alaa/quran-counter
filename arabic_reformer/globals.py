@@ -4,7 +4,7 @@ from .alif import Alif
 MAX_CONSECUTIVE_DIACRITICS = 5  # 5 because ـ (e.g. in "وَلِـِّۧىَ")
 _diacritics_begin = "\u064B"
 _diacritics_end = "\u065F"
-_alamaat_waqf = ["\u06D6", "\u06D8", "\u06D9", "\u06DA", "\u06DB", "\u06D7", "\u06DC"]
+alamaat_waqf = ["\u06D6", "\u06D8", "\u06D9", "\u06DA", "\u06DB", "\u06D7", "\u06DC"]
 _long_harakat = ["\u06E5", "\u06E6", "\u06E7"]
 alif_khunjariyah = "\u0670"  # ـٰ
 _n_to_m_conversion = "\u06E2"
@@ -17,14 +17,14 @@ _hamza = "\u0621"  # "ء"
 _hamzas = [_hamza, _hamza_above]
 _tatweel_character = "\u0640"
 _special_diacritics = ["\uFC60", "\uFC61", "\uFC62", _tatweel_character, "\u06DF", "\u06EA"] + [
-    alif_khunjariyah] + _alamaat_waqf + _long_harakat + [_n_to_m_conversion]
+    alif_khunjariyah] + alamaat_waqf + _long_harakat + [_n_to_m_conversion]
 diacritics_regex = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
 diacritics_regex_compiled = re_compile(diacritics_regex)
 diacritics_ending_regex_compiled = re_compile(f"{diacritics_regex}+$")
 # _prohibited_characters = ["\u0640"]  # TODO?
 _prohibited_characters = []  # TODO?
 
-alamaat_waqf_regex = f"(?:[{''.join(_alamaat_waqf)}] )?"
+alamaat_waqf_regex = f"(?:[{''.join(alamaat_waqf)}] )?"
 
 # TODO: Adding _alif_khunjariyah to both special diacritics and to _alifs is a bit dangerous
 _alifs = [Alif.ALIF,

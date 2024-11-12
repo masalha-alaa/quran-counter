@@ -22,9 +22,18 @@ class WordTabWrapper(TabWrapper):
     def init(self):
         self.lazy_word_results_table.set_item_selection_changed_callback(self.word_bounds_results_selection_changed)
         self.lazy_word_results_table.set_item_double_clicked_callback(self.word_bounds_results_item_double_clicked)
+        self.refreshColumnsVisibility()
+
+    def refreshColumnsVisibility(self):
+        self.lazy_word_results_table.set_column_visibility(WordTableHeaders.ENGLISH_TRANSLATION,
+                                                           SharedData.ui.wordMeaningCheckbox.isChecked())
+        self.lazy_word_results_table.set_column_visibility(WordTableHeaders.ENGLISH_TRANSLITERATION,
+                                                           SharedData.ui.wordTransliterationCheckbox.isChecked())
 
     def _setup_events(self):
         SharedData.ui.diacriticsCheckbox.stateChanged.connect(self._toggle_diacritics)
+        SharedData.ui.wordMeaningCheckbox.stateChanged.connect(self._toggle_meaning_checkbox)
+        SharedData.ui.wordTransliterationCheckbox.stateChanged.connect(self._toggle_transliteration_checkbox)
 
     def clear(self):
         self.lazy_word_results_table.clear()
@@ -35,6 +44,12 @@ class WordTabWrapper(TabWrapper):
 
     def _toggle_diacritics(self, state):
         self.populate_results(SharedData.search_word)
+
+    def _toggle_meaning_checkbox(self, state):
+        self.lazy_word_results_table.toggle_column(WordTableHeaders.ENGLISH_TRANSLATION)
+
+    def _toggle_transliteration_checkbox(self, state):
+        self.lazy_word_results_table.toggle_column(WordTableHeaders.ENGLISH_TRANSLITERATION)
 
     def populate_results(self, initial_word=''):
         if len(initial_word.strip()) < 2:
@@ -63,6 +78,7 @@ class WordTabWrapper(TabWrapper):
         self.lazy_word_results_table.clear()
         self.lazy_word_results_table.save_values(counts)
         self.lazy_word_results_table.sort(WordTableHeaders.WORD_TEXT_HEADER)
+        self.refreshColumnsVisibility()
 
     def word_bounds_results_selection_changed(self, selected_items: list[list]):
         total = sum(int(row[WordTableHeaders.RESULTS_HEADER.value].text()) for row in selected_items)

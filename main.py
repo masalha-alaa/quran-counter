@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
         size = 10
         weight = 400
         if lang == AppLang.ARABIC:
-            size = 20
+            size = 18
         elif lang == AppLang.ENGLISH:
             size = 14
 

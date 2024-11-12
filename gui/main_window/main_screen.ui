@@ -25,7 +25,7 @@ color: rgb(207, 207, 207);
 font: 400 20pt &quot;Calibri&quot;;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,8">
+   <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,1,1,8">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
@@ -654,7 +654,7 @@ font: 400 20pt &quot;Calibri&quot;;</string>
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <attribute name="title">
@@ -817,7 +817,14 @@ font: 400 20pt &quot;Calibri&quot;;</string>
                  <enum>Qt::NoFocus</enum>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">/*headers*/
+                 <string notr="true">QTableWidget {
+        font-size: 17pt;
+    }
+QHeaderView {
+        font-size: 17pt;
+    }
+
+/*headers*/
 QHeaderView::section {
         background-color: lightblue;
         color: darkblue;
@@ -970,22 +977,27 @@ QTableWidget::item:selected {
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_15">
-          <property name="spacing">
-           <number>5</number>
-          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
-            <item>
-             <widget class="WordLazyTableWidget" name="wordResultsTableWidget">
-              <property name="mouseTracking">
-               <bool>true</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">/*headers*/
+           <widget class="WordLazyTableWidget" name="wordResultsTableWidget">
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QTableWidget {
+        font-size: 17pt;
+    }
+QHeaderView {
+        font-size: 17pt;
+    }
+
+/*headers*/
 QHeaderView::section {
         background-color: lightblue;
         color: darkblue;
@@ -1008,50 +1020,97 @@ QTableWidget::item:selected {
         border: none;
     }
 </string>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="tabKeyNavigation">
+             <bool>true</bool>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+             <bool>true</bool>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_16" stretch="2,0,0,0,0,25">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QCheckBox" name="diacriticsCheckbox">
+              <property name="styleSheet">
+               <string notr="true">margin-top:15px;</string>
               </property>
-              <property name="editTriggers">
-               <set>QAbstractItemView::NoEditTriggers</set>
+              <property name="text">
+               <string>حركات</string>
               </property>
-              <property name="tabKeyNavigation">
+              <property name="checked">
                <bool>true</bool>
               </property>
-              <property name="selectionBehavior">
-               <enum>QAbstractItemView::SelectRows</enum>
-              </property>
-              <property name="sortingEnabled">
-               <bool>true</bool>
-              </property>
-              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-               <bool>true</bool>
-              </attribute>
              </widget>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_16">
-              <item>
-               <widget class="QCheckBox" name="diacriticsCheckbox">
-                <property name="text">
-                 <string>حركات</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_5">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+             <widget class="Line" name="line_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="wordTransliterationCheckbox">
+              <property name="styleSheet">
+               <string notr="true">font: 12pt;</string>
+              </property>
+              <property name="text">
+               <string>حَورَفَة</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="wordMeaningCheckbox">
+              <property name="styleSheet">
+               <string notr="true">font: 12pt;</string>
+              </property>
+              <property name="text">
+               <string>ترجمة</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Line" name="line_9">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>

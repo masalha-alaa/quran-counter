@@ -33,6 +33,7 @@ class MyDataLoader:
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
             MyDataLoader.surah_name_to_num_map = {v:k for k,v in MyDataLoader.surah_num_to_name_map.items()}
             MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
+            MyDataLoader.df.drop('english_translation', axis=1, inplace=True)  # Unused for now
             MyDataLoader.df['total_verses'] = MyDataLoader.df['total_verses'].astype(int)
             MyDataLoader.waw_words = set(j_load(open(resource_path('data/waw_words.json'), encoding='utf-8')))
             MyDataLoader.huroof_maani = set(j_load(open(resource_path('data/huroof-maani.json'), encoding='utf-8')))
@@ -121,6 +122,20 @@ class MyDataLoader:
                 if v > verses_to_read:
                     s += 1
                     v = 1
+
+    @staticmethod
+    def get_word_eng_transliteration(surah_num, verse_num, word_idx, include_translation=True):
+        surah_num = int(surah_num)
+        verse_num = int(verse_num)
+        word_idx = int(word_idx)
+        try:
+            # TODO: Fix if fails
+            eng_translit, eng_meaning = MyDataLoader.df.loc[surah_num, 'english_transliteration'][verse_num-1][word_idx]
+        except IndexError:
+            print("ERROR: ", surah_num, verse_num, word_idx)
+            eng_translit, eng_meaning = '', ''
+        return (eng_translit, eng_meaning) if include_translation else (eng_translit,)
+
     # df methods [END]
 
     # page-surah-verses methods [BEGIN]

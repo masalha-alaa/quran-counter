@@ -19,12 +19,14 @@ class SurahTableHeaders(TableHeaders):
 
 class WordTableHeaders(TableHeaders):
     WORD_TEXT_HEADER = 0
+    ENGLISH_TRANSLITERATION = auto()
+    ENGLISH_TRANSLATION = auto()
     RESULTS_HEADER = auto()
     METADATA_POSITION = RESULTS_HEADER
 
 
 if __name__ == '__main__':
-    print(f"{len(SurahTableHeaders) = }")
-    print(f"{len(WordTableHeaders) = }")
+    print(f"{len(SurahTableHeaders) = }")  # doesn't include same value enums
+    print(f"{len(WordTableHeaders) = }")  # doesn't include same value enums
     print(f"{SurahTableHeaders.METADATA_POSITION = }")
     print(f"{WordTableHeaders.METADATA_POSITION = }")

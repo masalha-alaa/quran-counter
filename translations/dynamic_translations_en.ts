@@ -468,6 +468,14 @@
         <translation>Word</translation>
     </message>
     <message>
+        <source>ترجمة</source>
+        <translation>Translation</translation>
+    </message>
+    <message>
+        <source>حَورَفَة</source>
+        <translation>Transliteration</translation>
+    </message>
+    <message>
         <source>اسم السورة</source>
         <translation>Surah</translation>
     </message>

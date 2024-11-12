@@ -58,8 +58,8 @@ class Ui_MainWindow(object):
         self.mushafNavigationButton.setObjectName(u"mushafNavigationButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_4 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -306,14 +306,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout)
+        self.verticalLayout_4.addLayout(self.horizontalLayout)
 
         self.line_6 = QFrame(self.centralwidget)
         self.line_6.setObjectName(u"line_6")
         self.line_6.setFrameShape(QFrame.Shape.HLine)
         self.line_6.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_2.addWidget(self.line_6)
+        self.verticalLayout_4.addWidget(self.line_6)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -406,7 +406,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_2)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -509,7 +509,14 @@ class Ui_MainWindow(object):
         self.surahResultsTableWidget.setObjectName(u"surahResultsTableWidget")
         self.surahResultsTableWidget.setMouseTracking(True)
         self.surahResultsTableWidget.setFocusPolicy(Qt.NoFocus)
-        self.surahResultsTableWidget.setStyleSheet(u"/*headers*/\n"
+        self.surahResultsTableWidget.setStyleSheet(u"QTableWidget {\n"
+"        font-size: 17pt;\n"
+"    }\n"
+"QHeaderView {\n"
+"        font-size: 17pt;\n"
+"    }\n"
+"\n"
+"/*headers*/\n"
 "QHeaderView::section {\n"
 "        background-color: lightblue;\n"
 "        color: darkblue;\n"
@@ -610,16 +617,21 @@ class Ui_MainWindow(object):
         self.wordsTab.setObjectName(u"wordsTab")
         self.verticalLayout_5 = QVBoxLayout(self.wordsTab)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.verticalLayout_15 = QVBoxLayout()
-        self.verticalLayout_15.setSpacing(5)
-        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.horizontalLayout_11 = QHBoxLayout()
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.wordResultsTableWidget = WordLazyTableWidget(self.wordsTab)
         self.wordResultsTableWidget.setObjectName(u"wordResultsTableWidget")
         self.wordResultsTableWidget.setMouseTracking(True)
         self.wordResultsTableWidget.setFocusPolicy(Qt.NoFocus)
-        self.wordResultsTableWidget.setStyleSheet(u"/*headers*/\n"
+        self.wordResultsTableWidget.setLayoutDirection(Qt.RightToLeft)
+        self.wordResultsTableWidget.setStyleSheet(u"QTableWidget {\n"
+"        font-size: 17pt;\n"
+"    }\n"
+"QHeaderView {\n"
+"        font-size: 17pt;\n"
+"    }\n"
+"\n"
+"/*headers*/\n"
 "QHeaderView::section {\n"
 "        background-color: lightblue;\n"
 "        color: darkblue;\n"
@@ -651,25 +663,55 @@ class Ui_MainWindow(object):
         self.horizontalLayout_11.addWidget(self.wordResultsTableWidget)
 
         self.verticalLayout_16 = QVBoxLayout()
+        self.verticalLayout_16.setSpacing(6)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
+        self.verticalLayout_16.setContentsMargins(-1, 0, -1, -1)
         self.diacriticsCheckbox = QCheckBox(self.wordsTab)
         self.diacriticsCheckbox.setObjectName(u"diacriticsCheckbox")
+        self.diacriticsCheckbox.setStyleSheet(u"margin-top:15px;")
         self.diacriticsCheckbox.setChecked(True)
 
         self.verticalLayout_16.addWidget(self.diacriticsCheckbox)
+
+        self.line_2 = QFrame(self.wordsTab)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_16.addWidget(self.line_2)
+
+        self.wordTransliterationCheckbox = QCheckBox(self.wordsTab)
+        self.wordTransliterationCheckbox.setObjectName(u"wordTransliterationCheckbox")
+        self.wordTransliterationCheckbox.setStyleSheet(u"font: 12pt;")
+        self.wordTransliterationCheckbox.setChecked(True)
+
+        self.verticalLayout_16.addWidget(self.wordTransliterationCheckbox)
+
+        self.wordMeaningCheckbox = QCheckBox(self.wordsTab)
+        self.wordMeaningCheckbox.setObjectName(u"wordMeaningCheckbox")
+        self.wordMeaningCheckbox.setStyleSheet(u"font: 12pt;")
+        self.wordMeaningCheckbox.setChecked(True)
+
+        self.verticalLayout_16.addWidget(self.wordMeaningCheckbox)
+
+        self.line_9 = QFrame(self.wordsTab)
+        self.line_9.setObjectName(u"line_9")
+        self.line_9.setFrameShape(QFrame.Shape.HLine)
+        self.line_9.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_16.addWidget(self.line_9)
 
         self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_16.addItem(self.verticalSpacer_5)
 
+        self.verticalLayout_16.setStretch(0, 2)
+        self.verticalLayout_16.setStretch(5, 25)
 
         self.horizontalLayout_11.addLayout(self.verticalLayout_16)
 
 
-        self.verticalLayout_15.addLayout(self.horizontalLayout_11)
-
-
-        self.verticalLayout_5.addLayout(self.verticalLayout_15)
+        self.verticalLayout_5.addLayout(self.horizontalLayout_11)
 
         self.horizontalLayout_14 = QHBoxLayout()
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
@@ -723,12 +765,12 @@ class Ui_MainWindow(object):
 
         self.tabWidget.addTab(self.wordsTab, "")
 
-        self.verticalLayout_2.addWidget(self.tabWidget)
+        self.verticalLayout_4.addWidget(self.tabWidget)
 
-        self.verticalLayout_2.setStretch(0, 1)
-        self.verticalLayout_2.setStretch(1, 1)
-        self.verticalLayout_2.setStretch(2, 1)
-        self.verticalLayout_2.setStretch(3, 8)
+        self.verticalLayout_4.setStretch(0, 1)
+        self.verticalLayout_4.setStretch(1, 1)
+        self.verticalLayout_4.setStretch(2, 1)
+        self.verticalLayout_4.setStretch(3, 8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -778,7 +820,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -865,6 +907,8 @@ class Ui_MainWindow(object):
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.surahTab), QCoreApplication.translate("MainWindow", u"\u0633\u0648\u0631", None))
         self.diacriticsCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062d\u0631\u0643\u0627\u062a", None))
+        self.wordTransliterationCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062d\u064e\u0648\u0631\u064e\u0641\u064e\u0629", None))
+        self.wordMeaningCheckbox.setText(QCoreApplication.translate("MainWindow", u"\u062a\u0631\u062c\u0645\u0629", None))
         self.minimum_letters_restriction_lbl.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u062f\u062e\u0644 \u062d\u0631\u0641\u064a\u0646 \u0627\u0648 \u0627\u0643\u062b\u0631 \u0644\u0644\u0628\u062d\u062b.", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629.", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))

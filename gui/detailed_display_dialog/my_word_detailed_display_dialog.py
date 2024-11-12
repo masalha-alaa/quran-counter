@@ -14,7 +14,7 @@ class MyWordDetailedDisplayDialog(BaseDetailedDisplayDialog):
         verse = MyDataLoader.get_verse(int(surah_num), int(verse_num))
         if self.colorizeCheckbox.isChecked():
             verse = self._reform_and_color(verse, [(row_metadata[idx], row_metadata[idx + 1]) for idx in
-                                                   range(2, len(row_metadata), 2)])
+                                                   range(3, len(row_metadata), 2)])
         line = f"<p>{surah_num}:{verse_num}: {verse}</p>"
         # line = f"{ref}: {verse}"
         self.textBrowser.append(line)

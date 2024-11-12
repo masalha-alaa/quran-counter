@@ -465,7 +465,15 @@
     <!-- TABLE HEADERS [BEGIN] -->
     <message>
         <source>الكلمة</source>
-        <translation>Word</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ترجمة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>حَورَفَة</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>اسم السورة</source>
