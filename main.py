@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
         if lang == AppLang.ARABIC:
             size = 18
         elif lang == AppLang.ENGLISH:
-            size = 14
+            size = 16
 
         styleSheet = self._font_ptrn.sub(rf'\1 {weight} {size}pt "{font}"\2', styleSheet)
         self.setStyleSheet(styleSheet)
