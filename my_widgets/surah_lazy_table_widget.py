@@ -37,8 +37,8 @@ class SurahLazyTableWidget(MyLazyTableWidget):
 
     def retranslate_ui(self):
         for row in range(self.rowCount()):
-            current_text = self.item(row, SurahTableHeaders.SURAH_NAME_HEADER.value).text()
-            self.setItem(row, SurahTableHeaders.SURAH_NAME_HEADER.value, QTableWidgetItem(translate_text(current_text)))
+            current_item = self.item(row, SurahTableHeaders.SURAH_NAME_HEADER.value)
+            current_item.setText(translate_text(current_item.text()))
         super().retranslate_ui()
 
 
