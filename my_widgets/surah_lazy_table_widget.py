@@ -1,3 +1,4 @@
+from my_utils.utils import translate_text
 from my_widgets.lazy_table_widget import MyLazyTableWidget
 from my_widgets.lazy_table_widget import CustomTableRow
 from tabs_management.table_headers import SurahTableHeaders
@@ -23,6 +24,8 @@ class SurahLazyTableWidget(MyLazyTableWidget):
                 item = CustomTableWidgetItem(str(data[j]), TableDataType.INT)
             elif SurahTableHeaders(j) == SurahTableHeaders.RESULTS_HEADER:
                 item = CustomTableWidgetItem(str(data[j]), TableDataType.INT)
+            elif j == SurahTableHeaders.SURAH_NAME_HEADER.value:
+                item = CustomTableWidgetItem(translate_text(str(data[j])), TableDataType.STRING)
             else:
                 item = CustomTableWidgetItem(str(data[j]), TableDataType.STRING)
 
@@ -31,3 +34,11 @@ class SurahLazyTableWidget(MyLazyTableWidget):
                 item.setData(Qt.ItemDataRole.UserRole, row.metadata)
 
             self.setItem(self.rowCount()-1, j, item)
+
+    def retranslate_ui(self):
+        for row in range(self.rowCount()):
+            current_text = self.item(row, SurahTableHeaders.SURAH_NAME_HEADER.value).text()
+            self.setItem(row, SurahTableHeaders.SURAH_NAME_HEADER.value, QTableWidgetItem(translate_text(current_text)))
+        super().retranslate_ui()
+
+
