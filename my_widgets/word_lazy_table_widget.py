@@ -18,9 +18,9 @@ class WordLazyTableWidget(MyLazyTableWidget):
         tooltips = [None] * len(WordTableHeaders)
         tooltips[WordTableHeaders.ENGLISH_TRANSLATION.value] = "Showing one meaning, there could be more"
         self.set_headers(headers, tooltips)
-        # ltrDelegate = LeftToRightDelegate()
-        # self.setItemDelegateForColumn(WordTableHeaders.ENGLISH_TRANSLATION.value, ltrDelegate)
-        # self.setItemDelegateForColumn(WordTableHeaders.ENGLISH_TRANSLITERATION.value, ltrDelegate)
+        ltr_delegate = LeftToRightDelegate()
+        self.setItemDelegateForColumn(WordTableHeaders.ENGLISH_TRANSLATION.value, ltr_delegate)
+        self.setItemDelegateForColumn(WordTableHeaders.ENGLISH_TRANSLITERATION.value, ltr_delegate)
 
     def append_row(self, row: CustomTableRow):
         data = row.data
@@ -28,8 +28,6 @@ class WordLazyTableWidget(MyLazyTableWidget):
         for j in range(len(data)):
             if j == WordTableHeaders.RESULTS_HEADER.value:
                 item = CustomTableWidgetItem(str(data[j]), TableDataType.INT)
-            elif j in [WordTableHeaders.ENGLISH_TRANSLATION.value, WordTableHeaders.ENGLISH_TRANSLITERATION.value]:
-                item = CustomTableWidgetItem(self.LRM_CHAR + str(data[j]), TableDataType.STRING)
             else:
                 item = CustomTableWidgetItem(str(data[j]), TableDataType.STRING)
 

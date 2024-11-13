@@ -5,11 +5,9 @@ from enum import Enum
 from PySide6.QtWidgets import QTableWidgetItem
 from PySide6.QtWidgets import QTableWidget
 from PySide6.QtCore import Qt
-from PySide6.QtCore import QEvent
 from PySide6.QtGui import QColor
 
 from my_utils.utils import translate_text
-from .table_data_type import TableDataType
 from .custom_table_row import CustomTableRow
 from tabs_management.table_headers import TableHeaders
 from .custom_table_widget_item import CustomTableWidgetItem
@@ -35,8 +33,6 @@ class SortingOrder(Enum):
 class MyLazyTableWidget(QTableWidget):
     REMOVE_THREAD_AFTER_MS = 500
     # RUNNING_THREADS_MUTEX = QMutex()
-    LRM_CHAR = "\u200E"  # Left-To-Right Mark
-    RLM_CHAR = "\u200E"  # Right-To-Left Mark
 
     def __init__(self, parent, default_items_load=30, rows_per_scroll=1):
         super().__init__(parent)
