@@ -313,6 +313,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def check_surah_name_input(self):
         if not (text := self.surahNameInput.text()):
             return
+        self.surahNameInput.setStyleSheet("")
         if self.verseInput_2.text():
             self.check_verse_input_2()
         # if MyDataLoader.get_surah_num(text):
@@ -340,12 +341,6 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             page_num = MyDataLoader.get_first_page_of_surah(surah_num)
             self.show_verses_from_page(page_num)
             return page_num
-        return None
-
-    def show_verses_from_surah_name(self, surah_name):
-        if surah_name:
-            surah_num = MyDataLoader.get_surah_num(surah_name)
-            return self.show_verses_from_beginning_of_surah(surah_num)
         return None
 
     def show_verses_from_surah_verse_ref(self, surah_num, verse_num):
@@ -504,6 +499,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
         surah_num = MyDataLoader.get_surah_num(self.surahNameInput.text())
         if surah_num is None:
+            if self.surahNameInput.text():
+                self.surahNameInput.setStyleSheet("color: red")
             return
         if self.verseInput_2.text() and self.surahNameInput.text():
             self.current_page = self.show_verses_from_surah_verse_ref(surah_num, self.verseInput_2.text())

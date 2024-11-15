@@ -1,7 +1,8 @@
 import pandas as pd
 from yaml import safe_load
 from json import load as j_load
-from my_utils.utils import resource_path, AppLang, equal_words
+from my_utils.utils import resource_path, AppLang
+from my_utils.insensitive_to_al_tarif_dict import InsensitiveToAlTarifDict
 from difflib import get_close_matches
 
 
@@ -31,7 +32,8 @@ class MyDataLoader:
             config = safe_load(open(resource_path("config.yml"), mode='r'))
             pages = j_load(open(resource_path('data/surah-num-page-map.json')))
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
-            MyDataLoader.surah_name_to_num_map = {v:k for k,v in MyDataLoader.surah_num_to_name_map.items()}
+            MyDataLoader.surah_name_to_num_map = InsensitiveToAlTarifDict()
+            MyDataLoader.surah_name_to_num_map.update({v:k for k,v in MyDataLoader.surah_num_to_name_map.items()})
             MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
             MyDataLoader.df.drop('english_translation', axis=1, inplace=True)  # Unused for now
             MyDataLoader.df['total_verses'] = MyDataLoader.df['total_verses'].astype(int)
@@ -50,8 +52,8 @@ class MyDataLoader:
         return MyDataLoader.surah_num_to_name_map.get(str(surah_num))
 
     @staticmethod
-    def get_surah_num(surah_name, source_language: AppLang = AppLang.ARABIC):
-        if (num := MyDataLoader.surah_name_to_num_map.get(str(surah_name))) is None:
+    def get_surah_num(surah_name, closest_match=False, source_language: AppLang = AppLang.ARABIC):
+        if (num := MyDataLoader.surah_name_to_num_map.get(str(surah_name))) is None and closest_match:
             return MyDataLoader.surah_name_to_num_map.get(MyDataLoader._get_closest_surah_name(surah_name))
         return num
 

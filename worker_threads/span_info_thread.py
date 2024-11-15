@@ -7,7 +7,7 @@ from my_utils.my_data_loader import MyDataLoader
 from arabic_reformer import rub_el_hizb_mark
 from enum import Enum, auto
 from random import choice
-from my_utils.my_dict import MyDict
+from my_utils.insensitive_to_last_diacritic_dict import InsensitiveToLastDiacriticDict
 
 
 class NGrams(Enum):
@@ -133,7 +133,7 @@ class SpanInfoThread(QThread):
         self.info.surah_name = self._surah_name
         self.info.surah_num = MyDataLoader.get_surah_num(self.info.surah_name)
         letters = {}
-        words = MyDict()
+        words = InsensitiveToLastDiacriticDict()
         waw_words_matrix_idx = [False] * len(SpanInfoThread.WawWordsMatrixCol)
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):
