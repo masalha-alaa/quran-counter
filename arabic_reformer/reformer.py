@@ -3,7 +3,8 @@ from .alif import Alif
 from .globals import (MAX_CONSECUTIVE_DIACRITICS, _diacritics_begin, _diacritics_end, alif_maksura,
                       _special_diacritics, diacritics_regex, _tatweel_character, _hamza,
                       _prohibited_characters, _alifs, _d, diacritics_regex_compiled, diacritics_ending_regex_compiled,
-                      alif_khunjariyah, alamaat_waqf_regex, _hamzas, _ya_variations, _final_ta_variations)
+                      alif_khunjariyah, alamaat_waqf_regex, _hamzas, _ya_variations, _final_ta_variations,
+                      alifs_regex_with_khunjariyah, alifs_regex_without_khunjariyah, waw_alif_khunjariyah_regex)
 from .la import La
 from .utils import _connects_from_left, _connects_from_right, is_alif
 
@@ -11,6 +12,10 @@ from .utils import _connects_from_left, _connects_from_right, is_alif
 def get_arabic_abc():
     return [k for k in _d.keys() if k != "invisible"]
 
+def normalize_alif(text, normalize_khunjariya=False):
+    if normalize_khunjariya:
+        return alifs_regex_with_khunjariyah.sub(Alif.ALIF, text)
+    return alifs_regex_without_khunjariyah.sub(Alif.ALIF, text)
 
 @lru_cache(maxsize=len(_d) * 2)
 def reform_char(ch,

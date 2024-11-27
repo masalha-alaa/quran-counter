@@ -2,8 +2,12 @@ import os
 import sys
 from math import ceil
 from enum import Enum, auto
-from PySide6.QtCore import QCoreApplication
 from arabic_reformer import strip_last_diacritic
+from paths import ROOT_DIR
+try:
+    from PySide6.QtCore import QCoreApplication
+except ImportError:
+    print("PySide6 not installed")
 
 class AppLang(Enum):
     ARABIC = "ar"
@@ -23,6 +27,8 @@ def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         # When bundled by PyInstaller, files are unpacked into a temporary directory
         return os.path.join(sys._MEIPASS, relative_path)
+    elif 'COLAB_JUPYTER_IP' in os.environ:
+        return f"{ROOT_DIR}/{relative_path}"
     else:
         # When running in development mode (not bundled), just use the relative path
         return relative_path

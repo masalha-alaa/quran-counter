@@ -1,10 +1,23 @@
+import re
 import pandas as pd
-from yaml import safe_load
+from PySide6.QtCore import QThread, Signal, QTimer
 from json import load as j_load
-from my_utils.utils import resource_path, AppLang
+from my_utils.utils import resource_path
 from my_utils.insensitive_to_al_tarif_dict import InsensitiveToAlTarifDict
 from difflib import get_close_matches
+from arabic_reformer import waw_khunjariyah
 
+
+class ReCompileThread(QThread):
+    result_ready = Signal(pd.Series, QThread)
+
+    def __init__(self, col: pd.Series):
+        super().__init__()
+        self.col = col
+
+    def run(self):
+        compiled =  self.col.apply(re.compile)
+        self.result_ready.emit(compiled, self)
 
 class PageVerses:
     def __init__(self, surah_num, verses_range, verses, has_next):
@@ -15,13 +28,18 @@ class PageVerses:
 
 
 class MyDataLoader:
+    REMOVE_THREAD_AFTER_MS = 500
+    _running_threads = set()
     df = None
     _working_col = None
     page_surah_verses = None
     surah_num_to_name_map = None
     surah_name_to_num_map = None
     waw_words = None
+    waw_khunjariyah_words = None
     huroof_maani = None
+    root_to_words = None
+    word_to_words = None
     FIRST_SURAH = 1
     LAST_SURAH = 114
     MIN_VERSE = 1
@@ -29,22 +47,56 @@ class MyDataLoader:
 
     def __init__(self):
         if MyDataLoader.df is None:
-            config = safe_load(open(resource_path("config.yml"), mode='r'))
+            # TODO: Loading page
             pages = j_load(open(resource_path('data/surah-num-page-map.json')))
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
             MyDataLoader.surah_name_to_num_map = InsensitiveToAlTarifDict()
             MyDataLoader.surah_name_to_num_map.update({v:k for k,v in MyDataLoader.surah_num_to_name_map.items()})
-            MyDataLoader.df = pd.read_json(resource_path(config['data']['path']))
+            MyDataLoader.df = pd.read_json(resource_path("data/quran_arb_eng.json"))
             MyDataLoader.df.drop('english_translation', axis=1, inplace=True)  # Unused for now
             MyDataLoader.df['total_verses'] = MyDataLoader.df['total_verses'].astype(int)
             MyDataLoader.waw_words = set(j_load(open(resource_path('data/waw_words.json'), encoding='utf-8')))
+            MyDataLoader.waw_khunjariyah_words = set(j_load(open(resource_path('data/waw_khunjariyah_words.json'), encoding='utf-8')))
             MyDataLoader.huroof_maani = set(j_load(open(resource_path('data/huroof-maani.json'), encoding='utf-8')))
+
+            MyDataLoader.root_to_words = pd.read_csv(resource_path('data/root_to_words.csv'), index_col='root')
+            MyDataLoader.word_to_words = pd.read_csv(resource_path('data/word_to_words.csv'), index_col='ARABIC_CLEAN')
+            # root_to_words_thread = ReCompileThread(MyDataLoader.root_to_words['regex'])
+            # word_to_words_thread = ReCompileThread(MyDataLoader.word_to_words['regex'])
+            # root_to_words_thread.result_ready.connect(MyDataLoader._root_to_words_regex_compile_ready)
+            # word_to_words_thread.result_ready.connect(MyDataLoader._word_to_words_regex_compile_ready)
+            # for thread in [root_to_words_thread, word_to_words_thread]:
+            #     MyDataLoader._add_thread(thread)
+            #     thread.start()
+
             # TODO: save columns in df beforehand
-            verses_col = config['data']['verses_column']
+            verses_col = 'verses'
             MyDataLoader._working_col = f"{verses_col}_split"
             MyDataLoader.df[MyDataLoader._working_col] = MyDataLoader.df[verses_col].str.split('\n')
             MyDataLoader.df['page'] = MyDataLoader.df['surah'].apply(lambda s: pages[str(s)])
             MyDataLoader.page_surah_verses = pd.read_json(resource_path("data/page-surah-verses.json"))
+
+    @staticmethod
+    def _add_thread(thread):
+        MyDataLoader._running_threads.add(thread)
+
+    @staticmethod
+    def _remove_thread(thread):
+        QTimer.singleShot(MyDataLoader.REMOVE_THREAD_AFTER_MS, lambda: MyDataLoader._running_threads.remove(thread))
+
+    @staticmethod
+    def _root_to_words_regex_compile_ready(compiled, caller_thread):
+        caller_thread.result_ready.disconnect(MyDataLoader._root_to_words_regex_compile_ready)
+        MyDataLoader._remove_thread(caller_thread)
+        MyDataLoader.root_to_words['regex'] = compiled
+        print("Root to words compilation done")
+
+    @staticmethod
+    def _word_to_words_regex_compile_ready(compiled, caller_thread):
+        caller_thread.result_ready.disconnect(MyDataLoader._word_to_words_regex_compile_ready)
+        MyDataLoader._remove_thread(caller_thread)
+        MyDataLoader.word_to_words['regex'] = compiled
+        print("Word to words compilation done")
 
     # surah-map methods [BEGIN]
     @staticmethod
@@ -52,7 +104,7 @@ class MyDataLoader:
         return MyDataLoader.surah_num_to_name_map.get(str(surah_num))
 
     @staticmethod
-    def get_surah_num(surah_name, closest_match=False, source_language: AppLang = AppLang.ARABIC):
+    def get_surah_num(surah_name, closest_match=False):
         if (num := MyDataLoader.surah_name_to_num_map.get(str(surah_name))) is None and closest_match:
             return MyDataLoader.surah_name_to_num_map.get(MyDataLoader._get_closest_surah_name(surah_name))
         return num
@@ -174,11 +226,19 @@ class MyDataLoader:
         return word in MyDataLoader.waw_words
     # waw-words methods [END]
 
-    # waw-words methods [BEGIN]
+    # waw-khunjariyah-words methods [BEGIN]
+    @staticmethod
+    def normalize_waw_khunjariya(word):
+        if word in MyDataLoader.waw_khunjariyah_words:
+            return word.replace(waw_khunjariyah, "ا")
+        return word
+    # waw-khunjariyah-words methods [END]
+
+    # huroof_maani methods [BEGIN]
     @staticmethod
     def is_harf_maani(word):
         return word in MyDataLoader.huroof_maani
-    # waw-words methods [END]
+    # huroof_maani methods [END]
 
     # OTHER [BEGIN]
     @staticmethod

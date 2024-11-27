@@ -1,3 +1,4 @@
+import re
 from re import compile as re_compile
 from .alif import Alif
 
@@ -7,8 +8,10 @@ _diacritics_end = "\u065F"
 alamaat_waqf = ["\u06D6", "\u06D8", "\u06D9", "\u06DA", "\u06DB", "\u06D7", "\u06DC"]
 _long_harakat = ["\u06E5", "\u06E6", "\u06E7"]
 alif_khunjariyah = "\u0670"  # ـٰ
+waw_khunjariyah = "وٰ"  # 2 characters
 _n_to_m_conversion = "\u06E2"
 rub_el_hizb_mark = "\u06DE"
+sujood_mark = "\u06E9"
 alif_maksura = "\u0649"  # "ى"
 _ya_variations = ['\u064a', '\u0649']  # ["ي", "ى"]
 _final_ta_variations = ['\u062a', '\u0629']  # ["ت", "ة"]
@@ -33,6 +36,18 @@ _alifs = [Alif.ALIF,
           Alif.ALIF_WITH_MADDA,
           Alif.ALIF_WITH_HAMZAT_WASL,
           Alif.ALIF_WITH_HAMZAT_WASL2] + [alif_khunjariyah]
+
+_alifs_without_khunjariya = [Alif.ALIF,
+                             Alif.ALIF_WITH_HAMZA_ABOVE,
+                             Alif.ALIF_WITH_HAMZA_BELOW,
+                             Alif.ALIF_WITH_MADDA,
+                             Alif.ALIF_WITH_HAMZAT_WASL,
+                             Alif.ALIF_WITH_HAMZAT_WASL2]
+
+waw_alif_khunjariyah_regex = re.compile("وٰ")
+alifs_regex_with_khunjariyah = re.compile(rf"[{''.join(_alifs)}]")
+alifs_regex_without_khunjariyah = re.compile(rf"[{''.join(_alifs_without_khunjariya)}]")
+
 _d = {
     "invisible": chr(0x200B),
     "\u0627": (None, None, chr(0xFE8E)),  # ا

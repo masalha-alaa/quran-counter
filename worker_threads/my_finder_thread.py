@@ -7,6 +7,7 @@ from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, 
 from nltk.stem.isri import ISRIStemmer
 from itertools import permutations
 from difflib import SequenceMatcher
+from preprocessing import Preprocessor
 
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 
@@ -24,6 +25,8 @@ class FinderThread(QThread):
     MIN_CLOSE_MATCH_RAW_THRESHOLD = 6
     MAX_CLOSE_MATCH_RAW_THRESHOLD = 10
     my_cache = SingleCache()
+    REGEX_CHARS_FOR_ROOT_FIND = r"()?:|[]"
+    nested_brackets_regex = re.compile(r"\[([^\[\]]*)\[(.*?)\]([^\[\]]*)\]")
 
     def __init__(self, thread_id=None):
         super().__init__()
@@ -31,6 +34,7 @@ class FinderThread(QThread):
         self.df = MyDataLoader.get_data()
         self._working_col = MyDataLoader.get_working_col()
         self.arabic_stemmer = ISRIStemmer()
+        self.preprocessor = Preprocessor()
         self.initial_word = None
         self.alif_alif_maksura_variations = None
         self.ya_variations = None
@@ -41,6 +45,7 @@ class FinderThread(QThread):
         self.beginning_of_word_flag = None
         self.end_of_word_flag = None
         self.root_flag = None
+        self._activate_root_finder_fallback = False
         self.regular_expression = None
         self.close_match = None
         self.close_match_threshold = None
@@ -79,7 +84,16 @@ class FinderThread(QThread):
 
     def _prep_data(self):
         if self.root_flag:
-            new_text = self._get_root(self.initial_word).strip()
+            # new_text = self._get_root(self.initial_word).strip()
+            # check if root in root list
+            try:
+                new_text = MyDataLoader.root_to_words.loc[(preprocessed_w := self.preprocessor.normalize_for_root(self.initial_word)), 'regex']
+            except KeyError:
+                try:
+                    new_text = MyDataLoader.word_to_words.loc[preprocessed_w, 'regex']
+                except KeyError:
+                    new_text = self._get_root(self.initial_word).strip()
+                    self._activate_root_finder_fallback = True
         elif self.full_word or self.close_match:
             new_text = self.initial_word.strip()
         else:
@@ -99,10 +113,13 @@ class FinderThread(QThread):
                                     alif_alif_maksura_variations=self.alif_alif_maksura_variations,
                                     ya_variations=self.ya_variations,
                                     ta_variations=self.ta_variations,
-                                    chars_to_not_add_diacritics_to=ArabicWithRegexValidator.SUPPORTED_REGEX_CHARS if (self.optional_al_tarif or self.regular_expression) else None,
+                                    chars_to_not_add_diacritics_to=ArabicWithRegexValidator.SUPPORTED_REGEX_CHARS if (self.optional_al_tarif or self.regular_expression) else FinderThread.REGEX_CHARS_FOR_ROOT_FIND if self.root_flag else None,
                                     alamat_waqf_after_space=not self.regular_expression)
+            if self.root_flag:
+                new_text = self.flatten_nested_brackets(new_text)
 
-        num_of_search_words = len(new_text.split())
+        # print(new_text)
+        num_of_search_words = len(new_text.split()) if not self.root_flag else 1
 
         if not (self.root_flag or self.close_match or self.regular_expression):
             if not self.maintain_words_order and num_of_search_words > 1:
@@ -128,6 +145,30 @@ class FinderThread(QThread):
 
         self._final_word = new_text
         self._words_num = num_of_search_words
+
+    def flatten_nested_brackets(self, pattern):
+        """
+        ChatGPT (take it with a grain of salt)
+        Flattens nested square brackets in a regex pattern by merging their content.
+        """
+        while True:
+            # Find nested brackets using a regex
+            match = FinderThread.nested_brackets_regex.search(pattern)
+            if not match:
+                break  # No more nested brackets
+
+            # Extract content inside the brackets
+            outer_start = match.group(1)  # Content before inner bracket
+            inner = match.group(2)  # Content of inner bracket
+            outer_end = match.group(3)  # Content after inner bracket
+
+            # Merge the inner and outer content into a single bracket
+            merged = f"[{outer_start}{inner}{outer_end}]"
+
+            # Replace the nested structure with the merged one
+            pattern = pattern[:match.start()] + merged + pattern[match.end():]
+
+        return pattern
 
     def strip_extra_braces(self, text):
         remove_idx = set()
@@ -183,7 +224,7 @@ class FinderThread(QThread):
                 cumsum = [0]
                 for j in range(len(split_verse)):
                     cumsum.append(cumsum[j] + len(split_verse[j]) + 1)
-                matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(rf"{w}$", self._get_root(word))]
+                matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(rf"{w}$", self._get_root(word) if self._activate_root_finder_fallback else word)]
             elif self.close_match:
                 matches_in_verse = self.my_get_close_matches(w, verse, threshold=self.close_match_threshold)
             else:

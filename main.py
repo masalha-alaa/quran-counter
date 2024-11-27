@@ -285,8 +285,8 @@ class MainWindow(QMainWindow):
 
     def _search_options_radio_buttons_changed(self, button, is_checked: bool):
         if button == SharedData.ui.rootRadioButton:
-            # SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
-            # SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
             SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
             SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
             SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
@@ -326,6 +326,8 @@ class MainWindow(QMainWindow):
 # import faulthandler
 if __name__ == "__main__":
     # faulthandler.enable()
+
+    print("Starting...")
 
     app = QApplication(sys.argv)
 

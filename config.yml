@@ -1,6 +1,0 @@
-data:
-#  path: "data/quran_arb_clean.json"
-#  path: "data/quran_arb.json"
-  path: "data/quran_arb_eng.json"
-#  verses_column: "verses_clean"
-  verses_column: "verses"
