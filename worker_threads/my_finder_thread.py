@@ -90,10 +90,16 @@ class FinderThread(QThread):
                 new_text = MyDataLoader.root_to_words.loc[(preprocessed_w := self.preprocessor.normalize_for_root(self.initial_word)), 'regex']
             except KeyError:
                 try:
+                    # check if word in words list
                     new_text = MyDataLoader.word_to_words.loc[preprocessed_w, 'regex']
                 except KeyError:
+                    # stem and check if root in root list
                     new_text = self._get_root(self.initial_word).strip()
-                    self._activate_root_finder_fallback = True
+                    try:
+                        new_text = MyDataLoader.root_to_words.loc[preprocessed_w, 'regex']
+                    except KeyError:
+                        # activate fallback to compare against roots of all words
+                        self._activate_root_finder_fallback = True
         elif self.full_word or self.close_match:
             new_text = self.initial_word.strip()
         else:
