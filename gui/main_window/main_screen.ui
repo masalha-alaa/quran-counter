@@ -85,7 +85,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string>عدم التفريق بين 'ا' / 'ى'</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 18pt;</string>
+             <string notr="true">QCheckBox{
+	font: 18pt;
+}
+QToolTip { 
+    color: #484848;
+	font: 14pt;
+}</string>
             </property>
             <property name="text">
              <string notr="true">ا / ى</string>
@@ -108,7 +114,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string>عدم التفريق بين 'ى' / 'ي'</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 18pt;</string>
+             <string notr="true">QCheckBox{
+	font: 18pt;
+}
+QToolTip { 
+    color: #484848;
+	font: 14pt;
+}</string>
             </property>
             <property name="text">
              <string notr="true">ى / ي</string>
@@ -140,7 +152,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string>عدم التفريق بين 'ـت' / 'ـة'</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 18pt;</string>
+             <string notr="true">QCheckBox{
+	font: 18pt;
+}
+QToolTip { 
+    color: #484848;
+	font: 14pt;
+}</string>
             </property>
             <property name="text">
              <string notr="true">ـت / ـة</string>
@@ -160,7 +178,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string>بحث كلمتين مع امكانية عكس الترتيب</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 18pt;</string>
+             <string notr="true">QCheckBox{
+	font: 18pt;
+}
+QToolTip { 
+    color: #484848;
+	font: 14pt;
+}</string>
             </property>
             <property name="text">
              <string notr="true"/>
@@ -193,7 +217,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
              <string>&quot;ال&quot; التعريف خيارية</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 18pt;</string>
+             <string notr="true">QCheckBox{
+	font: 18pt;
+}
+QToolTip { 
+    color: #484848;
+	font: 14pt;
+}</string>
             </property>
             <property name="text">
              <string notr="true">ال؟</string>
@@ -266,6 +296,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
          <widget class="QRadioButton" name="rootRadioButton">
           <property name="toolTip">
            <string>كلمات بنفس جذر كلمة البحث</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
           </property>
           <property name="text">
            <string>جذر</string>
@@ -409,6 +446,13 @@ font: 400 20pt &quot;Calibri&quot;;</string>
            <widget class="QRadioButton" name="regexRadioButton">
             <property name="toolTip">
              <string notr="true"/>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
             </property>
             <property name="text">
              <string>ريچيكس</string>

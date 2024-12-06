@@ -13,10 +13,25 @@ class DiacriticsRemoval(Enum):
 
 class Preprocessor:
     space_regex = re.compile(rf"[\s{rub_el_hizb_mark}{sujood_mark}]{{2,}}")
+    s1 = 'ٱلْـَٔا'
+    t1 = 'ٱلْأَ'
+    s2 = 'لَـَٔا'
+    t2 = 'لَأَ'
+    s3 = 'لِـَٔا'
+    t3 = 'لِأَ'
+    s4 = 'لَّـَٔا'
+    t4 = 'لَّأَ'
+    s5 = 'لَلْـَٔا'
+    t5 = 'لَلْأَ'
+    s6 = 'لِّلْـَٔا'
+    t6 = 'لِّلْأَ'
 
     def __init__(self, diac_removal=DiacriticsRemoval.REMOVE_ALL):
         self.diac_removal = diac_removal
         MyDataLoader()
+
+    def normalize_hamzat_wasl(self, text):
+        return text.replace("ٱ", "ا")
 
     def normalize_alif(self, text, normalize_khunjariya=False):
         return normalize_alif(text, normalize_khunjariya)
@@ -86,24 +101,20 @@ class Preprocessor:
         return s_processed
 
     def replace_laa(self, ser):
-        s1 = 'ٱلْـَٔا'
-        t1 = 'ٱلْأَ'
-        s2 = 'لَـَٔا'
-        t2 = 'لَأَ'
-        s3 = 'لِـَٔا'
-        t3 = 'لِأَ'
-        s4 = 'لَّـَٔا'
-        t4 = 'لَّأَ'
-        s5 = 'لَلْـَٔا'
-        t5 = 'لَلْأَ'
-        s6 = 'لِّلْـَٔا'
-        t6 = 'لِّلْأَ'
-        return (ser.str.replace(s1, t1).
-                str.replace(s2, t2).
-                str.replace(s3, t3).
-                str.replace(s4, t4).
-                str.replace(s5, t5).
-                str.replace(s6, t6))
+        return (ser.str.replace(self.s1, self.t1).
+                str.replace(self.s2, self.t2).
+                str.replace(self.s3, self.t3).
+                str.replace(self.s4, self.t4).
+                str.replace(self.s5, self.t5).
+                str.replace(self.s6, self.t6))
+
+    def replace_laa_single_word(self, s):
+        return (s.replace(self.s1, self.t1).
+                replace(self.s2, self.t2).
+                replace(self.s3, self.t3).
+                replace(self.s4, self.t4).
+                replace(self.s5, self.t5).
+                replace(self.s6, self.t6))
 
 
 if __name__ == '__main__':

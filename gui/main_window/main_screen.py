@@ -94,7 +94,13 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.alifAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
         self.alifAlifMaksuraCheckbox.setObjectName(u"alifAlifMaksuraCheckbox")
-        self.alifAlifMaksuraCheckbox.setStyleSheet(u"font: 18pt;")
+        self.alifAlifMaksuraCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: 18pt;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
         self.alifAlifMaksuraCheckbox.setText(u"\u0627 / \u0649")
 
         self.horizontalLayout_8.addWidget(self.alifAlifMaksuraCheckbox)
@@ -109,7 +115,13 @@ class Ui_MainWindow(object):
         self.yaAlifMaksuraCheckbox = QCheckBox(self.centralwidget)
         self.yaAlifMaksuraCheckbox.setObjectName(u"yaAlifMaksuraCheckbox")
         self.yaAlifMaksuraCheckbox.setEnabled(True)
-        self.yaAlifMaksuraCheckbox.setStyleSheet(u"font: 18pt;")
+        self.yaAlifMaksuraCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: 18pt;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
         self.yaAlifMaksuraCheckbox.setText(u"\u0649 / \u064a")
 
         self.horizontalLayout_8.addWidget(self.yaAlifMaksuraCheckbox)
@@ -130,7 +142,13 @@ class Ui_MainWindow(object):
         font.setBold(False)
         font.setItalic(False)
         self.finalTaCheckbox.setFont(font)
-        self.finalTaCheckbox.setStyleSheet(u"font: 18pt;")
+        self.finalTaCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: 18pt;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
         self.finalTaCheckbox.setText(u"\u0640\u062a / \u0640\u0629")
 
         self.horizontalLayout_8.addWidget(self.finalTaCheckbox)
@@ -144,7 +162,13 @@ class Ui_MainWindow(object):
 
         self.wordPermutationsCheckbox = QCheckBox(self.centralwidget)
         self.wordPermutationsCheckbox.setObjectName(u"wordPermutationsCheckbox")
-        self.wordPermutationsCheckbox.setStyleSheet(u"font: 18pt;")
+        self.wordPermutationsCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: 18pt;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
         self.wordPermutationsCheckbox.setText(u"")
         icon = QIcon()
         icon.addFile(u":/in-order-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
@@ -163,7 +187,13 @@ class Ui_MainWindow(object):
 
         self.optionalAlTarifCheckbox = QCheckBox(self.centralwidget)
         self.optionalAlTarifCheckbox.setObjectName(u"optionalAlTarifCheckbox")
-        self.optionalAlTarifCheckbox.setStyleSheet(u"font: 18pt;")
+        self.optionalAlTarifCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: 18pt;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
         self.optionalAlTarifCheckbox.setText(u"\u0627\u0644\u061f")
 
         self.horizontalLayout_8.addWidget(self.optionalAlTarifCheckbox)
@@ -210,6 +240,11 @@ class Ui_MainWindow(object):
         self.rootRadioButton = QRadioButton(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.rootRadioButton)
         self.rootRadioButton.setObjectName(u"rootRadioButton")
+        self.rootRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
 
         self.gridLayout.addWidget(self.rootRadioButton, 0, 3, 1, 1)
 
@@ -287,6 +322,11 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.regexRadioButton.setToolTip(u"")
 #endif // QT_CONFIG(tooltip)
+        self.regexRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
         self.regexRadioButton.setChecked(False)
 
         self.verticalLayout_23.addWidget(self.regexRadioButton)

@@ -7,7 +7,7 @@ from paths import ROOT_DIR
 try:
     from PySide6.QtCore import QCoreApplication
 except ImportError:
-    print("PySide6 not installed")
+    print("Warning: PySide6 not installed")
 
 class AppLang(Enum):
     ARABIC = "ar"

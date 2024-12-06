@@ -460,46 +460,6 @@ class Ui_MushafViewDialog(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_6 = QHBoxLayout(self.frame)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.horizontalLayout_13 = QHBoxLayout()
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.verticalLayout_18 = QVBoxLayout()
-        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
-        self.wawIsAWordCheckbox = QCheckBox(self.frame)
-        self.wawIsAWordCheckbox.setObjectName(u"wawIsAWordCheckbox")
-        self.wawIsAWordCheckbox.setLayoutDirection(Qt.RightToLeft)
-        self.wawIsAWordCheckbox.setStyleSheet(u"font: bold;")
-        self.wawIsAWordCheckbox.setChecked(False)
-
-        self.verticalLayout_18.addWidget(self.wawIsAWordCheckbox)
-
-        self.waykaannaTwoWordsCheckbox = QCheckBox(self.frame)
-        self.waykaannaTwoWordsCheckbox.setObjectName(u"waykaannaTwoWordsCheckbox")
-        self.waykaannaTwoWordsCheckbox.setLayoutDirection(Qt.RightToLeft)
-        self.waykaannaTwoWordsCheckbox.setStyleSheet(u"font: bold;")
-
-        self.verticalLayout_18.addWidget(self.waykaannaTwoWordsCheckbox)
-
-        self.huroofMaaniCheckbox = QCheckBox(self.frame)
-        self.huroofMaaniCheckbox.setObjectName(u"huroofMaaniCheckbox")
-#if QT_CONFIG(tooltip)
-        self.huroofMaaniCheckbox.setToolTip(u"\u062d\u062a\u0649 / \u062b\u0645 / \u0639\u0644\u0649 / \u0639\u0646 ...")
-#endif // QT_CONFIG(tooltip)
-        self.huroofMaaniCheckbox.setLayoutDirection(Qt.RightToLeft)
-        self.huroofMaaniCheckbox.setStyleSheet(u"font: bold;")
-        self.huroofMaaniCheckbox.setChecked(True)
-
-        self.verticalLayout_18.addWidget(self.huroofMaaniCheckbox)
-
-        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_18.addItem(self.verticalSpacer_4)
-
-
-        self.horizontalLayout_13.addLayout(self.verticalLayout_18)
-
-
-        self.horizontalLayout_6.addLayout(self.horizontalLayout_13)
-
         self.statsHorizontalLayout = QHBoxLayout()
         self.statsHorizontalLayout.setObjectName(u"statsHorizontalLayout")
         self.exclusiveWordsFrame = QFrame(self.frame)
@@ -519,8 +479,20 @@ class Ui_MushafViewDialog(object):
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_9)
 
+        self.differentRootCheckBox = QCheckBox(self.exclusiveWordsFrame)
+        self.differentRootCheckBox.setObjectName(u"differentRootCheckBox")
+        self.differentRootCheckBox.setStyleSheet(u"QToolTip { \n"
+"    color: red;\n"
+"}")
+
+        self.horizontalLayout_3.addWidget(self.differentRootCheckBox)
+
         self.refreshExclusiveWordsButton = QPushButton(self.exclusiveWordsFrame)
         self.refreshExclusiveWordsButton.setObjectName(u"refreshExclusiveWordsButton")
+        self.refreshExclusiveWordsButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
         icon3 = QIcon()
         icon3.addFile(u":/reset-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.refreshExclusiveWordsButton.setIcon(icon3)
@@ -531,7 +503,13 @@ class Ui_MushafViewDialog(object):
         self.label_7.setObjectName(u"label_7")
         sizePolicy2.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
         self.label_7.setSizePolicy(sizePolicy2)
-        self.label_7.setStyleSheet(u"font: bold;")
+        self.label_7.setStyleSheet(u"QLabel{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
 
         self.horizontalLayout_3.addWidget(self.label_7)
 
@@ -556,13 +534,89 @@ class Ui_MushafViewDialog(object):
 
         self.statsHorizontalLayout.addWidget(self.exclusiveWordsFrame)
 
-        self.verticalFrame = QFrame(self.frame)
+        self.statsHorizontalLayout.setStretch(0, 5)
+
+        self.horizontalLayout_6.addLayout(self.statsHorizontalLayout)
+
+        self.frame_3 = QFrame(self.frame)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.Box)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_22 = QHBoxLayout(self.frame_3)
+        self.horizontalLayout_22.setObjectName(u"horizontalLayout_22")
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.verticalLayout_18 = QVBoxLayout()
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.wawIsAWordCheckbox = QCheckBox(self.frame_3)
+        self.wawIsAWordCheckbox.setObjectName(u"wawIsAWordCheckbox")
+        self.wawIsAWordCheckbox.setLayoutDirection(Qt.RightToLeft)
+        self.wawIsAWordCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
+        self.wawIsAWordCheckbox.setChecked(False)
+
+        self.verticalLayout_18.addWidget(self.wawIsAWordCheckbox)
+
+        self.waykaannaTwoWordsCheckbox = QCheckBox(self.frame_3)
+        self.waykaannaTwoWordsCheckbox.setObjectName(u"waykaannaTwoWordsCheckbox")
+        self.waykaannaTwoWordsCheckbox.setLayoutDirection(Qt.RightToLeft)
+        self.waykaannaTwoWordsCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
+
+        self.verticalLayout_18.addWidget(self.waykaannaTwoWordsCheckbox)
+
+        self.huroofMaaniCheckbox = QCheckBox(self.frame_3)
+        self.huroofMaaniCheckbox.setObjectName(u"huroofMaaniCheckbox")
+#if QT_CONFIG(tooltip)
+        self.huroofMaaniCheckbox.setToolTip(u"\u062d\u062a\u0649 / \u062b\u0645 / \u0639\u0644\u0649 / \u0639\u0646 ...")
+#endif // QT_CONFIG(tooltip)
+        self.huroofMaaniCheckbox.setLayoutDirection(Qt.RightToLeft)
+        self.huroofMaaniCheckbox.setStyleSheet(u"QCheckBox{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
+        self.huroofMaaniCheckbox.setChecked(True)
+
+        self.verticalLayout_18.addWidget(self.huroofMaaniCheckbox)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_18.addItem(self.verticalSpacer_4)
+
+
+        self.horizontalLayout_13.addLayout(self.verticalLayout_18)
+
+
+        self.horizontalLayout_22.addLayout(self.horizontalLayout_13)
+
+        self.line_8 = QFrame(self.frame_3)
+        self.line_8.setObjectName(u"line_8")
+        self.line_8.setFrameShape(QFrame.Shape.VLine)
+        self.line_8.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout_22.addWidget(self.line_8)
+
+        self.verticalFrame = QFrame(self.frame_3)
         self.verticalFrame.setObjectName(u"verticalFrame")
-        self.verticalFrame.setFrameShape(QFrame.Box)
+        self.verticalFrame.setFrameShape(QFrame.NoFrame)
         self.verticalFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_5 = QVBoxLayout(self.verticalFrame)
         self.verticalLayout_5.setSpacing(10)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, -1, 2, -1)
         self.verticalLayout_8 = QVBoxLayout()
         self.verticalLayout_8.setSpacing(3)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
@@ -570,7 +624,13 @@ class Ui_MushafViewDialog(object):
         self.label_3.setObjectName(u"label_3")
         sizePolicy2.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy2)
-        self.label_3.setStyleSheet(u"font: bold;")
+        self.label_3.setStyleSheet(u"QLabel{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
 
         self.verticalLayout_8.addWidget(self.label_3)
 
@@ -606,7 +666,13 @@ class Ui_MushafViewDialog(object):
         self.label_13.setObjectName(u"label_13")
         sizePolicy2.setHeightForWidth(self.label_13.sizePolicy().hasHeightForWidth())
         self.label_13.setSizePolicy(sizePolicy2)
-        self.label_13.setStyleSheet(u"font: bold;")
+        self.label_13.setStyleSheet(u"QLabel{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
 
         self.verticalLayout_6.addWidget(self.label_13)
 
@@ -636,15 +702,16 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout_5.addLayout(self.verticalLayout_6)
 
 
-        self.statsHorizontalLayout.addWidget(self.verticalFrame)
+        self.horizontalLayout_22.addWidget(self.verticalFrame)
 
-        self.verticalFrame_2 = QFrame(self.frame)
+        self.verticalFrame_2 = QFrame(self.frame_3)
         self.verticalFrame_2.setObjectName(u"verticalFrame_2")
-        self.verticalFrame_2.setFrameShape(QFrame.Box)
+        self.verticalFrame_2.setFrameShape(QFrame.NoFrame)
         self.verticalFrame_2.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.verticalFrame_2)
         self.verticalLayout_4.setSpacing(8)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(2, -1, 0, -1)
         self.verticalLayout_9 = QVBoxLayout()
         self.verticalLayout_9.setSpacing(3)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
@@ -656,6 +723,10 @@ class Ui_MushafViewDialog(object):
 
         self.resetStatsButton = QPushButton(self.verticalFrame_2)
         self.resetStatsButton.setObjectName(u"resetStatsButton")
+        self.resetStatsButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
         self.resetStatsButton.setIcon(icon3)
 
         self.horizontalLayout.addWidget(self.resetStatsButton)
@@ -664,7 +735,13 @@ class Ui_MushafViewDialog(object):
         self.label_12.setObjectName(u"label_12")
         sizePolicy2.setHeightForWidth(self.label_12.sizePolicy().hasHeightForWidth())
         self.label_12.setSizePolicy(sizePolicy2)
-        self.label_12.setStyleSheet(u"font: bold;")
+        self.label_12.setStyleSheet(u"QLabel{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
 
         self.horizontalLayout.addWidget(self.label_12)
 
@@ -701,7 +778,13 @@ class Ui_MushafViewDialog(object):
         self.label_2.setObjectName(u"label_2")
         sizePolicy2.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
         self.label_2.setSizePolicy(sizePolicy2)
-        self.label_2.setStyleSheet(u"font: bold;")
+        self.label_2.setStyleSheet(u"QLabel{\n"
+"	font: bold;\n"
+"}\n"
+"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}")
 
         self.verticalLayout_12.addWidget(self.label_2)
 
@@ -729,15 +812,15 @@ class Ui_MushafViewDialog(object):
         self.verticalLayout_4.addLayout(self.verticalLayout_12)
 
 
-        self.statsHorizontalLayout.addWidget(self.verticalFrame_2)
+        self.horizontalLayout_22.addWidget(self.verticalFrame_2)
 
-        self.statsHorizontalLayout.setStretch(0, 5)
-        self.statsHorizontalLayout.setStretch(1, 5)
-        self.statsHorizontalLayout.setStretch(2, 4)
+        self.horizontalLayout_22.setStretch(2, 5)
+        self.horizontalLayout_22.setStretch(3, 5)
 
-        self.horizontalLayout_6.addLayout(self.statsHorizontalLayout)
+        self.horizontalLayout_6.addWidget(self.frame_3)
 
-        self.horizontalLayout_6.setStretch(1, 1)
+        self.horizontalLayout_6.setStretch(0, 1)
+        self.horizontalLayout_6.setStretch(1, 2)
 
         self.verticalLayout_7.addWidget(self.frame)
 
@@ -811,12 +894,13 @@ class Ui_MushafViewDialog(object):
         self.prevJuzButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u062c\u0632\u0621 \u0627\u0644\u0633\u0627\u0628\u0642", None))
 #endif // QT_CONFIG(tooltip)
         self.prevJuzButton.setText("")
-        self.wawIsAWordCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\"  \u0643\u0644\u0645\u0629 \u0645\u0646\u0641\u0631\u062f\u0629\"", None))
-        self.waykaannaTwoWordsCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\u064a\u0643\u0623\u0646\"  \u0643\u0644\u0645\u062a\u0627\u0646\"", None))
-        self.huroofMaaniCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u062d\u0631\u0648\u0641 \u0645\u0639\u0627\u0646\u064a", None))
 #if QT_CONFIG(tooltip)
         self.exclusiveWordsFrame.setToolTip("")
 #endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.differentRootCheckBox.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0643\u0644\u0645\u0627\u062a \u0645\u062e\u062a\u0644\u0641\u0629 \u0644\u0647\u0627 \u062c\u0630\u0631 \u0645\u0634\u062a\u0631\u0643 \u062a\u0639\u062a\u0628\u0631 \u0643\u0644\u0645\u0627\u062a \u0645\u062a\u0634\u0627\u0628\u0647\u0629 (\u062a\u062c\u0631\u064a\u0628\u064a)", None))
+#endif // QT_CONFIG(tooltip)
+        self.differentRootCheckBox.setText(QCoreApplication.translate("MushafViewDialog", u"\u062c\u0630\u0631 \u0645\u062e\u062a\u0644\u0641", None))
 #if QT_CONFIG(tooltip)
         self.refreshExclusiveWordsButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0639\u0628\u0627\u0631\u0627\u062a \u0627\u062e\u0631\u0649", None))
 #endif // QT_CONFIG(tooltip)
@@ -828,6 +912,9 @@ class Ui_MushafViewDialog(object):
         self.exclusivePhrasesInSurah1.setText("")
         self.exclusivePhrasesInSurah2.setText("")
         self.exclusivePhrasesInSurah3.setText("")
+        self.wawIsAWordCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\"  \u0643\u0644\u0645\u0629 \u0645\u0646\u0641\u0631\u062f\u0629\"", None))
+        self.waykaannaTwoWordsCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u0648\u064a\u0643\u0623\u0646\"  \u0643\u0644\u0645\u062a\u0627\u0646\"", None))
+        self.huroofMaaniCheckbox.setText(QCoreApplication.translate("MushafViewDialog", u"\u062d\u0631\u0648\u0641 \u0645\u0639\u0627\u0646\u064a", None))
 #if QT_CONFIG(tooltip)
         self.label_3.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0639\u062f\u062f \u0627\u0644\u0643\u0644\u0645\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0644\u0641\u0629 (\u0628\u062f\u0648\u0646 \u062a\u0643\u0631\u0627\u0631)", None))
 #endif // QT_CONFIG(tooltip)

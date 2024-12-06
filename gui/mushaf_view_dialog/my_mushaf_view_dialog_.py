@@ -105,6 +105,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.selectionEndButton.clicked.connect(self.selection_end_button_clicked)
 
         self.exclusive_words_uni = None
+        self.exclusive_words_uni_diff_roots = None
         self.exclusive_words_bi = None
         self.exclusive_words_tri = None
         self.resetStatsButton.clicked.connect(self.restart_stats_button_clicked)
@@ -112,6 +113,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.wawIsAWordCheckbox.stateChanged.connect(self.waw_is_a_word_checkbox_state_changed)
         self.waykaannaTwoWordsCheckbox.stateChanged.connect(self.waykaanna_two_words_checkbox_state_changed)
         self.huroofMaaniCheckbox.stateChanged.connect(self.huroof_maani_checkbox_state_changed)
+        self.differentRootCheckBox.stateChanged.connect(self.diff_roots_checkbox_state_changed)
 
         self._setup_validators()
 
@@ -135,6 +137,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def closeEvent(self, event):
         self.exclusive_words_uni = None
+        self.exclusive_words_uni_diff_roots = None
         self.exclusive_words_bi = None
         self.exclusive_words_tri = None
         self.accept()
@@ -151,6 +154,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def load_exclusive_words_data(self):
         self.exclusive_words_uni = load(open(resource_path("data/exclusive_per_surah_uni.json"), mode='r', encoding='utf-8'))
+        self.exclusive_words_uni_diff_roots = load(open(resource_path("data/exclusive_per_surah_uni_diff_roots.json"), mode='r', encoding='utf-8'))
         self.exclusive_words_bi = load(open(resource_path("data/exclusive_per_surah_bi.json"), mode='r', encoding='utf-8'))
         self.exclusive_words_tri = load(open(resource_path("data/exclusive_per_surah_tri.json"), mode='r', encoding='utf-8'))
 
@@ -212,13 +216,18 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
     def fill_exclusive_words(self, span_info):
         span_info.surah_exclusive_words = self.exclusive_words_uni[str(span_info.surah_num)]
+        span_info.surah_exclusive_words_diff_roots = self.exclusive_words_uni_diff_roots[str(span_info.surah_num)]
         span_info.surah_exclusive_bigrams = self.exclusive_words_bi[str(span_info.surah_num)]
         span_info.surah_exclusive_trigrams = self.exclusive_words_tri[str(span_info.surah_num)]
 
-        uni = span_info.surah_exclusive_uni_random
+        if self.differentRootCheckBox.isChecked():
+            uni = span_info.surah_exclusive_uni_diff_roots_random
+        else:
+            uni = span_info.surah_exclusive_uni_random
         bi = span_info.surah_exclusive_bi_random
         tri = span_info.surah_exclusive_tri_random
-        txt = f"{span_info.surah_name}: {uni}, {bi}, {tri}"
+        txt_details = f"{uni}, {bi}, {tri}".strip(", ")
+        txt = f"{span_info.surah_name}: {txt_details}"
         match span_info.metadata.current_surah_id:
             case 0:
                 self.exclusivePhrasesInSurah1.setText(txt)
@@ -666,6 +675,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False)
         if self.valid_selection() or self.valid_selection_span():
             self.start_span_info_thread(self.last_selection_type)
+
+    def diff_roots_checkbox_state_changed(self, state):
+        self.refresh_exclusive_words_buton_clicked()
 
     def restart_stats_button_clicked(self):
         for widget in self.stats_widgets:

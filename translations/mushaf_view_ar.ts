@@ -25,17 +25,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="972"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1053"/>
         <source>الكلمة الأكثر تكرارًا في السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="845"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="803"/>
         <source>عبارات حصرية للسورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1078"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1171"/>
         <source>جميع الكلمات داخل التحديد, مع تكرار</source>
         <translation type="unfinished"></translation>
     </message>
@@ -70,55 +70,65 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="733"/>
-        <source>حروف معاني</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="819"/>
-        <source>عبارات اخرى</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="839"/>
-        <source>عبارات تظهر فقط في هذه السورة</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1142"/>
-        <source>عدد جميع الكلمات, مع تكرار</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="901"/>
-        <source>عدد الكلمات المختلفة (بدون تكرار)</source>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="750"/>
+        <source>كلمات مختلفة لها جذر مشترك تعتبر كلمات متشابهة (تجريبي)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="907"/>
+        <source>حروف معاني</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="758"/>
+        <source>جذر مختلف</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="765"/>
+        <source>عبارات اخرى</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="791"/>
+        <source>عبارات تظهر فقط في هذه السورة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1241"/>
+        <source>عدد جميع الكلمات, مع تكرار</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="970"/>
+        <source>عدد الكلمات المختلفة (بدون تكرار)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="982"/>
         <source>عدد الكلمات المختلفة في السورة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1058"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1145"/>
         <source>محو النتائج</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="701"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="863"/>
         <source>و&quot;  كلمة منفردة&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="717"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="885"/>
         <source>ويكأن&quot;  كلمتان&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="944"/>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1009"/>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1117"/>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1179"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1019"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1090"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1216"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1284"/>
         <source>0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -144,12 +154,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1084"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1183"/>
         <source>كلمات داخل التحديد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1148"/>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1253"/>
         <source>عدد كلمات السورة</source>
         <translation type="unfinished"></translation>
     </message>

@@ -31,6 +31,7 @@ class SpanInfo:
         self.words_from_beginning_of_quran = 0
         self.words_in_selection = 0
         self.surah_exclusive_words = []
+        self.surah_exclusive_words_diff_roots = []
         self.surah_exclusive_bigrams = []
         self.surah_exclusive_trigrams = []
 
@@ -38,6 +39,13 @@ class SpanInfo:
     def surah_exclusive_uni_random(self):
         chosen = choice(self.surah_exclusive_words)
         return f"{chosen[0]} ({chosen[1]})"
+
+    @property
+    def surah_exclusive_uni_diff_roots_random(self):
+        if len(self.surah_exclusive_words_diff_roots):
+            chosen = choice(self.surah_exclusive_words_diff_roots)
+            return f"{chosen[0]} ({chosen[1]})"
+        return ""
 
     @property
     def surah_exclusive_bi_random(self):

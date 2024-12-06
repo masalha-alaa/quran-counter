@@ -81,9 +81,20 @@
         <translation>Previous Juz</translation>
     </message>
     <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="750"/>
+        <source>كلمات مختلفة لها جذر مشترك تعتبر كلمات متشابهة (تجريبي)</source>
+        <translation>Different words that share the same root
+will be considered similar (experimental)</translation>
+    </message>
+    <message>
         <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="733"/>
         <source>حروف معاني</source>
         <translation>Grammatical particles</translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="759"/>
+        <source>جذر مختلف</source>
+        <translation>Different roots</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="800"/>
