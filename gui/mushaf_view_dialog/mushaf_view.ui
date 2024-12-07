@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1143</width>
+    <width>1144</width>
     <height>858</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
 color: rgb(207, 207, 207);
 font: 400 18pt &quot;Calibri&quot;;</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7" stretch="5,1">
+  <layout class="QVBoxLayout" name="verticalLayout_7" stretch="4,1">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout" stretch="6,0">
      <property name="spacing">
@@ -435,17 +435,37 @@ font: 400 18pt &quot;Calibri&quot;;</string>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="pageNumDisplay">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string notr="true">الصفحة</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_23">
+            <item>
+             <widget class="QLabel" name="pageSideIcon">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="../resources/resources.qrc">:/right-page-icon.png</pixmap>
+              </property>
+              <property name="scaledContents">
+               <bool>false</bool>
+              </property>
+              <property name="wordWrap">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="pageNumDisplay">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string notr="true">الصفحة</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <widget class="QPushButton" name="prevPushButton">

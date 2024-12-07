@@ -25,7 +25,7 @@ class Ui_MushafViewDialog(object):
     def setupUi(self, MushafViewDialog):
         if not MushafViewDialog.objectName():
             MushafViewDialog.setObjectName(u"MushafViewDialog")
-        MushafViewDialog.resize(1143, 858)
+        MushafViewDialog.resize(1144, 858)
         MushafViewDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
 "color: rgb(207, 207, 207);\n"
 "font: 400 18pt \"Calibri\";")
@@ -316,13 +316,26 @@ class Ui_MushafViewDialog(object):
 
         self.horizontalLayout_2.addWidget(self.nextPushButton)
 
+        self.horizontalLayout_23 = QHBoxLayout()
+        self.horizontalLayout_23.setObjectName(u"horizontalLayout_23")
+        self.pageSideIcon = QLabel(self.frame_4)
+        self.pageSideIcon.setObjectName(u"pageSideIcon")
+        self.pageSideIcon.setPixmap(QPixmap(u":/right-page-icon.png"))
+        self.pageSideIcon.setScaledContents(False)
+        self.pageSideIcon.setWordWrap(False)
+
+        self.horizontalLayout_23.addWidget(self.pageSideIcon)
+
         self.pageNumDisplay = QLabel(self.frame_4)
         self.pageNumDisplay.setObjectName(u"pageNumDisplay")
         self.pageNumDisplay.setStyleSheet(u"")
         self.pageNumDisplay.setText(u"\u0627\u0644\u0635\u0641\u062d\u0629")
         self.pageNumDisplay.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_2.addWidget(self.pageNumDisplay)
+        self.horizontalLayout_23.addWidget(self.pageNumDisplay)
+
+
+        self.horizontalLayout_2.addLayout(self.horizontalLayout_23)
 
         self.prevPushButton = QPushButton(self.frame_4)
         self.prevPushButton.setObjectName(u"prevPushButton")
@@ -824,7 +837,7 @@ class Ui_MushafViewDialog(object):
 
         self.verticalLayout_7.addWidget(self.frame)
 
-        self.verticalLayout_7.setStretch(0, 5)
+        self.verticalLayout_7.setStretch(0, 4)
         self.verticalLayout_7.setStretch(1, 1)
         QWidget.setTabOrder(self.pageInput, self.goToPageButton)
         QWidget.setTabOrder(self.goToPageButton, self.surahNumInput)
@@ -874,6 +887,7 @@ class Ui_MushafViewDialog(object):
         self.nextPushButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0635\u0641\u062d\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629", None))
 #endif // QT_CONFIG(tooltip)
         self.nextPushButton.setText("")
+        self.pageSideIcon.setText("")
 #if QT_CONFIG(tooltip)
         self.prevPushButton.setToolTip(QCoreApplication.translate("MushafViewDialog", u"\u0627\u0644\u0635\u0641\u062d\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629", None))
 #endif // QT_CONFIG(tooltip)

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QDialog
 from gui.mushaf_view_dialog.mushaf_view import Ui_MushafViewDialog
 from my_widgets.spinning_loader import SpinningLoader
 from PySide6.QtCore import Qt, QMutex, QTimer
-from PySide6.QtGui import QCursor, QIntValidator
+from PySide6.QtGui import QCursor, QIntValidator, QPixmap
 from my_utils.my_data_loader import MyDataLoader
 from text_validators.arabic_only_validator import ArabicOnlyValidator
 from worker_threads.span_info_thread import SpanInfo, SpanInfoThread
@@ -226,6 +226,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             uni = span_info.surah_exclusive_uni_random
         bi = span_info.surah_exclusive_bi_random
         tri = span_info.surah_exclusive_tri_random
+        ptrn = r"((?: |^)و) "
+        bi = re.sub(ptrn, r"\1", bi)
+        tri = re.sub(ptrn, r"\1", tri)
         txt_details = f"{uni}, {bi}, {tri}".strip(", ")
         txt = f"{span_info.surah_name}: {txt_details}"
         match span_info.metadata.current_surah_id:
@@ -235,6 +238,13 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                 self.exclusivePhrasesInSurah2.setText(txt)
             case 2:
                 self.exclusivePhrasesInSurah3.setText(txt)
+
+        if span_info.metadata.total_surahs_in_page == 1:
+            self.exclusivePhrasesInSurah2.setText("")
+            self.exclusivePhrasesInSurah3.setText("")
+
+        if span_info.metadata.total_surahs_in_page == 2:
+            self.exclusivePhrasesInSurah3.setText("")
 
     def clear_results(self):
         self.wordsInSelection.setText("0")
@@ -362,6 +372,10 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def show_verses_from_page(self, page_num):
         self.textBrowser.clear()
         self.pageNumDisplay.setText(f"{translate_text('صفحة')} {page_num}")
+        if page_num % 2 == 1:
+            self.pageSideIcon.setPixmap(QPixmap(u":/right-page-icon.png"))
+        else:
+            self.pageSideIcon.setPixmap(QPixmap(u":/left-page-icon.png"))
         self.juzzNumDisplay.setText(f"{translate_text('جزء')} {MyDataLoader.page_to_juzz(page_num)}")
 
         surahs_nums = []

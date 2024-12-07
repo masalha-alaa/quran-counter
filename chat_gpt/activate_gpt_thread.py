@@ -23,7 +23,7 @@ class ActivateGptThread(QThread):
                 openai.models.list()
                 self.activation_result.emit(True, self)
                 print("Activation completed successfully")
-            except openai.AuthenticationError:
+            except (openai.AuthenticationError, openai.APIConnectionError):
                 openai.api_key = None
                 self.activation_result.emit(False, self)
                 print("Activation error")

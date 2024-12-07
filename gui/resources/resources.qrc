@@ -10,5 +10,7 @@
         <file>in-order-icon.png</file>
         <file>right-arrow-icon.png</file>
         <file>left-arrow-icon.png</file>
+        <file>right-page-icon.png</file>
+        <file>left-page-icon.png</file>
     </qresource>
 </RCC>
