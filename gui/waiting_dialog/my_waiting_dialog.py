@@ -28,6 +28,7 @@ class MyWaitingDialog(QDialog, Ui_WaitingDialog):
 
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
+        self.spinner.setText("")
         self.spinner.start()
 
     def reject(self):

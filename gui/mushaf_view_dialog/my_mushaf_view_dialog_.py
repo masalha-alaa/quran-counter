@@ -739,7 +739,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         if verse_num_2:
             self.verseInput_2.setEnabled(False)
 
-    def waiting(self):
+    def waiting(self, text=""):
+        self.spinner.setText(text)
         self.spinner.start()
         self.disable_inputs()
 

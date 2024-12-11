@@ -4,141 +4,146 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="436"/>
+        <location filename="../gui/main_window/main_screen.ui" line="439"/>
         <source>نهاية كلمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="423"/>
+        <location filename="../gui/main_window/main_screen.ui" line="426"/>
         <source>كلمة كاملة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="321"/>
+        <location filename="../gui/main_window/main_screen.ui" line="324"/>
         <source>بداية كلمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="533"/>
+        <location filename="../gui/main_window/main_screen.ui" line="576"/>
         <source>العدد</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="589"/>
-        <location filename="../gui/main_window/main_screen.ui" line="840"/>
+        <location filename="../gui/main_window/main_screen.ui" line="632"/>
+        <location filename="../gui/main_window/main_screen.ui" line="889"/>
         <source>سور</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="645"/>
-        <location filename="../gui/main_window/main_screen.ui" line="705"/>
+        <location filename="../gui/main_window/main_screen.ui" line="688"/>
+        <location filename="../gui/main_window/main_screen.ui" line="754"/>
         <source>آيات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="985"/>
-        <location filename="../gui/main_window/main_screen.ui" line="1212"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1034"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1261"/>
         <source>مجموع النتائج المختارة:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="810"/>
+        <location filename="../gui/main_window/main_screen.ui" line="859"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="178"/>
+        <location filename="../gui/main_window/main_screen.ui" line="181"/>
         <source>بحث كلمتين مع امكانية عكس الترتيب</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="217"/>
+        <location filename="../gui/main_window/main_screen.ui" line="220"/>
         <source>&quot;ال&quot; التعريف خيارية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="298"/>
+        <location filename="../gui/main_window/main_screen.ui" line="301"/>
         <source>كلمات بنفس جذر كلمة البحث</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="308"/>
+        <location filename="../gui/main_window/main_screen.ui" line="311"/>
         <source>جذر</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="336"/>
+        <location filename="../gui/main_window/main_screen.ui" line="339"/>
         <source>كلمة مشابهة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="363"/>
+        <location filename="../gui/main_window/main_screen.ui" line="366"/>
         <source>عتبة التشابه</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="458"/>
+        <location filename="../gui/main_window/main_screen.ui" line="461"/>
         <source>ريچيكس</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="721"/>
+        <location filename="../gui/main_window/main_screen.ui" line="501"/>
+        <source>مواضيع</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="770"/>
         <source>تصفية النتائج بمساعدة ChatGPT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="744"/>
+        <location filename="../gui/main_window/main_screen.ui" line="793"/>
         <source>الغاء التصفية</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="928"/>
+        <location filename="../gui/main_window/main_screen.ui" line="977"/>
         <source>جميع
 النتائج</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="961"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1010"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1020"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1069"/>
         <source>كلمات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1102"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1151"/>
         <source>حركات</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1122"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1171"/>
         <source>حَورَفَة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1135"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1184"/>
         <source>ترجمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1176"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1225"/>
         <source>* ادخل حرفين او اكثر للبحث.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1186"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1235"/>
         <source>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1305"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1354"/>
         <source>تصفّح</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="270"/>
+        <location filename="../gui/main_window/main_screen.ui" line="273"/>
         <source>من غير تقييد</source>
         <translation type="unfinished"></translation>
     </message>
@@ -163,7 +168,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="152"/>
+        <location filename="../gui/main_window/main_screen.ui" line="155"/>
         <source>عدم التفريق بين &apos;ـت&apos; / &apos;ـة&apos;</source>
         <translation type="unfinished"></translation>
     </message>

@@ -58,6 +58,7 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
     # [COMMANDS BEGIN]
     def ask_gpt_for_meanings(self, word):
         self.resultsListWidget.clear()
+        self.spinner.setText("")
         self.spinner.start()
         self.worker.set_command_get_meanings(word, self._current_lang)
         self.worker.meanings_result_ready.connect(self.on_ask_gpt_for_meanings_completed)  # Connect signal to slot

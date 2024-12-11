@@ -58,8 +58,8 @@ class Ui_MainWindow(object):
         self.mushafNavigationButton.setObjectName(u"mushafNavigationButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_4 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(22)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -123,6 +123,7 @@ class Ui_MainWindow(object):
 "	font: 14pt;\n"
 "}")
         self.yaAlifMaksuraCheckbox.setText(u"\u0649 / \u064a")
+        self.yaAlifMaksuraCheckbox.setChecked(False)
 
         self.horizontalLayout_8.addWidget(self.yaAlifMaksuraCheckbox)
 
@@ -336,7 +337,31 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.addItem(self.verticalSpacer)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_23, 1, 2, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_23, 1, 3, 1, 1)
+
+        self.verticalLayout_24 = QVBoxLayout()
+        self.verticalLayout_24.setObjectName(u"verticalLayout_24")
+        self.topicsRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.topicsRadioButton)
+        self.topicsRadioButton.setObjectName(u"topicsRadioButton")
+#if QT_CONFIG(tooltip)
+        self.topicsRadioButton.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
+        self.topicsRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
+        self.topicsRadioButton.setChecked(False)
+
+        self.verticalLayout_24.addWidget(self.topicsRadioButton)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_24.addItem(self.verticalSpacer_4)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_24, 1, 2, 1, 1)
 
 
         self.horizontalLayout.addLayout(self.gridLayout)
@@ -346,14 +371,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout_4.addLayout(self.horizontalLayout)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
         self.line_6 = QFrame(self.centralwidget)
         self.line_6.setObjectName(u"line_6")
         self.line_6.setFrameShape(QFrame.Shape.HLine)
         self.line_6.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_4.addWidget(self.line_6)
+        self.verticalLayout_2.addWidget(self.line_6)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
@@ -446,10 +471,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(2, 1)
         self.horizontalLayout_2.setStretch(3, 2)
 
-        self.verticalLayout_4.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setEnabled(True)
+        self.tabWidget.setStyleSheet(u"")
         self.tabWidget.setLocale(QLocale(QLocale.Arabic, QLocale.Israel))
         self.tabWidget.setTabPosition(QTabWidget.North)
         self.tabWidget.setTabShape(QTabWidget.Triangular)
@@ -806,12 +833,12 @@ class Ui_MainWindow(object):
 
         self.tabWidget.addTab(self.wordsTab, "")
 
-        self.verticalLayout_4.addWidget(self.tabWidget)
+        self.verticalLayout_2.addWidget(self.tabWidget)
 
-        self.verticalLayout_4.setStretch(0, 1)
-        self.verticalLayout_4.setStretch(1, 1)
-        self.verticalLayout_4.setStretch(2, 1)
-        self.verticalLayout_4.setStretch(3, 8)
+        self.verticalLayout_2.setStretch(0, 1)
+        self.verticalLayout_2.setStretch(1, 1)
+        self.verticalLayout_2.setStretch(2, 1)
+        self.verticalLayout_2.setStretch(3, 8)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -914,6 +941,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.endOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0646\u0647\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
         self.regexRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0631\u064a\u0686\u064a\u0643\u0633", None))
+        self.topicsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0648\u0627\u0636\u064a\u0639", None))
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
 #endif // QT_CONFIG(tooltip)

@@ -64,6 +64,7 @@ class MyOpenAiKeySetupDialog(QDialog, Ui_OpenAiKeySetupDialog):
     def on_accepted(self):
         self.okButton.setEnabled(False)
         self.cancelButton.setEnabled(False)
+        self.spinner.setText("")
         self.spinner.start()
 
         if key := self.enterKeyLineEdit.text():

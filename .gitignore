@@ -14,3 +14,4 @@ issues.txt
 open_ai_key.txt
 color-test.html
 translations/*.qm
+/temp_venv/

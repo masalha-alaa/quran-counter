@@ -1,3 +1,4 @@
+import warnings
 from typing import Any
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QDialog
@@ -23,7 +24,7 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
         self._data_iter = None
         self._adding_items = False
         self._prev_scrolling_value = 0
-        self.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
+        self.connect_colorize()
         self.textBrowser.verticalScrollBar().actionTriggered.connect(self.before_scroll)
         self.textBrowser.verticalScrollBar().valueChanged.connect(self.after_scroll)
         # TODO: Make dialog title as the word in self._row_data.label
@@ -98,6 +99,27 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
         self._clear()
         self._reset_iter()
         self.load_more_items(self.items_to_load, prevent_scrolling=True)
+
+    def switch_colorize_state_without_firing(self, checked, enabled):
+        was_connected = self.disconnect_colorize()
+        if checked is not None:
+            self.colorizeCheckbox.setChecked(checked)
+        if enabled is not None:
+            self.colorizeCheckbox.setEnabled(enabled)
+        if was_connected:
+            self.connect_colorize()
+
+    def connect_colorize(self):
+        self.colorizeCheckbox.stateChanged.connect(self._toggle_colorize)
+
+    def disconnect_colorize(self):
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", RuntimeWarning)
+            try:
+                self.colorizeCheckbox.stateChanged.disconnect(self._toggle_colorize)
+            except SystemError:
+                return False
+        return True
 
     def before_scroll(self):
         scrollbar = self.textBrowser.verticalScrollBar()

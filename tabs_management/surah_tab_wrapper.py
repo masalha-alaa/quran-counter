@@ -22,7 +22,6 @@ class SurahTabWrapper(TabWrapper):
         self._setup_events()
 
     def init(self):
-
         self.lazy_surah_results_table = SharedData.ui.surahResultsTableWidget
         self.lazy_surah_results_table.set_item_selection_changed_callback(self.surah_results_selection_changed)
         self.lazy_surah_results_table.set_item_double_clicked_callback(self.surah_results_item_double_clicked)
@@ -39,6 +38,9 @@ class SurahTabWrapper(TabWrapper):
 
     def _toggle_all_surah_results(self, state):
         self.populate_results()
+
+    def switch_colorize_state_without_firing(self, checked, enabled):
+        self.detailed_surah_display_dialog.switch_colorize_state_without_firing(checked, enabled)
 
     def populate_results(self):
         self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
@@ -59,7 +61,7 @@ class SurahTabWrapper(TabWrapper):
         self._last_thread_id = thread_id
         self.lazy_surah_results_table.clear()
         self.lazy_surah_results_table.save_values(counts)
-        self.lazy_surah_results_table.sort(SurahTableHeaders.SURAH_NAME_HEADER)
+        self.lazy_surah_results_table.sort(SurahTableHeaders.SURAH_NUM_HEADER)
 
     def surah_results_selection_changed(self, selected_items: list[list]):
         total = sum(int(row[SurahTableHeaders.RESULTS_HEADER.value].text()) for row in selected_items)

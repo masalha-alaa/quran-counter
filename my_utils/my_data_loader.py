@@ -1,6 +1,9 @@
 import re
 import pandas as pd
-from PySide6.QtCore import QThread, Signal, QTimer
+try:
+    from PySide6.QtCore import QThread, Signal, QTimer
+except ImportError:
+    print("Warning: PySide6 not installed")
 from json import load as j_load
 from my_utils.utils import resource_path
 from my_utils.insensitive_to_al_tarif_dict import InsensitiveToAlTarifDict
@@ -8,16 +11,16 @@ from difflib import get_close_matches
 from arabic_reformer import waw_khunjariyah
 
 
-class ReCompileThread(QThread):
-    result_ready = Signal(pd.Series, QThread)
-
-    def __init__(self, col: pd.Series):
-        super().__init__()
-        self.col = col
-
-    def run(self):
-        compiled =  self.col.apply(re.compile)
-        self.result_ready.emit(compiled, self)
+# class ReCompileThread(QThread):
+#     result_ready = Signal(pd.Series, QThread)
+#
+#     def __init__(self, col: pd.Series):
+#         super().__init__()
+#         self.col = col
+#
+#     def run(self):
+#         compiled =  self.col.apply(re.compile)
+#         self.result_ready.emit(compiled, self)
 
 class PageVerses:
     def __init__(self, surah_num, verses_range, verses, has_next):
@@ -39,7 +42,7 @@ class MyDataLoader:
     waw_khunjariyah_words = None
     huroof_maani = None
     root_to_words = None
-    word_to_words = None
+    pca_for_embeddings = None
     FIRST_SURAH = 1
     LAST_SURAH = 114
     MIN_VERSE = 1
@@ -120,7 +123,7 @@ class MyDataLoader:
     # df methods [BEGIN]
     @staticmethod
     def get_verse(surah_num, verse_num):
-        return MyDataLoader.df.loc[int(surah_num), MyDataLoader._working_col][int(verse_num - 1)]
+        return MyDataLoader.df.loc[int(surah_num), MyDataLoader._working_col][int(verse_num) - 1]
 
     @staticmethod
     def get_verses(surah_num, verses_nums):

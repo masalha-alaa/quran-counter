@@ -1,3 +1,4 @@
+import warnings
 from chat_gpt.disambiguator import Disambiguator
 from gui.disambiguation_dialog.my_disambiguation_dialog import MyDidsambiguationDialog
 from gui.openai_key_setup_dialog.my_openai_key_setup_dialog import MyOpenAiKeySetupDialog
@@ -8,7 +9,7 @@ from my_utils.shared_data import SharedData
 from PySide6.QtCore import Slot
 from my_utils.utils import resource_path, load_translation
 from PySide6.QtWidgets import QDialog
-from PySide6.QtCore import QThread
+from PySide6.QtCore import QThread, QObject, SIGNAL
 
 
 class VerseTabWrapper(TabWrapper):
@@ -33,7 +34,7 @@ class VerseTabWrapper(TabWrapper):
         SharedData.found_verses.save_values_and_refresh([], [])
 
     def _setup_events(self):
-        SharedData.ui.colorizeCheckbox.stateChanged.connect(self._colorize_toggled)
+        self.connect_colorize()
         SharedData.ui.filterButton.clicked.connect(self._filter_button_clicked)
         SharedData.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
 
@@ -44,6 +45,28 @@ class VerseTabWrapper(TabWrapper):
 
     def _colorize_toggled(self, state):
         SharedData.found_verses.reset_iter_and_refresh(SharedData.all_matches, state)
+
+    def switch_colorize_state_without_firing(self, checked, enabled):
+        was_connected = self.disconnect_colorize()
+        if checked is not None:
+            SharedData.ui.colorizeCheckbox.setChecked(checked)
+        if enabled is not None:
+            SharedData.ui.colorizeCheckbox.setEnabled(enabled)
+        if was_connected:
+            self.connect_colorize()
+
+    def connect_colorize(self):
+        SharedData.ui.colorizeCheckbox.stateChanged.connect(self._colorize_toggled)
+
+    def disconnect_colorize(self):
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", RuntimeWarning)
+            try:
+                SharedData.ui.colorizeCheckbox.stateChanged.disconnect(self._colorize_toggled)
+            except SystemError:
+                return False
+        return True
+
 
     @Slot()
     def _clear_filter_button_clicked(self):
