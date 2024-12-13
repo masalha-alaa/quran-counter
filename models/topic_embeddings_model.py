@@ -46,26 +46,24 @@ class TopicEmbeddingsModel:
     def encode(self, t):
         cleaned_topic = remove_diacritics(t)
         cleaned_topic = normalize_alif(cleaned_topic)
-        enc = F.normalize(
-            torch.tensor(TopicEmbeddingsModel._pca_for_embeddings.transform(TopicEmbeddingsModel._model.encode(cleaned_topic, convert_to_tensor=True).cpu().reshape(1, -1)),
-                         dtype=torch.float32))
+        # enc = F.normalize(torch.tensor(TopicEmbeddingsModel._pca_for_embeddings.transform(TopicEmbeddingsModel._model.encode(cleaned_topic, convert_to_tensor=True).cpu().reshape(1, -1)), dtype=torch.float32))
+        enc = F.normalize(TopicEmbeddingsModel._model.encode(cleaned_topic, convert_to_tensor=True).cpu().reshape(1, -1))
         return enc
 
-    def get_relevant_verses(self, topic, threshold=0.75, return_text=False):
+    def get_relevant_verses(self, topic, threshold=0.70):
         def _sort_ref(ref):
             s, v = ref.split(":")
             return int(s), int(v)
 
         topic_embedding = self.encode(topic)
-        for i in range(len(TopicEmbeddingsModel._topic_embeddings) - 1, -1, -1):
-            similarities = torch.matmul(TopicEmbeddingsModel._topic_embeddings[i], topic_embedding.T).squeeze()
-            relevant = (similarities > threshold).numpy()
-            if relevant.sum() > 0:
-                # print(i)
-                verses = TopicEmbeddingsModel._topics_dataframe['verses'].iloc[relevant].dropna().explode().drop_duplicates().sort_values(
-                    key=lambda ser: ser.apply(_sort_ref))
-                if return_text:
-                    return verses.apply(lambda ref: MyDataLoader.get_verse(((s := ref.split(":"))[0]), s[1]))
-                else:
-                    return verses
-        return pd.Series([])
+        similarities = torch.matmul(TopicEmbeddingsModel._topic_embeddings, topic_embedding.T).squeeze()
+        # similarities = F.cosine_similarity(embeddings_resized, topic_embedding, dim=1).squeeze()
+        relevant_mask = (similarities > threshold).numpy()
+        if relevant_mask.sum():
+            relevant_topics = TopicEmbeddingsModel._topics_dataframe.iloc[relevant_mask]
+            merged_topics = relevant_topics.apply(lambda row: ' - '.join([row[i] if row[i] else '' for i in range(6)]).strip("- "), axis=1)
+            verses = relevant_topics['verses']
+            df = pd.DataFrame({"relevant_topics": merged_topics, "score": similarities[relevant_mask], "verses": verses})
+            df = df.explode('verses').drop_duplicates(subset='verses').sort_values(by='verses', key=lambda ser: ser.apply(_sort_ref))
+            return df
+        return pd.DataFrame({"relevant_topics": [], "score": [], "verses": []})

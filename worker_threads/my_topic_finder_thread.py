@@ -22,16 +22,21 @@ class TopicFinderThread(QThread):
         self.topic = topic
 
     def get_details(self, results):
-        total_number_of_matches = total_number_of_verses = results.shape[0]
-        surah_verse = pd.DataFrame(results.str.split(":").tolist())
-        surahs, verses = surah_verse[0], surah_verse[1]
-        number_of_surahs = surahs.nunique()
-        spans = []
-        for s, v in zip(surahs.values, verses.values):
-            verse_txt = MyDataLoader.get_verse(s, v)
-            # span = (0, len(verse_txt))
-            span = (0, 0)  # i don't want to color...
-            spans.append((int(s), int(v), verse_txt, span))
+        topics, verses = results['relevant_topics'], results['verses']
+        total_number_of_matches = total_number_of_verses = verses.shape[0]
+        if total_number_of_matches > 0:
+            surah_verse = pd.DataFrame(verses.str.split(":").tolist())
+            surahs, verses = surah_verse[0], surah_verse[1]
+            number_of_surahs = surahs.nunique()
+            spans = []
+            for s, v in zip(surahs.values, verses.values):
+                verse_txt = MyDataLoader.get_verse(s, v)
+                # span = (0, len(verse_txt))
+                span = (0, 0)  # i don't want to color...
+                spans.append((int(s), int(v), verse_txt, [span]))
+        else:
+            spans = []
+            number_of_surahs = 0
         return spans, total_number_of_matches, number_of_surahs, total_number_of_verses
 
     def is_model_initialized(self):

@@ -357,11 +357,11 @@ class MainWindow(QMainWindow):
             if is_checked:
                 self.tabs_manager.verse_tab_wrapper.switch_colorize_state_without_firing(False, False)
                 self.tabs_manager.surah_tab_wrapper.switch_colorize_state_without_firing(False, False)
-                self.tabs_manager.disable_tab(TabIndex.WORDS)
+                self.tabs_manager.hide_tab(TabIndex.WORDS)
             else:
                 self.tabs_manager.verse_tab_wrapper.switch_colorize_state_without_firing(True, True)
                 self.tabs_manager.surah_tab_wrapper.switch_colorize_state_without_firing(True, True)
-                self.tabs_manager.enable_tab(TabIndex.WORDS)
+                self.tabs_manager.show_tab(TabIndex.WORDS)
 
         if not is_checked:
             return

@@ -37,18 +37,13 @@ class TabsManager:
         self.surah_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
         self.word_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
 
-    def disable_tab(self, tab_index: TabIndex):
+    def hide_tab(self, tab_index: TabIndex):
         if tab_index.value == SharedData.ui.tabWidget.currentIndex():
             SharedData.ui.tabWidget.setCurrentIndex((tab_index.value + 1) % len(TabIndex))
-        SharedData.ui.tabWidget.setTabEnabled(tab_index.value, False)
+        SharedData.ui.tabWidget.setTabVisible(tab_index.value, False)
 
-        # change color - not working!
-        # tab_palette = SharedData.ui.tabWidget.tabBar().palette()
-        # tab_palette.setColor(SharedData.ui.tabWidget.backgroundRole(), QColor(136, 0, 0))
-        # SharedData.ui.tabWidget.tabBar().setTabData(tab_index.value, tab_palette)
-
-    def enable_tab(self, tab_index: TabIndex):
-        SharedData.ui.tabWidget.setTabEnabled(tab_index.value, True)
+    def show_tab(self, tab_index: TabIndex):
+        SharedData.ui.tabWidget.setTabVisible(tab_index.value, True)
 
     def clear_tabs_results(self):
         self.verse_tab_wrapper.clear()
