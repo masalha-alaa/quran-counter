@@ -4,7 +4,7 @@ from my_widgets.surah_lazy_table_widget import SurahLazyTableWidget
 from tabs_management.table_headers import SurahTableHeaders
 from my_widgets.tab_wrapper import TabWrapper
 from my_utils.shared_data import SharedData
-from worker_threads.surah_finder_thread import SurahFinderThread
+from worker_threads.surah_populator_thread import SurahPopulatorThread
 from my_utils.utils import resource_path, load_translation
 from gui.detailed_display_dialog.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
 from PySide6.QtCore import Qt
@@ -19,6 +19,7 @@ class SurahTabWrapper(TabWrapper):
         self._surah_index = safe_load(open(resource_path("surah_index.yml"), encoding='utf-8', mode='r'))
         self.detailed_surah_display_dialog = MySurahDetailedDisplayDialog(SharedData.app_language)
         self.lazy_surah_results_table:SurahLazyTableWidget|None = None
+        SharedData.ui.allResultsCheckbox.setVisible(False)
         self._setup_events()
 
     def init(self):
@@ -45,11 +46,11 @@ class SurahTabWrapper(TabWrapper):
     def populate_results(self):
         self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
         thread_id = datetime.now().timestamp()
-        surah_finder_thread = SurahFinderThread(self._surah_index, SharedData.ui.allResultsCheckbox.isChecked(), thread_id)
-        surah_finder_thread.set_data(SharedData.all_matches, SharedData.ui.allResultsCheckbox.isChecked())
-        surah_finder_thread.result_ready.connect(self.on_find_surahs_completed)
-        self._add_thread(surah_finder_thread)
-        surah_finder_thread.start()
+        surah_populator_thread = SurahPopulatorThread(self._surah_index, SharedData.ui.allResultsCheckbox.isChecked(), thread_id)
+        surah_populator_thread.set_data(SharedData.all_matches, SharedData.ui.allResultsCheckbox.isChecked())
+        surah_populator_thread.result_ready.connect(self.on_find_surahs_completed)
+        self._add_thread(surah_populator_thread)
+        surah_populator_thread.start()
 
     def on_find_surahs_completed(self, counts, thread_id, caller_thread):
         caller_thread.result_ready.disconnect(self.on_find_surahs_completed)

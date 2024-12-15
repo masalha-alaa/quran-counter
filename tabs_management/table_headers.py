@@ -24,6 +24,12 @@ class WordTableHeaders(TableHeaders):
     RESULTS_HEADER = auto()
     METADATA_POSITION = RESULTS_HEADER
 
+class TopicTableHeaders(TableHeaders):
+    TOPIC_NAME_HEADER = 0
+    SCORE_HEADER = auto()
+    RESULTS_HEADER = auto()
+    METADATA_POSITION = RESULTS_HEADER
+
 
 if __name__ == '__main__':
     print(f"{len(SurahTableHeaders) = }")  # doesn't include same value enums

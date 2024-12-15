@@ -5,7 +5,7 @@ from my_utils.shared_data import SharedData
 from gui.detailed_display_dialog.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
 from my_widgets.lazy_list_widget import CustomRow
 from tabs_management.table_headers import WordTableHeaders
-from worker_threads.word_bounds_finder_thread import WordBoundsFinderThread
+from worker_threads.word_bounds_populator_thread import WordBoundsPopulatorThread
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QTableWidgetItem
 
@@ -61,13 +61,13 @@ class WordTabWrapper(TabWrapper):
 
         self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
         thread_id = datetime.now().timestamp()
-        word_bounds_finder_thread = WordBoundsFinderThread(SharedData.ui.diacriticsCheckbox.isChecked(), thread_id)
-        word_bounds_finder_thread.set_data(SharedData.all_matches, SharedData.ui.diacriticsCheckbox.isChecked())
-        word_bounds_finder_thread.result_ready.connect(self.on_find_word_bounds_completed)
-        self._add_thread(word_bounds_finder_thread)
-        word_bounds_finder_thread.start()
+        word_bounds_populator_thread = WordBoundsPopulatorThread(SharedData.ui.diacriticsCheckbox.isChecked(), thread_id)
+        word_bounds_populator_thread.set_data(SharedData.all_matches, SharedData.ui.diacriticsCheckbox.isChecked())
+        word_bounds_populator_thread.result_ready.connect(self.on_find_word_bounds_completed)
+        self._add_thread(word_bounds_populator_thread)
+        word_bounds_populator_thread.start()
 
-    def on_find_word_bounds_completed(self, counts, thread_id, caller_thread: WordBoundsFinderThread):
+    def on_find_word_bounds_completed(self, counts, thread_id, caller_thread: WordBoundsPopulatorThread):
         caller_thread.result_ready.disconnect(self.on_find_word_bounds_completed)
         self._remove_thread(caller_thread)
         # reject older threads?

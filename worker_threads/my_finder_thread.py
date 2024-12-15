@@ -8,7 +8,7 @@ from nltk.stem.isri import ISRIStemmer
 from itertools import permutations
 from difflib import SequenceMatcher
 from preprocessing import Preprocessor
-
+from models.match_item import MatchItem
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 
 
@@ -236,8 +236,11 @@ class FinderThread(QThread):
             else:
                 matches_in_verse = [m.span(1) for m in re.finditer(w, verse)]
             if matches_in_verse:
-                # [(surah_num, verse_num, verse, [spans]), (...), ...]
-                all_matches.append((int(row.name), i + 1, verse, matches_in_verse))
+                match_item = MatchItem(surah_num=int(row.name),
+                                       verse_num = i + 1,
+                                       verse_text=verse,
+                                       spans=matches_in_verse)
+                all_matches.append(match_item)
                 number_of_matches += len(matches_in_verse)
             # if i % 100 == 0:
             #     QCoreApplication.processEvents()

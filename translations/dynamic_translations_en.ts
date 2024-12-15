@@ -487,6 +487,14 @@
         <source>عدد النتائج</source>
         <translation>Results</translation>
     </message>
+    <message>
+        <source>الموضوع</source>
+        <translation>Topic</translation>
+    </message>
+    <message>
+        <source>درجة الصلة (%)</source>
+        <translation>Relevancy Score (%)</translation>
+    </message>
     <!-- TABLE HEADERS [END] -->
     
     <!-- OTHER [BEGIN] -->

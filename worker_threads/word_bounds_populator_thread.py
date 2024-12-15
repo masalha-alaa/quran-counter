@@ -1,3 +1,4 @@
+from typing import List
 import re
 from functools import lru_cache
 from PySide6.QtCore import Signal, QThread
@@ -6,9 +7,10 @@ from arabic_reformer import diacritics_regex, alamaat_waqf, rub_el_hizb_mark
 from my_utils.my_data_loader import MyDataLoader
 from tabs_management.table_headers import WordTableHeaders
 from my_widgets.lazy_table_widget import CustomTableRow
+from models.match_item import MatchItem
 
 
-class WordBoundsFinderThread(QThread):
+class WordBoundsPopulatorThread(QThread):
     result_ready = Signal(list, float, QThread)
     _diacritics_regex = re.compile(diacritics_regex)
     # _word_separator_regex = re.compile(rf"[{''.join(alamaat_waqf)}{rub_el_hizb_mark} ]+")
@@ -17,7 +19,7 @@ class WordBoundsFinderThread(QThread):
     def __init__(self, diacritics_sensitive=True, thread_id=None):
         super().__init__()
         self._thread_id = thread_id
-        self._matches = []
+        self._matches: List[MatchItem]= []
         self._diacritics_sensitive = diacritics_sensitive
 
     def set_data(self, matches, diacritics_sensitive):
@@ -26,12 +28,16 @@ class WordBoundsFinderThread(QThread):
 
     @lru_cache(maxsize=1000)
     def remove_diacritics(self, word):
-        return WordBoundsFinderThread._diacritics_regex.sub("", word)
+        return WordBoundsPopulatorThread._diacritics_regex.sub("", word)
 
     def run(self):
         # print(f"word bounds start {id(self)}")
         counts = defaultdict(list)
-        for surah_num, verse_num, verse, spans in self._matches:
+        for match_item in self._matches:
+            surah_num = match_item.surah_num
+            verse_num = match_item.verse_num
+            verse = match_item.verse_text
+            spans = match_item.spans
             for span in spans:
                 # spaces = list(re.finditer(" ", verse[:span[0]]))
                 # word_id_first_match = len(spaces)
@@ -40,7 +46,7 @@ class WordBoundsFinderThread(QThread):
                 # Strip rub el hizb mark at the beginning (lstrip and not rstrip although Arabic is RTL,
                 # because 'l' means "leading".
                 # 'r' means trailing btw.
-                word_id_first_match = len(re.findall(WordBoundsFinderThread._word_separator_regex, verse[:span[0]].lstrip(f"{rub_el_hizb_mark} ")))
+                word_id_first_match = len(re.findall(WordBoundsPopulatorThread._word_separator_regex, verse[:span[0]].lstrip(f"{rub_el_hizb_mark} ")))
                 word_start = verse.rfind(" ", 0, span[0]) + 1
                 word_end = verse.find(" ", span[1])
                 if word_end == -1:

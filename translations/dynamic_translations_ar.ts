@@ -487,6 +487,14 @@
         <source>عدد النتائج</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>الموضوع</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>درجة الصلة (%)</source>
+        <translation type="unfinished"></translation>
+    </message>
     <!-- TABLE HEADERS [END] -->
     
     <!-- OTHER [BEGIN] -->

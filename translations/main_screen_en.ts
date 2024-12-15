@@ -87,6 +87,12 @@
         <translation>Regex</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="501"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1300"/>
+        <source>مواضيع</source>
+        <translation>Topic</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="668"/>
         <source>تصفية النتائج بمساعدة ChatGPT</source>
         <translation>Filter results using ChatGPT</translation>

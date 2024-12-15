@@ -1,3 +1,4 @@
+import os.path
 from abc import abstractmethod
 from typing import Callable, Any
 from enum import Enum
@@ -6,8 +7,9 @@ from PySide6.QtWidgets import QTableWidgetItem
 from PySide6.QtWidgets import QTableWidget
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
+from PySide6.QtGui import QIcon, QPixmap
 
-from my_utils.utils import translate_text
+from my_utils.utils import translate_text, resource_path
 from .custom_table_row import CustomTableRow
 from tabs_management.table_headers import TableHeaders
 from .custom_table_widget_item import CustomTableWidgetItem
@@ -64,6 +66,18 @@ class MyLazyTableWidget(QTableWidget):
         self._selection_changed_callback = None
         self._item_double_clicked_callback = None
         self._previous_row = -1
+        self._ascending_sort_icon = self._create_ascending_sort_icon()
+        self._descending_sort_icon = self._create_descending_sort_icon()
+
+    def _create_ascending_sort_icon(self):
+        custom_pixmap = QPixmap(resource_path("gui/resources/up-arrow-icon.png"))
+        custom_icon = QIcon(custom_pixmap)
+        return custom_icon
+
+    def _create_descending_sort_icon(self):
+        custom_pixmap = QPixmap(resource_path("gui/resources/down-arrow-icon.png"))
+        custom_icon = QIcon(custom_pixmap)
+        return custom_icon
 
     def wheelEvent(self, event):
         scroll_amount = self._rows_per_scroll
@@ -154,23 +168,29 @@ class MyLazyTableWidget(QTableWidget):
     def on_header_clicked(self, col_idx:int|TableHeaders):
         self.sort(col_idx)
 
-    def sort(self, col_idx:int|TableHeaders):
+    def sort(self, col_idx:int|TableHeaders, forced_sorting_dir:None|SortingOrder=None):
         if isinstance(col_idx, TableHeaders):
             col_idx = col_idx.value
 
-        reverse = self._last_sorting_direction[col_idx] == SortingOrder.ASCENDING
+        if forced_sorting_dir is None:
+            reverse = self._last_sorting_direction[col_idx] == SortingOrder.ASCENDING
+            self._last_sorting_direction[col_idx] = self._last_sorting_direction[col_idx].flip()
+        else:
+            reverse = forced_sorting_dir == SortingOrder.DESCENDING
+            self._last_sorting_direction[col_idx] = forced_sorting_dir
+
         self._rows.sort(key=lambda x:x[col_idx], reverse=reverse)
         self._rows_iter = iter(self._rows)
-        # self.horizontalHeader().setSortIndicator(col_idx,
-        #                                                       self._last_sorting_direction[col_idx].convert_to_qt_sorting_type())
-        self._last_sorting_direction[col_idx] = self._last_sorting_direction[col_idx].flip()
         for idx in range(len(self._last_sorting_direction)):
             if idx != col_idx:
                 self._last_sorting_direction[idx] = SortingOrder.DESCENDING
         self.clear()
         self.load_more_items()
-        # sort again by qt just to show the arrow symbol
-        self.sortByColumn(col_idx, self._last_sorting_direction[col_idx].convert_to_qt_sorting_type())
+
+        # show arrow
+        header_item = self.horizontalHeaderItem(col_idx)
+        header_item.setIcon(self._descending_sort_icon if reverse else self._ascending_sort_icon)
+        self.resizeColumnsToContents()
 
     def before_scroll(self):
         scrollbar = self.verticalScrollBar()
@@ -204,6 +224,8 @@ class MyLazyTableWidget(QTableWidget):
         if self.rowCount() == 0:
             self.setColumnCount(len(self._headers))
             self.setHorizontalHeaderLabels(self.get_translated_headers())
+            # for idx in range(self.columnCount()):
+            #     self.horizontalHeader().resizeSection(idx, self.horizontalHeader().sectionSize(idx) + 30)
             if self._tooltips:
                 for i,t in enumerate(self._tooltips):
                     if t:

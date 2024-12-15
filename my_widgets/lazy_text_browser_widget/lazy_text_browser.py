@@ -1,6 +1,8 @@
+from typing import List, Iterator
 from PySide6.QtWidgets import QTextBrowser
 from my_utils.emphasizer import emphasize_span, CssColors
 from arabic_reformer import reform_text
+from models.match_item import MatchItem
 
 
 class LazyTextBrowser(QTextBrowser):
@@ -13,7 +15,7 @@ class LazyTextBrowser(QTextBrowser):
 
         self._prev_scrolling_value = 0
         self._adding_items = False
-        self._filtered_matches_iter = None
+        self._filtered_matches_iter: Iterator[MatchItem] = None
         self._filtered_matches_idx = []
         self.verticalScrollBar().actionTriggered.connect(self.before_scroll)
         self.verticalScrollBar().valueChanged.connect(self.after_scroll)
@@ -45,14 +47,14 @@ class LazyTextBrowser(QTextBrowser):
         if colorize is not None:
             self._colorize = colorize
         self._filtered_matches_idx = matches_idx
-        filtered_matches = []
+        filtered_matches: List[MatchItem] = []
         surahs = set()
         matches_num = 0
         for idx in self._filtered_matches_idx:
             filtered_matches.append(all_matches[idx])
-            surah_num, _, _, spans = all_matches[idx]
-            surahs.add(surah_num)
-            matches_num += len(spans)
+            match_item = all_matches[idx]
+            surahs.add(match_item.surah_num)
+            matches_num += len(match_item.spans)
 
         self._filtered_matches_iter = iter(filtered_matches)
         self.clear()
@@ -85,9 +87,9 @@ class LazyTextBrowser(QTextBrowser):
         scrollbar = self.verticalScrollBar()
         current_scroll_value = scrollbar.value()
         for _ in range(items_to_load):
-            if (item := next(self._filtered_matches_iter, LazyTextBrowser._exhausted)) is LazyTextBrowser._exhausted:
+            if (match_item := next(self._filtered_matches_iter, LazyTextBrowser._exhausted)) is LazyTextBrowser._exhausted:
                 return _done()
-            surah_num, verse_num, verse, spans = item
+            surah_num, verse_num, verse, spans = match_item.surah_num, match_item.verse_num, match_item.verse_text, match_item.spans
             ref = f"{surah_num}:{verse_num}"
             if colorize:
                 verse = self.reform_and_color(verse, spans)

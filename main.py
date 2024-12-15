@@ -197,7 +197,7 @@ class MainWindow(QMainWindow):
                 or ((SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked())
                     and (len(stripped) < 2 or len(stripped.split()) != 1))
                 or (SharedData.ui.topicsRadioButton.isChecked()
-                    and len(stripped.replace(" ", "")) < 4)):
+                    and len(stripped.replace(" ", "")) < 3)):
             self.clear_results()
             self.tabs_manager.refresh_tabs_config()
             SharedData.ui.filterButton.setEnabled(False)
@@ -358,10 +358,12 @@ class MainWindow(QMainWindow):
                 self.tabs_manager.verse_tab_wrapper.switch_colorize_state_without_firing(False, False)
                 self.tabs_manager.surah_tab_wrapper.switch_colorize_state_without_firing(False, False)
                 self.tabs_manager.hide_tab(TabIndex.WORDS)
+                self.tabs_manager.show_tab(TabIndex.TOPICS)
             else:
                 self.tabs_manager.verse_tab_wrapper.switch_colorize_state_without_firing(True, True)
                 self.tabs_manager.surah_tab_wrapper.switch_colorize_state_without_firing(True, True)
                 self.tabs_manager.show_tab(TabIndex.WORDS)
+                self.tabs_manager.hide_tab(TabIndex.TOPICS)
 
         if not is_checked:
             return

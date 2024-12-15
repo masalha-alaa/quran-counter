@@ -9,5 +9,10 @@ class CustomTableWidgetItem(QTableWidgetItem):
     def __lt__(self, other):
         if self.type() == TableDataType.INT:
             return int(self.text()) < int(other.text())
+        if self.type() == TableDataType.FLOAT:
+            return float(self.text()) < float(other.text())
         return self.text() < other.text()
+
+    def __str__(self):
+        return str(self.text())
 

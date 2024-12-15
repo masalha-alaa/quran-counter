@@ -2,6 +2,7 @@ import pandas as pd
 from my_utils.my_data_loader import MyDataLoader
 from PySide6.QtCore import Signal, QThread, QMutex
 from models.topic_embeddings_model import TopicEmbeddingsModel
+from models.match_item import MatchItem
 
 
 class TopicFinderThread(QThread):
@@ -22,18 +23,26 @@ class TopicFinderThread(QThread):
         self.topic = topic
 
     def get_details(self, results):
-        topics, verses = results['relevant_topics'], results['verses']
-        total_number_of_matches = total_number_of_verses = verses.shape[0]
+        # topics, scores, verses = results['relevant_topics'], results['score'], results['verses']
+        total_number_of_matches = total_number_of_verses = results.shape[0]
         if total_number_of_matches > 0:
-            surah_verse = pd.DataFrame(verses.str.split(":").tolist())
-            surahs, verses = surah_verse[0], surah_verse[1]
-            number_of_surahs = surahs.nunique()
+            unique_surahs = set()
             spans = []
-            for s, v in zip(surahs.values, verses.values):
-                verse_txt = MyDataLoader.get_verse(s, v)
+            for _, row in results.iterrows():
+                topic, score, refs = row['relevant_topics'], row['score'], row['verses']
+                surah, verse = refs.split(":")
+                unique_surahs.add(surah)
+
+                verse_txt = MyDataLoader.get_verse(surah, verse)
                 # span = (0, len(verse_txt))
                 span = (0, 0)  # i don't want to color...
-                spans.append((int(s), int(v), verse_txt, [span]))
+                match_item = MatchItem(surah_num=int(surah),
+                                       verse_num = int(verse),
+                                       verse_text=verse_txt,
+                                       other={"topic": topic, "score": score},
+                                       spans=[span])
+                spans.append(match_item)
+            number_of_surahs = len(unique_surahs)
         else:
             spans = []
             number_of_surahs = 0

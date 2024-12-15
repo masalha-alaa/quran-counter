@@ -1,17 +1,19 @@
+from typing import List
 from PySide6.QtCore import Signal, QThread, Qt
 from PySide6.QtWidgets import QTableWidgetItem
 from collections import defaultdict
 from my_widgets.lazy_table_widget import CustomTableRow, TableDataType
 from tabs_management.table_headers import SurahTableHeaders
+from models.match_item import MatchItem
 
 
-class SurahFinderThread(QThread):
+class SurahPopulatorThread(QThread):
     result_ready = Signal(list, float, QThread)
 
     def __init__(self, surah_index: dict, include_zeros=False, thread_id=None):
         super().__init__()
         self._thread_id = thread_id
-        self._matches = []
+        self._matches: List[MatchItem]= []
         self._surah_index = surah_index
         self._include_zeros = include_zeros
 
@@ -22,7 +24,10 @@ class SurahFinderThread(QThread):
     def run(self):
         # print(f"surah start {id(self)}")
         count_by_surah = defaultdict(list)
-        for surah_num, verse_num, verse, spans in self._matches:
+        for match_item in self._matches:
+            surah_num = match_item.surah_num
+            verse_num = match_item.verse_num
+            spans = match_item.spans
             if surah_num not in count_by_surah:
                 count_by_surah[surah_num] = [len(spans), [(surah_num, verse_num, spans)]]
             else:

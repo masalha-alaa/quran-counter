@@ -12,5 +12,7 @@
         <file>left-arrow-icon.png</file>
         <file>right-page-icon.png</file>
         <file>left-page-icon.png</file>
+        <file>down-arrow-icon.png</file>
+        <file>up-arrow-icon.png</file>
     </qresource>
 </RCC>
