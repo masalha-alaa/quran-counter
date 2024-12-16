@@ -492,7 +492,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>درجة الصلة (%)</source>
+        <source>(%) درجة الصلة</source>
         <translation type="unfinished"></translation>
     </message>
     <!-- TABLE HEADERS [END] -->

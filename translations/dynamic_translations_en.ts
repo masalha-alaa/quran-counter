@@ -492,7 +492,7 @@
         <translation>Topic</translation>
     </message>
     <message>
-        <source>درجة الصلة (%)</source>
+        <source>(%) درجة الصلة</source>
         <translation>Relevancy Score (%)</translation>
     </message>
     <!-- TABLE HEADERS [END] -->

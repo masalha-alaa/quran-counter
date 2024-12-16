@@ -11,7 +11,7 @@ class TopicLazyTableWidget(MyLazyTableWidget):
         super().__init__(parent, default_items_load)
         headers = [None] * len(TopicTableHeaders)
         headers[TopicTableHeaders.TOPIC_NAME_HEADER.value] = "الموضوع"
-        headers[TopicTableHeaders.SCORE_HEADER.value] = "درجة الصلة (%)"
+        headers[TopicTableHeaders.SCORE_HEADER.value] = "(%) درجة الصلة"
         headers[TopicTableHeaders.RESULTS_HEADER.value] =  "عدد النتائج"
         self.set_headers(headers)
 
