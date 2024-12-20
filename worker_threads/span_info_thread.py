@@ -39,7 +39,7 @@ class SpanInfo:
         if len(population):
             chosen = ["", 0]
             max_retries = 5
-            while (not chosen[0] or chosen[0].endswith("و")) and max_retries > 0:
+            while (not chosen[0] or chosen[0] == "و" or chosen[0].endswith(" و")) and max_retries > 0:
                 chosen = choice(population)
                 max_retries -= 1
             return chosen
