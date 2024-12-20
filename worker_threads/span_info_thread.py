@@ -35,34 +35,35 @@ class SpanInfo:
         self.surah_exclusive_bigrams = []
         self.surah_exclusive_trigrams = []
 
-    def _my_choose_random(self, population):
-        chosen = ["", 0]
+    def _my_choose_random(self, population, default=None):
         if len(population):
+            chosen = ["", 0]
             max_retries = 5
-            while not chosen[0] or chosen[0].endswith("و") or max_retries > 0:
+            while (not chosen[0] or chosen[0].endswith("و")) and max_retries > 0:
                 chosen = choice(population)
                 max_retries -= 1
-        return chosen
+            return chosen
+        return default
 
     @property
     def surah_exclusive_uni_random(self):
         chosen = self._my_choose_random(self.surah_exclusive_words)
-        return f"{chosen[0]} ({chosen[1]})"
+        return "" if chosen is None else f"{chosen[0]} ({chosen[1]})"
 
     @property
     def surah_exclusive_uni_diff_roots_random(self):
         chosen = self._my_choose_random(self.surah_exclusive_words_diff_roots)
-        return chosen
+        return "" if chosen is None else f"{chosen[0]} ({chosen[1]})"
 
     @property
     def surah_exclusive_bi_random(self):
         chosen = self._my_choose_random(self.surah_exclusive_bigrams)
-        return f"{chosen[0]} ({chosen[1]})"
+        return "" if chosen is None else f"{chosen[0]} ({chosen[1]})"
 
     @property
     def surah_exclusive_tri_random(self):
         chosen = self._my_choose_random(self.surah_exclusive_trigrams)
-        return f"{chosen[0]} ({chosen[1]})"
+        return "" if chosen is None else f"{chosen[0]} ({chosen[1]})"
 
     def __repr__(self):
         return (f"{self.surah_name = }\n"
