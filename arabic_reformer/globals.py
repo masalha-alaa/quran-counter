@@ -9,7 +9,8 @@ alamaat_waqf = ["\u06D6", "\u06D8", "\u06D9", "\u06DA", "\u06DB", "\u06D7", "\u0
 _long_harakat = ["\u06E5", "\u06E6", "\u06E7"]
 alif_khunjariyah = "\u0670"  # ـٰ
 waw_khunjariyah = "وٰ"  # 2 characters
-_n_to_m_conversion = "\u06E2"
+_n_to_m_conversion_high = "\u06E2"
+_n_to_m_conversion_low = "\u06ED"
 rub_el_hizb_mark = "\u06DE"
 sujood_mark = "\u06E9"
 alif_maksura = "\u0649"  # "ى"
@@ -20,7 +21,7 @@ _hamza = "\u0621"  # "ء"
 _hamzas = [_hamza, _hamza_above]
 _tatweel_character = "\u0640"
 _special_diacritics = ["\uFC60", "\uFC61", "\uFC62", _tatweel_character, "\u06DF", "\u06EA"] + [
-    alif_khunjariyah] + alamaat_waqf + _long_harakat + [_n_to_m_conversion]
+    alif_khunjariyah] + alamaat_waqf + _long_harakat + [_n_to_m_conversion_high, _n_to_m_conversion_low]
 diacritics_regex = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
 diacritics_regex_compiled = re_compile(diacritics_regex)
 diacritics_ending_regex_compiled = re_compile(f"{diacritics_regex}+$")
