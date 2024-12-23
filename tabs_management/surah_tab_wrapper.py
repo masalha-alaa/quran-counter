@@ -70,7 +70,7 @@ class SurahTabWrapper(TabWrapper):
 
     def surah_results_item_double_clicked(self, item: QTableWidgetItem):
         metadata = SharedData.ui.surahResultsTableWidget.item(item.row(), SurahTableHeaders.METADATA_POSITION.value).data(Qt.ItemDataRole.UserRole)
-        if load_translation(SharedData.translator, resource_path(f"translations/word_detailed_display_{SharedData.app_language.value}.qm")):
+        if load_translation(SharedData.translator, resource_path(f"translations/word_detailed_display_dialog_{SharedData.app_language.value}.qm")):
             self.detailed_surah_display_dialog.set_language(SharedData.app_language)
         self.detailed_surah_display_dialog.set_data(metadata)
         # self.detailed_word_display_dialog.open()
