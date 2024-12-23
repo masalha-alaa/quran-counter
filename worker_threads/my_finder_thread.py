@@ -3,7 +3,7 @@ from functools import lru_cache
 import re
 from my_utils.my_data_loader import MyDataLoader
 from PySide6.QtCore import Signal, QThread, QMutex
-from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, arabic_alphabit, remove_diacritics
+from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, arabic_alphabit, remove_diacritics, Alif
 from nltk.stem.isri import ISRIStemmer
 from itertools import permutations
 from difflib import SequenceMatcher
@@ -211,7 +211,7 @@ class FinderThread(QThread):
         offset = 0
         SEPARATOR = ' '
         for i, w in enumerate(sentence.split(SEPARATOR)):  # assuming one space separator
-            ratio = SequenceMatcher(None, word, remove_diacritics(w)).ratio()
+            ratio = SequenceMatcher(None, word, remove_diacritics(w).replace(Alif.ALIF_WITH_HAMZAT_WASL, Alif.ALIF).replace(Alif.ALIF_WITH_HAMZAT_WASL2, Alif.ALIF)).ratio()
             if ratio >= threshold:
                 match = (offset, offset + len(w))
                 matches.append(match)

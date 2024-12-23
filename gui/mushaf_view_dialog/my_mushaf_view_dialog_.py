@@ -370,6 +370,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         return None
 
     def show_verses_from_page(self, page_num):
+        page_num = int(page_num)
         self.textBrowser.clear()
         self.pageNumDisplay.setText(f"{translate_text('صفحة')} {page_num}")
         if page_num % 2 == 1:
