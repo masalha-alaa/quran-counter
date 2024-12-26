@@ -73,32 +73,35 @@ class Preprocessor:
             diac_removal = self.diac_removal
 
         s_processed = []
-        for w in text.split():
-            if w.endswith(waw_khunjariyah):
-                w = w[:-1]
-            # NOTE: normalize_waw_khunjariya must be before removing diac
-            # NOTE: khunjariyah is removed by remove_diacritics
-            w = MyDataLoader.normalize_waw_khunjariya(w)
-            if not w.startswith("و") or MyDataLoader.is_waw_part_of_word(w):
-                s_processed.append(w)
-            else:
-                if split_waw:
-                    s_processed.append(w[0])
-                    s_processed.append(w[1:])
+        for s in text.split("\n"):
+            v = []
+            for w in s.split():
+                if w.endswith(waw_khunjariyah):
+                    w = w[:-1]
+                # NOTE: normalize_waw_khunjariya must be before removing diac
+                # NOTE: khunjariyah is removed by remove_diacritics
+                w = MyDataLoader.normalize_waw_khunjariya(w)
+                if not w.startswith("و") or MyDataLoader.is_waw_part_of_word(w):
+                    v.append(w)
                 else:
-                    s_processed.append(w)
-        for i, w in enumerate(s_processed):
-            match diac_removal:
-                case DiacriticsRemoval.DO_NOT_REMOVE:
-                    pass
-                case DiacriticsRemoval.REMOVE_ALL:
-                    s_processed[i] = remove_diacritics(w)
-                case DiacriticsRemoval.REMOVE_LAST:
-                    s_processed[i] = strip_last_diacritic(w)
-        s_processed = ' '.join(s_processed)
-        s_processed = normalize_alif(MyDataLoader.normalize_waw_khunjariya(s_processed), normalize_khunjariya=True)
-        s_processed = Preprocessor.space_regex.sub(" ", s_processed).strip()
-        return s_processed
+                    if split_waw:
+                        v.append(w[0])
+                        v.append(w[1:])
+                    else:
+                        v.append(w)
+            for i, w in enumerate(v):
+                match diac_removal:
+                    case DiacriticsRemoval.DO_NOT_REMOVE:
+                        pass
+                    case DiacriticsRemoval.REMOVE_ALL:
+                        v[i] = remove_diacritics(w)
+                    case DiacriticsRemoval.REMOVE_LAST:
+                        v[i] = strip_last_diacritic(w)
+            v = ' '.join(v)
+            v = normalize_alif(MyDataLoader.normalize_waw_khunjariya(v), normalize_khunjariya=True)
+            v = Preprocessor.space_regex.sub(" ", v).strip()
+            s_processed.append(v)
+        return '\n'.join(s_processed)
 
     def replace_laa(self, ser):
         return (ser.str.replace(self.s1, self.t1).
@@ -120,6 +123,6 @@ class Preprocessor:
 if __name__ == '__main__':
     # TEST
     # s = "وَأَطِيعُوا۟ ٱللَّهَ وَأَطِيعُوا۟ ٱلرَّسُولَ ۚ فَإِن تَوَلَّيْتُمْ فَإِنَّمَا عَلَىٰ رَسُولِنَا ٱلْبَلَـٰغُ ٱلْمُبِينُ"
-    s = "وَلَقَدْ ءَاتَيْنَا مُوسَى ٱلْكِتَـٰبَ مِنۢ بَعْدِ مَآ أَهْلَكْنَا ٱلْقُرُونَ ٱلْأُولَىٰ بَصَآئِرَ لِلنَّاسِ وَهُدًى وَرَحْمَةً لَّعَلَّهُمْ يَتَذَكَّرُونَُ"
+    s = "وَلَقَدْ ءَاتَيْنَا مُوسَى ٱلْكِتَـٰبَ مِنۢ بَعْدِ مَآ أَهْلَكْنَا ٱلْقُرُونَ ٱلْأُولَىٰ\nبَصَآئِرَ لِلنَّاسِ وَهُدًى وَرَحْمَةً لَّعَلَّهُمْ يَتَذَكَّرُونَُ"
     preprocessor = Preprocessor()
     print(preprocessor.preprocess_sentence(s))

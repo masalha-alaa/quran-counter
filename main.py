@@ -66,6 +66,8 @@ class MainWindow(QMainWindow):
         SharedData.ui.surahResultsSum.setText(str(0))
         SharedData.ui.wordSum.setText(str(0))
 
+        SharedData.ui.topicsRadioButton.setEnabled(False)  # TODO: Remove
+
     def _apply_language(self, lang):
         if lang != SharedData.app_language and load_translation(SharedData.translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and load_translation(SharedData.dynamic_translator, resource_path(f"translations/dynamic_translations_{lang.value}.qm")):
             app.installTranslator(SharedData.translator)
@@ -127,7 +129,7 @@ class MainWindow(QMainWindow):
     def _view_mushaf(self):
         if load_translation(SharedData.translator, resource_path(f"translations/mushaf_view_{SharedData.app_language.value}.qm")):
             self.mushaf_view_display.set_language(SharedData.app_language)
-        self.mushaf_view_display.exec()
+        self.mushaf_view_display.show()
 
     def clear_results(self):
         SharedData.matches_number = ""
