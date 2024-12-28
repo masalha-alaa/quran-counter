@@ -72,6 +72,11 @@
         <translation>Root</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="339"/>
+        <source>كلمات مشابهة (في الصياغة وليس في المعنى)</source>
+        <translation>Similar words (in syntax, not in meaning)</translation>
+    </message>
+    <message>
         <location filename="../gui/main_window/main_screen.ui" line="456"/>
         <source>كلمة مشابهة</source>
         <translation>Similar word</translation>

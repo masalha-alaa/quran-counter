@@ -335,6 +335,9 @@ QToolTip {
           </property>
           <item>
            <widget class="QRadioButton" name="similarWordRadioButton">
+            <property name="toolTip">
+             <string>كلمات مشابهة (في الصياغة وليس في المعنى)</string>
+            </property>
             <property name="text">
              <string>كلمة مشابهة</string>
             </property>

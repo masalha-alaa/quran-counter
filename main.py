@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
         SharedData.ui.surahResultsSum.setText(str(0))
         SharedData.ui.wordSum.setText(str(0))
 
-        SharedData.ui.topicsRadioButton.setEnabled(False)  # TODO: Remove
+        # SharedData.ui.topicsRadioButton.setEnabled(False)  # TODO: Remove
 
     def _apply_language(self, lang):
         if lang != SharedData.app_language and load_translation(SharedData.translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and load_translation(SharedData.dynamic_translator, resource_path(f"translations/dynamic_translations_{lang.value}.qm")):

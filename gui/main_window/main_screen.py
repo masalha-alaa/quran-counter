@@ -995,7 +995,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1032,6 +1032,9 @@ class Ui_MainWindow(object):
         self.beginningOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.beginningOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0628\u062f\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
+#if QT_CONFIG(tooltip)
+        self.similarWordRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0645\u0634\u0627\u0628\u0647\u0629 (\u0641\u064a \u0627\u0644\u0635\u064a\u0627\u063a\u0629 \u0648\u0644\u064a\u0633 \u0641\u064a \u0627\u0644\u0645\u0639\u0646\u0649)", None))
+#endif // QT_CONFIG(tooltip)
         self.similarWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0645\u0634\u0627\u0628\u0647\u0629", None))
 #if QT_CONFIG(tooltip)
         self.similarityThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062a\u0628\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))

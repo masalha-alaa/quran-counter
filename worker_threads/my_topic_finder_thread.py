@@ -56,7 +56,7 @@ class TopicFinderThread(QThread):
             if not self.model.is_initialized:
                 self.model.initialize()
                 self.initialization_ready.emit(self._thread_id, self)
-            result = self.model.get_relevant_verses(self.topic)
+            result = self.model.get_relevant_verses(self.topic, 2)
             detailed_results = self.get_details(result)
             self.result_ready.emit(self.topic, detailed_results, self._thread_id, self)
         # print(f"topic finder end {id(self)}")
