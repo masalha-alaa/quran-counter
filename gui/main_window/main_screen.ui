@@ -269,6 +269,13 @@ QToolTip {
          <layout class="QVBoxLayout" name="verticalLayout_20">
           <item>
            <widget class="QRadioButton" name="noRestrictionsRadioButton">
+            <property name="styleSheet">
+             <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+            </property>
             <property name="text">
              <string>من غير تقييد</string>
             </property>
@@ -320,6 +327,13 @@ QToolTip {
           <property name="toolTip">
            <string/>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+          </property>
           <property name="text">
            <string>بداية كلمة</string>
           </property>
@@ -337,6 +351,13 @@ QToolTip {
            <widget class="QRadioButton" name="similarWordRadioButton">
             <property name="toolTip">
              <string>كلمات مشابهة (في الصياغة وليس في المعنى)</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
             </property>
             <property name="text">
              <string>كلمة مشابهة</string>
@@ -425,6 +446,13 @@ QToolTip {
           <property name="toolTip">
            <string/>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+          </property>
           <property name="text">
            <string>كلمة كاملة</string>
           </property>
@@ -437,6 +465,13 @@ QToolTip {
          <widget class="QRadioButton" name="endOfWordRadioButton">
           <property name="toolTip">
            <string/>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
           </property>
           <property name="text">
            <string>نهاية كلمة</string>

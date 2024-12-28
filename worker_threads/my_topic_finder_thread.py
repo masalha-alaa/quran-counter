@@ -1,4 +1,3 @@
-import pandas as pd
 from my_utils.my_data_loader import MyDataLoader
 from PySide6.QtCore import Signal, QThread, QMutex
 from models.topic_embeddings_model import TopicEmbeddingsModel
@@ -56,7 +55,6 @@ class TopicFinderThread(QThread):
             if not self.model.is_initialized:
                 self.model.initialize()
                 self.initialization_ready.emit(self._thread_id, self)
-            result = self.model.get_relevant_verses(self.topic, 2)
+            result = self.model.get_relevant_verses(self.topic, 2, True)
             detailed_results = self.get_details(result)
             self.result_ready.emit(self.topic, detailed_results, self._thread_id, self)
-        # print(f"topic finder end {id(self)}")

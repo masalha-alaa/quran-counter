@@ -228,6 +228,11 @@ class Ui_MainWindow(object):
         self.searchOptionsButtonGroup.setObjectName(u"searchOptionsButtonGroup")
         self.searchOptionsButtonGroup.addButton(self.noRestrictionsRadioButton)
         self.noRestrictionsRadioButton.setObjectName(u"noRestrictionsRadioButton")
+        self.noRestrictionsRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
         self.noRestrictionsRadioButton.setChecked(True)
 
         self.verticalLayout_20.addWidget(self.noRestrictionsRadioButton)
@@ -253,6 +258,11 @@ class Ui_MainWindow(object):
         self.beginningOfWordRadioButton = QRadioButton(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.beginningOfWordRadioButton)
         self.beginningOfWordRadioButton.setObjectName(u"beginningOfWordRadioButton")
+        self.beginningOfWordRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
 
         self.gridLayout.addWidget(self.beginningOfWordRadioButton, 0, 0, 1, 1)
 
@@ -262,6 +272,11 @@ class Ui_MainWindow(object):
         self.similarWordRadioButton = QRadioButton(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.similarWordRadioButton)
         self.similarWordRadioButton.setObjectName(u"similarWordRadioButton")
+        self.similarWordRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
 
         self.verticalLayout_18.addWidget(self.similarWordRadioButton)
 
@@ -307,12 +322,22 @@ class Ui_MainWindow(object):
         self.fullWordRadioButton = QRadioButton(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.fullWordRadioButton)
         self.fullWordRadioButton.setObjectName(u"fullWordRadioButton")
+        self.fullWordRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
 
         self.gridLayout.addWidget(self.fullWordRadioButton, 0, 1, 1, 1)
 
         self.endOfWordRadioButton = QRadioButton(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.endOfWordRadioButton)
         self.endOfWordRadioButton.setObjectName(u"endOfWordRadioButton")
+        self.endOfWordRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
 
         self.gridLayout.addWidget(self.endOfWordRadioButton, 0, 2, 1, 1)
 
