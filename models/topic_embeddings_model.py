@@ -1,3 +1,5 @@
+import os.path
+
 import numpy as np
 import pickle
 import pandas as pd
@@ -8,6 +10,7 @@ from datetime import datetime
 from preprocessing import Preprocessor
 from enum import Enum
 import json
+import zipfile
 
 
 class EncodingMethods(Enum):
@@ -37,7 +40,10 @@ class TopicEmbeddingsModel:
             print(f"{torch.cuda.is_available() = }")
             device = torch.device('cuda') if torch.cuda.is_available() else 'cpu'
             # model_name = 'sentence-transformers/xlm-r-bert-base-nli-stsb-mean-tokens'
-            model_name = 'embedding_models/topic_sim_model__2024_01_23__16_57_30'
+            model_name = resource_path('embedding_models/topic_sim_model__2024_01_23__16_57_30')
+            if not os.path.exists(model_name):
+                with zipfile.ZipFile(f"{model_name}.zip", 'r') as z:
+                    z.extractall(resource_path('embedding_models'))
             TopicEmbeddingsModel._model = SentenceTransformer(model_name, device=device)
             print(f"{datetime.now()} Done initializing topics model")
             TopicEmbeddingsModel._initialized = True
