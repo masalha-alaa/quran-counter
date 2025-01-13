@@ -13,13 +13,11 @@ from gui.main_window.main_screen import Ui_MainWindow
 from text_validators.composite_validator import CompositeValidator
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 from worker_threads.my_finder_thread import FinderThread
-from worker_threads.my_topic_finder_thread import TopicFinderThread
 from arabic_reformer import is_alif, alif_maksura
-from gui.mushaf_view_dialog.my_mushaf_view_dialog_ import MyMushafViewDialog
+from gui.mushaf_view_dialog.my_mushaf_view_dialog import MyMushafViewDialog
 from my_widgets.spinning_loader import SpinningLoader
 from my_utils.utils import AppLang, resource_path, load_translation, scale, ScaleRounding, translate_text
 from tabs_management.tabs_manager import TabsManager, TabIndex
-from models.topic_embeddings_model import TopicEmbeddingsModel
 
 
 class MainWindow(QMainWindow):
@@ -27,7 +25,6 @@ class MainWindow(QMainWindow):
     MAX_WORDS_IF_NOT_MAINTAIN_ORDER = 2
     MAX_WORDS_IF_ROOT = 1
     MAX_WORDS_IF_SIMILAR_WORD = 1
-    MAX_WORDS_FOR_TOPICS = 5
     _exhausted = object()
     REMOVE_THREAD_AFTER_MS = 500
     # RUNNING_THREADS_MUTEX = QMutex()
@@ -66,7 +63,6 @@ class MainWindow(QMainWindow):
         SharedData.ui.surahResultsSum.setText(str(0))
         SharedData.ui.wordSum.setText(str(0))
 
-        # SharedData.ui.topicsRadioButton.setEnabled(False)  # TODO: Remove
 
     def _apply_language(self, lang):
         if lang != SharedData.app_language and load_translation(SharedData.translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and load_translation(SharedData.dynamic_translator, resource_path(f"translations/dynamic_translations_{lang.value}.qm")):
@@ -117,8 +113,6 @@ class MainWindow(QMainWindow):
                 max_words = MainWindow.MAX_WORDS_IF_ROOT
             case SharedData.ui.similarWordRadioButton:
                 max_words = MainWindow.MAX_WORDS_IF_SIMILAR_WORD
-            case SharedData.ui.topicsRadioButton:
-                max_words = MainWindow.MAX_WORDS_FOR_TOPICS
             case _:
                 if SharedData.ui.wordPermutationsCheckbox.isChecked():
                     max_words = MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER
@@ -197,9 +191,7 @@ class MainWindow(QMainWindow):
         SharedData.all_matches = []
         if ((not (stripped := new_text.strip()))
                 or ((SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked())
-                    and (len(stripped) < 2 or len(stripped.split()) != 1))
-                or (SharedData.ui.topicsRadioButton.isChecked()
-                    and len(stripped.replace(" ", "")) < 3)):
+                    and (len(stripped) < 2 or len(stripped.split()) != 1))):
             self.clear_results()
             self.tabs_manager.refresh_tabs_config()
             SharedData.ui.filterButton.setEnabled(False)
@@ -219,58 +211,28 @@ class MainWindow(QMainWindow):
             self.waiting()
 
         thread_id = datetime.now().timestamp()
-        if SharedData.ui.topicsRadioButton.isChecked():
-            topics_finder_thread = TopicFinderThread(thread_id)
-            topics_finder_thread.set_data(new_text)
-            if not topics_finder_thread.is_model_initialized():
-                self.waiting("Initializing model...")
-                topics_finder_thread.initialization_ready.connect(self.on_topics_model_initialization_ready)
-            topics_finder_thread.result_ready.connect(self.on_topics_found_complete)
-            self._add_thread(topics_finder_thread)
-            topics_finder_thread.start()
-        else:
-            finder_thread = FinderThread(thread_id)
-            finder_thread.set_data(new_text,
-                                   SharedData.ui.alifAlifMaksuraCheckbox.isChecked() and SharedData.ui.alifAlifMaksuraCheckbox.isEnabled(),
-                                   SharedData.ui.yaAlifMaksuraCheckbox.isChecked() and SharedData.ui.yaAlifMaksuraCheckbox.isEnabled(),
-                                   SharedData.ui.finalTaCheckbox.isChecked() and SharedData.ui.finalTaCheckbox.isEnabled(),
-                                   not (SharedData.ui.wordPermutationsCheckbox.isChecked() and SharedData.ui.wordPermutationsCheckbox.isEnabled()),
-                                   SharedData.ui.optionalAlTarifCheckbox.isChecked() and SharedData.ui.optionalAlTarifCheckbox.isEnabled(),
-                                   SharedData.full_word_checkbox,
-                                   SharedData.beginning_of_word_checkbox,
-                                   SharedData.ending_of_word_checkbox,
-                                   SharedData.ui.rootRadioButton.isChecked(),
-                                   SharedData.ui.regexRadioButton.isChecked(),
-                                   SharedData.ui.similarWordRadioButton.isChecked(),
-                                   scale(int(SharedData.ui.similarityThresholdLabel.text()),
-                                         SharedData.ui.similarityThresholdSlider.minimum(),
-                                         SharedData.ui.similarityThresholdSlider.maximum(),
-                                         FinderThread.MIN_CLOSE_MATCH_RAW_THRESHOLD,
-                                         FinderThread.MAX_CLOSE_MATCH_RAW_THRESHOLD,
-                                         rounding=ScaleRounding.FLOOR) if SharedData.ui.similarWordRadioButton.isChecked() else None)
-            finder_thread.result_ready.connect(self.on_txt_found_complete)
-            self._add_thread(finder_thread)
-            finder_thread.start()
-
-    def on_topics_model_initialization_ready(self, thread_id, caller_thread: TopicFinderThread):
-        caller_thread.initialization_ready.disconnect(self.on_topics_model_initialization_ready)
-        self.finished_waiting()
-
-    def on_topics_found_complete(self, initial_word, result, thread_id, caller_thread: TopicFinderThread):
-        caller_thread.result_ready.disconnect(self.on_topics_found_complete)
-        self._remove_thread(caller_thread)
-        # reject older threads
-        if thread_id < self._last_thread_id:
-            return
-        self._last_thread_id = thread_id
-
-        SharedData.all_matches, number_of_matches, number_of_surahs, number_of_verses = result
-        SharedData.matches_number = str(number_of_matches)
-        SharedData.matches_number_surahs = str(number_of_surahs)
-        SharedData.matches_number_verses = str(number_of_verses)
-
-        self.tabs_manager.on_txt_found_complete(initial_word, number_of_matches)
-        self.finished_waiting()
+        finder_thread = FinderThread(thread_id)
+        finder_thread.set_data(new_text,
+                               SharedData.ui.alifAlifMaksuraCheckbox.isChecked() and SharedData.ui.alifAlifMaksuraCheckbox.isEnabled(),
+                               SharedData.ui.yaAlifMaksuraCheckbox.isChecked() and SharedData.ui.yaAlifMaksuraCheckbox.isEnabled(),
+                               SharedData.ui.finalTaCheckbox.isChecked() and SharedData.ui.finalTaCheckbox.isEnabled(),
+                               not (SharedData.ui.wordPermutationsCheckbox.isChecked() and SharedData.ui.wordPermutationsCheckbox.isEnabled()),
+                               SharedData.ui.optionalAlTarifCheckbox.isChecked() and SharedData.ui.optionalAlTarifCheckbox.isEnabled(),
+                               SharedData.full_word_checkbox,
+                               SharedData.beginning_of_word_checkbox,
+                               SharedData.ending_of_word_checkbox,
+                               SharedData.ui.rootRadioButton.isChecked(),
+                               SharedData.ui.regexRadioButton.isChecked(),
+                               SharedData.ui.similarWordRadioButton.isChecked(),
+                               scale(int(SharedData.ui.similarityThresholdLabel.text()),
+                                     SharedData.ui.similarityThresholdSlider.minimum(),
+                                     SharedData.ui.similarityThresholdSlider.maximum(),
+                                     FinderThread.MIN_CLOSE_MATCH_RAW_THRESHOLD,
+                                     FinderThread.MAX_CLOSE_MATCH_RAW_THRESHOLD,
+                                     rounding=ScaleRounding.FLOOR) if SharedData.ui.similarWordRadioButton.isChecked() else None)
+        finder_thread.result_ready.connect(self.on_txt_found_complete)
+        self._add_thread(finder_thread)
+        finder_thread.start()
 
     def on_txt_found_complete(self, initial_word, words_num, result, thread_id, caller_thread: FinderThread):
         caller_thread.result_ready.disconnect(self.on_txt_found_complete)
@@ -350,22 +312,6 @@ class MainWindow(QMainWindow):
             SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
             SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
             SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
-        elif button == SharedData.ui.topicsRadioButton:
-            SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
-            SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
-            SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
-            SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
-            SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
-            if is_checked:
-                self.tabs_manager.verse_tab_wrapper.switch_colorize_state_without_firing(False, False)
-                self.tabs_manager.surah_tab_wrapper.switch_colorize_state_without_firing(False, False)
-                self.tabs_manager.hide_tab(TabIndex.WORDS)
-                self.tabs_manager.show_tab(TabIndex.TOPICS)
-            else:
-                self.tabs_manager.verse_tab_wrapper.switch_colorize_state_without_firing(True, True)
-                self.tabs_manager.surah_tab_wrapper.switch_colorize_state_without_firing(True, True)
-                self.tabs_manager.show_tab(TabIndex.WORDS)
-                self.tabs_manager.hide_tab(TabIndex.TOPICS)
 
         if not is_checked:
             return
