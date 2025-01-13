@@ -1,25 +1,13 @@
 import os
 import sys
 from math import ceil
-from enum import Enum, auto
 from arabic_reformer import strip_last_diacritic
 from paths import ROOT_DIR
 try:
     from PySide6.QtCore import QCoreApplication
 except ImportError:
     print("Warning: PySide6 not installed")
-
-class AppLang(Enum):
-    ARABIC = "ar"
-    ENGLISH = "en"
-    DEFAULT_LANGUAGE = ARABIC
-
-
-class ScaleRounding(Enum):
-    NONE = auto()
-    NORMAL = auto()
-    CEIL = auto()
-    FLOOR = auto()
+from my_utils.my_enums import *
 
 
 def resource_path(relative_path):

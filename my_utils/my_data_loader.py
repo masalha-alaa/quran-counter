@@ -42,6 +42,7 @@ class MyDataLoader:
     waw_khunjariyah_words = None
     huroof_maani = None
     root_to_words = None
+    word_to_words = None
     pca_for_embeddings = None
     FIRST_SURAH = 1
     LAST_SURAH = 114
