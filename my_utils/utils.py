@@ -1,7 +1,10 @@
+import importlib
+import subprocess
 import os
 import sys
 from math import ceil
 from arabic_reformer import strip_last_diacritic
+from my_utils.package_details import PackageDetails
 from paths import ROOT_DIR
 try:
     from PySide6.QtCore import QCoreApplication
@@ -22,9 +25,12 @@ def resource_path(relative_path):
         return relative_path
 
 
-def translate_text(text):
-    return QCoreApplication.translate("Dynamic", text)
+class DynamicTranslationSrcLang:
+    ARABIC = 'Ar'
+    ENGLISH = 'En'
 
+def translate_text(text, src_lang: DynamicTranslationSrcLang = DynamicTranslationSrcLang.ARABIC):
+    return QCoreApplication.translate(f"{src_lang} Src Dynamic", text)
 
 def load_translation(translator, path):
     return translator.load(resource_path(path))
@@ -46,3 +52,37 @@ def scale(x, old_min, old_max, new_min, new_max, rounding:ScaleRounding=ScaleRou
         case _:
             pass
     return new_x
+
+def is_package_installed(package_name: PackageDetails|str):
+    try:
+        importlib.import_module(package_name if isinstance(package_name, str) else package_name.package_import_name)
+        return True
+    except (ImportError, ModuleNotFoundError):
+        return False
+
+def is_torch_installed_with_gpu():
+    is_installed = is_package_installed("torch")
+    if is_installed:
+        import torch
+        return hasattr(torch._C, "_cuda_getDeviceCount")
+    return False
+
+def is_cuda_available():
+    try:
+        subprocess.run(["nvidia-smi"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cuda_available = True
+    except FileNotFoundError:
+        cuda_available = False
+    except subprocess.CalledProcessError:
+        cuda_available = False
+
+    return cuda_available
+
+def is_topics_model_available():
+    model_name = resource_path('embedding_models/topic_sim_model')
+    print(f"{model_name = }")
+    return os.path.exists(model_name)
+
+def is_topics_model_zip_available():
+    model_name = resource_path('embedding_models/topic_sim_model')
+    return os.path.exists(f"{model_name}.zip")

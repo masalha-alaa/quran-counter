@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>Dynamic</name>
+    <name>Ar Src Dynamic</name>
     <!-- SURAHS [BEGIN] -->
     <message>
         <source>الفاتحة</source>

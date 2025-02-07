@@ -25,6 +25,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup, QC
 
 from my_widgets.lazy_text_browser_widget.lazy_text_browser import LazyTextBrowser
 from my_widgets.surah_lazy_table_widget import SurahLazyTableWidget
+from my_widgets.topic_lazy_table_widget import TopicLazyTableWidget
 from my_widgets.word_lazy_table_widget import WordLazyTableWidget
 import resources_rc
 
@@ -362,7 +363,31 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.addItem(self.verticalSpacer)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_23, 1, 2, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_23, 1, 3, 1, 1)
+
+        self.verticalLayout_24 = QVBoxLayout()
+        self.verticalLayout_24.setObjectName(u"verticalLayout_24")
+        self.topicsRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.topicsRadioButton)
+        self.topicsRadioButton.setObjectName(u"topicsRadioButton")
+#if QT_CONFIG(tooltip)
+        self.topicsRadioButton.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
+        self.topicsRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
+        self.topicsRadioButton.setChecked(False)
+
+        self.verticalLayout_24.addWidget(self.topicsRadioButton)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_24.addItem(self.verticalSpacer_4)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_24, 1, 2, 1, 1)
 
 
         self.horizontalLayout.addLayout(self.gridLayout)
@@ -837,6 +862,108 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addLayout(self.horizontalLayout_12)
 
         self.tabWidget.addTab(self.wordsTab, "")
+        self.topicsTab = QWidget()
+        self.topicsTab.setObjectName(u"topicsTab")
+        self.verticalLayout_3 = QVBoxLayout(self.topicsTab)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.topicResultsTableWidget = TopicLazyTableWidget(self.topicsTab)
+        self.topicResultsTableWidget.setObjectName(u"topicResultsTableWidget")
+        self.topicResultsTableWidget.setMouseTracking(True)
+        self.topicResultsTableWidget.setFocusPolicy(Qt.NoFocus)
+        self.topicResultsTableWidget.setStyleSheet(u"QTableWidget {\n"
+"        font-size: 17pt;\n"
+"    }\n"
+"QHeaderView {\n"
+"        font-size: 17pt;\n"
+"    }\n"
+"\n"
+"/*headers*/\n"
+"QHeaderView::section {\n"
+"        background-color: lightblue;\n"
+"        color: darkblue;\n"
+"    }\n"
+"/*headers when corresponding cell is selected*/\n"
+"QHeaderView::section:checked {\n"
+"        background-color: lightblue;\n"
+"        border: 1px outset darkgray;\n"
+"    }\n"
+"\n"
+"/*corner*/\n"
+"QTableCornerButton::section {\n"
+"    background-color: rgb(59, 59, 59);\n"
+"    }\n"
+"\n"
+"/*selected item*/\n"
+"QTableWidget::item:selected {\n"
+"        background-color: rgba(47, 74, 97, 1.0);\n"
+"        color: rgb(207, 207, 207);\n"
+"        border: none;\n"
+"    }\n"
+"")
+        self.topicResultsTableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.topicResultsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.topicResultsTableWidget.setSortingEnabled(False)
+        self.topicResultsTableWidget.setRowCount(0)
+        self.topicResultsTableWidget.setColumnCount(0)
+
+        self.horizontalLayout_6.addWidget(self.topicResultsTableWidget)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_6)
+
+        self.horizontalLayout_17 = QHBoxLayout()
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.verticalLayout_22 = QVBoxLayout()
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.minimum_letters_restriction_lbl_2 = QLabel(self.topicsTab)
+        self.minimum_letters_restriction_lbl_2.setObjectName(u"minimum_letters_restriction_lbl_2")
+        self.minimum_letters_restriction_lbl_2.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
+
+        self.verticalLayout_22.addWidget(self.minimum_letters_restriction_lbl_2)
+
+        self.label_10 = QLabel(self.topicsTab)
+        self.label_10.setObjectName(u"label_10")
+        self.label_10.setStyleSheet(u"font: italic 400 10pt \"Calibri\";")
+
+        self.verticalLayout_22.addWidget(self.label_10)
+
+
+        self.horizontalLayout_17.addLayout(self.verticalLayout_22)
+
+        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_17.addItem(self.horizontalSpacer_11)
+
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_17)
+
+        self.horizontalLayout_16 = QHBoxLayout()
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.label_9 = QLabel(self.topicsTab)
+        self.label_9.setObjectName(u"label_9")
+
+        self.horizontalLayout_16.addWidget(self.label_9)
+
+        self.topicSum = QLineEdit(self.topicsTab)
+        self.topicSum.setObjectName(u"topicSum")
+        self.topicSum.setEnabled(False)
+        self.topicSum.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.horizontalLayout_16.addWidget(self.topicSum)
+
+        self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_16.addItem(self.horizontalSpacer_10)
+
+        self.horizontalLayout_16.setStretch(0, 1)
+        self.horizontalLayout_16.setStretch(1, 1)
+        self.horizontalLayout_16.setStretch(2, 8)
+
+        self.verticalLayout_3.addLayout(self.horizontalLayout_16)
+
+        self.tabWidget.addTab(self.topicsTab, "")
 
         self.verticalLayout_2.addWidget(self.tabWidget)
 
@@ -893,7 +1020,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -949,6 +1076,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.endOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0646\u0647\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
         self.regexRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0631\u064a\u0686\u064a\u0643\u0633", None))
+        self.topicsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0648\u0627\u0636\u064a\u0639", None))
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
 #endif // QT_CONFIG(tooltip)
@@ -989,6 +1117,10 @@ class Ui_MainWindow(object):
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629.", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.wordsTab), QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a", None))
+        self.minimum_letters_restriction_lbl_2.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u062f\u062e\u0644 \u062d\u0631\u0641\u064a\u0646 \u0627\u0648 \u0627\u0643\u062b\u0631 \u0644\u0644\u0628\u062d\u062b.", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"* \u0627\u0636\u063a\u0637 \u0645\u0631\u062a\u064a\u0646 \u0639\u0644\u0649 \u0627\u0644\u0646\u062a\u064a\u062c\u0629 \u0644\u0639\u0631\u0636 \u062a\u0641\u0627\u0635\u064a\u0644 \u0645\u0648\u0633\u0651\u0639\u0629.", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"\u0645\u062c\u0645\u0648\u0639 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0627\u0644\u0645\u062e\u062a\u0627\u0631\u0629:", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.topicsTab), QCoreApplication.translate("MainWindow", u"\u0645\u0648\u0627\u0636\u064a\u0639", None))
         self.mushafViewButton.setTitle("")
     # retranslateUi
 

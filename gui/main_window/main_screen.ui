@@ -481,7 +481,7 @@ QToolTip {
           </attribute>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <layout class="QVBoxLayout" name="verticalLayout_23">
           <item>
            <widget class="QRadioButton" name="regexRadioButton">
@@ -508,6 +508,46 @@ QToolTip {
           </item>
           <item>
            <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="2">
+         <layout class="QVBoxLayout" name="verticalLayout_24">
+          <item>
+           <widget class="QRadioButton" name="topicsRadioButton">
+            <property name="toolTip">
+             <string notr="true"/>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>مواضيع</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">searchOptionsButtonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -748,7 +788,7 @@ QToolTip {
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <property name="styleSheet">
@@ -1293,6 +1333,149 @@ QTableWidget::item:selected {
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="topicsTab">
+       <attribute name="title">
+        <string>مواضيع</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="TopicLazyTableWidget" name="topicResultsTableWidget">
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QTableWidget {
+        font-size: 17pt;
+    }
+QHeaderView {
+        font-size: 17pt;
+    }
+
+/*headers*/
+QHeaderView::section {
+        background-color: lightblue;
+        color: darkblue;
+    }
+/*headers when corresponding cell is selected*/
+QHeaderView::section:checked {
+        background-color: lightblue;
+        border: 1px outset darkgray;
+    }
+
+/*corner*/
+QTableCornerButton::section {
+    background-color: rgb(59, 59, 59);
+    }
+
+/*selected item*/
+QTableWidget::item:selected {
+        background-color: rgba(47, 74, 97, 1.0);
+        color: rgb(207, 207, 207);
+        border: none;
+    }
+</string>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>false</bool>
+            </property>
+            <property name="rowCount">
+             <number>0</number>
+            </property>
+            <property name="columnCount">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_17">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_22">
+            <item>
+             <widget class="QLabel" name="minimum_letters_restriction_lbl_2">
+              <property name="styleSheet">
+               <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+              </property>
+              <property name="text">
+               <string>* ادخل حرفين او اكثر للبحث.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_10">
+              <property name="styleSheet">
+               <string notr="true">font: italic 400 10pt &quot;Calibri&quot;;</string>
+              </property>
+              <property name="text">
+               <string>* اضغط مرتين على النتيجة لعرض تفاصيل موسّعة.</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_11">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="1,1,8">
+          <item>
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>مجموع النتائج المختارة:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="topicSum">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -1374,6 +1557,11 @@ QTableWidget::item:selected {
    <class>WordLazyTableWidget</class>
    <extends>QTableWidget</extends>
    <header>my_widgets.word_lazy_table_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>TopicLazyTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>my_widgets.topic_lazy_table_widget</header>
   </customwidget>
  </customwidgets>
  <tabstops>

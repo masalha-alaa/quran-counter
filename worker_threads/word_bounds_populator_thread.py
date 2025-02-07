@@ -62,19 +62,21 @@ class WordBoundsPopulatorThread(QThread):
                 if not self._diacritics_sensitive:
                     word = self.remove_diacritics(word)
                 if word in counts and surah_num == counts[word][-1][0] and verse_num == counts[word][-1][1]:
-                    counts[word][-1].extend((word_start, word_end))
+                    counts[word][-1].extend((word_start, word_end, len(word.split())))
                 else:
-                    counts[word].append([surah_num, verse_num, word_id_first_match, word_start, word_end])
+                    counts[word].append([surah_num, verse_num, word_id_first_match, word_start, word_end, len(word.split())])
+                # ^^^ the order of the fields here affects code below and my_word_detailed_display_dialog.py
 
         rows = []
         for w, data in counts.items():
             row_results = [None] * len(WordTableHeaders)
             row_results[WordTableHeaders.WORD_TEXT_HEADER.value] = w
             # TODO: This is only translation of first match...
-            eng_translit, eng_transl = MyDataLoader.get_word_eng_transliteration(data[0][0], data[0][1], data[0][2])
+            eng_translit, eng_transl = MyDataLoader.get_word_eng_transliteration(data[0][0], data[0][1], data[0][2], data[0][5])
             row_results[WordTableHeaders.ENGLISH_TRANSLATION.value] = eng_transl
             row_results[WordTableHeaders.ENGLISH_TRANSLITERATION.value] = eng_translit
-            row_results[WordTableHeaders.RESULTS_HEADER.value] = sum(((len(lst) - 2) // 2) for lst in data)
+            # 3 is the number of extra fields beyond "surah_num, verse_num, word_id_first_match" in 'counts' above
+            row_results[WordTableHeaders.RESULTS_HEADER.value] = sum(((len(lst) - 3) // 3) for lst in data)
             rows.append(CustomTableRow(row_results, data))
 
         self._matches = []

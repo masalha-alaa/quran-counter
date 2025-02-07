@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ar_EG">
 <context>
-    <name>Dynamic</name>
+    <name>Ar Src Dynamic</name>
     <!-- SURAHS [BEGIN] -->
     <message>
         <source>الفاتحة</source>
@@ -519,7 +519,6 @@
         <source>صفحة</source>
         <translation type="unfinished"></translation>
     </message>
-    
     <!-- OTHER [END] -->
 </context>
 </TS>

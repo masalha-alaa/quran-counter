@@ -36,9 +36,17 @@ pyside6-lupdate gui/mushaf_view_dialog/mushaf_view.ui -ts translations/mushaf_vi
 pyside6-lrelease translations/mushaf_view_ar.ts
 pyside6-lrelease translations/mushaf_view_en.ts
 
+REM download_dialog dialog
+pyside6-uic .\gui\download_dialog\download_dialog.ui -o .\gui\download_dialog\download_dialog.py
+pyside6-lupdate gui/download_dialog/download_dialog.ui -ts translations/download_dialog_ar.ts
+pyside6-lrelease translations/download_dialog_ar.ts
+pyside6-lrelease translations/download_dialog_en.ts
+
 REM dynamic_translations
-pyside6-lrelease translations/dynamic_translations_ar.ts
-pyside6-lrelease translations/dynamic_translations_en.ts
+pyside6-lrelease translations/dynamic_translations_ar_src_ar.ts
+pyside6-lrelease translations/dynamic_translations_ar_src_en.ts
+pyside6-lrelease translations/dynamic_translations_en_src_ar.ts
+pyside6-lrelease translations/dynamic_translations_en_src_en.ts
 
 pyside6-rcc gui\resources\resources.qrc -o resources_rc.py
 deactivate

@@ -182,13 +182,15 @@ class MyDataLoader:
                     v = 1
 
     @staticmethod
-    def get_word_eng_transliteration(surah_num, verse_num, word_idx, include_translation=True):
+    def get_word_eng_transliteration(surah_num, verse_num, word_idx, words_num=1, include_translation=True):
         surah_num = int(surah_num)
         verse_num = int(verse_num)
         word_idx = int(word_idx)
         try:
             # TODO: Fix if fails
-            eng_translit, eng_meaning = MyDataLoader.df.loc[surah_num, 'english_transliteration'][verse_num-1][word_idx]
+            eng_translit, eng_meaning = list(zip(*MyDataLoader.df.loc[surah_num, 'english_transliteration'][verse_num-1][word_idx:word_idx + words_num]))
+            eng_translit = ', '.join(eng_translit)
+            eng_meaning = ', '.join(eng_meaning)
         except IndexError:
             print("ERROR: ", surah_num, verse_num, word_idx)
             eng_translit, eng_meaning = '', ''

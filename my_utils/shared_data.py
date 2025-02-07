@@ -1,6 +1,9 @@
+import sys
 from my_utils.utils import AppLang
 from PySide6.QtCore import QTranslator
 from gui.main_window.main_screen import Ui_MainWindow
+from my_utils.package_details import PackageDetails
+from my_utils.utils import resource_path
 
 
 class SharedDataMeta(type):
@@ -67,4 +70,17 @@ class SharedData(metaclass=SharedDataMeta):
     app_language = AppLang.DEFAULT_LANGUAGE
     all_matches = []
     translator = QTranslator()
-    dynamic_translator = QTranslator()
+    ar_to_en_dynamic_translator = QTranslator()
+    en_to_ar_dynamic_translator = QTranslator()
+    sentence_transformers_pkg_details = PackageDetails("sentence_transformers",
+                                                       "sentence-transformers==3.3.0",
+                                                       resource_path("") if hasattr(sys, '_MEIPASS') else ".venv",
+                                                       None)
+    pytorch_gpu_pkg_details = PackageDetails("torch",
+                                             "torch==2.5.1+cu121",
+                                             resource_path("") if hasattr(sys, '_MEIPASS') else ".venv",
+                                             "https://download.pytorch.org/whl/cu121")
+    # TODO: Keep for later, might need
+    # PYTORCH_CPU = ("torch", "torch==2.5.1")
+    # PYTORCH_GPU = ("torch", "--extra-index-url https://download.pytorch.org/whl/cu121\ntorch==2.5.1+cu121")
+    # SENTENCE_TRANSFORMERS = ("sentence_transformers", "sentence-transformers==3.3.0")
