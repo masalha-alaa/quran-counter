@@ -1510,8 +1510,19 @@ QTableWidget::item:selected {
     </property>
     <addaction name="mushafNavigationButton"/>
    </widget>
+   <widget class="QMenu" name="menuChatGPT">
+    <property name="title">
+     <string>ChatGPT</string>
+    </property>
+    <property name="icon">
+     <iconset resource="../resources/resources.qrc">
+      <normaloff>:/chatgpt-icon.png</normaloff>:/chatgpt-icon.png</iconset>
+    </property>
+    <addaction name="enterGptKeyButton"/>
+   </widget>
    <addaction name="menu_Language"/>
    <addaction name="mushafViewButton"/>
+   <addaction name="menuChatGPT"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="arabicLangButton">
@@ -1539,6 +1550,11 @@ QTableWidget::item:selected {
   <action name="mushafNavigationButton">
    <property name="text">
     <string>تصفّح</string>
+   </property>
+  </action>
+  <action name="enterGptKeyButton">
+   <property name="text">
+    <string>ChatGPT إدخال مفتاح</string>
    </property>
   </action>
  </widget>

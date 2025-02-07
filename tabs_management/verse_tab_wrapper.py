@@ -91,12 +91,13 @@ class VerseTabWrapper(TabWrapper):
         else:
             pass
 
-    def show_gpt_activation_dialog(self):
+    def show_gpt_activation_dialog(self, show_disambiguation_dialog=True):
         if load_translation(SharedData.translator, resource_path(f"translations/openai_key_setup_dialog_{SharedData.app_language.value}.qm")):
             self.activate_gpt_dialog.set_language(SharedData.app_language)
         if self.activate_gpt_dialog.exec() == QDialog.DialogCode.Accepted:
             self._disambiguator.set_activated(True)
-            self.show_disambiguation_dialog()
+            if show_disambiguation_dialog:
+                self.show_disambiguation_dialog()
 
     @Slot(str)
     def _handle_disambiguation_dialog_response(self, selected_meaning):

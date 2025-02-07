@@ -14,5 +14,6 @@
         <file>left-page-icon.png</file>
         <file>down-arrow-icon.png</file>
         <file>up-arrow-icon.png</file>
+        <file>chatgpt-icon.png</file>
     </qresource>
 </RCC>

@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../openai_key_setup_dialog.ui" line="44"/>
-        <source>يمكن الحصول على مفتاح من خلال الموقع:</source>
+        <source>يمكنك الحصول على مفتاح من خلال الموقع:</source>
         <translation>You can obtain a key from the website:</translation>
     </message>
     <message>

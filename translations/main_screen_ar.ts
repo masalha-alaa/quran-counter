@@ -147,8 +147,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1541"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1515"/>
+        <source>ChatGPT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1552"/>
         <source>تصفّح</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1557"/>
+        <source>ChatGPT إدخال مفتاح</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

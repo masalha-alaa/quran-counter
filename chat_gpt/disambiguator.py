@@ -45,7 +45,7 @@ class Disambiguator:
         try:
             response = openai.chat.completions.create(
                 # model="gpt-3.5-turbo",
-                model="gpt-4",
+                model=self._gpt_model,
                 messages=[{"role": "system", "content": "Respond in a valid JSON format only."},
                           {"role": "user", "content": template}],
                 max_tokens=500,  # Adjust according to your needs
@@ -100,7 +100,7 @@ class Disambiguator:
             response = openai.chat.completions.create(
                 # TODO: settings to choose model
                 # model="gpt-3.5-turbo",  # it really sucks
-                model="gpt-4",  # good
+                model=self._gpt_model,  # gpt-4 good
                 messages=[
                     {"role": "system", "content": "Respond in a valid python list only."},
                     {"role": "user", "content": prompt.strip()}],

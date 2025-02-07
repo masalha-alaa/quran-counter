@@ -167,6 +167,11 @@ Results</translation>
         <translation>Quran Browser</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1557"/>
+        <source>ChatGPT إدخال مفتاح</source>
+        <translation>Enter ChatGPT key</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="407"/>
         <source>من غير تقييد</source>
         <translation>No restrictions</translation>

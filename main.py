@@ -7,6 +7,8 @@ from PySide6.QtTest import QTest
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtGui import QFontDatabase
+
+from gui.openai_key_setup_dialog.my_openai_key_setup_dialog import MyOpenAiKeySetupDialog
 from my_utils.my_data_loader import MyDataLoader
 from my_utils.shared_data import SharedData
 from gui.main_window.main_screen import Ui_MainWindow
@@ -111,6 +113,7 @@ class MainWindow(QMainWindow):
         SharedData.ui.arabicLangButton.triggered.connect(lambda: self._apply_language(AppLang.ARABIC))
         SharedData.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         SharedData.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
+        SharedData.ui.enterGptKeyButton.triggered.connect(self._enter_gpt_key)
         SharedData.ui.similarityThresholdSlider.valueChanged.connect(self._similarity_threshold_changed)
 
     def _set_validator(self, validator):
@@ -139,6 +142,9 @@ class MainWindow(QMainWindow):
         if load_translation(SharedData.translator, resource_path(f"translations/mushaf_view_{SharedData.app_language.value}.qm")):
             self.mushaf_view_display.set_language(SharedData.app_language)
         self.mushaf_view_display.show()
+
+    def _enter_gpt_key(self):
+        self.tabs_manager.verse_tab_wrapper.show_gpt_activation_dialog(False)
 
     def clear_results(self):
         SharedData.matches_number = ""
