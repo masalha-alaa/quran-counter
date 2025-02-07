@@ -263,6 +263,12 @@ class MainWindow(QMainWindow):
 
     def on_topics_model_initialization_ready(self, thread_id, caller_thread):
         caller_thread.initialization_ready.disconnect(self.on_topics_model_initialization_ready)
+
+        new_max_words = self._get_max_words_for_search_option()
+        self._composite_validator.set_max_words(new_max_words)
+        self._finetune_search_text(new_max_words)
+        SharedData.ui.searchWord.setFocus()
+
         self.finished_waiting()
 
     def on_topics_found_complete(self, initial_word, result, thread_id, caller_thread):
@@ -389,6 +395,7 @@ class MainWindow(QMainWindow):
                         topics_finder_thread.initialization_ready.connect(self.on_topics_model_initialization_ready)
                         self._add_thread(topics_finder_thread)
                         topics_finder_thread.start()
+                        return
                 else:
                     SharedData.ui.noRestrictionsRadioButton.setChecked(True)
 
