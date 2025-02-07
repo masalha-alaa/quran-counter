@@ -11,7 +11,7 @@ class AskGptThread(QThread):
         GET_RELEVANT_VERSES = auto()
 
     # Signal to send the result of the task back to the main thread
-    meanings_result_ready = Signal(dict, QThread)
+    meanings_result_ready = Signal(tuple, QThread)
     relevant_verses_result_ready = Signal(list, QThread)
 
     def __init__(self, disambiguator):
@@ -54,8 +54,8 @@ class AskGptThread(QThread):
 
     def _ask_gpt_for_meanings(self):
         # TODO: Exception handling
-        gpt_results = json.loads(self.disambiguator.get_chatgpt_response(self.word, self.language))
-        return gpt_results
+        success, data = self.disambiguator.get_chatgpt_response(self.word, self.language)
+        return success, json.loads(data) if success else data
 
     def run(self):
         match self.command:

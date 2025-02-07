@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QDialog
+from PySide6.QtWidgets import QDialog, QMessageBox
 from PySide6.QtGui import QShowEvent
 from PySide6.QtCore import Signal, Slot, QThread
 from gui.disambiguation_dialog.disambiguation_dialog import Ui_DidsambiguationDialog
@@ -79,7 +79,7 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
     # [COMMANDS END]
 
     # [CALLBACKS BEGIN]
-    @Slot(dict, QThread)
+    @Slot(tuple, QThread)
     def on_ask_gpt_for_meanings_completed(self, results, caller_thread: AskGptThread):
         # print("on_ask_gpt_for_meanings_completed")
         caller_thread.meanings_result_ready.disconnect(self.on_ask_gpt_for_meanings_completed)
@@ -87,7 +87,19 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
         self.okButton.setEnabled(True)
         # TODO: Idk how but need to destroy movie according to this:
         #       https://stackoverflow.com/questions/26958644/qt-loading-indicator-widget#comment78882452_26958738
-        self.resultsListWidget.addItems(results.values())
+        success, data = results
+        if success:
+            self.resultsListWidget.addItems(data.values())
+        else:
+            self.show_error_dialog(data)
+
+    def show_error_dialog(self, msg):
+        msg_box = QMessageBox(self)
+        msg_box.setIcon(QMessageBox.Icon.Critical)
+        msg_box.setWindowTitle('Error')
+        msg_box.setText(msg)
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg_box.exec()
 
     # @Slot(list)
     # def on_ask_gpt_for_relevant_verses_completed(self, results):
