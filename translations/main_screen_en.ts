@@ -162,6 +162,31 @@ Results</translation>
         <translation>* Double click a result for a detailed view</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1508"/>
+        <source>المصحف</source>
+        <translation>Mushaf</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1521"/>
+        <source>الذكاء الاصطناعي</source>
+        <translation>Artificial Intelligence</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1534"/>
+        <source>مساعدة</source>
+        <translation>Help</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1537"/>
+        <source>؟</source>
+        <translation>?</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1584"/>
+        <source>حول البرنامج</source>
+        <translation>About</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="1148"/>
         <source>تصفّح</source>
         <translation>Quran Browser</translation>

@@ -25,6 +25,7 @@ from my_widgets.spinning_loader import SpinningLoader
 from my_utils.utils import *
 from tabs_management.tabs_manager import TabsManager, TabIndex
 from gui.download_dialog.my_download_dialog import MyDownloadDialog
+from app_info import app_version
 
 
 class MainWindow(QMainWindow):
@@ -113,6 +114,7 @@ class MainWindow(QMainWindow):
         SharedData.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         SharedData.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
         SharedData.ui.enterGptKeyButton.triggered.connect(self._enter_gpt_key)
+        SharedData.ui.aboutMenuButton.triggered.connect(self._about_meny_button_clicked)
         SharedData.ui.similarityThresholdSlider.valueChanged.connect(self._similarity_threshold_changed)
 
     def _set_validator(self, validator):
@@ -144,6 +146,9 @@ class MainWindow(QMainWindow):
 
     def _enter_gpt_key(self):
         self.tabs_manager.verse_tab_wrapper.show_gpt_activation_dialog(False)
+
+    def _about_meny_button_clicked(self):
+        show_info_dialog(self, f"Version {app_version}")
 
     def clear_results(self):
         SharedData.matches_number = ""

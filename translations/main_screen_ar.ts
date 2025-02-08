@@ -147,17 +147,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1515"/>
-        <source>ChatGPT</source>
+        <location filename="../gui/main_window/main_screen.ui" line="1511"/>
+        <source>المصحف</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1552"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1527"/>
+        <source>الذكاء الاصطناعي</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1543"/>
+        <source>مساعدة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1546"/>
+        <source>؟</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1596"/>
+        <source>حول البرنامج</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1583"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1586"/>
         <source>تصفّح</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1557"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1591"/>
         <source>ChatGPT إدخال مفتاح</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,3 +1,4 @@
+from PySide6.QtWidgets import QMessageBox
 import importlib
 import subprocess
 import os
@@ -86,3 +87,17 @@ def is_topics_model_available():
 def is_topics_model_zip_available():
     model_name = resource_path('embedding_models/topic_sim_model')
     return os.path.exists(f"{model_name}.zip")
+
+def show_error_dialog(parent, msg):
+    _show_dialog(parent, QMessageBox.Icon.Critical, "Error", msg)
+
+def show_info_dialog(parent, msg):
+    _show_dialog(parent, QMessageBox.Icon.Information, "Info", msg)
+
+def _show_dialog(parent, icon, title, msg):
+    msg_box = QMessageBox(parent)
+    msg_box.setIcon(icon)
+    msg_box.setWindowTitle(title)
+    msg_box.setText(msg)
+    msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+    msg_box.exec()
