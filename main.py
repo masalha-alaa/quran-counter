@@ -8,7 +8,6 @@ from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtGui import QFontDatabase
 
-from gui.openai_key_setup_dialog.my_openai_key_setup_dialog import MyOpenAiKeySetupDialog
 from my_utils.my_data_loader import MyDataLoader
 from my_utils.shared_data import SharedData
 from gui.main_window.main_screen import Ui_MainWindow

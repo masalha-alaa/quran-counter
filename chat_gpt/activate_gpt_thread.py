@@ -4,7 +4,7 @@ import openai
 
 
 class ActivateGptThread(QThread):
-    activation_result = Signal(bool, QThread)
+    activation_result = Signal(str, bool, QThread)
 
     def __init__(self):
         super().__init__()
@@ -21,12 +21,13 @@ class ActivateGptThread(QThread):
         if openai.api_key:
             try:
                 openai.models.list()
-                self.activation_result.emit(True, self)
+                self.activation_result.emit(openai.api_key, True, self)
                 print("Activation completed successfully")
+
             except (openai.AuthenticationError, openai.APIConnectionError):
+                self.activation_result.emit(openai.api_key, False, self)
                 openai.api_key = None
-                self.activation_result.emit(False, self)
                 print("Activation error")
         else:
-            self.activation_result.emit(False, self)
+            self.activation_result.emit('', False, self)
             print("Activation error")

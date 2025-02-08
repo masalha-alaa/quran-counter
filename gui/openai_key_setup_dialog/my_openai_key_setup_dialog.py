@@ -6,6 +6,7 @@ from my_widgets.spinning_loader import SpinningLoader
 from my_utils.utils import AppLang, resource_path
 from text_validators.openai_key_validator import OpenAiKeyValidator
 from chat_gpt.activate_gpt_thread import ActivateGptThread
+from my_utils.encryption import get_api_key, save_api_key
 
 
 class MyOpenAiKeySetupDialog(QDialog, Ui_OpenAiKeySetupDialog):
@@ -50,7 +51,10 @@ class MyOpenAiKeySetupDialog(QDialog, Ui_OpenAiKeySetupDialog):
 
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
-        self.enterKeyLineEdit.setText("")
+        if key := get_api_key():
+            self.enterKeyLineEdit.setText('*' * (len(key) - 4) + key[-4:])
+        else:
+            self.enterKeyLineEdit.setText("")
         self.spinner.hide()
         self.success_icon.hide()
         self.failure_icon.hide()
@@ -74,16 +78,17 @@ class MyOpenAiKeySetupDialog(QDialog, Ui_OpenAiKeySetupDialog):
         else:
             self._activation_failure()
 
-    def gpt_activation_signal(self, activated):
+    def gpt_activation_signal(self, key: str, activated: bool):
         self.spinner.stop()
         self.success_icon.hide()
         self.failure_icon.hide()
         if activated:
-            self._activation_success()
+            self._activation_success(key)
         else:
             self._activation_failure()
 
-    def _activation_success(self):
+    def _activation_success(self, key:str):
+        save_api_key(key)
         self.success_icon.show()
         QTimer.singleShot(700, lambda: self.accept())
 

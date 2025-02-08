@@ -18,8 +18,8 @@ class VerseTabWrapper(TabWrapper):
         SharedData.found_verses.set_colorize(SharedData.ui.colorizeCheckbox.isChecked())
 
         self.activate_gpt_dialog = MyOpenAiKeySetupDialog(SharedData.app_language)
-        self._disambiguator = Disambiguator("open_ai_key.txt")
-        # self._disambiguator = Disambiguator("TEST")
+        # self._disambiguator = Disambiguator("open_ai_key.txt")  # TODO: REMOVE
+        self._disambiguator = Disambiguator()
         self.disambiguation_dialog = MyDidsambiguationDialog(self._disambiguator, SharedData.app_language)
 
         self.ask_gpt_thread = AskGptThread(self._disambiguator)

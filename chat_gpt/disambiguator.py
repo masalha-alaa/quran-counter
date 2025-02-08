@@ -6,6 +6,7 @@ from arabic_reformer import reform_regex
 from ast import literal_eval
 from my_utils.utils import AppLang
 from chat_gpt.activate_gpt_thread import ActivateGptThread
+from my_utils.encryption import save_api_key, get_api_key
 
 
 class Disambiguator:
@@ -16,6 +17,8 @@ class Disambiguator:
     def __init__(self, openai_key=None):
         self.activate_gpt_thread = ActivateGptThread()
         self._activated = False
+        if openai_key is None:
+            openai_key = get_api_key()
         if openai_key is not None:
             self.activate_gpt_thread.set_key(openai_key)
             self.activate_gpt_thread.activation_result.connect(self.gpt_activation_signal)
@@ -33,8 +36,10 @@ class Disambiguator:
     def set_activated(self, is_activated):
         self._activated = is_activated
 
-    def gpt_activation_signal(self, activated):
+    def gpt_activation_signal(self, key: str, activated: bool):
         self._activated = activated
+        if self._activated:
+            save_api_key(key)
 
     @cached(cache=LRUCache(maxsize=128))
     def get_chatgpt_response(self, word, language: AppLang):
