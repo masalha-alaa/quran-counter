@@ -177,11 +177,6 @@ Results</translation>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1537"/>
-        <source>؟</source>
-        <translation>?</translation>
-    </message>
-    <message>
         <location filename="../gui/main_window/main_screen.ui" line="1584"/>
         <source>حول البرنامج</source>
         <translation>About</translation>

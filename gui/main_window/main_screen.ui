@@ -1543,7 +1543,7 @@ QTableWidget::item:selected {
      <string>مساعدة</string>
     </property>
     <property name="title">
-     <string>؟</string>
+     <string notr="true">?</string>
     </property>
     <property name="toolTipsVisible">
      <bool>true</bool>

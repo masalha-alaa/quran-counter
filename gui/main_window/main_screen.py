@@ -1005,6 +1005,7 @@ class Ui_MainWindow(object):
         self.menuChatGPT.setToolTipsVisible(True)
         self.helpMenuButton = QMenu(self.menubar)
         self.helpMenuButton.setObjectName(u"helpMenuButton")
+        self.helpMenuButton.setTitle(u"?")
         self.helpMenuButton.setToolTipsVisible(True)
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
@@ -1159,6 +1160,5 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.helpMenuButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0645\u0633\u0627\u0639\u062f\u0629", None))
 #endif // QT_CONFIG(tooltip)
-        self.helpMenuButton.setTitle(QCoreApplication.translate("MainWindow", u"\u061f", None))
     # retranslateUi
 

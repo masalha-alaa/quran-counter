@@ -162,11 +162,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1546"/>
-        <source>؟</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../gui/main_window/main_screen.ui" line="1596"/>
         <source>حول البرنامج</source>
         <translation type="unfinished"></translation>
