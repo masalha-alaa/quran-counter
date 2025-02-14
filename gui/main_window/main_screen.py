@@ -109,10 +109,6 @@ class Ui_MainWindow(object):
 "    border-radius: 4px;\n"
 "}\n"
 "\n"
-"QLineEdit:focus {\n"
-"    border: 1px solid #81A1C1;\n"
-"}\n"
-"\n"
 "/* Slider */\n"
 "QSlider::handle:horizontal {\n"
 "    background: #3498DB;\n"
@@ -134,8 +130,7 @@ class Ui_MainWindow(object):
 "\n"
 "QSlider::handle:horizontal:disabled {\n"
 "    background: #CCCCCC;\n"
-"    bord"
-                        "er: 1px solid #CCCCCC;\n"
+"    border: 1px solid #CCCCCC;\n"
 "    border-radius: 5px;\n"
 "}")
         self.arabicLangButton = QAction(MainWindow)

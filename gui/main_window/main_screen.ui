@@ -90,10 +90,6 @@ QLineEdit {
     border-radius: 4px;
 }
 
-QLineEdit:focus {
-    border: 1px solid #81A1C1;
-}
-
 /* Slider */
 QSlider::handle:horizontal {
     background: #3498DB;
