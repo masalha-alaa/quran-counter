@@ -21,7 +21,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-    background-color: rgb(59, 59, 59);
+    background-color: rgb(49, 49, 49);
     color: rgb(207, 207, 207);
     font: 400 20pt &quot;Calibri&quot;;
 }
