@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
         MainWindow.setStyleSheet(u"QWidget {\n"
-"    background-color: rgb(59, 59, 59);\n"
+"    background-color: rgb(49, 49, 49);\n"
 "    color: rgb(207, 207, 207);\n"
 "    font: 400 20pt \"Calibri\";\n"
 "}\n"
