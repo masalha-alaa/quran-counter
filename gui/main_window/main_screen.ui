@@ -20,9 +20,104 @@
    <enum>Qt::RightToLeft</enum>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(59, 59, 59);
-color: rgb(207, 207, 207);
-font: 400 20pt &quot;Calibri&quot;;</string>
+   <string notr="true">QWidget {
+    background-color: rgb(59, 59, 59);
+    color: rgb(207, 207, 207);
+    font: 400 20pt &quot;Calibri&quot;;
+}
+
+QMenuBar {
+    background: qlineargradient(
+        spread:pad, x1:0, y1:0, x2:1, y2:0,
+        stop:0 #4A90E2, stop:1 #D0021B
+    );
+}
+
+/* Checkbox styling */
+QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #81A1C1;
+    border-radius: 4px;
+    background-color: #3B4252;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #537EAA;
+}
+
+/* Radio button styling */
+QRadioButton {
+    color: #D8DEE9;
+}
+
+QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #81A1C1;
+    border-radius: 9px;
+    background-color: #3B4252;
+}
+
+QRadioButton::indicator:checked {
+    background-color: #537EAA;
+}
+
+/* Button styling */
+QPushButton {
+    background-color: #81A1C1;
+    color: #2E3440;
+    border: none;
+    border-radius: 4px;
+    padding: 1px 1px;
+}
+
+QPushButton:hover {
+    background-color: #5E81AC;
+}
+
+QPushButton:pressed {
+    background-color: #6E90B5;
+}
+
+QPushButton:disabled {
+    background-color: #AAAABB;
+}
+
+/* Line edit styling */
+QLineEdit {
+    border: 1px solid #4C566A;
+    border-radius: 4px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #81A1C1;
+}
+
+/* Slider */
+QSlider::handle:horizontal {
+    background: #3498DB;
+    border: 1px solid #2488CB;
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: #44A8EB;
+    border: 1px solid #2488CB;
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal:pressed {
+    background: #3094D7;
+    border: 1px solid #2488CB;
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal:disabled {
+    background: #CCCCCC;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,8">
@@ -46,6 +141,9 @@ font: 400 20pt &quot;Calibri&quot;;</string>
           </property>
           <property name="toolTip">
            <string/>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>بحث</string>
@@ -380,6 +478,9 @@ QToolTip {
             </property>
             <item>
              <widget class="QSlider" name="similarityThresholdSlider">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -963,12 +1064,12 @@ QHeaderView {
 
 /*headers*/
 QHeaderView::section {
-        background-color: lightblue;
+        background-color: lightsteelblue;
         color: darkblue;
     }
 /*headers when corresponding cell is selected*/
 QHeaderView::section:checked {
-        background-color: lightblue;
+        background-color: lightsteelblue;
         border: 1px outset darkgray;
     }
 
@@ -1136,12 +1237,12 @@ QHeaderView {
 
 /*headers*/
 QHeaderView::section {
-        background-color: lightblue;
+        background-color: lightsteelblue;
         color: darkblue;
     }
 /*headers when corresponding cell is selected*/
 QHeaderView::section:checked {
-        background-color: lightblue;
+        background-color: lightsteelblue;
         border: 1px outset darkgray;
     }
 
@@ -1172,6 +1273,12 @@ QTableWidget::item:selected {
             </property>
             <property name="sortingEnabled">
              <bool>false</bool>
+            </property>
+            <property name="rowCount">
+             <number>0</number>
+            </property>
+            <property name="columnCount">
+             <number>0</number>
             </property>
             <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
              <bool>false</bool>
@@ -1358,12 +1465,12 @@ QHeaderView {
 
 /*headers*/
 QHeaderView::section {
-        background-color: lightblue;
+        background-color: lightsteelblue;
         color: darkblue;
     }
 /*headers when corresponding cell is selected*/
 QHeaderView::section:checked {
-        background-color: lightblue;
+        background-color: lightsteelblue;
         border: 1px outset darkgray;
     }
 

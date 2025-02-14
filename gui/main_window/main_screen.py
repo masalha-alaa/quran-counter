@@ -38,9 +38,106 @@ class Ui_MainWindow(object):
         MainWindow.setToolTip(u"")
 #endif // QT_CONFIG(tooltip)
         MainWindow.setLayoutDirection(Qt.RightToLeft)
-        MainWindow.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
-"color: rgb(207, 207, 207);\n"
-"font: 400 20pt \"Calibri\";")
+        MainWindow.setStyleSheet(u"QWidget {\n"
+"    background-color: rgb(59, 59, 59);\n"
+"    color: rgb(207, 207, 207);\n"
+"    font: 400 20pt \"Calibri\";\n"
+"}\n"
+"\n"
+"QMenuBar {\n"
+"    background: qlineargradient(\n"
+"        spread:pad, x1:0, y1:0, x2:1, y2:0,\n"
+"        stop:0 #4A90E2, stop:1 #D0021B\n"
+"    );\n"
+"}\n"
+"\n"
+"/* Checkbox styling */\n"
+"QCheckBox::indicator {\n"
+"    width: 14px;\n"
+"    height: 14px;\n"
+"    border: 2px solid #81A1C1;\n"
+"    border-radius: 4px;\n"
+"    background-color: #3B4252;\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked {\n"
+"    background-color: #537EAA;\n"
+"}\n"
+"\n"
+"/* Radio button styling */\n"
+"QRadioButton {\n"
+"    color: #D8DEE9;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator {\n"
+"    width: 14px;\n"
+"    height: 14px;\n"
+"    border: 2px solid #81A1C1;\n"
+"    border-radius: 9px;\n"
+"    background-color: #3B4252;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:checked {\n"
+"    background-color: #537EAA;\n"
+"}\n"
+"\n"
+"/* Button styling */\n"
+"QPushButton {\n"
+"    background-color: #81A1C1;\n"
+"    c"
+                        "olor: #2E3440;\n"
+"    border: none;\n"
+"    border-radius: 4px;\n"
+"    padding: 1px 1px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #5E81AC;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #6E90B5;\n"
+"}\n"
+"\n"
+"QPushButton:disabled {\n"
+"    background-color: #AAAABB;\n"
+"}\n"
+"\n"
+"/* Line edit styling */\n"
+"QLineEdit {\n"
+"    border: 1px solid #4C566A;\n"
+"    border-radius: 4px;\n"
+"}\n"
+"\n"
+"QLineEdit:focus {\n"
+"    border: 1px solid #81A1C1;\n"
+"}\n"
+"\n"
+"/* Slider */\n"
+"QSlider::handle:horizontal {\n"
+"    background: #3498DB;\n"
+"    border: 1px solid #2488CB;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:hover {\n"
+"    background: #44A8EB;\n"
+"    border: 1px solid #2488CB;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:pressed {\n"
+"    background: #3094D7;\n"
+"    border: 1px solid #2488CB;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QSlider::handle:horizontal:disabled {\n"
+"    background: #CCCCCC;\n"
+"    bord"
+                        "er: 1px solid #CCCCCC;\n"
+"    border-radius: 5px;\n"
+"}")
         self.arabicLangButton = QAction(MainWindow)
         self.arabicLangButton.setObjectName(u"arabicLangButton")
         self.arabicLangButton.setText(u"\u0627\u0644\u0639\u0631\u0628\u064a\u0629")
@@ -78,6 +175,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy)
+        self.label.setStyleSheet(u"")
 
         self.verticalLayout.addWidget(self.label)
 
@@ -291,6 +389,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_15.setContentsMargins(-1, -1, 19, -1)
         self.similarityThresholdSlider = QSlider(self.centralwidget)
         self.similarityThresholdSlider.setObjectName(u"similarityThresholdSlider")
+        self.similarityThresholdSlider.setEnabled(True)
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
@@ -619,12 +718,12 @@ class Ui_MainWindow(object):
 "\n"
 "/*headers*/\n"
 "QHeaderView::section {\n"
-"        background-color: lightblue;\n"
+"        background-color: lightsteelblue;\n"
 "        color: darkblue;\n"
 "    }\n"
 "/*headers when corresponding cell is selected*/\n"
 "QHeaderView::section:checked {\n"
-"        background-color: lightblue;\n"
+"        background-color: lightsteelblue;\n"
 "        border: 1px outset darkgray;\n"
 "    }\n"
 "\n"
@@ -734,12 +833,12 @@ class Ui_MainWindow(object):
 "\n"
 "/*headers*/\n"
 "QHeaderView::section {\n"
-"        background-color: lightblue;\n"
+"        background-color: lightsteelblue;\n"
 "        color: darkblue;\n"
 "    }\n"
 "/*headers when corresponding cell is selected*/\n"
 "QHeaderView::section:checked {\n"
-"        background-color: lightblue;\n"
+"        background-color: lightsteelblue;\n"
 "        border: 1px outset darkgray;\n"
 "    }\n"
 "\n"
@@ -760,6 +859,8 @@ class Ui_MainWindow(object):
         self.wordResultsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.wordResultsTableWidget.setVerticalScrollMode(QAbstractItemView.ScrollPerItem)
         self.wordResultsTableWidget.setSortingEnabled(False)
+        self.wordResultsTableWidget.setRowCount(0)
+        self.wordResultsTableWidget.setColumnCount(0)
         self.wordResultsTableWidget.horizontalHeader().setProperty(u"showSortIndicator", False)
 
         self.horizontalLayout_11.addWidget(self.wordResultsTableWidget)
@@ -885,12 +986,12 @@ class Ui_MainWindow(object):
 "\n"
 "/*headers*/\n"
 "QHeaderView::section {\n"
-"        background-color: lightblue;\n"
+"        background-color: lightsteelblue;\n"
 "        color: darkblue;\n"
 "    }\n"
 "/*headers when corresponding cell is selected*/\n"
 "QHeaderView::section:checked {\n"
-"        background-color: lightblue;\n"
+"        background-color: lightsteelblue;\n"
 "        border: 1px outset darkgray;\n"
 "    }\n"
 "\n"
