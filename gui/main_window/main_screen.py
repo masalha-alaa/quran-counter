@@ -468,6 +468,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_19.setSpacing(0)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.relatedWordsRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.relatedWordsRadioButton)
         self.relatedWordsRadioButton.setObjectName(u"relatedWordsRadioButton")
         self.relatedWordsRadioButton.setStyleSheet(u"QToolTip { \n"
 "    color: #484848;\n"

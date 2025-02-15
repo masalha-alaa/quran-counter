@@ -627,6 +627,9 @@ QToolTip {
             <property name="text">
              <string>كلمة ذات صلة</string>
             </property>
+            <attribute name="buttonGroup">
+             <string notr="true">searchOptionsButtonGroup</string>
+            </attribute>
            </widget>
           </item>
           <item>
