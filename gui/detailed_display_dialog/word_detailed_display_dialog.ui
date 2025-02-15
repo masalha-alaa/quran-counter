@@ -20,9 +20,25 @@
    <enum>Qt::RightToLeft</enum>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(59, 59, 59);
-color: rgb(207, 207, 207);
-font: 400 20pt &quot;Calibri&quot;;</string>
+   <string notr="true">QWidget {
+    background-color: rgb(49, 49, 49);
+    color: rgb(207, 207, 207);
+    font: 400 20pt &quot;Calibri&quot;;
+}
+
+/* Checkbox styling */
+QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #81A1C1;
+    border-radius: 4px;
+    background-color: #3B4252;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #537EAA;
+}
+</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>

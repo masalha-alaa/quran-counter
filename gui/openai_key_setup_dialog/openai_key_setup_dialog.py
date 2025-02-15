@@ -24,9 +24,33 @@ class Ui_OpenAiKeySetupDialog(object):
         if not OpenAiKeySetupDialog.objectName():
             OpenAiKeySetupDialog.setObjectName(u"OpenAiKeySetupDialog")
         OpenAiKeySetupDialog.resize(720, 496)
-        OpenAiKeySetupDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
-"color: rgb(207, 207, 207);\n"
-"font: 400 14pt \"Calibri\";")
+        OpenAiKeySetupDialog.setStyleSheet(u"QWidget {\n"
+"    background-color: rgb(49, 49, 49);\n"
+"    color: rgb(207, 207, 207);\n"
+"    font: 400 15pt \"Calibri\";\n"
+"}\n"
+"\n"
+"/* Button styling */\n"
+"QPushButton {\n"
+"    background-color: #5F82AD;\n"
+"    color: #2E3440;\n"
+"    border: none;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 2px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #81A1C1;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #6E90B5;\n"
+"}\n"
+"\n"
+"QPushButton:disabled {\n"
+"    background-color: #838383;\n"
+"}\n"
+"")
         self.verticalLayout_2 = QVBoxLayout(OpenAiKeySetupDialog)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setSizeConstraint(QLayout.SetDefaultConstraint)

@@ -24,9 +24,33 @@ class Ui_DidsambiguationDialog(object):
         if not DidsambiguationDialog.objectName():
             DidsambiguationDialog.setObjectName(u"DidsambiguationDialog")
         DidsambiguationDialog.resize(647, 391)
-        DidsambiguationDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
-"color: rgb(207, 207, 207);\n"
-"font: 400 14pt \"Calibri\";")
+        DidsambiguationDialog.setStyleSheet(u"QWidget {\n"
+"    background-color: rgb(49, 49, 49);\n"
+"    color: rgb(207, 207, 207);\n"
+"    font: 400 18pt \"Calibri\";\n"
+"}\n"
+"\n"
+"/* Button styling */\n"
+"QPushButton {\n"
+"    background-color: #5F82AD;\n"
+"    color: #2E3440;\n"
+"    border: none;\n"
+"    border-radius: 4px;\n"
+"    padding: 2px 2px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #81A1C1;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #6E90B5;\n"
+"}\n"
+"\n"
+"QPushButton:disabled {\n"
+"    background-color: #838383;\n"
+"}\n"
+"")
         self.verticalLayout = QVBoxLayout(DidsambiguationDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_2 = QHBoxLayout()
@@ -49,7 +73,7 @@ class Ui_DidsambiguationDialog(object):
         self.instructionsWordLabel.setObjectName(u"instructionsWordLabel")
         font = QFont()
         font.setFamilies([u"Calibri"])
-        font.setPointSize(14)
+        font.setPointSize(18)
         font.setBold(False)
         font.setItalic(False)
         self.instructionsWordLabel.setFont(font)

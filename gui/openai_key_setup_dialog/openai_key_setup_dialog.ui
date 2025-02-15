@@ -14,9 +14,33 @@
    <string>تثبيت المفتاح</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(59, 59, 59);
-color: rgb(207, 207, 207);
-font: 400 14pt &quot;Calibri&quot;;</string>
+   <string notr="true">QWidget {
+    background-color: rgb(49, 49, 49);
+    color: rgb(207, 207, 207);
+    font: 400 15pt &quot;Calibri&quot;;
+}
+
+/* Button styling */
+QPushButton {
+    background-color: #5F82AD;
+    color: #2E3440;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 2px;
+}
+
+QPushButton:hover {
+    background-color: #81A1C1;
+}
+
+QPushButton:pressed {
+    background-color: #6E90B5;
+}
+
+QPushButton:disabled {
+    background-color: #838383;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,5,1">
    <property name="sizeConstraint">

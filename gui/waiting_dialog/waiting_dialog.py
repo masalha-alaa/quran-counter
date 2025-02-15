@@ -23,7 +23,7 @@ class Ui_WaitingDialog(object):
         if not WaitingDialog.objectName():
             WaitingDialog.setObjectName(u"WaitingDialog")
         WaitingDialog.resize(400, 300)
-        WaitingDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
+        WaitingDialog.setStyleSheet(u"background-color: rgb(49, 49, 49);\n"
 "color: rgb(207, 207, 207);\n"
 "font: 400 20pt \"Calibri\";")
         self.verticalLayout_2 = QVBoxLayout(WaitingDialog)

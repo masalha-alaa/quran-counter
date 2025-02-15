@@ -9,7 +9,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/detailed_display_dialog/word_detailed_display_dialog.ui" line="54"/>
+        <location filename="../gui/detailed_display_dialog/word_detailed_display_dialog.ui" line="70"/>
         <source>تلوين</source>
         <translation type="unfinished"></translation>
     </message>

@@ -9,22 +9,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="70"/>
+        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="94"/>
         <source>&apos;الكلمة&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="86"/>
+        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="110"/>
         <source>اختر المعنى المناسب لكلمة</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="112"/>
+        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="136"/>
         <source>إلغاء</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="122"/>
+        <location filename="../gui/disambiguation_dialog/disambiguation_dialog.ui" line="146"/>
         <source>تطبيق</source>
         <translation type="unfinished"></translation>
     </message>

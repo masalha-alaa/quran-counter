@@ -26,9 +26,25 @@ class Ui_DetailedWordDisplayDialog(object):
         DetailedWordDisplayDialog.setWindowModality(Qt.NonModal)
         DetailedWordDisplayDialog.resize(959, 462)
         DetailedWordDisplayDialog.setLayoutDirection(Qt.RightToLeft)
-        DetailedWordDisplayDialog.setStyleSheet(u"background-color: rgb(59, 59, 59);\n"
-"color: rgb(207, 207, 207);\n"
-"font: 400 20pt \"Calibri\";")
+        DetailedWordDisplayDialog.setStyleSheet(u"QWidget {\n"
+"    background-color: rgb(49, 49, 49);\n"
+"    color: rgb(207, 207, 207);\n"
+"    font: 400 20pt \"Calibri\";\n"
+"}\n"
+"\n"
+"/* Checkbox styling */\n"
+"QCheckBox::indicator {\n"
+"    width: 14px;\n"
+"    height: 14px;\n"
+"    border: 2px solid #81A1C1;\n"
+"    border-radius: 4px;\n"
+"    background-color: #3B4252;\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:checked {\n"
+"    background-color: #537EAA;\n"
+"}\n"
+"")
         DetailedWordDisplayDialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         DetailedWordDisplayDialog.setSizeGripEnabled(False)
         self.verticalLayout_2 = QVBoxLayout(DetailedWordDisplayDialog)

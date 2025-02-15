@@ -9,17 +9,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/download_dialog/download_dialog.ui" line="25"/>
+        <location filename="../gui/download_dialog/download_dialog.ui" line="66"/>
         <source>بعض الملفات لهذه الخاصية ناقصة. هل تريد تحميلها الآن؟</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/download_dialog/download_dialog.ui" line="70"/>
+        <location filename="../gui/download_dialog/download_dialog.ui" line="111"/>
         <source>لا</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/download_dialog/download_dialog.ui" line="90"/>
+        <location filename="../gui/download_dialog/download_dialog.ui" line="131"/>
         <source>نعم</source>
         <translation type="unfinished"></translation>
     </message>

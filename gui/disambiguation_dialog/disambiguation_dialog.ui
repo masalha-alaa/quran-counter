@@ -14,9 +14,33 @@
    <string>توضيح</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(59, 59, 59);
-color: rgb(207, 207, 207);
-font: 400 14pt &quot;Calibri&quot;;</string>
+   <string notr="true">QWidget {
+    background-color: rgb(49, 49, 49);
+    color: rgb(207, 207, 207);
+    font: 400 18pt &quot;Calibri&quot;;
+}
+
+/* Button styling */
+QPushButton {
+    background-color: #5F82AD;
+    color: #2E3440;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 2px;
+}
+
+QPushButton:hover {
+    background-color: #81A1C1;
+}
+
+QPushButton:pressed {
+    background-color: #6E90B5;
+}
+
+QPushButton:disabled {
+    background-color: #838383;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5,1">
    <item>
@@ -54,7 +78,7 @@ font: 400 14pt &quot;Calibri&quot;;</string>
          <property name="font">
           <font>
            <family>Calibri</family>
-           <pointsize>14</pointsize>
+           <pointsize>18</pointsize>
            <weight>50</weight>
            <italic>false</italic>
            <bold>false</bold>
@@ -76,7 +100,7 @@ font: 400 14pt &quot;Calibri&quot;;</string>
          <property name="font">
           <font>
            <family>Calibri</family>
-           <pointsize>14</pointsize>
+           <pointsize>18</pointsize>
            <weight>50</weight>
            <italic>false</italic>
            <bold>false</bold>

@@ -14,9 +14,50 @@
    <string>تحميل ملفات</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(59, 59, 59);
-color: rgb(207, 207, 207);
-font: 400 14pt &quot;Calibri&quot;;</string>
+   <string notr="true">QWidget {
+    background-color: rgb(49, 49, 49);
+    color: rgb(207, 207, 207);
+    font: 400 18pt &quot;Calibri&quot;;
+}
+
+/* Button styling */
+QPushButton {
+    background-color: #5F82AD;
+    color: #2E3440;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 2px;
+}
+
+QPushButton:hover {
+    background-color: #81A1C1;
+}
+
+QPushButton:pressed {
+    background-color: #6E90B5;
+}
+
+QPushButton:disabled {
+    background-color: #838383;
+}
+
+/* Progress Bar */
+QProgressBar {
+    background-color: #3B4252; /* Dark background */
+    border: 1px solid #4C566A; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center text */
+    color: #D8DEE9; /* Text color */
+    padding: 1px;
+}
+
+QProgressBar::chunk {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
+                                      stop:0 #81A1C1, stop:1 #88C0D0); /* Gradient for progress */
+    border-radius: 5px; /* Rounded corners for the chunk */
+    border: 1px solid #81A1C1; /* Border for the chunk */
+    box-shadow: 0px 0px 5px rgba(129, 161, 193, 0.5); /* Glow effect */
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
