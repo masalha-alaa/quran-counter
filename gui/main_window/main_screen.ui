@@ -46,9 +46,14 @@ QCheckBox::indicator:checked {
     background-color: #537EAA;
 }
 
+QCheckBox::indicator:hover {
+    background-color: #47607E;
+}
+
 /* Radio button styling */
 QRadioButton {
     color: #D8DEE9;
+    font: 19pt;
 }
 
 QRadioButton::indicator {
@@ -61,6 +66,10 @@ QRadioButton::indicator {
 
 QRadioButton::indicator:checked {
     background-color: #537EAA;
+}
+
+QRadioButton::indicator:hover {
+    background-color: #47607E;
 }
 
 /* Button styling */
@@ -359,6 +368,26 @@ QToolTip {
         <property name="verticalSpacing">
          <number>0</number>
         </property>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="beginningOfWordRadioButton">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>بداية كلمة</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">searchOptionsButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
         <item row="1" column="0">
          <layout class="QVBoxLayout" name="verticalLayout_20">
           <item>
@@ -395,46 +424,6 @@ QToolTip {
            </spacer>
           </item>
          </layout>
-        </item>
-        <item row="0" column="3">
-         <widget class="QRadioButton" name="rootRadioButton">
-          <property name="toolTip">
-           <string>كلمات بنفس جذر كلمة البحث</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QToolTip { 
-    color: #484848;
-	font: 14pt;
-}
-</string>
-          </property>
-          <property name="text">
-           <string>جذر</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">searchOptionsButtonGroup</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="beginningOfWordRadioButton">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QToolTip { 
-    color: #484848;
-	font: 14pt;
-}
-</string>
-          </property>
-          <property name="text">
-           <string>بداية كلمة</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">searchOptionsButtonGroup</string>
-          </attribute>
-         </widget>
         </item>
         <item row="1" column="1">
          <layout class="QVBoxLayout" name="verticalLayout_18">
@@ -538,47 +527,7 @@ QToolTip {
           </item>
          </layout>
         </item>
-        <item row="0" column="1">
-         <widget class="QRadioButton" name="fullWordRadioButton">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QToolTip { 
-    color: #484848;
-	font: 14pt;
-}
-</string>
-          </property>
-          <property name="text">
-           <string>كلمة كاملة</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">searchOptionsButtonGroup</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QRadioButton" name="endOfWordRadioButton">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QToolTip { 
-    color: #484848;
-	font: 14pt;
-}
-</string>
-          </property>
-          <property name="text">
-           <string>نهاية كلمة</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">searchOptionsButtonGroup</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="1" column="3">
+        <item row="1" column="4">
          <layout class="QVBoxLayout" name="verticalLayout_23">
           <item>
            <widget class="QRadioButton" name="regexRadioButton">
@@ -618,7 +567,7 @@ QToolTip {
           </item>
          </layout>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <layout class="QVBoxLayout" name="verticalLayout_24">
           <item>
            <widget class="QRadioButton" name="topicsRadioButton">
@@ -657,6 +606,165 @@ QToolTip {
            </spacer>
           </item>
          </layout>
+        </item>
+        <item row="1" column="2">
+         <layout class="QVBoxLayout" name="verticalLayout_19">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QRadioButton" name="relatedWordsRadioButton">
+            <property name="toolTip">
+             <string>كلمات مشابهة (في الصياغة وليس في المعنى)</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>كلمة ذات صلة</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
+            </property>
+            <property name="rightMargin">
+             <number>19</number>
+            </property>
+            <item>
+             <widget class="QSlider" name="relatedWordsThresholdSlider">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string>عتبة التشابه</string>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>5</number>
+              </property>
+              <property name="pageStep">
+               <number>2</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>true</bool>
+              </property>
+              <property name="invertedControls">
+               <bool>false</bool>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::NoTicks</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="relatedWordsThresholdLabel">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font-size: 15pt;</string>
+              </property>
+              <property name="text">
+               <string notr="true">1</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+              <property name="margin">
+               <number>1</number>
+              </property>
+              <property name="indent">
+               <number>-1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="3">
+         <widget class="QRadioButton" name="rootRadioButton">
+          <property name="toolTip">
+           <string>كلمات بنفس جذر كلمة البحث</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>جذر</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">searchOptionsButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="endOfWordRadioButton">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>نهاية كلمة</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">searchOptionsButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QRadioButton" name="fullWordRadioButton">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>كلمة كاملة</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">searchOptionsButtonGroup</string>
+          </attribute>
+         </widget>
         </item>
        </layout>
       </item>

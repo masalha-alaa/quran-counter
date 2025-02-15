@@ -39,6 +39,10 @@ QCheckBox::indicator:checked {
     background-color: #537EAA;
 }
 
+QCheckBox::indicator:hover {
+    background-color: #47607E;
+}
+
 /* Button styling */
 QPushButton {
     background-color: #5F82AD;

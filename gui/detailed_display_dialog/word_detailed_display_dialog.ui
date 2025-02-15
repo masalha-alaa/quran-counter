@@ -38,6 +38,10 @@ QCheckBox::indicator {
 QCheckBox::indicator:checked {
     background-color: #537EAA;
 }
+
+QCheckBox::indicator:hover {
+    background-color: #47607E;
+}
 </string>
   </property>
   <property name="locale">
