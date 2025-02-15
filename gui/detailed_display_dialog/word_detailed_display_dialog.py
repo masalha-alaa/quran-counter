@@ -44,6 +44,10 @@ class Ui_DetailedWordDisplayDialog(object):
 "QCheckBox::indicator:checked {\n"
 "    background-color: #537EAA;\n"
 "}\n"
+"\n"
+"QCheckBox::indicator:hover {\n"
+"    background-color: #47607E;\n"
+"}\n"
 "")
         DetailedWordDisplayDialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         DetailedWordDisplayDialog.setSizeGripEnabled(False)

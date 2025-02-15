@@ -64,9 +64,14 @@ class Ui_MainWindow(object):
 "    background-color: #537EAA;\n"
 "}\n"
 "\n"
+"QCheckBox::indicator:hover {\n"
+"    background-color: #47607E;\n"
+"}\n"
+"\n"
 "/* Radio button styling */\n"
 "QRadioButton {\n"
 "    color: #D8DEE9;\n"
+"    font: 19pt;\n"
 "}\n"
 "\n"
 "QRadioButton::indicator {\n"
@@ -78,14 +83,18 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QRadioButton::indicator:checked {\n"
-"    background-color: #537EAA;\n"
+"    background-color: #"
+                        "537EAA;\n"
+"}\n"
+"\n"
+"QRadioButton::indicator:hover {\n"
+"    background-color: #47607E;\n"
 "}\n"
 "\n"
 "/* Button styling */\n"
 "QPushButton {\n"
 "    background-color: #5F82AD;\n"
-""
-                        "    color: #2E3440;\n"
+"    color: #2E3440;\n"
 "    border: none;\n"
 "    border-radius: 4px;\n"
 "    padding: 2px 2px;\n"
@@ -125,7 +134,8 @@ class Ui_MainWindow(object):
 "QSlider::handle:horizontal:pressed {\n"
 "    background: #3094D7;\n"
 "    border: 1px solid #2488CB;\n"
-"    border-radius: 5px;\n"
+""
+                        "    border-radius: 5px;\n"
 "}\n"
 "\n"
 "QSlider::handle:horizontal:disabled {\n"
@@ -318,11 +328,22 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setVerticalSpacing(0)
         self.gridLayout.setContentsMargins(-1, 30, -1, -1)
+        self.beginningOfWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup = QButtonGroup(MainWindow)
+        self.searchOptionsButtonGroup.setObjectName(u"searchOptionsButtonGroup")
+        self.searchOptionsButtonGroup.addButton(self.beginningOfWordRadioButton)
+        self.beginningOfWordRadioButton.setObjectName(u"beginningOfWordRadioButton")
+        self.beginningOfWordRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
+
+        self.gridLayout.addWidget(self.beginningOfWordRadioButton, 0, 0, 1, 1)
+
         self.verticalLayout_20 = QVBoxLayout()
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
         self.noRestrictionsRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup = QButtonGroup(MainWindow)
-        self.searchOptionsButtonGroup.setObjectName(u"searchOptionsButtonGroup")
         self.searchOptionsButtonGroup.addButton(self.noRestrictionsRadioButton)
         self.noRestrictionsRadioButton.setObjectName(u"noRestrictionsRadioButton")
         self.noRestrictionsRadioButton.setStyleSheet(u"QToolTip { \n"
@@ -340,28 +361,6 @@ class Ui_MainWindow(object):
 
 
         self.gridLayout.addLayout(self.verticalLayout_20, 1, 0, 1, 1)
-
-        self.rootRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup.addButton(self.rootRadioButton)
-        self.rootRadioButton.setObjectName(u"rootRadioButton")
-        self.rootRadioButton.setStyleSheet(u"QToolTip { \n"
-"    color: #484848;\n"
-"	font: 14pt;\n"
-"}\n"
-"")
-
-        self.gridLayout.addWidget(self.rootRadioButton, 0, 3, 1, 1)
-
-        self.beginningOfWordRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup.addButton(self.beginningOfWordRadioButton)
-        self.beginningOfWordRadioButton.setObjectName(u"beginningOfWordRadioButton")
-        self.beginningOfWordRadioButton.setStyleSheet(u"QToolTip { \n"
-"    color: #484848;\n"
-"	font: 14pt;\n"
-"}\n"
-"")
-
-        self.gridLayout.addWidget(self.beginningOfWordRadioButton, 0, 0, 1, 1)
 
         self.verticalLayout_18 = QVBoxLayout()
         self.verticalLayout_18.setSpacing(0)
@@ -417,28 +416,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addLayout(self.verticalLayout_18, 1, 1, 1, 1)
 
-        self.fullWordRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup.addButton(self.fullWordRadioButton)
-        self.fullWordRadioButton.setObjectName(u"fullWordRadioButton")
-        self.fullWordRadioButton.setStyleSheet(u"QToolTip { \n"
-"    color: #484848;\n"
-"	font: 14pt;\n"
-"}\n"
-"")
-
-        self.gridLayout.addWidget(self.fullWordRadioButton, 0, 1, 1, 1)
-
-        self.endOfWordRadioButton = QRadioButton(self.centralwidget)
-        self.searchOptionsButtonGroup.addButton(self.endOfWordRadioButton)
-        self.endOfWordRadioButton.setObjectName(u"endOfWordRadioButton")
-        self.endOfWordRadioButton.setStyleSheet(u"QToolTip { \n"
-"    color: #484848;\n"
-"	font: 14pt;\n"
-"}\n"
-"")
-
-        self.gridLayout.addWidget(self.endOfWordRadioButton, 0, 2, 1, 1)
-
         self.verticalLayout_23 = QVBoxLayout()
         self.verticalLayout_23.setObjectName(u"verticalLayout_23")
         self.regexRadioButton = QRadioButton(self.centralwidget)
@@ -461,7 +438,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_23.addItem(self.verticalSpacer)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_23, 1, 3, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_23, 1, 4, 1, 1)
 
         self.verticalLayout_24 = QVBoxLayout()
         self.verticalLayout_24.setObjectName(u"verticalLayout_24")
@@ -485,7 +462,90 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.addItem(self.verticalSpacer_4)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_24, 1, 2, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_24, 1, 3, 1, 1)
+
+        self.verticalLayout_19 = QVBoxLayout()
+        self.verticalLayout_19.setSpacing(0)
+        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
+        self.relatedWordsRadioButton = QRadioButton(self.centralwidget)
+        self.relatedWordsRadioButton.setObjectName(u"relatedWordsRadioButton")
+        self.relatedWordsRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
+
+        self.verticalLayout_19.addWidget(self.relatedWordsRadioButton)
+
+        self.horizontalLayout_18 = QHBoxLayout()
+        self.horizontalLayout_18.setSpacing(10)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.horizontalLayout_18.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.horizontalLayout_18.setContentsMargins(-1, -1, 19, -1)
+        self.relatedWordsThresholdSlider = QSlider(self.centralwidget)
+        self.relatedWordsThresholdSlider.setObjectName(u"relatedWordsThresholdSlider")
+        self.relatedWordsThresholdSlider.setEnabled(True)
+        sizePolicy2.setHeightForWidth(self.relatedWordsThresholdSlider.sizePolicy().hasHeightForWidth())
+        self.relatedWordsThresholdSlider.setSizePolicy(sizePolicy2)
+        self.relatedWordsThresholdSlider.setMinimum(1)
+        self.relatedWordsThresholdSlider.setMaximum(5)
+        self.relatedWordsThresholdSlider.setPageStep(2)
+        self.relatedWordsThresholdSlider.setValue(1)
+        self.relatedWordsThresholdSlider.setOrientation(Qt.Horizontal)
+        self.relatedWordsThresholdSlider.setInvertedAppearance(True)
+        self.relatedWordsThresholdSlider.setInvertedControls(False)
+        self.relatedWordsThresholdSlider.setTickPosition(QSlider.NoTicks)
+
+        self.horizontalLayout_18.addWidget(self.relatedWordsThresholdSlider)
+
+        self.relatedWordsThresholdLabel = QLabel(self.centralwidget)
+        self.relatedWordsThresholdLabel.setObjectName(u"relatedWordsThresholdLabel")
+        self.relatedWordsThresholdLabel.setStyleSheet(u"font-size: 15pt;")
+        self.relatedWordsThresholdLabel.setText(u"1")
+        self.relatedWordsThresholdLabel.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.relatedWordsThresholdLabel.setMargin(1)
+        self.relatedWordsThresholdLabel.setIndent(-1)
+
+        self.horizontalLayout_18.addWidget(self.relatedWordsThresholdLabel)
+
+
+        self.verticalLayout_19.addLayout(self.horizontalLayout_18)
+
+
+        self.gridLayout.addLayout(self.verticalLayout_19, 1, 2, 1, 1)
+
+        self.rootRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.rootRadioButton)
+        self.rootRadioButton.setObjectName(u"rootRadioButton")
+        self.rootRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
+
+        self.gridLayout.addWidget(self.rootRadioButton, 0, 3, 1, 1)
+
+        self.endOfWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.endOfWordRadioButton)
+        self.endOfWordRadioButton.setObjectName(u"endOfWordRadioButton")
+        self.endOfWordRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
+
+        self.gridLayout.addWidget(self.endOfWordRadioButton, 0, 1, 1, 1)
+
+        self.fullWordRadioButton = QRadioButton(self.centralwidget)
+        self.searchOptionsButtonGroup.addButton(self.fullWordRadioButton)
+        self.fullWordRadioButton.setObjectName(u"fullWordRadioButton")
+        self.fullWordRadioButton.setStyleSheet(u"QToolTip { \n"
+"    color: #484848;\n"
+"	font: 14pt;\n"
+"}\n"
+"")
+
+        self.gridLayout.addWidget(self.fullWordRadioButton, 0, 2, 1, 1)
 
 
         self.horizontalLayout.addLayout(self.gridLayout)
@@ -1174,15 +1234,11 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.optionalAlTarifCheckbox.setToolTip(QCoreApplication.translate("MainWindow", u"\"\u0627\u0644\" \u0627\u0644\u062a\u0639\u0631\u064a\u0641 \u062e\u064a\u0627\u0631\u064a\u0629", None))
 #endif // QT_CONFIG(tooltip)
-        self.noRestrictionsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0646 \u063a\u064a\u0631 \u062a\u0642\u064a\u064a\u062f", None))
-#if QT_CONFIG(tooltip)
-        self.rootRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0628\u0646\u0641\u0633 \u062c\u0630\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0628\u062d\u062b", None))
-#endif // QT_CONFIG(tooltip)
-        self.rootRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0630\u0631", None))
 #if QT_CONFIG(tooltip)
         self.beginningOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.beginningOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0628\u062f\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
+        self.noRestrictionsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0646 \u063a\u064a\u0631 \u062a\u0642\u064a\u064a\u062f", None))
 #if QT_CONFIG(tooltip)
         self.similarWordRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0645\u0634\u0627\u0628\u0647\u0629 (\u0641\u064a \u0627\u0644\u0635\u064a\u0627\u063a\u0629 \u0648\u0644\u064a\u0633 \u0641\u064a \u0627\u0644\u0645\u0639\u0646\u0649)", None))
 #endif // QT_CONFIG(tooltip)
@@ -1193,16 +1249,30 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.similarityThresholdLabel.setToolTip("")
 #endif // QT_CONFIG(tooltip)
+        self.regexRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0631\u064a\u0686\u064a\u0643\u0633", None))
+        self.topicsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0648\u0627\u0636\u064a\u0639", None))
 #if QT_CONFIG(tooltip)
-        self.fullWordRadioButton.setToolTip("")
+        self.relatedWordsRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0645\u0634\u0627\u0628\u0647\u0629 (\u0641\u064a \u0627\u0644\u0635\u064a\u0627\u063a\u0629 \u0648\u0644\u064a\u0633 \u0641\u064a \u0627\u0644\u0645\u0639\u0646\u0649)", None))
 #endif // QT_CONFIG(tooltip)
-        self.fullWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
+        self.relatedWordsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0630\u0627\u062a \u0635\u0644\u0629", None))
+#if QT_CONFIG(tooltip)
+        self.relatedWordsThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062a\u0628\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.relatedWordsThresholdLabel.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.rootRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0628\u0646\u0641\u0633 \u062c\u0630\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0628\u062d\u062b", None))
+#endif // QT_CONFIG(tooltip)
+        self.rootRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u062c\u0630\u0631", None))
 #if QT_CONFIG(tooltip)
         self.endOfWordRadioButton.setToolTip("")
 #endif // QT_CONFIG(tooltip)
         self.endOfWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0646\u0647\u0627\u064a\u0629 \u0643\u0644\u0645\u0629", None))
-        self.regexRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0631\u064a\u0686\u064a\u0643\u0633", None))
-        self.topicsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0648\u0627\u0636\u064a\u0639", None))
+#if QT_CONFIG(tooltip)
+        self.fullWordRadioButton.setToolTip("")
+#endif // QT_CONFIG(tooltip)
+        self.fullWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0643\u0627\u0645\u0644\u0629", None))
 #if QT_CONFIG(tooltip)
         self.label_2.setToolTip("")
 #endif // QT_CONFIG(tooltip)
