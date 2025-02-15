@@ -488,6 +488,10 @@
         <translation>Results</translation>
     </message>
     <message>
+        <source>مسار الصلة</source>
+        <translation>Path</translation>
+    </message>
+    <message>
         <source>الموضوع</source>
         <translation>Topic</translation>
     </message>

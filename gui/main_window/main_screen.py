@@ -489,8 +489,8 @@ class Ui_MainWindow(object):
         sizePolicy2.setHeightForWidth(self.relatedWordsThresholdSlider.sizePolicy().hasHeightForWidth())
         self.relatedWordsThresholdSlider.setSizePolicy(sizePolicy2)
         self.relatedWordsThresholdSlider.setMinimum(1)
-        self.relatedWordsThresholdSlider.setMaximum(5)
-        self.relatedWordsThresholdSlider.setPageStep(2)
+        self.relatedWordsThresholdSlider.setMaximum(3)
+        self.relatedWordsThresholdSlider.setPageStep(1)
         self.relatedWordsThresholdSlider.setValue(1)
         self.relatedWordsThresholdSlider.setOrientation(Qt.Horizontal)
         self.relatedWordsThresholdSlider.setInvertedAppearance(True)
@@ -1202,7 +1202,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1245,7 +1245,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.similarWordRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0645\u0634\u0627\u0628\u0647\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.similarityThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062a\u0628\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
+        self.similarityThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0634\u062f\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.similarityThresholdLabel.setToolTip("")
@@ -1253,11 +1253,11 @@ class Ui_MainWindow(object):
         self.regexRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0631\u064a\u0686\u064a\u0643\u0633", None))
         self.topicsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0645\u0648\u0627\u0636\u064a\u0639", None))
 #if QT_CONFIG(tooltip)
-        self.relatedWordsRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0645\u0634\u0627\u0628\u0647\u0629 (\u0641\u064a \u0627\u0644\u0635\u064a\u0627\u063a\u0629 \u0648\u0644\u064a\u0633 \u0641\u064a \u0627\u0644\u0645\u0639\u0646\u0649)", None))
+        self.relatedWordsRadioButton.setToolTip(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0627\u062a \u0630\u0627\u062a \u0635\u0644\u0629 \u0628\u0627\u0644\u0645\u0639\u0646\u0649", None))
 #endif // QT_CONFIG(tooltip)
         self.relatedWordsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0630\u0627\u062a \u0635\u0644\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.relatedWordsThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0639\u062a\u0628\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
+        self.relatedWordsThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0634\u062f\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.relatedWordsThresholdLabel.setToolTip("")

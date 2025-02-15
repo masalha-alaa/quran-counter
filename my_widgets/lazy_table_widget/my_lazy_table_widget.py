@@ -3,7 +3,7 @@ from abc import abstractmethod
 from typing import Callable, Any
 from enum import Enum
 
-from PySide6.QtWidgets import QTableWidgetItem
+from PySide6.QtWidgets import QTableWidgetItem, QHeaderView
 from PySide6.QtWidgets import QTableWidget
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
@@ -42,6 +42,7 @@ class MyLazyTableWidget(QTableWidget):
         self._threads = set()
         self._headers = None
         self._tooltips = None
+        self._resizability: list[bool]|None = None
         self._rows_per_scroll = rows_per_scroll
         self._last_sorting_direction = None
         self.verticalScrollBar().valueChanged.connect(self.after_scroll)
@@ -98,6 +99,9 @@ class MyLazyTableWidget(QTableWidget):
         self._last_sorting_direction = [SortingOrder.INITIAL for _ in range(len(self._headers))]
         if tooltips:
             self._tooltips = tooltips
+
+    def set_resizability(self, resizability: list=None):
+        self._resizability = resizability
 
     def add_thread(self, thread):
         # LazyTableWidget.RUNNING_THREADS_MUTEX.lock()
@@ -224,6 +228,9 @@ class MyLazyTableWidget(QTableWidget):
         if self.rowCount() == 0:
             self.setColumnCount(len(self._headers))
             self.setHorizontalHeaderLabels(self.get_translated_headers())
+            if isinstance(self._resizability, list) and len(self._resizability) == len(self._headers):
+                for idx in range(self.columnCount()):
+                    self.set_is_column_resizable(idx, self._resizability[idx])
             # for idx in range(self.columnCount()):
             #     self.horizontalHeader().resizeSection(idx, self.horizontalHeader().sectionSize(idx) + 30)
             if self._tooltips:
@@ -281,6 +288,13 @@ class MyLazyTableWidget(QTableWidget):
         if 0 <= col < self.columnCount() and self.isColumnHidden(col) == visible:
             self.setColumnHidden(col, not visible)
 
+    def set_is_column_resizable(self, col:int|TableHeaders, resizable: bool):
+        if isinstance(col,TableHeaders):
+            col = col.value
+        if 0 <= col < self.columnCount():
+            self.horizontalHeader().setSectionResizeMode(col,
+                                                         QHeaderView.ResizeMode.Interactive if resizable
+                                                         else QHeaderView.ResizeMode.Fixed)
 
     def clear(self):
         self._previous_row = -1

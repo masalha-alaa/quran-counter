@@ -8,6 +8,8 @@ from tabs_management.table_headers import WordTableHeaders
 from worker_threads.word_bounds_populator_thread import WordBoundsPopulatorThread
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QTableWidgetItem
+from my_widgets.graph_dialog import GraphDialog
+import networkx as nx
 
 
 class WordTabWrapper(TabWrapper):
@@ -22,6 +24,7 @@ class WordTabWrapper(TabWrapper):
     def init(self):
         self.lazy_word_results_table.set_item_selection_changed_callback(self.word_bounds_results_selection_changed)
         self.lazy_word_results_table.set_item_double_clicked_callback(self.word_bounds_results_item_double_clicked)
+        self.lazy_word_results_table.set_path_clicked_callback(self.word_bounds_results_path_clicked)
         self.refreshColumnsVisibility()
 
     def refreshColumnsVisibility(self):
@@ -29,6 +32,8 @@ class WordTabWrapper(TabWrapper):
                                                            SharedData.ui.wordMeaningCheckbox.isChecked())
         self.lazy_word_results_table.set_column_visibility(WordTableHeaders.ENGLISH_TRANSLITERATION,
                                                            SharedData.ui.wordTransliterationCheckbox.isChecked())
+        self.lazy_word_results_table.set_column_visibility(WordTableHeaders.PATH_HEADER,
+                                                           SharedData.ui.relatedWordsRadioButton.isChecked())
 
     def _setup_events(self):
         SharedData.ui.diacriticsCheckbox.stateChanged.connect(self._toggle_diacritics)
@@ -91,3 +96,13 @@ class WordTabWrapper(TabWrapper):
         self.detailed_word_display_dialog.set_data(metadata)
         # self.detailed_word_display_dialog.open()
         self.detailed_word_display_dialog.exec()
+
+    def word_bounds_results_path_clicked(self, path: list):
+        g = nx.Graph()
+        if len(path) > 1:
+            for u,v in zip(path, path[1:]):
+                g.add_edge(u, v)
+        else:
+            g.add_node(path[0])
+        dialog = GraphDialog(g, self)
+        dialog.exec()

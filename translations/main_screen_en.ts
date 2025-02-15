@@ -82,8 +82,9 @@
         <translation>Similar word</translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="483"/>
-        <source>عتبة التشابه</source>
+        <location filename="../gui/main_window/main_screen.ui" line="476"/>
+        <location filename="../gui/main_window/main_screen.ui" line="658"/>
+        <source>شدة التشابه</source>
         <translation>Similarity threshold</translation>
     </message>
     <message>
@@ -96,6 +97,16 @@
         <location filename="../gui/main_window/main_screen.ui" line="1300"/>
         <source>مواضيع</source>
         <translation>Topic</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="618"/>
+        <source>كلمات ذات صلة بالمعنى</source>
+        <translation>Related words (by meaning)</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="628"/>
+        <source>كلمة ذات صلة</source>
+        <translation>Related words</translation>
     </message>
     <message>
         <location filename="../main_screen.ui" line="668"/>

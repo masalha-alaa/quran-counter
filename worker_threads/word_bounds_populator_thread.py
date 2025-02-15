@@ -8,6 +8,8 @@ from my_utils.my_data_loader import MyDataLoader
 from tabs_management.table_headers import WordTableHeaders
 from my_widgets.lazy_table_widget import CustomTableRow
 from models.match_item import MatchItem
+from my_utils.shared_data import SharedData
+from arabic_reformer import remove_diacritics
 
 
 class WordBoundsPopulatorThread(QThread):
@@ -75,6 +77,10 @@ class WordBoundsPopulatorThread(QThread):
             eng_translit, eng_transl = MyDataLoader.get_word_eng_transliteration(data[0][0], data[0][1], data[0][2], data[0][5])
             row_results[WordTableHeaders.ENGLISH_TRANSLATION.value] = eng_transl
             row_results[WordTableHeaders.ENGLISH_TRANSLITERATION.value] = eng_translit
+
+            # insert True / False in WordTableHeaders.PATH_HEADER.value
+            row_results[WordTableHeaders.PATH_HEADER.value] = SharedData.all_paths.get(remove_diacritics(w), [])
+
             # 3 is the number of extra fields beyond "surah_num, verse_num, word_id_first_match" in 'counts' above
             row_results[WordTableHeaders.RESULTS_HEADER.value] = sum(((len(lst) - 3) // 3) for lst in data)
             rows.append(CustomTableRow(row_results, data))

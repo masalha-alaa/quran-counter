@@ -484,6 +484,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>مسار الصلة</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>عدد النتائج</source>
         <translation type="unfinished"></translation>
     </message>

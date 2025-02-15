@@ -69,6 +69,7 @@ class SharedData(metaclass=SharedDataMeta):
     # ui = None
     app_language = AppLang.DEFAULT_LANGUAGE
     all_matches = []
+    all_paths = {}
     translator = QTranslator()
     ar_to_en_dynamic_translator = QTranslator()
     en_to_ar_dynamic_translator = QTranslator()

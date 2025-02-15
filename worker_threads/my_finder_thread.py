@@ -10,6 +10,8 @@ from difflib import SequenceMatcher
 from preprocessing import Preprocessor
 from models.match_item import MatchItem
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
+from algos.related_words import RelatedWords
+from models.finder_result_object import FinderResultObject
 
 
 class FinderThread(QThread):
@@ -19,7 +21,7 @@ class FinderThread(QThread):
             self.value = ""
 
     MY_CACHE_MUTEX = QMutex()
-    result_ready = Signal(str, int, tuple, float, QThread)
+    result_ready = Signal(str, int, FinderResultObject, float, QThread)
     dia_or_waqf = rf"(?:(?={re.escape(alamaat_waqf_regex)})|(?={re.escape(diacritics_regex)}))"
     char_followed_by_dia_or_waqf = re.compile(rf"\[?[{''.join(arabic_alphabit)+' '}]+\]?{dia_or_waqf}")
     MIN_CLOSE_MATCH_RAW_THRESHOLD = 6
@@ -32,6 +34,7 @@ class FinderThread(QThread):
         super().__init__()
         self._thread_id = thread_id
         self.df = MyDataLoader.get_data()
+        self.related_words_algo = RelatedWords()
         self._working_col = MyDataLoader.get_working_col()
         self.arabic_stemmer = ISRIStemmer()
         self.preprocessor = Preprocessor()
@@ -49,7 +52,10 @@ class FinderThread(QThread):
         self.regular_expression = None
         self.close_match = None
         self.close_match_threshold = None
+        self.related_words = None
+        self.related_words_threshold = None
         self._default_close_match_threshold = 6
+        self._default_related_words_threshold = 1
 
         self._final_word = None
         self._words_num = None
@@ -67,7 +73,9 @@ class FinderThread(QThread):
                  root_flag,
                  regular_expression,
                  close_match,
-                 close_match_threshold:int=None):
+                 related_words,
+                 close_match_threshold:int=None,
+                 related_words_threshold:int=None):
         self.initial_word = word
         self.alif_alif_maksura_variations = alif_alif_maksura_variations
         self.ya_variations = ya_variations
@@ -81,6 +89,17 @@ class FinderThread(QThread):
         self.regular_expression = regular_expression
         self.close_match = close_match
         self.close_match_threshold = (close_match_threshold if isinstance(close_match_threshold, int) else self._default_close_match_threshold) / 10
+        self.related_words = related_words
+        self.related_words_threshold = (related_words_threshold if isinstance(related_words_threshold, int) else self._default_related_words_threshold)
+
+    @lru_cache(maxsize=8)
+    def reform_regex_with_local_params(self, txt):
+        return reform_regex(txt,
+                            alif_alif_maksura_variations=self.alif_alif_maksura_variations,
+                            ya_variations=self.ya_variations,
+                            ta_variations=self.ta_variations,
+                            chars_to_not_add_diacritics_to=ArabicWithRegexValidator.SUPPORTED_REGEX_CHARS if (self.optional_al_tarif or self.regular_expression) else FinderThread.REGEX_CHARS_FOR_ROOT_FIND if self.root_flag else None,
+                            alamat_waqf_after_space=not self.regular_expression)
 
     def _prep_data(self):
         if self.root_flag:
@@ -100,7 +119,7 @@ class FinderThread(QThread):
                     except KeyError:
                         # activate fallback to compare against roots of all words
                         self._activate_root_finder_fallback = True
-        elif self.full_word or self.close_match:
+        elif self.full_word or self.close_match or self.related_words:
             new_text = self.initial_word.strip()
         else:
             new_text = self.initial_word
@@ -114,20 +133,15 @@ class FinderThread(QThread):
             new_text = ' '.join([(optional_al_tarif + (w if not w.startswith(al_tarif) else w[len(al_tarif):]))
                         for w in re.split("\s+", new_text)])
 
-        if not self.close_match:
-            new_text = reform_regex(new_text,
-                                    alif_alif_maksura_variations=self.alif_alif_maksura_variations,
-                                    ya_variations=self.ya_variations,
-                                    ta_variations=self.ta_variations,
-                                    chars_to_not_add_diacritics_to=ArabicWithRegexValidator.SUPPORTED_REGEX_CHARS if (self.optional_al_tarif or self.regular_expression) else FinderThread.REGEX_CHARS_FOR_ROOT_FIND if self.root_flag else None,
-                                    alamat_waqf_after_space=not self.regular_expression)
+        if not (self.close_match or self.related_words):
+            new_text = self.reform_regex_with_local_params(new_text)
             if self.root_flag:
                 new_text = self.flatten_nested_brackets(new_text)
 
         # print(new_text)
         num_of_search_words = len(new_text.split()) if not self.root_flag else 1
 
-        if not (self.root_flag or self.close_match or self.regular_expression):
+        if not (self.root_flag or self.close_match or self.related_words or self.regular_expression):
             if not self.maintain_words_order and num_of_search_words > 1:
                 separator = f" {alamaat_waqf_regex}"
                 new_text = '|'.join([separator.join(perm) for perm in permutations(new_text.split(separator))])
@@ -218,6 +232,10 @@ class FinderThread(QThread):
             offset += len(w) + len(SEPARATOR)
         return matches
 
+    def my_get_related_words(self, regex_pattern, sentence):
+        matches = [m.span(1) for m in re.finditer(regex_pattern, sentence)]
+        return matches
+
 
     def _find_in_surah(self, row, w):
         verses_clean_split = row[self._working_col]
@@ -233,6 +251,8 @@ class FinderThread(QThread):
                 matches_in_verse = [(cumsum[i], cumsum[i] + len(word)) for i, word in enumerate(split_verse) if re.match(rf"{w}$", self._get_root(word) if self._activate_root_finder_fallback else word)]
             elif self.close_match:
                 matches_in_verse = self.my_get_close_matches(w, verse, threshold=self.close_match_threshold)
+            elif self.related_words:
+                matches_in_verse = self.my_get_related_words(w, verse)
             else:
                 matches_in_verse = [m.span(1) for m in re.finditer(w, verse)]
             if matches_in_verse:
@@ -247,6 +267,7 @@ class FinderThread(QThread):
         return (all_matches if all_matches else None), number_of_matches, len(all_matches) > 0, len(all_matches)
 
     def _actually_find_word(self, w, surah_nums=None):
+        paths = {}
         if surah_nums is None:
             data = self.df
         else:
@@ -254,15 +275,18 @@ class FinderThread(QThread):
         if data.empty:
             spans, number_of_matches, index_mask, number_of_verses = [], [], [], []
         else:
+            if self.related_words:
+                paths = self.get_paths_to_related_words(w, self.related_words_threshold)
+                w = self._final_word
             spans, number_of_matches, index_mask, number_of_verses = zip(*data.apply(lambda row: self._find_in_surah(row, w), axis=1))  # NOTE: index is not retained
         # spans = chain.from_iterable(tup for lst in spans if lst is not None for tup in lst)
         # spans = (tup for lst in spans if lst is not None for tup in lst)
         spans = [tup for lst in spans if lst is not None for tup in lst]
         # return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[np.array(index_mask)].index
-        return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[list(index_mask)].index
+        return spans, sum(number_of_matches), index_mask, sum(number_of_verses), data[list(index_mask)].index, paths
 
     def _find_word(self, w):
-        if not (self.root_flag or self.close_match or self.regular_expression):  # TODO: check if needed
+        if not (self.root_flag or self.close_match or self.related_words or self.regular_expression):  # TODO: check if needed
             # get prefix of word (everything excluding last letter and its harakat)
             *_, prefix_idx = FinderThread.char_followed_by_dia_or_waqf.finditer(w)
             prefix = w[:prefix_idx.span()[0]]
@@ -282,7 +306,7 @@ class FinderThread(QThread):
 
         # search word in relevant surahs (cached surah numbers, or all surahs if no cache)
         results = self._actually_find_word(w, prefix_surah_idx_cache)
-        surah_nums = results[-1]
+        surah_nums = results[-2]
         # cache results for next time
         if len(prefix) > 0:
             FinderThread.MY_CACHE_MUTEX.lock()
@@ -290,8 +314,16 @@ class FinderThread(QThread):
             FinderThread.my_cache.value = surah_nums
             FinderThread.MY_CACHE_MUTEX.unlock()
 
-        spans, total_number_of_matches, index_mask, total_number_of_verses, _ = results
-        return spans, total_number_of_matches, sum(index_mask), total_number_of_verses
+        spans, total_number_of_matches, index_mask, total_number_of_verses, _, paths = results
+        results_obj = FinderResultObject(spans, total_number_of_matches, sum(index_mask), total_number_of_verses, paths)
+        return results_obj
+
+    def get_paths_to_related_words(self, word, cutoff=1):
+        related_words_paths = self.related_words_algo.get_by_distance(word, cutoff)
+        new_words = map(self.reform_regex_with_local_params, related_words_paths.keys())
+        # TODO: tri regex?
+        self._final_word = f"({'|'.join(new_words)})"
+        return related_words_paths
 
     @lru_cache(maxsize=256)
     def _get_root(self, w):

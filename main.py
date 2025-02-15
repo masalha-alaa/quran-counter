@@ -25,6 +25,7 @@ from my_widgets.spinning_loader import SpinningLoader
 from my_utils.utils import *
 from tabs_management.tabs_manager import TabsManager, TabIndex
 from gui.download_dialog.my_download_dialog import MyDownloadDialog
+from models.finder_result_object import FinderResultObject
 from app_info import app_version
 
 
@@ -33,6 +34,7 @@ class MainWindow(QMainWindow):
     MAX_WORDS_IF_NOT_MAINTAIN_ORDER = 2
     MAX_WORDS_IF_ROOT = 1
     MAX_WORDS_IF_SIMILAR_WORD = 1
+    MAX_WORDS_IF_RELATED_WORD = 1
     MAX_WORDS_FOR_TOPICS = 5
     _exhausted = object()
     REMOVE_THREAD_AFTER_MS = 500
@@ -54,6 +56,10 @@ class MainWindow(QMainWindow):
 
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
         SharedData.ui.similarityThresholdLabel.setText(str(SharedData.ui.similarityThresholdSlider.value()))
+
+        SharedData.ui.relatedWordsThresholdSlider.setEnabled(SharedData.ui.relatedWordsRadioButton.isChecked())
+        SharedData.ui.relatedWordsThresholdLabel.setText(str(SharedData.ui.relatedWordsThresholdSlider.value()))
+
         max_words = self._get_max_words_for_search_option()
         self._composite_validator = CompositeValidator(max_words)
         self._regex_validator = ArabicWithRegexValidator()
@@ -116,6 +122,7 @@ class MainWindow(QMainWindow):
         SharedData.ui.enterGptKeyButton.triggered.connect(self._enter_gpt_key)
         SharedData.ui.aboutMenuButton.triggered.connect(self._about_meny_button_clicked)
         SharedData.ui.similarityThresholdSlider.valueChanged.connect(self._similarity_threshold_changed)
+        SharedData.ui.relatedWordsThresholdSlider.valueChanged.connect(self._related_words_threshold_changed)
 
     def _set_validator(self, validator):
         SharedData.ui.searchWord.setValidator(validator)
@@ -130,6 +137,8 @@ class MainWindow(QMainWindow):
                 max_words = MainWindow.MAX_WORDS_IF_ROOT
             case SharedData.ui.similarWordRadioButton:
                 max_words = MainWindow.MAX_WORDS_IF_SIMILAR_WORD
+            case SharedData.ui.relatedWordsRadioButton:
+                max_words = MainWindow.MAX_WORDS_IF_RELATED_WORD
             case SharedData.ui.topicsRadioButton:
                 max_words = MainWindow.MAX_WORDS_FOR_TOPICS
             case _:
@@ -215,7 +224,9 @@ class MainWindow(QMainWindow):
         SharedData.ui.filterButton.setEnabled(False)
         SharedData.all_matches = []
         if ((not (stripped := new_text.strip()))
-                or ((SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked())
+                or ((SharedData.ui.rootRadioButton.isChecked() or
+                     SharedData.ui.similarWordRadioButton.isChecked() or
+                     SharedData.ui.relatedWordsRadioButton.isChecked())
                     and (len(stripped) < 2 or len(stripped.split()) != 1))
                 or (SharedData.ui.topicsRadioButton.isChecked()
                     and len(stripped.replace(" ", "")) < 3)):
@@ -234,7 +245,9 @@ class MainWindow(QMainWindow):
                 SharedData.ui.searchWord.setStyleSheet("background-color: rgba(255, 0, 0, 50);")
                 return
 
-        if SharedData.ui.rootRadioButton.isChecked() or SharedData.ui.similarWordRadioButton.isChecked():
+        if (SharedData.ui.rootRadioButton.isChecked() or
+                SharedData.ui.similarWordRadioButton.isChecked() or
+                SharedData.ui.relatedWordsRadioButton.isChecked()):
             self.waiting()
 
         thread_id = datetime.now().timestamp()
@@ -261,12 +274,14 @@ class MainWindow(QMainWindow):
                                    SharedData.ui.rootRadioButton.isChecked(),
                                    SharedData.ui.regexRadioButton.isChecked(),
                                    SharedData.ui.similarWordRadioButton.isChecked(),
+                                   SharedData.ui.relatedWordsRadioButton.isChecked(),
                                    scale(int(SharedData.ui.similarityThresholdLabel.text()),
                                          SharedData.ui.similarityThresholdSlider.minimum(),
                                          SharedData.ui.similarityThresholdSlider.maximum(),
                                          FinderThread.MIN_CLOSE_MATCH_RAW_THRESHOLD,
                                          FinderThread.MAX_CLOSE_MATCH_RAW_THRESHOLD,
-                                         rounding=ScaleRounding.FLOOR) if SharedData.ui.similarWordRadioButton.isChecked() else None)
+                                         rounding=ScaleRounding.FLOOR) if SharedData.ui.similarWordRadioButton.isChecked() else None,
+                                   SharedData.ui.relatedWordsThresholdSlider.value())
             finder_thread.result_ready.connect(self.on_txt_found_complete)
             self._add_thread(finder_thread)
             finder_thread.start()
@@ -281,7 +296,7 @@ class MainWindow(QMainWindow):
 
         self.finished_waiting()
 
-    def on_topics_found_complete(self, initial_word, result, thread_id, caller_thread):
+    def on_topics_found_complete(self, initial_word, result: FinderResultObject, thread_id, caller_thread):
         caller_thread.result_ready.disconnect(self.on_topics_found_complete)
         self._remove_thread(caller_thread)
         # reject older threads
@@ -289,7 +304,12 @@ class MainWindow(QMainWindow):
             return
         self._last_thread_id = thread_id
 
-        SharedData.all_matches, number_of_matches, number_of_surahs, number_of_verses = result
+        SharedData.all_matches = result.spans
+        SharedData.all_paths = result.paths
+
+        number_of_matches = result.total_number_of_matches
+        number_of_surahs = result.number_of_surahs
+        number_of_verses = result.total_number_of_verses
         SharedData.matches_number = str(number_of_matches)
         SharedData.matches_number_surahs = str(number_of_surahs)
         SharedData.matches_number_verses = str(number_of_verses)
@@ -297,7 +317,7 @@ class MainWindow(QMainWindow):
         self.tabs_manager.on_txt_found_complete(initial_word, number_of_matches)
         self.finished_waiting()
 
-    def on_txt_found_complete(self, initial_word, words_num, result, thread_id, caller_thread: FinderThread):
+    def on_txt_found_complete(self, initial_word, words_num, result: FinderResultObject, thread_id, caller_thread: FinderThread):
         caller_thread.result_ready.disconnect(self.on_txt_found_complete)
         self._remove_thread(caller_thread)
         # reject older threads
@@ -305,17 +325,20 @@ class MainWindow(QMainWindow):
             return
         self._last_thread_id = thread_id
 
-        SharedData.all_matches, number_of_matches, number_of_surahs, number_of_verses = result
-        SharedData.matches_number = str(number_of_matches)
-        SharedData.matches_number_surahs = str(number_of_surahs)
-        SharedData.matches_number_verses = str(number_of_verses)
+        SharedData.all_matches = result.spans
+        SharedData.all_paths = result.paths
 
-        self.tabs_manager.on_txt_found_complete(initial_word, number_of_matches)
+        SharedData.matches_number = str(result.total_number_of_matches)
+        SharedData.matches_number_surahs = str(result.number_of_surahs)
+        SharedData.matches_number_verses = str(result.total_number_of_verses)
+
+        self.tabs_manager.on_txt_found_complete(initial_word, result.total_number_of_matches)
         self.finished_waiting()
 
     def waiting(self, text=""):
         SharedData.ui.searchWord.setEnabled(False)
         SharedData.ui.similarityThresholdSlider.setEnabled(False)
+        SharedData.ui.relatedWordsThresholdSlider.setEnabled(False)
         self.spinner.setText(text)
         self.spinner.start()
 
@@ -323,9 +346,13 @@ class MainWindow(QMainWindow):
         self.spinner.stop()
         SharedData.ui.searchWord.setEnabled(True)
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
+        SharedData.ui.relatedWordsThresholdSlider.setEnabled(SharedData.ui.relatedWordsRadioButton.isChecked())
         if SharedData.ui.similarityThresholdSlider.isEnabled():
             # a trick to restore the blue color on the slider handle (setFocus() didn't work)
             self._simulate_click_on_slider_handle(SharedData.ui.similarityThresholdSlider)
+        if SharedData.ui.relatedWordsThresholdSlider.isEnabled():
+            # a trick to restore the blue color on the slider handle (setFocus() didn't work)
+            self._simulate_click_on_slider_handle(SharedData.ui.relatedWordsThresholdSlider)
         SharedData.ui.searchWord.setFocus()
 
     def _simulate_click_on_slider_handle(self, slider):
@@ -361,6 +388,13 @@ class MainWindow(QMainWindow):
             SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
         elif button == SharedData.ui.similarWordRadioButton:
             SharedData.ui.similarityThresholdSlider.setEnabled(is_checked)
+            SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
+            SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
+            SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
+            SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
+        elif button == SharedData.ui.relatedWordsRadioButton:
+            SharedData.ui.relatedWordsThresholdSlider.setEnabled(is_checked)
             SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
             SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
             SharedData.ui.finalTaCheckbox.setEnabled(not is_checked)
@@ -426,6 +460,11 @@ class MainWindow(QMainWindow):
 
     def _similarity_threshold_changed(self, value):
         SharedData.ui.similarityThresholdLabel.setText(str(value))
+        self._search_word_text_changed(SharedData.search_word)
+
+
+    def _related_words_threshold_changed(self, value):
+        SharedData.ui.relatedWordsThresholdLabel.setText(str(value))
         self._search_word_text_changed(SharedData.search_word)
 
 

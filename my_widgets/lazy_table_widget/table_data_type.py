@@ -5,3 +5,4 @@ class TableDataType:
     STRING = QTableWidgetItem.ItemType.UserType + 0
     INT = QTableWidgetItem.ItemType.UserType + 1
     FLOAT = QTableWidgetItem.ItemType.UserType + 2
+    BOOL = QTableWidgetItem.ItemType.UserType + 3

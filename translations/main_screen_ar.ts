@@ -19,6 +19,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="476"/>
+        <location filename="../gui/main_window/main_screen.ui" line="658"/>
+        <source>شدة التشابه</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/main_window/main_screen.ui" line="822"/>
         <source>العدد</source>
         <translation type="unfinished"></translation>
@@ -69,19 +75,12 @@
     </message>
     <message>
         <location filename="../gui/main_window/main_screen.ui" line="436"/>
-        <location filename="../gui/main_window/main_screen.ui" line="618"/>
         <source>كلمات مشابهة (في الصياغة وليس في المعنى)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/main_window/main_screen.ui" line="446"/>
         <source>كلمة مشابهة</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/main_window/main_screen.ui" line="476"/>
-        <location filename="../gui/main_window/main_screen.ui" line="658"/>
-        <source>عتبة التشابه</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -93,6 +92,11 @@
         <location filename="../gui/main_window/main_screen.ui" line="585"/>
         <location filename="../gui/main_window/main_screen.ui" line="1552"/>
         <source>مواضيع</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="618"/>
+        <source>كلمات ذات صلة بالمعنى</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

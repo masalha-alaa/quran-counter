@@ -22,6 +22,7 @@ class WordTableHeaders(TableHeaders):
     ENGLISH_TRANSLITERATION = auto()
     ENGLISH_TRANSLATION = auto()
     RESULTS_HEADER = auto()
+    PATH_HEADER = auto()
     METADATA_POSITION = RESULTS_HEADER
 
 class TopicTableHeaders(TableHeaders):

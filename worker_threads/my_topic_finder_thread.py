@@ -2,13 +2,14 @@ from my_utils.my_data_loader import MyDataLoader
 from PySide6.QtCore import Signal, QThread, QMutex
 from models.topic_embeddings_model import TopicEmbeddingsModel
 from models.match_item import MatchItem
+from models.finder_result_object import FinderResultObject
 
 
 class TopicFinderThread(QThread):
 
     MY_CACHE_MUTEX = QMutex()
     initialization_ready = Signal(float, QThread)
-    result_ready = Signal(str, tuple, float, QThread)
+    result_ready = Signal(str, FinderResultObject, float, QThread)
 
     def __init__(self, thread_id=None):
         super().__init__()
@@ -45,7 +46,8 @@ class TopicFinderThread(QThread):
         else:
             spans = []
             number_of_surahs = 0
-        return spans, total_number_of_matches, number_of_surahs, total_number_of_verses
+        results_obj = FinderResultObject(spans, total_number_of_matches, number_of_surahs, total_number_of_verses)
+        return results_obj
 
     def is_model_initialized(self):
         return self.model.is_initialized
