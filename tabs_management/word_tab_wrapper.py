@@ -1,9 +1,10 @@
 from datetime import datetime
+
+from algos.related_words import RelatedWords
 from my_widgets.tab_wrapper import TabWrapper
 from my_utils.utils import  resource_path, load_translation
 from my_utils.shared_data import SharedData
 from gui.detailed_display_dialog.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
-from my_widgets.lazy_list_widget import CustomRow
 from tabs_management.table_headers import WordTableHeaders
 from worker_threads.word_bounds_populator_thread import WordBoundsPopulatorThread
 from PySide6.QtCore import Qt
@@ -101,7 +102,16 @@ class WordTabWrapper(TabWrapper):
         g = nx.Graph()
         if len(path) > 1:
             for u,v in zip(path, path[1:]):
-                g.add_edge(u, v)
+                # TODO: according to current language
+                """
+                from arabic_reshaper import reshape
+                from bidi.algorithm import get_display
+                
+                def fix_arabic(w):
+                    return  get_display(reshape(w))
+                g.add_edge(RelatedWords.eng_to_arb[u], RelatedWords.eng_to_arb[v])
+                """
+                g.add_edge(u,v)
         else:
             g.add_node(path[0])
         dialog = GraphDialog(g, self)
