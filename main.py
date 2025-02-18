@@ -34,7 +34,7 @@ class MainWindow(QMainWindow):
     MAX_WORDS_IF_NOT_MAINTAIN_ORDER = 2
     MAX_WORDS_IF_ROOT = 1
     MAX_WORDS_IF_SIMILAR_WORD = 1
-    MAX_WORDS_IF_RELATED_WORD = 1
+    MAX_WORDS_IF_RELATED_WORD = 1  # TODO: Why 2 doesn't work?
     MAX_WORDS_FOR_TOPICS = 5
     _exhausted = object()
     REMOVE_THREAD_AFTER_MS = 500
@@ -56,9 +56,11 @@ class MainWindow(QMainWindow):
 
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
         SharedData.ui.similarityThresholdLabel.setText(str(SharedData.ui.similarityThresholdSlider.value()))
+        SharedData.ui.similarWordRadioButton.threshold = SharedData.ui.similarityThresholdSlider.value()
 
         SharedData.ui.relatedWordsThresholdSlider.setEnabled(SharedData.ui.relatedWordsRadioButton.isChecked())
         SharedData.ui.relatedWordsThresholdLabel.setText(str(SharedData.ui.relatedWordsThresholdSlider.value()))
+        SharedData.ui.relatedWordsRadioButton.threshold = SharedData.ui.relatedWordsThresholdSlider.value()
 
         max_words = self._get_max_words_for_search_option()
         self._composite_validator = CompositeValidator(max_words)
@@ -460,11 +462,13 @@ class MainWindow(QMainWindow):
 
     def _similarity_threshold_changed(self, value):
         SharedData.ui.similarityThresholdLabel.setText(str(value))
+        SharedData.ui.similarWordRadioButton.threshold = value
         self._search_word_text_changed(SharedData.search_word)
 
 
     def _related_words_threshold_changed(self, value):
         SharedData.ui.relatedWordsThresholdLabel.setText(str(value))
+        SharedData.ui.relatedWordsRadioButton.threshold = value
         self._search_word_text_changed(SharedData.search_word)
 
 

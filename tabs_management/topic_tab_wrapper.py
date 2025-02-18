@@ -10,6 +10,7 @@ from gui.detailed_display_dialog.my_topic_detailed_display_dialog import MyTopic
 from worker_threads.topic_populator_thread import TopicPopulatorThread
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QTableWidgetItem
+from my_utils.utils import get_radio_threshold
 
 
 
@@ -42,7 +43,10 @@ class TopicTabWrapper(TabWrapper):
         self.detailed_topic_display_dialog.switch_colorize_state_without_firing(checked, enabled)
 
     def populate_results(self):
-        self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
+        current_radio_threshold = get_radio_threshold(SharedData.ui.searchOptionsButtonGroup.checkedButton())
+        self.update_config(SharedData.search_word,
+                           SharedData.ui.searchOptionsButtonGroup.checkedId(),
+                           current_radio_threshold)
         thread_id = datetime.now().timestamp()
         topic_finder_thread = TopicPopulatorThread(SharedData.ui.allResultsCheckbox.isChecked(), thread_id)
         topic_finder_thread.set_data(SharedData.all_matches)

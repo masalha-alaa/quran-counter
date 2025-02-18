@@ -1,8 +1,7 @@
 from datetime import datetime
-
 from algos.related_words import RelatedWords
 from my_widgets.tab_wrapper import TabWrapper
-from my_utils.utils import  resource_path, load_translation
+from my_utils.utils import resource_path, load_translation, get_radio_threshold
 from my_utils.shared_data import SharedData
 from gui.detailed_display_dialog.my_word_detailed_display_dialog import MyWordDetailedDisplayDialog
 from tabs_management.table_headers import WordTableHeaders
@@ -65,7 +64,10 @@ class WordTabWrapper(TabWrapper):
             return
         SharedData.ui.minimum_letters_restriction_lbl.setStyleSheet(self.minimum_letters_restriction_lbl_stylesheet)
 
-        self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
+        current_radio_threshold = get_radio_threshold(SharedData.ui.searchOptionsButtonGroup.checkedButton())
+        self.update_config(SharedData.search_word,
+                           SharedData.ui.searchOptionsButtonGroup.checkedId(),
+                           current_radio_threshold)
         thread_id = datetime.now().timestamp()
         word_bounds_populator_thread = WordBoundsPopulatorThread(SharedData.ui.diacriticsCheckbox.isChecked(), thread_id)
         word_bounds_populator_thread.set_data(SharedData.all_matches, SharedData.ui.diacriticsCheckbox.isChecked())

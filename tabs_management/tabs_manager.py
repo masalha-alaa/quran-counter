@@ -4,7 +4,7 @@ from tabs_management.surah_tab_wrapper import SurahTabWrapper
 from tabs_management.word_tab_wrapper import WordTabWrapper
 from tabs_management.topic_tab_wrapper import TopicTabWrapper
 from my_utils.shared_data import SharedData
-from PySide6.QtGui import QColor
+from my_utils.utils import get_radio_threshold
 
 
 class TabIndex(Enum):
@@ -39,10 +39,19 @@ class TabsManager:
         self.topic_tab_wrapper.retranslate_ui()
 
     def refresh_tabs_config(self):
-        self.verse_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
-        self.surah_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
-        self.word_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
-        self.topic_tab_wrapper.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
+        current_radio_threshold = get_radio_threshold(SharedData.ui.searchOptionsButtonGroup.checkedButton())
+        self.verse_tab_wrapper.update_config(SharedData.search_word,
+                                             SharedData.ui.searchOptionsButtonGroup.checkedId(),
+                                             current_radio_threshold)
+        self.surah_tab_wrapper.update_config(SharedData.search_word,
+                                             SharedData.ui.searchOptionsButtonGroup.checkedId(),
+                                             current_radio_threshold)
+        self.word_tab_wrapper.update_config(SharedData.search_word,
+                                            SharedData.ui.searchOptionsButtonGroup.checkedId(),
+                                            current_radio_threshold)
+        self.topic_tab_wrapper.update_config(SharedData.search_word,
+                                             SharedData.ui.searchOptionsButtonGroup.checkedId(),
+                                             current_radio_threshold)
 
     def hide_tab(self, tab_index: TabIndex):
         # if tab_index.value == SharedData.ui.tabWidget.currentIndex():
@@ -71,18 +80,19 @@ class TabsManager:
 
     def _tab_changed(self, tab_index):
         current_word, current_radio = SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId()
+        current_radio_threshold = get_radio_threshold(SharedData.ui.searchOptionsButtonGroup.checkedButton())
         match tab_index:
             case TabIndex.VERSES.value:
-                if self.verse_tab_wrapper.config_changed(current_word, current_radio):
+                if self.verse_tab_wrapper.config_changed(current_word, current_radio, current_radio_threshold):
                     self.verse_tab_wrapper.populate_results(SharedData.matches_number)
             case TabIndex.SURAHS.value:
-                if self.surah_tab_wrapper.config_changed(current_word, current_radio):
+                if self.surah_tab_wrapper.config_changed(current_word, current_radio, current_radio_threshold):
                     self.surah_tab_wrapper.populate_results()
             case TabIndex.WORDS.value:
-                if self.word_tab_wrapper.config_changed(current_word, current_radio):
+                if self.word_tab_wrapper.config_changed(current_word, current_radio, current_radio_threshold):
                     self.word_tab_wrapper.populate_results(SharedData.search_word)
             case TabIndex.TOPICS.value:
-                if self.topic_tab_wrapper.config_changed(current_word, current_radio):
+                if self.topic_tab_wrapper.config_changed(current_word, current_radio, current_radio_threshold):
                     self.topic_tab_wrapper.populate_results()
 
 

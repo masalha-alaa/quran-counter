@@ -34,12 +34,16 @@ class WordLazyTableWidget(MyLazyTableWidget):
 
     def append_row(self, row: CustomTableRow):
         data = row.data
+        # TODO: Find the root cause for empty paths and fix it there (don't add words with empty paths (in any tab!))
+        # if len(data[WordTableHeaders.PATH_HEADER.value]) == 0:
+        #     return
+
         self.insertRow(self.rowCount())
         for j in range(len(data)):
             if j == WordTableHeaders.RESULTS_HEADER.value:
                 item = CustomTableWidgetItem(str(data[j]), TableDataType.INT)
             elif j == WordTableHeaders.PATH_HEADER.value:
-                if path_exists := (len(data[j]) > 1):
+                if path_exists := (len(data[j]) > 0):
                     button = self.create_path_button(data[j])
                     self.setCellWidget(self.rowCount()-1, j, button)
                 item = CustomTableWidgetItem("")

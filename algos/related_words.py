@@ -28,6 +28,7 @@ class RelatedWords:
             for node in subgraph.nodes:
                 if query in node:
                     # related_ar.update(subgraph.nodes)
+                    # paths[node] = [RelatedWords.arb_to_eng[node]]
                     paths[node] = [node]
                     centers = [RelatedWords.SYNONYMS_GRAPH.nodes[c]['concept_id'] for c in
                                nx.center(RelatedWords.SYNONYMS_GRAPH.subgraph(nx.node_connected_component(RelatedWords.SYNONYMS_GRAPH, node))) if
@@ -40,6 +41,7 @@ class RelatedWords:
                     synonyms = nx.node_connected_component(RelatedWords.SYNONYMS_GRAPH, RelatedWords.eng_to_arb[node])
                     # related_ar.update(synonyms)
                     for synonym in synonyms:
-                        paths[synonym] = path[:-1] + [RelatedWords.arb_to_eng[synonym]]
+                        # paths[synonym] = path[:-1] + [RelatedWords.arb_to_eng[synonym]]
+                        paths[synonym] = [RelatedWords.eng_to_arb[n] for n in path[:-1]] + [synonym]
         # return related_ar, paths
         return paths

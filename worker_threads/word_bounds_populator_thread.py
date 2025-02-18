@@ -3,13 +3,13 @@ import re
 from functools import lru_cache
 from PySide6.QtCore import Signal, QThread
 from collections import defaultdict
-from arabic_reformer import diacritics_regex, alamaat_waqf, rub_el_hizb_mark
+from arabic_reformer import diacritics_regex, alamaat_waqf, rub_el_hizb_mark, alif_khunjariyah, Alif
 from my_utils.my_data_loader import MyDataLoader
 from tabs_management.table_headers import WordTableHeaders
 from my_widgets.lazy_table_widget import CustomTableRow
 from models.match_item import MatchItem
 from my_utils.shared_data import SharedData
-from arabic_reformer import remove_diacritics
+from arabic_reformer import remove_diacritics, normalize_alif
 
 
 class WordBoundsPopulatorThread(QThread):
@@ -79,7 +79,7 @@ class WordBoundsPopulatorThread(QThread):
             row_results[WordTableHeaders.ENGLISH_TRANSLITERATION.value] = eng_translit
 
             # insert True / False in WordTableHeaders.PATH_HEADER.value
-            row_results[WordTableHeaders.PATH_HEADER.value] = SharedData.all_paths.get(remove_diacritics(w), [])
+            row_results[WordTableHeaders.PATH_HEADER.value] = SharedData.all_paths.get(normalize_alif(remove_diacritics(w.replace(alif_khunjariyah, Alif.ALIF))), [])
 
             # 3 is the number of extra fields beyond "surah_num, verse_num, word_id_first_match" in 'counts' above
             row_results[WordTableHeaders.RESULTS_HEADER.value] = sum(((len(lst) - 3) // 3) for lst in data)

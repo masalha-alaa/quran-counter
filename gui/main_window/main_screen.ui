@@ -169,6 +169,9 @@ QSlider::handle:horizontal:disabled {
             <height>16777215</height>
            </size>
           </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::NoContextMenu</enum>
+          </property>
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -431,7 +434,7 @@ QToolTip {
            <number>0</number>
           </property>
           <item>
-           <widget class="QRadioButton" name="similarWordRadioButton">
+           <widget class="RadioButtonWithThreshold" name="similarWordRadioButton">
             <property name="toolTip">
              <string>كلمات مشابهة (في الصياغة وليس في المعنى)</string>
             </property>
@@ -613,7 +616,7 @@ QToolTip {
            <number>0</number>
           </property>
           <item>
-           <widget class="QRadioButton" name="relatedWordsRadioButton">
+           <widget class="RadioButtonWithThreshold" name="relatedWordsRadioButton">
             <property name="toolTip">
              <string>كلمات ذات صلة بالمعنى</string>
             </property>
@@ -655,7 +658,7 @@ QToolTip {
                </sizepolicy>
               </property>
               <property name="toolTip">
-               <string>شدة التشابه</string>
+               <string>بعد الصلة الأقصى</string>
               </property>
               <property name="minimum">
                <number>1</number>
@@ -1831,6 +1834,11 @@ QTableWidget::item:selected {
    <class>TopicLazyTableWidget</class>
    <extends>QTableWidget</extends>
    <header>my_widgets.topic_lazy_table_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>RadioButtonWithThreshold</class>
+   <extends>QRadioButton</extends>
+   <header>my_widgets.radio_button_with_threshold</header>
   </customwidget>
  </customwidgets>
  <tabstops>

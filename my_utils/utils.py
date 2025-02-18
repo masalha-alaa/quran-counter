@@ -7,6 +7,7 @@ from math import ceil
 from arabic_reformer import strip_last_diacritic
 from my_utils.package_details import PackageDetails
 from paths import ROOT_DIR
+from my_widgets.radio_button_with_threshold import RadioButtonWithThreshold
 try:
     from PySide6.QtCore import QCoreApplication
 except ImportError:
@@ -101,3 +102,8 @@ def _show_dialog(parent, icon, title, msg):
     msg_box.setText(msg)
     msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg_box.exec()
+
+def get_radio_threshold(radio_button):
+    if isinstance(radio_button, RadioButtonWithThreshold):
+        return radio_button.threshold
+    return None

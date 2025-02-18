@@ -215,6 +215,9 @@ QPushButton:disabled {
                </item>
                <item>
                 <widget class="QLineEdit" name="pageInput">
+                 <property name="contextMenuPolicy">
+                  <enum>Qt::NoContextMenu</enum>
+                 </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                  </property>
@@ -285,6 +288,9 @@ QPushButton:disabled {
                    <property name="enabled">
                     <bool>true</bool>
                    </property>
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::NoContextMenu</enum>
+                   </property>
                    <property name="layoutDirection">
                     <enum>Qt::RightToLeft</enum>
                    </property>
@@ -312,6 +318,9 @@ QPushButton:disabled {
                  </property>
                  <item>
                   <widget class="QLineEdit" name="surahNumInput">
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::NoContextMenu</enum>
+                   </property>
                    <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
@@ -381,6 +390,9 @@ QPushButton:disabled {
                    <property name="enabled">
                     <bool>true</bool>
                    </property>
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::NoContextMenu</enum>
+                   </property>
                    <property name="layoutDirection">
                     <enum>Qt::RightToLeft</enum>
                    </property>
@@ -406,7 +418,11 @@ QPushButton:disabled {
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_19">
                <item>
-                <widget class="QLineEdit" name="surahNameInput"/>
+                <widget class="QLineEdit" name="surahNameInput">
+                 <property name="contextMenuPolicy">
+                  <enum>Qt::NoContextMenu</enum>
+                 </property>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_6">

@@ -24,6 +24,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QButtonGroup, QC
     QTabWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 from my_widgets.lazy_text_browser_widget.lazy_text_browser import LazyTextBrowser
+from my_widgets.radio_button_with_threshold import RadioButtonWithThreshold
 from my_widgets.surah_lazy_table_widget import SurahLazyTableWidget
 from my_widgets.topic_lazy_table_widget import TopicLazyTableWidget
 from my_widgets.word_lazy_table_widget import WordLazyTableWidget
@@ -192,6 +193,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.searchWord.sizePolicy().hasHeightForWidth())
         self.searchWord.setSizePolicy(sizePolicy1)
         self.searchWord.setMaximumSize(QSize(16777215, 16777215))
+        self.searchWord.setContextMenuPolicy(Qt.NoContextMenu)
         self.searchWord.setStyleSheet(u"")
         self.searchWord.setMaxLength(30)
 
@@ -365,7 +367,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_18 = QVBoxLayout()
         self.verticalLayout_18.setSpacing(0)
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
-        self.similarWordRadioButton = QRadioButton(self.centralwidget)
+        self.similarWordRadioButton = RadioButtonWithThreshold(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.similarWordRadioButton)
         self.similarWordRadioButton.setObjectName(u"similarWordRadioButton")
         self.similarWordRadioButton.setStyleSheet(u"QToolTip { \n"
@@ -467,7 +469,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_19 = QVBoxLayout()
         self.verticalLayout_19.setSpacing(0)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
-        self.relatedWordsRadioButton = QRadioButton(self.centralwidget)
+        self.relatedWordsRadioButton = RadioButtonWithThreshold(self.centralwidget)
         self.searchOptionsButtonGroup.addButton(self.relatedWordsRadioButton)
         self.relatedWordsRadioButton.setObjectName(u"relatedWordsRadioButton")
         self.relatedWordsRadioButton.setStyleSheet(u"QToolTip { \n"
@@ -1257,7 +1259,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.relatedWordsRadioButton.setText(QCoreApplication.translate("MainWindow", u"\u0643\u0644\u0645\u0629 \u0630\u0627\u062a \u0635\u0644\u0629", None))
 #if QT_CONFIG(tooltip)
-        self.relatedWordsThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0634\u062f\u0629 \u0627\u0644\u062a\u0634\u0627\u0628\u0647", None))
+        self.relatedWordsThresholdSlider.setToolTip(QCoreApplication.translate("MainWindow", u"\u0628\u0639\u062f \u0627\u0644\u0635\u0644\u0629 \u0627\u0644\u0623\u0642\u0635\u0649", None))
 #endif // QT_CONFIG(tooltip)
 #if QT_CONFIG(tooltip)
         self.relatedWordsThresholdLabel.setToolTip("")

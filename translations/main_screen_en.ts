@@ -109,6 +109,11 @@
         <translation>Related words</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="658"/>
+        <source>بعد الصلة الأقصى</source>
+        <translation>Max relation distance</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="668"/>
         <source>تصفية النتائج بمساعدة ChatGPT</source>
         <translation>Filter results using ChatGPT</translation>

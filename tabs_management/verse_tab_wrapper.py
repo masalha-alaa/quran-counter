@@ -6,6 +6,7 @@ from gui.waiting_dialog.my_waiting_dialog import MyWaitingDialog
 from chat_gpt.ask_gpt_thread import AskGptThread
 from my_widgets.tab_wrapper import TabWrapper
 from my_utils.shared_data import SharedData
+from my_utils.utils import get_radio_threshold
 from PySide6.QtCore import Slot
 from my_utils.utils import resource_path, load_translation
 from PySide6.QtWidgets import QDialog
@@ -39,7 +40,10 @@ class VerseTabWrapper(TabWrapper):
         SharedData.ui.clearFilterButton.clicked.connect(self._clear_filter_button_clicked)
 
     def populate_results(self, number_of_matches=None):
-        self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
+        current_radio_threshold = get_radio_threshold(SharedData.ui.searchOptionsButtonGroup.checkedButton())
+        self.update_config(SharedData.search_word,
+                           SharedData.ui.searchOptionsButtonGroup.checkedId(),
+                           current_radio_threshold)
         SharedData.found_verses.save_values_and_refresh(SharedData.all_matches, range(len(SharedData.all_matches)))
         SharedData.ui.filterButton.setEnabled((number_of_matches > 0) and len(SharedData.search_word.split()) == 1)
 

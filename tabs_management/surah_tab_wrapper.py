@@ -4,6 +4,7 @@ from my_widgets.surah_lazy_table_widget import SurahLazyTableWidget
 from tabs_management.table_headers import SurahTableHeaders
 from my_widgets.tab_wrapper import TabWrapper
 from my_utils.shared_data import SharedData
+from my_utils.utils import get_radio_threshold
 from worker_threads.surah_populator_thread import SurahPopulatorThread
 from my_utils.utils import resource_path, load_translation
 from gui.detailed_display_dialog.my_surah_detailed_display_dialog import MySurahDetailedDisplayDialog
@@ -44,7 +45,8 @@ class SurahTabWrapper(TabWrapper):
         self.detailed_surah_display_dialog.switch_colorize_state_without_firing(checked, enabled)
 
     def populate_results(self):
-        self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId())
+        threshold = get_radio_threshold(SharedData.ui.searchOptionsButtonGroup.checkedButton())
+        self.update_config(SharedData.search_word, SharedData.ui.searchOptionsButtonGroup.checkedId(), threshold)
         thread_id = datetime.now().timestamp()
         surah_populator_thread = SurahPopulatorThread(self._surah_index, SharedData.ui.allResultsCheckbox.isChecked(), thread_id)
         surah_populator_thread.set_data(SharedData.all_matches, SharedData.ui.allResultsCheckbox.isChecked())

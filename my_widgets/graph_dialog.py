@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from PySide6.QtWidgets import QDialog, QVBoxLayout
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PySide6.QtWidgets import QWidget
+from arabic_reformer import reform_text
+from bidi.algorithm import get_display
 
 
 class NetworkXGraph(QWidget):
@@ -34,7 +36,7 @@ class NetworkXGraph(QWidget):
         # Draw labels with custom font weight
         for i, (node, (x, y)) in enumerate(pos.items()):
             font_weight = 'bold' if i in [0, len(pos) - 1] else 'normal'
-            plt.text(x, y, str(node), fontsize=12, fontweight=font_weight,
+            plt.text(x, y, self.fix_arabic(node), fontsize=12, fontweight=font_weight,
                      ha='center', va='center', color='orange')
 
         # Layout
@@ -57,6 +59,9 @@ class NetworkXGraph(QWidget):
                 q -= 1
             return new_pos
         return pos
+
+    def fix_arabic(self, w):
+        return get_display(reform_text(w))
 
 
 class GraphDialog(QDialog):

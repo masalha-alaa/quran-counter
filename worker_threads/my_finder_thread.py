@@ -2,8 +2,9 @@ from functools import lru_cache
 # import regex as re
 import re
 from my_utils.my_data_loader import MyDataLoader
+from my_utils.globals import beginning_of_word, end_of_word
 from PySide6.QtCore import Signal, QThread, QMutex
-from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, arabic_alphabit, remove_diacritics, Alif
+from arabic_reformer import reform_regex, alamaat_waqf_regex, diacritics_regex, arabic_alphabit, remove_diacritics, normalize_alif
 from nltk.stem.isri import ISRIStemmer
 from itertools import permutations
 from difflib import SequenceMatcher
@@ -148,23 +149,30 @@ class FinderThread(QThread):
 
             new_text = f"({new_text})"  # capturing group
 
-            beginning_of_word = r"(?: |^)"
-            end_of_word = r"(?: |$)"
-            # beginning_of_word = r"\b"
-            # end_of_word = r"\b"
             if self.full_word:
-                new_text = beginning_of_word + rf"{new_text}" + end_of_word
-            else:
-                if self.beginning_of_word_flag:
-                    new_text = beginning_of_word + rf"{new_text}"
-                if self.end_of_word_flag:
-                    new_text = rf"{new_text}" + end_of_word
+                new_text = self.make_full_word(new_text)
+            elif self.beginning_of_word_flag:
+                    new_text = self.make_beginning_of_word(new_text)
+            elif self.end_of_word_flag:
+                    new_text = self.make_end_of_word(new_text)
         elif self.regular_expression:
             new_text = f"({new_text})"
             new_text = self.strip_extra_braces(new_text)
 
         self._final_word = new_text
         self._words_num = num_of_search_words
+
+    def make_full_word(self, w):
+        new_w = beginning_of_word + rf"{w}" + end_of_word
+        return new_w
+
+    def make_beginning_of_word(self, w):
+        new_w = beginning_of_word + rf"{w}"
+        return new_w
+
+    def make_end_of_word(self, w):
+        new_w = rf"{w}" + end_of_word
+        return new_w
 
     def flatten_nested_brackets(self, pattern):
         """
@@ -225,7 +233,7 @@ class FinderThread(QThread):
         offset = 0
         SEPARATOR = ' '
         for i, w in enumerate(sentence.split(SEPARATOR)):  # assuming one space separator
-            ratio = SequenceMatcher(None, word, remove_diacritics(w).replace(Alif.ALIF_WITH_HAMZAT_WASL, Alif.ALIF).replace(Alif.ALIF_WITH_HAMZAT_WASL2, Alif.ALIF)).ratio()
+            ratio = SequenceMatcher(None, word, normalize_alif(remove_diacritics(w))).ratio()
             if ratio >= threshold:
                 match = (offset, offset + len(w))
                 matches.append(match)
@@ -276,8 +284,11 @@ class FinderThread(QThread):
             spans, number_of_matches, index_mask, number_of_verses = [], [], [], []
         else:
             if self.related_words:
-                paths = self.get_paths_to_related_words(w, self.related_words_threshold)
-                w = self._final_word
+                paths, related_words = self.get_paths_to_related_words(w, self.related_words_threshold)
+                # TODO: tri regex?
+                w = self._final_word = self.make_full_word(f"({'|'.join(related_words)})")
+                # w = self._final_word = f"({'|'.join(related_words)})"
+            # print(w)
             spans, number_of_matches, index_mask, number_of_verses = zip(*data.apply(lambda row: self._find_in_surah(row, w), axis=1))  # NOTE: index is not retained
         # spans = chain.from_iterable(tup for lst in spans if lst is not None for tup in lst)
         # spans = (tup for lst in spans if lst is not None for tup in lst)
@@ -321,9 +332,7 @@ class FinderThread(QThread):
     def get_paths_to_related_words(self, word, cutoff=1):
         related_words_paths = self.related_words_algo.get_by_distance(word, cutoff)
         new_words = map(self.reform_regex_with_local_params, related_words_paths.keys())
-        # TODO: tri regex?
-        self._final_word = f"({'|'.join(new_words)})"
-        return related_words_paths
+        return related_words_paths, new_words
 
     @lru_cache(maxsize=256)
     def _get_root(self, w):

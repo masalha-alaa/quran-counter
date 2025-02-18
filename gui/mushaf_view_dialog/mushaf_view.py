@@ -175,6 +175,7 @@ class Ui_MushafViewDialog(object):
 
         self.pageInput = QLineEdit(MushafViewDialog)
         self.pageInput.setObjectName(u"pageInput")
+        self.pageInput.setContextMenuPolicy(Qt.NoContextMenu)
         self.pageInput.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_10.addWidget(self.pageInput)
@@ -221,6 +222,7 @@ class Ui_MushafViewDialog(object):
         self.verseInput = QLineEdit(MushafViewDialog)
         self.verseInput.setObjectName(u"verseInput")
         self.verseInput.setEnabled(True)
+        self.verseInput.setContextMenuPolicy(Qt.NoContextMenu)
         self.verseInput.setLayoutDirection(Qt.RightToLeft)
         self.verseInput.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -239,6 +241,7 @@ class Ui_MushafViewDialog(object):
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.surahNumInput = QLineEdit(MushafViewDialog)
         self.surahNumInput.setObjectName(u"surahNumInput")
+        self.surahNumInput.setContextMenuPolicy(Qt.NoContextMenu)
         self.surahNumInput.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_7.addWidget(self.surahNumInput)
@@ -287,6 +290,7 @@ class Ui_MushafViewDialog(object):
         self.verseInput_2 = QLineEdit(MushafViewDialog)
         self.verseInput_2.setObjectName(u"verseInput_2")
         self.verseInput_2.setEnabled(True)
+        self.verseInput_2.setContextMenuPolicy(Qt.NoContextMenu)
         self.verseInput_2.setLayoutDirection(Qt.RightToLeft)
         self.verseInput_2.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
@@ -307,6 +311,7 @@ class Ui_MushafViewDialog(object):
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
         self.surahNameInput = QLineEdit(MushafViewDialog)
         self.surahNameInput.setObjectName(u"surahNameInput")
+        self.surahNameInput.setContextMenuPolicy(Qt.NoContextMenu)
 
         self.horizontalLayout_19.addWidget(self.surahNameInput)
 
