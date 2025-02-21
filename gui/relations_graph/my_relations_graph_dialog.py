@@ -2,6 +2,7 @@ from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QDialog, QApplication
 from gui.relations_graph.relations_graph import Ui_RelationsGraphDialog
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QCursor
 from my_utils.utils import AppLang
 from networkx import DiGraph
 from matplotlib import pyplot as plt
@@ -19,7 +20,7 @@ class MyRelationsGraphDialog(QDialog, Ui_RelationsGraphDialog):
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
         # Manually resize to the screen size
-        screen_geometry = QApplication.primaryScreen().geometry()
+        screen_geometry = QApplication.screenAt(QCursor.pos()).geometry()
         self.resize(screen_geometry.width(), screen_geometry.height())
 
         # Optionally center the dialog
