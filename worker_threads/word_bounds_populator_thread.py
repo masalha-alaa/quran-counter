@@ -77,8 +77,6 @@ class WordBoundsPopulatorThread(QThread):
             eng_translit, eng_transl = MyDataLoader.get_word_eng_transliteration(data[0][0], data[0][1], data[0][2], data[0][5])
             row_results[WordTableHeaders.ENGLISH_TRANSLATION.value] = eng_transl
             row_results[WordTableHeaders.ENGLISH_TRANSLITERATION.value] = eng_translit
-
-            # insert True / False in WordTableHeaders.PATH_HEADER.value
             row_results[WordTableHeaders.PATH_HEADER.value] = SharedData.all_paths.get(normalize_alif(remove_diacritics(w.replace(alif_khunjariyah, Alif.ALIF))), [])
 
             # 3 is the number of extra fields beyond "surah_num, verse_num, word_id_first_match" in 'counts' above

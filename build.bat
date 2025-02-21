@@ -42,6 +42,12 @@ pyside6-lupdate gui/download_dialog/download_dialog.ui -ts translations/download
 pyside6-lrelease translations/download_dialog_ar.ts
 pyside6-lrelease translations/download_dialog_en.ts
 
+REM relations_graph dialog
+pyside6-uic .\gui\relations_graph\relations_graph.ui -o .\gui\relations_graph\relations_graph.py
+pyside6-lupdate gui/relations_graph/relations_graph.ui -ts translations/relations_graph_ar.ts
+pyside6-lrelease translations/relations_graph_ar.ts
+pyside6-lrelease translations/relations_graph_en.ts
+
 REM dynamic_translations
 pyside6-lrelease translations/dynamic_translations_ar_src_ar.ts
 pyside6-lrelease translations/dynamic_translations_ar_src_en.ts

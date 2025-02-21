@@ -8,7 +8,9 @@ from tabs_management.table_headers import WordTableHeaders
 from worker_threads.word_bounds_populator_thread import WordBoundsPopulatorThread
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QTableWidgetItem
-from my_widgets.graph_dialog import GraphDialog
+# from my_widgets.graph_dialog import GraphDialog, NodeAttribute
+from my_widgets.networkx_graph import NodeAttribute
+from gui.relations_graph.my_relations_graph_dialog import MyRelationsGraphDialog
 import networkx as nx
 
 
@@ -101,20 +103,39 @@ class WordTabWrapper(TabWrapper):
         self.detailed_word_display_dialog.exec()
 
     def word_bounds_results_path_clicked(self, path: list):
-        g = nx.Graph()
+        g = nx.DiGraph()
         if len(path) > 1:
             for u,v in zip(path, path[1:]):
                 # TODO: according to current language
                 """
-                from arabic_reshaper import reshape
-                from bidi.algorithm import get_display
-                
-                def fix_arabic(w):
-                    return  get_display(reshape(w))
                 g.add_edge(RelatedWords.eng_to_arb[u], RelatedWords.eng_to_arb[v])
                 """
                 g.add_edge(u,v)
         else:
             g.add_node(path[0])
-        dialog = GraphDialog(g, self)
+
+        # add leafs
+        path_set = set(path)
+        src, dst = path[0], path[-1]
+        for i, node in enumerate(path):
+            if node in RelatedWords.SYNONYMS_GRAPH:
+                for leaf, _ in nx.single_source_shortest_path(RelatedWords.SYNONYMS_GRAPH, node, cutoff=1).items():
+                    if leaf != node:
+                        g.add_edge(node, leaf)
+                        if leaf not in path_set:
+                            nx.set_node_attributes(g, {leaf: NodeAttribute.role.atts.LEAF}, NodeAttribute.role.name)
+            elif (eng_node := RelatedWords.arb_to_eng[node]) in RelatedWords.RELATIONS_GRAPH:
+                for leaf, _ in nx.single_source_shortest_path(RelatedWords.RELATIONS_GRAPH, eng_node, cutoff=1).items():
+                    arb_leaf = RelatedWords.eng_to_arb[leaf]
+                    if arb_leaf != node:
+                        g.add_edge(node, arb_leaf)
+                        if arb_leaf not in path_set:
+                            nx.set_node_attributes(g, {arb_leaf: NodeAttribute.role.atts.LEAF}, NodeAttribute.role.name)
+        nx.set_node_attributes(g, {src: NodeAttribute.role.atts.SOURCE}, NodeAttribute.role.name)
+        if src != dst:
+            nx.set_node_attributes(g, {dst: NodeAttribute.role.atts.DESTINATION}, NodeAttribute.role.name)
+
+        # create graph and dialog
+        dialog = MyRelationsGraphDialog(SharedData.app_language)
+        dialog.set_data(g)
         dialog.exec()

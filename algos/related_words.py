@@ -41,7 +41,9 @@ class RelatedWords:
                     synonyms = nx.node_connected_component(RelatedWords.SYNONYMS_GRAPH, RelatedWords.eng_to_arb[node])
                     # related_ar.update(synonyms)
                     for synonym in synonyms:
-                        # paths[synonym] = path[:-1] + [RelatedWords.arb_to_eng[synonym]]
-                        paths[synonym] = [RelatedWords.eng_to_arb[n] for n in path[:-1]] + [synonym]
+                        if len(path) == 1and RelatedWords.eng_to_arb[path[0]] != synonym:
+                            paths[synonym] = [RelatedWords.eng_to_arb[path[0]]] + [synonym]
+                        else:
+                            paths[synonym] = [RelatedWords.eng_to_arb[n] for n in path[:-1]] + [synonym]
         # return related_ar, paths
         return paths
