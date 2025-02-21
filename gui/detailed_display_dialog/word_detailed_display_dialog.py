@@ -45,10 +45,13 @@ class Ui_DetailedWordDisplayDialog(object):
 "    background-color: #537EAA;\n"
 "}\n"
 "\n"
-"QCheckBox::indicator:hover {\n"
+"QCheckBox::indicator:unchecked:hover {\n"
 "    background-color: #47607E;\n"
 "}\n"
-"")
+"\n"
+"QCheckBox:hover {\n"
+"    background-color: rgba(71, 96, 126, 0.2);\n"
+"}")
         DetailedWordDisplayDialog.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         DetailedWordDisplayDialog.setSizeGripEnabled(False)
         self.verticalLayout_2 = QVBoxLayout(DetailedWordDisplayDialog)

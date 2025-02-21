@@ -46,7 +46,7 @@ QCheckBox::indicator:checked {
     background-color: #537EAA;
 }
 
-QCheckBox::indicator:hover {
+QCheckBox::indicator:unchecked:hover {
     background-color: #47607E;
 }
 

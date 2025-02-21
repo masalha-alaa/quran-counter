@@ -51,7 +51,7 @@ class Ui_MushafViewDialog(object):
 "    background-color: #537EAA;\n"
 "}\n"
 "\n"
-"QCheckBox::indicator:hover {\n"
+"QCheckBox::indicator:unchecked:hover {\n"
 "    background-color: #47607E;\n"
 "}\n"
 "\n"
@@ -74,7 +74,8 @@ class Ui_MushafViewDialog(object):
 "\n"
 "QPushButton:disabled {\n"
 "    background-color: #838383;\n"
-"}\n"
+""
+                        "}\n"
 "")
         self.verticalLayout_7 = QVBoxLayout(MushafViewDialog)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")

@@ -33,10 +33,13 @@ QCheckBox::indicator:checked {
     background-color: #537EAA;
 }
 
-QCheckBox::indicator:hover {
+QCheckBox::indicator:unchecked:hover {
     background-color: #47607E;
 }
-</string>
+
+QCheckBox:hover {
+    background-color: rgba(71, 96, 126, 0.2);
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

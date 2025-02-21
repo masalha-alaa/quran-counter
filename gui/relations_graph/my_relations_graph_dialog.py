@@ -40,7 +40,7 @@ class MyRelationsGraphDialog(QDialog, Ui_RelationsGraphDialog):
             self._current_lang = lang
 
     def set_data(self, graph: DiGraph):
-        self.graphWidget.set_data(graph, "#313131")
+        self.graphWidget.set_data(graph, "#313131", self._current_lang)
 
     # SIGNALS
     def _toggle_expanded_graph(self, state):

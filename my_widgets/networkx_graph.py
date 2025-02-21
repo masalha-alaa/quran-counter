@@ -3,7 +3,10 @@ import networkx as nx
 from PySide6.QtWidgets import QWidget
 from bidi.algorithm import get_display
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
+from algos.related_words import RelatedWords
 from arabic_reformer import reform_text
+from my_utils.my_enums import AppLang
 
 
 class NodeRoleAttribute:
@@ -30,11 +33,13 @@ class NetworkXGraph(QWidget):
         self.figure = None
         self.ax = None
         self.canvas = None
+        self._current_lang = None
         self.initialized = False
 
-    def set_data(self, graph, bg):
+    def set_data(self, graph, bg, language):
         self.graph = graph
         self.bg = bg
+        self._current_lang = language
         self.initialized = True
 
     def create_graph(self, show_leafs=False):
@@ -49,8 +54,8 @@ class NetworkXGraph(QWidget):
             self.ax.clear()
         self.ax.axis('off')
 
-        node_mapping = {n: n.replace(" ", "\n") for n in self.graph.nodes()}
-        self.graph = nx.relabel_nodes(self.graph, node_mapping)
+        # node_mapping = {n: n.replace(" ", "\n") for n in self.graph.nodes()}
+        # self.graph = nx.relabel_nodes(self.graph, node_mapping)
 
         # Draw graph on Matplotlib canvas
         pos = nx.bfs_layout(self.graph,
@@ -136,12 +141,21 @@ class NetworkXGraph(QWidget):
             if not show_leafs and node in leaf_nodes:
                 continue
             font_weight = 'bold' if node in outline_nodes else 'normal'
-            self.ax.text(x, y, self.fix_arabic(node), fontsize=12, fontweight=font_weight,
-                     ha='center', va='center', color='orange')
+            if self._current_lang == AppLang.ENGLISH:
+                label = RelatedWords.arb_to_eng.get(node, node)
+                label = self._break_label(label)
+            else:
+                label = self._break_label(node)
+                label = self.fix_arabic(label)
+            self.ax.text(x, y, label, fontsize=12, fontweight=font_weight,
+                             ha='center', va='center', color='orange')
 
         # Layout
         self.canvas.draw()  # necessary?
         self.layout().addWidget(self.canvas)
+
+    def _break_label(self, label):
+        return label.replace(" ", "\n").replace("-", "\n")
 
     def re_order_nodes_straight_path(self, pos):
         pos_keys = list(pos)
