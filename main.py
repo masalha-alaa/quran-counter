@@ -248,9 +248,10 @@ class MainWindow(QMainWindow):
                 return
 
         if (SharedData.ui.rootRadioButton.isChecked() or
-                SharedData.ui.similarWordRadioButton.isChecked() or
-                SharedData.ui.relatedWordsRadioButton.isChecked()):
+                SharedData.ui.similarWordRadioButton.isChecked()):
             self.waiting()
+        elif SharedData.ui.relatedWordsRadioButton.isChecked():
+            self.waiting(block_search=False)
 
         thread_id = datetime.now().timestamp()
         if SharedData.ui.topicsRadioButton.isChecked():
@@ -337,8 +338,9 @@ class MainWindow(QMainWindow):
         self.tabs_manager.on_txt_found_complete(initial_word, result.total_number_of_matches)
         self.finished_waiting()
 
-    def waiting(self, text=""):
-        SharedData.ui.searchWord.setEnabled(False)
+    def waiting(self, text="", block_search=True):
+        if block_search:
+            SharedData.ui.searchWord.setEnabled(False)
         SharedData.ui.similarityThresholdSlider.setEnabled(False)
         SharedData.ui.relatedWordsThresholdSlider.setEnabled(False)
         self.spinner.setText(text)
@@ -346,7 +348,8 @@ class MainWindow(QMainWindow):
 
     def finished_waiting(self):
         self.spinner.stop()
-        SharedData.ui.searchWord.setEnabled(True)
+        if not SharedData.ui.searchWord.isEnabled():
+            SharedData.ui.searchWord.setEnabled(True)
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
         SharedData.ui.relatedWordsThresholdSlider.setEnabled(SharedData.ui.relatedWordsRadioButton.isChecked())
         if SharedData.ui.similarityThresholdSlider.isEnabled():

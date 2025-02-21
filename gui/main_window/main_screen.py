@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
                         "d-color: #537EAA;\n"
 "}\n"
 "\n"
-"QRadioButton::indicator:hover {\n"
+"QRadioButton::indicator:unchecked:hover {\n"
 "    background-color: #47607E;\n"
 "}\n"
 "\n"
@@ -134,8 +134,8 @@ class Ui_MainWindow(object):
 "\n"
 "QSlider::handle:horizontal:pressed {\n"
 "    background: #3094D7;\n"
-"    border: 1px solid #"
-                        "2488CB;\n"
+"    border: 1"
+                        "px solid #2488CB;\n"
 "    border-radius: 5px;\n"
 "}\n"
 "\n"
@@ -1204,7 +1204,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

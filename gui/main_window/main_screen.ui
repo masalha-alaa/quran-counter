@@ -68,7 +68,7 @@ QRadioButton::indicator:checked {
     background-color: #537EAA;
 }
 
-QRadioButton::indicator:hover {
+QRadioButton::indicator:unchecked:hover {
     background-color: #47607E;
 }
 
@@ -999,7 +999,7 @@ QToolTip {
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="ayatTab">
        <property name="styleSheet">
