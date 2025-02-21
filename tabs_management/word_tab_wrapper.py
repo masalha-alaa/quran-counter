@@ -136,6 +136,8 @@ class WordTabWrapper(TabWrapper):
             nx.set_node_attributes(g, {dst: NodeAttribute.role.atts.DESTINATION}, NodeAttribute.role.name)
 
         # create graph and dialog
+        load_translation(SharedData.translator,
+                         resource_path(f"translations/relations_graph_{SharedData.app_language.value}.qm"))
         dialog = MyRelationsGraphDialog(SharedData.app_language)
         dialog.set_data(g)
         dialog.exec()
