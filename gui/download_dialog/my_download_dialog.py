@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QApplication
 from datetime import datetime
 from PySide6.QtWidgets import QDialog
-from PySide6.QtGui import QShowEvent, QTextCursor
+from PySide6.QtGui import QShowEvent, QTextCursor, QCloseEvent
 from PySide6.QtCore import Slot
 
 import my_utils.utils
@@ -17,6 +17,7 @@ from my_utils.utils import resource_path, is_package_installed, is_topics_model_
 from my_utils.utils import translate_text
 from worker_threads.package_installer_thread import PackageInstallerThread
 from worker_threads.zip_extractor_thread import ZipExtractorThread
+from math import ceil
 
 
 class MyDownloadDialog(QDialog, Ui_DownloadDialog):
@@ -47,6 +48,10 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
     def showEvent(self, event: QShowEvent):
         super().showEvent(event)
         self.hide_status()
+
+    def closeEvent(self, event):
+        self.model_downloader.cancel_download()
+        super().closeEvent(event)
 
     def set_language(self, lang):
         self._apply_language(lang)
@@ -176,10 +181,17 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
         print("Downloading model...")
         self.progressBar.setValue(0)
 
-    def download_progress_callback(self, bytes_received, bytes_total):
+    def download_progress_callback(self, total_bytes_received, total_bytes, eta=None):
         # Update progress bar
-        progress = (bytes_received / bytes_total) * 100
+        # progress = min(ceil((total_bytes_received / total_bytes) * 100), 100)
+        progress = (total_bytes_received / total_bytes) * 100
+
         self.progressBar.setValue(progress)
+        if eta is not None:
+            eta = int(eta)
+            h, s = divmod(eta, 3600)
+            m, s = divmod(s, 60)
+            self.progressBar.setFormat(f"{progress:.2f}% (ETA {h:02d}:{m:02d}:{s:02d})")
 
     def download_finished_callback(self, reply: QNetworkReply):
         # Check if the request was successful

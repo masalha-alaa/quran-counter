@@ -3,6 +3,7 @@ from datetime import datetime
 import uuid
 from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QValidator
+from PySide6.QtGui import QCursor
 from PySide6.QtTest import QTest
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -486,6 +487,12 @@ if __name__ == "__main__":
     MyDataLoader()
 
     window = MainWindow()
+    # Manually resize to the screen size
+    screen_geometry = QApplication.screenAt(QCursor.pos()).geometry()
+
+    # Optionally center the dialog
+    window.move(screen_geometry.center().x() - window.width() // 2,
+                screen_geometry.center().y() - window.height() // 2)
     window.show()
 
     sys.exit(app.exec())
