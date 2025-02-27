@@ -91,7 +91,7 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
         if success:
             self.resultsListWidget.addItems(data.values())
         else:
-            show_error_dialog(self, "Error", data)
+            show_error_dialog(self, "ChatGPT: Could not get word meanings")
 
     # @Slot(list)
     # def on_ask_gpt_for_relevant_verses_completed(self, results):

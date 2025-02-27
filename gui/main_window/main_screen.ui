@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>عدّاد القرآن الكريم</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/app-icon.png</normaloff>:/app-icon.png</iconset>
+  </property>
   <property name="toolTip">
    <string notr="true"/>
   </property>

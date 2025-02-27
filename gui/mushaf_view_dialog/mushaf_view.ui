@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>متصفح القرآن</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/app-icon.png</normaloff>:/app-icon.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
     background-color: rgb(49, 49, 49);

@@ -26,6 +26,9 @@ class Ui_MushafViewDialog(object):
         if not MushafViewDialog.objectName():
             MushafViewDialog.setObjectName(u"MushafViewDialog")
         MushafViewDialog.resize(1144, 858)
+        icon = QIcon()
+        icon.addFile(u":/app-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        MushafViewDialog.setWindowIcon(icon)
         MushafViewDialog.setStyleSheet(u"QWidget {\n"
 "    background-color: rgb(49, 49, 49);\n"
 "    color: rgb(207, 207, 207);\n"
@@ -159,9 +162,9 @@ class Ui_MushafViewDialog(object):
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
         self.goToPageButton = QPushButton(MushafViewDialog)
         self.goToPageButton.setObjectName(u"goToPageButton")
-        icon = QIcon()
-        icon.addFile(u":/search-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.goToPageButton.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/search-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.goToPageButton.setIcon(icon1)
         self.goToPageButton.setIconSize(QSize(24, 24))
         self.goToPageButton.setAutoDefault(False)
 
@@ -207,7 +210,7 @@ class Ui_MushafViewDialog(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.goToRefButton = QPushButton(MushafViewDialog)
         self.goToRefButton.setObjectName(u"goToRefButton")
-        self.goToRefButton.setIcon(icon)
+        self.goToRefButton.setIcon(icon1)
         self.goToRefButton.setIconSize(QSize(24, 24))
         self.goToRefButton.setAutoDefault(False)
 
@@ -271,7 +274,7 @@ class Ui_MushafViewDialog(object):
 
         self.goToRef_2 = QPushButton(MushafViewDialog)
         self.goToRef_2.setObjectName(u"goToRef_2")
-        self.goToRef_2.setIcon(icon)
+        self.goToRef_2.setIcon(icon1)
         self.goToRef_2.setIconSize(QSize(24, 24))
         self.goToRef_2.setAutoDefault(False)
 
@@ -361,9 +364,9 @@ class Ui_MushafViewDialog(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.nextPushButton = QPushButton(self.frame_4)
         self.nextPushButton.setObjectName(u"nextPushButton")
-        icon1 = QIcon()
-        icon1.addFile(u":/left-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.nextPushButton.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u":/left-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.nextPushButton.setIcon(icon2)
         self.nextPushButton.setIconSize(QSize(20, 20))
         self.nextPushButton.setAutoDefault(False)
 
@@ -392,9 +395,9 @@ class Ui_MushafViewDialog(object):
 
         self.prevPushButton = QPushButton(self.frame_4)
         self.prevPushButton.setObjectName(u"prevPushButton")
-        icon2 = QIcon()
-        icon2.addFile(u":/right-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.prevPushButton.setIcon(icon2)
+        icon3 = QIcon()
+        icon3.addFile(u":/right-arrow-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.prevPushButton.setIcon(icon3)
         self.prevPushButton.setIconSize(QSize(20, 20))
         self.prevPushButton.setAutoDefault(False)
 
@@ -428,7 +431,7 @@ class Ui_MushafViewDialog(object):
 
         self.nextSurahButton = QPushButton(self.frame_4)
         self.nextSurahButton.setObjectName(u"nextSurahButton")
-        self.nextSurahButton.setIcon(icon1)
+        self.nextSurahButton.setIcon(icon2)
         self.nextSurahButton.setIconSize(QSize(20, 20))
         self.nextSurahButton.setAutoDefault(False)
 
@@ -444,7 +447,7 @@ class Ui_MushafViewDialog(object):
 
         self.prevSurahButton = QPushButton(self.frame_4)
         self.prevSurahButton.setObjectName(u"prevSurahButton")
-        self.prevSurahButton.setIcon(icon2)
+        self.prevSurahButton.setIcon(icon3)
         self.prevSurahButton.setIconSize(QSize(20, 20))
         self.prevSurahButton.setAutoDefault(False)
 
@@ -477,7 +480,7 @@ class Ui_MushafViewDialog(object):
 
         self.nextJuzButton = QPushButton(self.frame_4)
         self.nextJuzButton.setObjectName(u"nextJuzButton")
-        self.nextJuzButton.setIcon(icon1)
+        self.nextJuzButton.setIcon(icon2)
         self.nextJuzButton.setAutoDefault(False)
 
         self.horizontalLayout_2.addWidget(self.nextJuzButton)
@@ -492,7 +495,7 @@ class Ui_MushafViewDialog(object):
 
         self.prevJuzButton = QPushButton(self.frame_4)
         self.prevJuzButton.setObjectName(u"prevJuzButton")
-        self.prevJuzButton.setIcon(icon2)
+        self.prevJuzButton.setIcon(icon3)
         self.prevJuzButton.setIconSize(QSize(20, 20))
         self.prevJuzButton.setAutoDefault(False)
 
@@ -559,9 +562,9 @@ class Ui_MushafViewDialog(object):
 "    color: #484848;\n"
 "	font: 14pt;\n"
 "}")
-        icon3 = QIcon()
-        icon3.addFile(u":/reset-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.refreshExclusiveWordsButton.setIcon(icon3)
+        icon4 = QIcon()
+        icon4.addFile(u":/reset-icon.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.refreshExclusiveWordsButton.setIcon(icon4)
 
         self.horizontalLayout_3.addWidget(self.refreshExclusiveWordsButton)
 
@@ -793,7 +796,7 @@ class Ui_MushafViewDialog(object):
 "    color: #484848;\n"
 "	font: 14pt;\n"
 "}")
-        self.resetStatsButton.setIcon(icon3)
+        self.resetStatsButton.setIcon(icon4)
 
         self.horizontalLayout.addWidget(self.resetStatsButton)
 

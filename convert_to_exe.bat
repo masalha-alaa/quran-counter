@@ -12,7 +12,7 @@ CALL temp_venv/Scripts/activate
 CALL pip install pyinstaller
 CALL pip install -r %REQUIREMENTS_FILE%
 
-CALL pyinstaller --exclude-module=torch --name=QuranCounter --onedir --windowed --add-data "data;data" --add-data "embeddings/topics_embeddings.pkl;embeddings" --add-data "gui/resources;gui/resources" --add-data "translations;translations" --add-data "fonts;fonts" --add-data "surah_index.yml;." main.py
+CALL pyinstaller --exclude-module=torch --name=QuranCounter --onedir --console --add-data "data;data" --add-data "embeddings/topics_embeddings.pkl;embeddings" --add-data "gui/resources;gui/resources" --add-data "translations;translations" --add-data "fonts;fonts" --add-data "surah_index.yml;." main.py
 
 CALL deactivate
 RD /s /q "temp_venv"

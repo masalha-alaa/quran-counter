@@ -6,7 +6,7 @@ from PySide6.QtCore import Slot
 
 import my_utils.utils
 from gui.download_dialog.download_dialog import Ui_DownloadDialog
-from my_utils.package_details import PackageDetails
+from my_utils.utils import show_error_dialog
 from my_utils.shared_data import SharedData
 from my_utils.utils import AppLang
 from my_utils.model_downloader import ModelDownloader
@@ -72,8 +72,8 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
     def show_success(self):
         pass
 
-    def show_failure(self):
-        pass
+    def show_failure(self, msg="Error"):
+        show_error_dialog(self, msg)
 
     def hide_status(self):
         pass
@@ -197,13 +197,17 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
         # Check if the request was successful
         if reply.error() != QNetworkReply.NetworkError.NoError:
             print(f"Download failed: {reply.errorString()}")
-            self.show_failure()
+            self.show_failure(reply.errorString())
         else:
             # Set the target file path where the downloaded zip file will be saved
             download_folder = resource_path("embedding_models")
             filename = "topic_sim_model.zip"  # Specify the name for the downloaded file
             file_path = os.path.join(download_folder, filename)
             print(file_path)
+
+            # create folder if doesn't exist
+            if not os.path.exists(download_folder):
+                os.makedirs(download_folder)
 
             # Open the file to write the downloaded content
             file = QFile(file_path)
@@ -215,7 +219,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
                 self.start_zip_extraction()
             else:
                 print("Failed to open file for writing.")
-                self.show_failure()
+                self.show_failure("Could not open file")
 
     def zip_extraction_progress(self, progress: float):
         self.progressBar.setValue(progress)
