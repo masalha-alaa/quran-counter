@@ -51,7 +51,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
 
     def closeEvent(self, event):
         self.model_downloader.cancel_download()
-        super().closeEvent(event)
+        self.reject()
 
     def set_language(self, lang):
         self._apply_language(lang)

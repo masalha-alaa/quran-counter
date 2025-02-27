@@ -71,6 +71,7 @@ class ModelDownloader:
             self.download_finished_callback(reply)
 
     def cancel_download(self):
-        self.network_reply.abort()
-        self.network_reply.deleteLater()
-        self.network_reply = None
+        if self.network_reply is not None:
+            self.network_reply.abort()
+            self.network_reply.deleteLater()
+            self.network_reply = None
