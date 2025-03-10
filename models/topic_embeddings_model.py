@@ -1,9 +1,9 @@
 import os.path
-
+import requests
 import numpy as np
 import pickle
 import pandas as pd
-from sentence_transformers import SentenceTransformer, util
+# from sentence_transformers import SentenceTransformer, util
 from my_utils.utils import resource_path
 from datetime import datetime
 from preprocessing import Preprocessor
@@ -26,7 +26,7 @@ class TopicEmbeddingsModel:
     _fp16 = False
     _topic_embeddings = None
     _topic_ids = None
-    _model = None
+    # _model = None
     _preprocessor = None
     _encoding_method = EncodingMethods.WEIGHTED_AVERAGE
 
@@ -37,27 +37,30 @@ class TopicEmbeddingsModel:
 
     def initialize(self, fp16=False):
         if not self.is_initialized:
-            model_name = resource_path('embedding_models/topic_sim_model')
-            if not os.path.exists(model_name):
-                return False
+            # model_name = resource_path('embedding_models/topic_sim_model')
+            # if not os.path.exists(model_name):
+            #     return False
 
             print(f"{datetime.now()} Initializing topics model...")
             TopicEmbeddingsModel._preprocessor = Preprocessor()
             TopicEmbeddingsModel._load_data()
-            TopicEmbeddingsModel._fp16 = fp16
+            TopicEmbeddingsModel._fp16 = False
+            if fp16:
+                print(f"fp16 is currently not supported.")
+            # TODO: Add fp16 support in backend (backend/quran-topics/app.py)
 
             # print(f"{torch.version.cuda = }")
             # print(f"{torch.cuda.is_available() = }")
             # device = torch.device('cuda') if torch.cuda.is_available() else 'cpu'
-            print(f"{is_cuda_available() = }")
-            print(f"{is_torch_installed_with_gpu() = }")
+            # print(f"{is_cuda_available() = }")
+            # print(f"{is_torch_installed_with_gpu() = }")
             # model_name = 'sentence-transformers/xlm-r-bert-base-nli-stsb-mean-tokens'
 
             # TopicEmbeddingsModel._model = SentenceTransformer(model_name, device=device)
             # allegedly uses best available device between cpu / mps / gpu
-            TopicEmbeddingsModel._model = SentenceTransformer(model_name)
-            if TopicEmbeddingsModel._fp16:
-                TopicEmbeddingsModel._model.half()  # sync with
+            # TopicEmbeddingsModel._model = SentenceTransformer(model_name)
+            # if TopicEmbeddingsModel._fp16:
+            #     TopicEmbeddingsModel._model.half()  # sync with
             print(f"{datetime.now()} Done initializing topics model")
             TopicEmbeddingsModel._initialized = True
 
@@ -81,17 +84,21 @@ class TopicEmbeddingsModel:
         relevant_topics = []
         scores = []
         verses = []
-        for i,topic_ in enumerate(self.get_top_topics(topic_scores, sorted_topics_idx, top, relaxed)):
-            relevant_topics.append(topic_[0].replace("\n", " - "))
-            scores.append(topic_scores[i])
-            verses.append(topic_[1])
+        if len(topic_scores) > 0 and len(sorted_topics_idx) > 0:
+            for i,topic_ in enumerate(self.get_top_topics(topic_scores, sorted_topics_idx, top, relaxed)):
+                relevant_topics.append(topic_[0].replace("\n", " - "))
+                scores.append(topic_scores[i])
+                verses.append(topic_[1])
 
         df = pd.DataFrame({"relevant_topics": relevant_topics, "score": scores, "verses": verses}).explode('verses')
         return df.drop_duplicates(subset='verses').sort_values(by='verses', key=lambda ser: ser.apply(_sort_ref))
 
     def get_sorted_topics(self, s):
         s = self.clean_line(s)
-        s_encoding = TopicEmbeddingsModel._model.encode(s)
+        # s_encoding = TopicEmbeddingsModel._model.encode(s)
+        s_encoding = self.get_embedding(s)
+        if s_encoding is None:
+            return [], []
         # TODO: This could be sped up using matrix multiplication
         if TopicEmbeddingsModel._fp16:
             scores = np.array(
@@ -102,6 +109,26 @@ class TopicEmbeddingsModel:
                  TopicEmbeddingsModel._topic_embeddings.values()])
         tpoics_sorted_idx_asc = np.argsort(scores)
         return sorted(scores, reverse=True), tpoics_sorted_idx_asc[::-1]
+
+    def get_embedding(self, text):
+        API_URL = "https://artificial-cerebrum-quran-topics.hf.space/embed"
+        response = requests.post(API_URL, json={"text": text})
+
+        if response.status_code != 200:
+            print(f"API Error: {response.status_code}, {response.text}")
+            return None
+
+        try:
+            data = response.json()
+        except ValueError:
+            print(f"Response is not valid JSON: {response.text}")
+            return None
+
+        if "embedding" not in data or not isinstance(data["embedding"], list):
+            print(f"Invalid response: {data}")
+            return None
+
+        return response.json()['embedding']
 
     def get_top_topics(self, sorted_topic_scores, sorted_topics_idx_, top_n, relaxed):
         top_idx = sorted_topics_idx_[:top_n].tolist()
@@ -117,8 +144,11 @@ class TopicEmbeddingsModel:
     def clean_line(self, line):
         return TopicEmbeddingsModel._preprocessor.preprocess_sentence(line)
 
+    # def get_sim_deprecated(self, e1, e2):
+    #     if TopicEmbeddingsModel._encoding_method == EncodingMethods.SPLITS:
+    #         return max(util.pytorch_cos_sim(e1, e2_i).numpy().flatten()[0] for e2_i in e2)
+    #     else:
+    #         return util.pytorch_cos_sim(e1, e2).cpu().numpy().flatten()[0]
+
     def get_sim(self, e1, e2):
-        if TopicEmbeddingsModel._encoding_method == EncodingMethods.SPLITS:
-            return max(util.pytorch_cos_sim(e1, e2_i).numpy().flatten()[0] for e2_i in e2)
-        else:
-            return util.pytorch_cos_sim(e1, e2).cpu().numpy().flatten()[0]
+        return np.dot(e1, e2) / (np.linalg.norm(e1) * np.linalg.norm(e2))

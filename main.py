@@ -15,17 +15,13 @@ from gui.main_window.main_screen import Ui_MainWindow
 from text_validators.composite_validator import CompositeValidator
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 from worker_threads.my_finder_thread import FinderThread
-try:
-    from worker_threads.my_topic_finder_thread import TopicFinderThread
-    topics_enabled = True
-except (ImportError, ModuleNotFoundError):
-    topics_enabled = False
+from worker_threads.my_topic_finder_thread import TopicFinderThread
 from arabic_reformer import is_alif, alif_maksura
 from gui.mushaf_view_dialog.my_mushaf_view_dialog import MyMushafViewDialog
 from my_widgets.spinning_loader import SpinningLoader
 from my_utils.utils import *
 from tabs_management.tabs_manager import TabsManager, TabIndex
-from gui.download_dialog.my_download_dialog import MyDownloadDialog
+# from gui.download_dialog.my_download_dialog import MyDownloadDialog
 from models.finder_result_object import FinderResultObject
 from app_info import app_version
 
@@ -77,7 +73,7 @@ class MainWindow(QMainWindow):
         SharedData.all_matches = []
 
         self.mushaf_view_display = MyMushafViewDialog(SharedData.app_language)
-        self.download_dialog = MyDownloadDialog(SharedData.app_language)
+        # self.download_dialog = MyDownloadDialog(SharedData.app_language)
 
         SharedData.ui.surahResultsSum.setText(str(0))
         SharedData.ui.wordSum.setText(str(0))
@@ -251,7 +247,7 @@ class MainWindow(QMainWindow):
         if (SharedData.ui.rootRadioButton.isChecked() or
                 SharedData.ui.similarWordRadioButton.isChecked()):
             self.waiting()
-        elif SharedData.ui.relatedWordsRadioButton.isChecked():
+        elif SharedData.ui.relatedWordsRadioButton.isChecked() or SharedData.ui.topicsRadioButton.isChecked():
             self.waiting(block_search=False)
 
         thread_id = datetime.now().timestamp()
@@ -384,8 +380,6 @@ class MainWindow(QMainWindow):
         QTest.mouseClick(slider, Qt.MouseButton.LeftButton, pos=handle_pos)
 
     def _search_options_radio_buttons_changed(self, button, is_checked: bool):
-        global topics_enabled
-
         if button == SharedData.ui.rootRadioButton:
             SharedData.ui.alifAlifMaksuraCheckbox.setEnabled(not is_checked)
             SharedData.ui.yaAlifMaksuraCheckbox.setEnabled(not is_checked)
@@ -424,11 +418,12 @@ class MainWindow(QMainWindow):
             SharedData.ui.wordPermutationsCheckbox.setEnabled(not is_checked)
             SharedData.ui.optionalAlTarifCheckbox.setEnabled(not is_checked)
             if is_checked:
-                if not is_topics_model_available():
-                    if load_translation(SharedData.translator, resource_path(f"translations/download_dialog_{SharedData.app_language.value}.qm")):
-                        self.download_dialog.set_language(SharedData.app_language)
-                    if self.download_dialog.exec() == QDialog.DialogCode.Accepted:
-                        topics_enabled = True
+                # if not is_topics_model_available():
+                #     if load_translation(SharedData.translator, resource_path(f"translations/download_dialog_{SharedData.app_language.value}.qm")):
+                #         self.download_dialog.set_language(SharedData.app_language)
+                #     if self.download_dialog.exec() == QDialog.DialogCode.Accepted:
+                #         topics_enabled = True
+                topics_enabled = True
 
                 if topics_enabled:
                     from worker_threads.my_topic_finder_thread import TopicFinderThread

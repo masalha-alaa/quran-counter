@@ -65,7 +65,10 @@ def is_package_installed(package_name: PackageDetails|str):
 def is_torch_installed_with_gpu():
     is_installed = is_package_installed("torch")
     if is_installed:
-        import torch
+        try:
+            import torch
+        except (ImportError, ModuleNotFoundError):
+            return False
         return hasattr(torch._C, "_cuda_getDeviceCount")
     return False
 
