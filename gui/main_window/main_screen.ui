@@ -177,7 +177,9 @@ QSlider::handle:horizontal:disabled {
            <enum>Qt::NoContextMenu</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QLineEdit {
+	background-color: rgb(56, 56, 56);
+}</string>
           </property>
           <property name="maxLength">
            <number>30</number>

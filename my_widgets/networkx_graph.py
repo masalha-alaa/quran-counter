@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QLabel
 from bidi.algorithm import get_display
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
@@ -52,6 +52,7 @@ class NetworkXGraph(QWidget):
             self.canvas = FigureCanvas(self.figure)
         else:
             self.ax.clear()
+        self.ax.margins(0.2)
         self.ax.axis('off')
 
         # node_mapping = {n: n.replace(" ", "\n") for n in self.graph.nodes()}
@@ -149,6 +150,11 @@ class NetworkXGraph(QWidget):
                 label = self.fix_arabic(label)
             self.ax.text(x, y, label, fontsize=12, fontweight=font_weight,
                              ha='center', va='center', color='orange')
+
+        self.ax.text(-0.15, 0,
+                     "Data from http://corpus.quran.com",
+                     fontstyle='italic',
+                     transform=self.ax.transAxes)
 
         # Layout
         self.canvas.draw()  # necessary?

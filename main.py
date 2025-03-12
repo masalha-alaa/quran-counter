@@ -156,10 +156,10 @@ class MainWindow(QMainWindow):
         self.tabs_manager.verse_tab_wrapper.show_gpt_activation_dialog(False)
 
     def _about_menu_button_clicked(self):
-        show_info_dialog(self, f"Version {app_version}"
-                               f"Developer: Alaa M."
-                               f"Special Thanks:"
-                               f"Dr. Yahya Mir Alam & Dr. Michel Bakni for providing the grammatical particles list."
+        show_info_dialog(self, f"Version {app_version}\n\n"
+                               f"Developer: Alaa M.\n\n"
+                               f"Special Thanks:\n"
+                               f"Dr. Yahya Mir Alam & Dr. Michel Bakni for providing the grammatical particles list.\n"
                                f"Mr. Ali Aloush for reviewing and testing the app.")
 
     def clear_results(self):

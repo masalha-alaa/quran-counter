@@ -98,11 +98,12 @@ def show_error_dialog(parent, msg):
 def show_info_dialog(parent, msg):
     _show_dialog(parent, QMessageBox.Icon.Information, "Info", msg)
 
-def _show_dialog(parent, icon, title, msg):
+def _show_dialog(parent, icon, title, msg, fontsize=14):
     msg_box = QMessageBox(parent)
     msg_box.setIcon(icon)
     msg_box.setWindowTitle(title)
     msg_box.setText(msg)
+    msg_box.setStyleSheet(f"font-size:{fontsize}pt")
     msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg_box.exec()
 
