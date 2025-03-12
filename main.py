@@ -119,7 +119,7 @@ class MainWindow(QMainWindow):
         SharedData.ui.englishLangButton.triggered.connect(lambda: self._apply_language(AppLang.ENGLISH))
         SharedData.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
         SharedData.ui.enterGptKeyButton.triggered.connect(self._enter_gpt_key)
-        SharedData.ui.aboutMenuButton.triggered.connect(self._about_meny_button_clicked)
+        SharedData.ui.aboutMenuButton.triggered.connect(self._about_menu_button_clicked)
         SharedData.ui.similarityThresholdSlider.valueChanged.connect(self._similarity_threshold_changed)
         SharedData.ui.relatedWordsThresholdSlider.valueChanged.connect(self._related_words_threshold_changed)
 
@@ -155,8 +155,12 @@ class MainWindow(QMainWindow):
     def _enter_gpt_key(self):
         self.tabs_manager.verse_tab_wrapper.show_gpt_activation_dialog(False)
 
-    def _about_meny_button_clicked(self):
-        show_info_dialog(self, f"Version {app_version}")
+    def _about_menu_button_clicked(self):
+        show_info_dialog(self, f"Version {app_version}"
+                               f"Developer: Alaa M."
+                               f"Special Thanks:"
+                               f"Dr. Yahya Mir Alam & Dr. Michel Bakni for providing the grammatical particles list."
+                               f"Mr. Ali Aloush for reviewing and testing the app.")
 
     def clear_results(self):
         SharedData.matches_number = ""
