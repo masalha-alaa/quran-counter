@@ -167,6 +167,8 @@ class Ui_MainWindow(object):
         self.enterGptKeyButton.setObjectName(u"enterGptKeyButton")
         self.aboutMenuButton = QAction(MainWindow)
         self.aboutMenuButton.setObjectName(u"aboutMenuButton")
+        self.updateMenuButton = QAction(MainWindow)
+        self.updateMenuButton.setObjectName(u"updateMenuButton")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
@@ -1232,6 +1234,7 @@ class Ui_MainWindow(object):
         self.mushafViewButton.addAction(self.mushafNavigationButton)
         self.menuChatGPT.addAction(self.enterGptKeyButton)
         self.helpMenuButton.addAction(self.aboutMenuButton)
+        self.helpMenuButton.addAction(self.updateMenuButton)
 
         self.retranslateUi(MainWindow)
 
@@ -1249,6 +1252,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.enterGptKeyButton.setText(QCoreApplication.translate("MainWindow", u"ChatGPT \u0625\u062f\u062e\u0627\u0644 \u0645\u0641\u062a\u0627\u062d", None))
         self.aboutMenuButton.setText(QCoreApplication.translate("MainWindow", u"\u062d\u0648\u0644 \u0627\u0644\u0628\u0631\u0646\u0627\u0645\u062c", None))
+        self.updateMenuButton.setText(QCoreApplication.translate("MainWindow", u"\u062a\u062d\u062f\u064a\u062b", None))
 #if QT_CONFIG(tooltip)
         self.label.setToolTip("")
 #endif // QT_CONFIG(tooltip)

@@ -19,6 +19,7 @@ class MyWordDetailedDisplayDialog(BaseDetailedDisplayDialog):
             # see word_bounds_populator_thread.py
             verse = self._reform_and_color(verse, [(row_metadata[idx], row_metadata[idx + 1]) for idx in
                                                    range(3, len(row_metadata), 3)])
-        line = f"<p>{surah_num}:{verse_num}: {verse}</p>"
+        surah_name = MyDataLoader.get_surah_name(surah_num)
+        line = f"<p><b>{surah_name} {surah_num}:{verse_num}</b>: {verse}</p>"
         # line = f"{ref}: {verse}"
         self.textBrowser.append(line)

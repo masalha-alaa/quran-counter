@@ -19,5 +19,17 @@
         <source>Initializing model...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Checking for updates...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update available!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You already have the latest version!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

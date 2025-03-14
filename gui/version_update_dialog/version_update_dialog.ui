@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VersionUpdateDialog</class>
+ <widget class="QDialog" name="VersionUpdateDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>450</width>
+    <height>150</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>450</width>
+    <height>150</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>تحديث</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background-color: rgb(49, 49, 49);
+    color: rgb(207, 207, 207);
+    font: 400 18pt &quot;Calibri&quot;;
+}
+
+/* Button styling */
+QPushButton {
+    background-color: #5F82AD;
+    color: #2E3440;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 2px;
+}
+
+QPushButton:hover {
+    background-color: #81A1C1;
+}
+
+QPushButton:pressed {
+    background-color: #6E90B5;
+}
+
+QPushButton:disabled {
+    background-color: #838383;
+}
+
+/* Progress Bar */
+QProgressBar {
+    background-color: #3B4252; /* Dark background */
+    border: 1px solid #4C566A; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center text */
+    color: #D8DEE9; /* Text color */
+    padding: 1px;
+}
+
+QProgressBar::chunk {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, 
+                                      stop:0 #81A1C1, stop:1 #88C0D0); /* Gradient for progress */
+    border-radius: 5px; /* Rounded corners for the chunk */
+    border: 1px solid #81A1C1; /* Border for the chunk */
+    box-shadow: 0px 0px 5px rgba(129, 161, 193, 0.5); /* Glow effect */
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string notr="true">جاري الفحص...</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonsLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="downloadButton">
+       <property name="text">
+        <string>تحميل</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

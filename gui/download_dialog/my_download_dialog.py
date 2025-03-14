@@ -120,7 +120,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
             self.progressBar.setValue(60)
             self.sentence_transformers_package_installer.started.connect(self.sentence_transformers_installation_started)
             self.sentence_transformers_package_installer.progress.connect(self.sentence_transformers_installation_progress)
-            self.sentence_transformers_package_installer.finished.connect(self.sentence_transformers_installed)
+            self.sentence_transformers_package_installer.install_finished.connect(self.sentence_transformers_installed)
             self.sentence_transformers_package_installer.start()
         else:
             print("Packages already installed")
@@ -135,7 +135,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
 
     def sentence_transformers_installed(self, success: bool, package_name: str, error: str, caller_thread: PackageInstallerThread|None):
         if caller_thread is not None:
-            caller_thread.finished.disconnect(self.sentence_transformers_installed)
+            caller_thread.install_finished.disconnect(self.sentence_transformers_installed)
         if success:
             print("Success")
             self.progressBar.setValue(100)
@@ -162,7 +162,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
         self.detailedOutputTextBrowser.append(line)
 
     def pytorch_gpu_installed(self, success: bool, package_name: str, error: str, caller_thread: PackageInstallerThread):
-        caller_thread.finished.disconnect(self.pytorch_gpu_installed)
+        caller_thread.install_finished.disconnect(self.pytorch_gpu_installed)
         if success:
             self.run_sentence_transformers_installation()
         else:
@@ -174,7 +174,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
         self.detailsLabel.setText(translate_text("Unzipping..."))
         QApplication.processEvents()
         self.zip_extractor.progress.connect(self.zip_extraction_progress)
-        self.zip_extractor.finished.connect(self.zip_extraction_finished)
+        self.zip_extractor.extraction_finished.connect(self.zip_extraction_finished)
         self.zip_extractor.start()
 
     def download_started_callback(self):
@@ -231,7 +231,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
         if os.path.isfile(src):
             os.remove(src)
         self.progressBar.setValue(100)
-        caller_thread.finished.disconnect(self.zip_extraction_finished)
+        caller_thread.extraction_finished.disconnect(self.zip_extraction_finished)
         self.detailsLabel.setText("Done")
         print("Extraction done")
         self.accept()  # Close the dialog and return # QDialog.DialogCode.Accepted

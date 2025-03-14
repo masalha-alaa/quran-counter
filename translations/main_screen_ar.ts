@@ -190,18 +190,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1841"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1842"/>
         <source>حول البرنامج</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1828"/>
-        <location filename="../gui/main_window/main_screen.ui" line="1831"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1847"/>
+        <source>تحديث</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1829"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1832"/>
         <source>تصفّح</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/main_window/main_screen.ui" line="1836"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1837"/>
         <source>ChatGPT إدخال مفتاح</source>
         <translation type="unfinished"></translation>
     </message>

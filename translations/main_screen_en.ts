@@ -211,6 +211,11 @@ Results</translation>
         <translation>About</translation>
     </message>
     <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1847"/>
+        <source>تحديث</source>
+        <translation>Update</translation>
+    </message>
+    <message>
         <location filename="../main_screen.ui" line="1148"/>
         <source>تصفّح</source>
         <translation>Quran Browser</translation>

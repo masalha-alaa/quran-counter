@@ -1,4 +1,5 @@
 import re
+from json import load as j_load
 from datetime import datetime
 import uuid
 from PySide6.QtWidgets import QDialog
@@ -16,14 +17,15 @@ from text_validators.composite_validator import CompositeValidator
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 from worker_threads.my_finder_thread import FinderThread
 from worker_threads.my_topic_finder_thread import TopicFinderThread
+from worker_threads.version_update_thread import VersionUpdateThread
 from arabic_reformer import is_alif, alif_maksura
 from gui.mushaf_view_dialog.my_mushaf_view_dialog import MyMushafViewDialog
+from gui.version_update_dialog.my_version_update_dialog import MyVersionUpdateDialog
 from my_widgets.spinning_loader import SpinningLoader
 from my_utils.utils import *
 from tabs_management.tabs_manager import TabsManager, TabIndex
 # from gui.download_dialog.my_download_dialog import MyDownloadDialog
 from models.finder_result_object import FinderResultObject
-from app_info import app_version
 
 
 class MainWindow(QMainWindow):
@@ -120,6 +122,7 @@ class MainWindow(QMainWindow):
         SharedData.ui.mushafNavigationButton.triggered.connect(self._view_mushaf)
         SharedData.ui.enterGptKeyButton.triggered.connect(self._enter_gpt_key)
         SharedData.ui.aboutMenuButton.triggered.connect(self._about_menu_button_clicked)
+        SharedData.ui.updateMenuButton.triggered.connect(self._update_menu_button_clicked)
         SharedData.ui.similarityThresholdSlider.valueChanged.connect(self._similarity_threshold_changed)
         SharedData.ui.relatedWordsThresholdSlider.valueChanged.connect(self._related_words_threshold_changed)
 
@@ -156,11 +159,20 @@ class MainWindow(QMainWindow):
         self.tabs_manager.verse_tab_wrapper.show_gpt_activation_dialog(False)
 
     def _about_menu_button_clicked(self):
-        show_info_dialog(self, f"Version {app_version}\n\n"
+        version = j_load(open(resource_path("app_info.json")))['app_version']
+        show_info_dialog(self, f"Version {version}\n\n"
                                f"Developer: Alaa M.\n\n"
                                f"Special Thanks:\n"
-                               f"Dr. Yahya Mir Alam & Dr. Michel Bakni for providing the grammatical particles list.\n"
-                               f"Mr. Ali Aloush for reviewing and testing the app.")
+                               f"Dr. Yahya Mir Alam (در. يحيى مير علم) & Dr. Michel Bakni (در. ميشيل باكني) for providing the grammatical particles list.\n"
+                               f"Mr. Ali Aloush (علي علوش) for reviewing and testing the app.")
+
+    def _update_menu_button_clicked(self):
+        version_update_dialog = MyVersionUpdateDialog(None)
+        if load_translation(SharedData.translator, resource_path(f"translations/version_update_dialog_{SharedData.app_language.value}.qm")) and\
+                load_translation(SharedData.en_to_ar_dynamic_translator, resource_path(f"translations/dynamic_translations_en_src_{SharedData.app_language.value}.qm")):
+            app.installTranslator(SharedData.en_to_ar_dynamic_translator)
+            version_update_dialog.set_language(SharedData.app_language)
+        version_update_dialog.exec()
 
     def clear_results(self):
         SharedData.matches_number = ""

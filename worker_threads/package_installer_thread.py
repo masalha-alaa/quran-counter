@@ -10,7 +10,7 @@ from my_utils.package_details import PackageDetails
 class PackageInstallerThread(QThread):
     started = Signal()
     progress = Signal(str)
-    finished = Signal(bool, str, str, QThread)
+    install_finished = Signal(bool, str, str, QThread)
 
     def __init__(self, package_details: PackageDetails):
         super().__init__()
@@ -58,7 +58,7 @@ class PackageInstallerThread(QThread):
         try:
             self._install_package()
             # Emit success
-            self.finished.emit(True, self.package_details.package_installation_name, "", self)
+            self.install_finished.emit(True, self.package_details.package_installation_name, "", self)
         except subprocess.CalledProcessError as e:
             # Emit failure
-            self.finished.emit(False, self.package_details.package_installation_name, e, self)
+            self.install_finished.emit(False, self.package_details.package_installation_name, e, self)

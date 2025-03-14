@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QApplication
 
 class ZipExtractorThread(QThread):
     progress = Signal(float)
-    finished = Signal(str, str, QThread)
+    extraction_finished = Signal(str, str, QThread)
 
     def __init__(self, zip_path, destination_path):
         super().__init__()
@@ -21,4 +21,4 @@ class ZipExtractorThread(QThread):
                 self.progress.emit((index + 1) / total_files * 100)
                 QApplication.processEvents()  # Update GUI during extraction
 
-        self.finished.emit(self.zip_path, self.destination_path, self)
+        self.extraction_finished.emit(self.zip_path, self.destination_path, self)

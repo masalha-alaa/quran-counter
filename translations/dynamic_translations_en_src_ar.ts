@@ -19,5 +19,17 @@
         <source>Initializing model...</source>
         <translation>جاري الإعداد...</translation>
     </message>
+    <message>
+        <source>Checking for updates...</source>
+        <translation>جاري البحث عن تحديثات...</translation>
+    </message>
+    <message>
+        <source>Update available!</source>
+        <translation>يوجد تحديث. إضغط للتحميل.</translation>
+    </message>
+    <message>
+        <source>You already have the latest version!</source>
+        <translation>لا يوجد تحديثات.</translation>
+    </message>
 </context>
 </TS>

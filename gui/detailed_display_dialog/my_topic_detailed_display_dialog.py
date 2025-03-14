@@ -13,6 +13,7 @@ class MyTopicDetailedDisplayDialog(BaseDetailedDisplayDialog):
     def _append(self, row_metadata):
         surah_num, verse_num = row_metadata
         verse = MyDataLoader.get_verse(int(surah_num), int(verse_num))
-        line = f"<p>{surah_num}:{verse_num}: {verse}</p>"
+        surah_name = MyDataLoader.get_surah_name(surah_num)
+        line = f"<p><b>{surah_name} {surah_num}:{verse_num}</b>: {verse}</p>"
         # line = f"{ref}: {verse}"
         self.textBrowser.append(line)

@@ -18,3 +18,8 @@ CALL pyinstaller --name=QuranCounter --onedir --window --icon=gui/resources/app-
 
 CALL deactivate
 RD /s /q "temp_venv"
+
+COPY "app_info.json" "dist/app_info.json"
+CD dist
+"C:\Program Files\7-Zip\7z.exe" a QuranCounter.zip QuranCounter
+CD ..

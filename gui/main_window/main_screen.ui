@@ -1794,6 +1794,7 @@ QTableWidget::item:selected {
      <bool>true</bool>
     </property>
     <addaction name="aboutMenuButton"/>
+    <addaction name="updateMenuButton"/>
    </widget>
    <addaction name="menu_Language"/>
    <addaction name="mushafViewButton"/>
@@ -1839,6 +1840,11 @@ QTableWidget::item:selected {
   <action name="aboutMenuButton">
    <property name="text">
     <string>حول البرنامج</string>
+   </property>
+  </action>
+  <action name="updateMenuButton">
+   <property name="text">
+    <string>تحديث</string>
    </property>
   </action>
  </widget>

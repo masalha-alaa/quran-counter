@@ -14,6 +14,7 @@ class MySurahDetailedDisplayDialog(BaseDetailedDisplayDialog):
         verse = MyDataLoader.get_verse(int(surah_num), int(verse_num))
         if self.colorizeCheckbox.isChecked():
             verse = self._reform_and_color(verse, verse_nums_and_spans)
-        line = f"<p>{surah_num}:{verse_num}: {verse}</p>"
+        surah_name = MyDataLoader.get_surah_name(surah_num)
+        line = f"<p><b>{surah_name} {surah_num}:{verse_num}</b>: {verse}</p>"
         # line = f"{ref}: {verse}"
         self.textBrowser.append(line)
