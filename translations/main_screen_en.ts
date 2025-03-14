@@ -19,19 +19,27 @@
         <translation>Beginning of word</translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="480"/>
-        <source>العدد</source>
-        <translation>Count</translation>
+        <location filename="../gui/main_window/main_screen.ui" line="831"/>
+        <source>عدد النتائج</source>
+        <translation>Results Count</translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="536"/>
-        <location filename="../main_screen.ui" line="787"/>
+        <location filename="../gui/main_window/main_screen.ui" line="887"/>
+        <source>عدد السور</source>
+        <translation>Surahs Count</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="943"/>
+        <source>عدد الآيات</source>
+        <translation>Verses Count</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="1150"/>
         <source>سور</source>
         <translation>Surahs</translation>
     </message>
     <message>
-        <location filename="../main_screen.ui" line="592"/>
-        <location filename="../main_screen.ui" line="652"/>
+        <location filename="../gui/main_window/main_screen.ui" line="1015"/>
         <source>آيات</source>
         <translation>Verses</translation>
     </message>
@@ -107,6 +115,11 @@
         <location filename="../gui/main_window/main_screen.ui" line="628"/>
         <source>كلمة ذات صلة</source>
         <translation>Related words</translation>
+    </message>
+    <message>
+        <location filename="../gui/main_window/main_screen.ui" line="766"/>
+        <source>كلمة مطابقة تماما</source>
+        <translation>Exact match</translation>
     </message>
     <message>
         <location filename="../gui/main_window/main_screen.ui" line="658"/>

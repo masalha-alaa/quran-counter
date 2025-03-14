@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1179</width>
+    <width>1198</width>
     <height>873</height>
    </rect>
   </property>
@@ -27,7 +27,7 @@
    <string notr="true">QWidget {
     background-color: rgb(49, 49, 49);
     color: rgb(207, 207, 207);
-    font: 400 20pt &quot;Calibri&quot;;
+    font: 400 19pt &quot;Calibri&quot;;
 }
 
 QMenuBar, QMenu {
@@ -152,7 +152,9 @@ QSlider::handle:horizontal:disabled {
            <string/>
           </property>
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QLabel {
+	font-weight: bold;
+}</string>
           </property>
           <property name="text">
            <string>بحث</string>
@@ -377,30 +379,13 @@ QToolTip {
         <property name="verticalSpacing">
          <number>0</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="beginningOfWordRadioButton">
-          <property name="toolTip">
-           <string/>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QToolTip { 
-    color: #484848;
-	font: 14pt;
-}
-</string>
-          </property>
-          <property name="text">
-           <string>بداية كلمة</string>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">searchOptionsButtonGroup</string>
-          </attribute>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout_20">
+        <item row="1" column="5">
+         <layout class="QVBoxLayout" name="verticalLayout_23">
           <item>
-           <widget class="QRadioButton" name="noRestrictionsRadioButton">
+           <widget class="QRadioButton" name="regexRadioButton">
+            <property name="toolTip">
+             <string notr="true"/>
+            </property>
             <property name="styleSheet">
              <string notr="true">QToolTip { 
     color: #484848;
@@ -409,10 +394,10 @@ QToolTip {
 </string>
             </property>
             <property name="text">
-             <string>من غير تقييد</string>
+             <string>ريچيكس</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">searchOptionsButtonGroup</string>
@@ -420,7 +405,7 @@ QToolTip {
            </widget>
           </item>
           <item>
-           <spacer name="verticalSpacer_2">
+           <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -434,7 +419,7 @@ QToolTip {
           </item>
          </layout>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="2">
          <layout class="QVBoxLayout" name="verticalLayout_18">
           <property name="spacing">
            <number>0</number>
@@ -488,13 +473,13 @@ QToolTip {
                <number>1</number>
               </property>
               <property name="maximum">
-               <number>5</number>
+               <number>3</number>
               </property>
               <property name="pageStep">
-               <number>2</number>
+               <number>1</number>
               </property>
               <property name="value">
-               <number>1</number>
+               <number>2</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -537,46 +522,6 @@ QToolTip {
          </layout>
         </item>
         <item row="1" column="4">
-         <layout class="QVBoxLayout" name="verticalLayout_23">
-          <item>
-           <widget class="QRadioButton" name="regexRadioButton">
-            <property name="toolTip">
-             <string notr="true"/>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QToolTip { 
-    color: #484848;
-	font: 14pt;
-}
-</string>
-            </property>
-            <property name="text">
-             <string>ريچيكس</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <attribute name="buttonGroup">
-             <string notr="true">searchOptionsButtonGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="3">
          <layout class="QVBoxLayout" name="verticalLayout_24">
           <item>
            <widget class="QRadioButton" name="topicsRadioButton">
@@ -616,7 +561,7 @@ QToolTip {
           </item>
          </layout>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="3">
          <layout class="QVBoxLayout" name="verticalLayout_19">
           <property name="spacing">
            <number>0</number>
@@ -718,7 +663,7 @@ QToolTip {
           </item>
          </layout>
         </item>
-        <item row="0" column="3">
+        <item row="0" column="5">
          <widget class="QRadioButton" name="rootRadioButton">
           <property name="toolTip">
            <string>كلمات بنفس جذر كلمة البحث</string>
@@ -738,7 +683,7 @@ QToolTip {
           </attribute>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="3">
          <widget class="QRadioButton" name="endOfWordRadioButton">
           <property name="toolTip">
            <string/>
@@ -759,9 +704,29 @@ QToolTip {
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QRadioButton" name="fullWordRadioButton">
+         <widget class="QRadioButton" name="beginningOfWordRadioButton">
           <property name="toolTip">
            <string/>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>بداية كلمة</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">searchOptionsButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QRadioButton" name="fullWordRadioButton">
+          <property name="toolTip">
+           <string>كلمة مطابقة تماما</string>
           </property>
           <property name="styleSheet">
            <string notr="true">QToolTip { 
@@ -776,6 +741,63 @@ QToolTip {
           <attribute name="buttonGroup">
            <string notr="true">searchOptionsButtonGroup</string>
           </attribute>
+         </widget>
+        </item>
+        <item row="0" column="0" rowspan="2">
+         <layout class="QVBoxLayout" name="verticalLayout_20" stretch="1,1,3">
+          <item>
+           <spacer name="verticalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="noRestrictionsRadioButton">
+            <property name="styleSheet">
+             <string notr="true">QToolTip { 
+    color: #484848;
+	font: 14pt;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>من غير تقييد</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">searchOptionsButtonGroup</string>
+            </attribute>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1" rowspan="2">
+         <widget class="Line" name="line_10">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
          </widget>
         </item>
        </layout>
@@ -828,7 +850,7 @@ QToolTip {
            <string/>
           </property>
           <property name="text">
-           <string>العدد</string>
+           <string>عدد النتائج</string>
           </property>
          </widget>
         </item>
@@ -884,7 +906,7 @@ QToolTip {
            <string/>
           </property>
           <property name="text">
-           <string>سور</string>
+           <string>عدد السور</string>
           </property>
          </widget>
         </item>
@@ -940,7 +962,7 @@ QToolTip {
            <string/>
           </property>
           <property name="text">
-           <string>آيات</string>
+           <string>عدد الآيات</string>
           </property>
          </widget>
         </item>
@@ -1708,8 +1730,8 @@ QTableWidget::item:selected {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1179</width>
-     <height>42</height>
+     <width>1198</width>
+     <height>41</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Language">
@@ -1849,27 +1871,37 @@ QTableWidget::item:selected {
  </customwidgets>
  <tabstops>
   <tabstop>searchWord</tabstop>
-  <tabstop>noRestrictionsRadioButton</tabstop>
-  <tabstop>similarWordRadioButton</tabstop>
-  <tabstop>similarityThresholdSlider</tabstop>
-  <tabstop>regexRadioButton</tabstop>
   <tabstop>alifAlifMaksuraCheckbox</tabstop>
   <tabstop>yaAlifMaksuraCheckbox</tabstop>
   <tabstop>finalTaCheckbox</tabstop>
   <tabstop>wordPermutationsCheckbox</tabstop>
   <tabstop>optionalAlTarifCheckbox</tabstop>
+  <tabstop>noRestrictionsRadioButton</tabstop>
+  <tabstop>beginningOfWordRadioButton</tabstop>
+  <tabstop>endOfWordRadioButton</tabstop>
+  <tabstop>fullWordRadioButton</tabstop>
+  <tabstop>rootRadioButton</tabstop>
+  <tabstop>similarWordRadioButton</tabstop>
+  <tabstop>similarityThresholdSlider</tabstop>
+  <tabstop>relatedWordsRadioButton</tabstop>
+  <tabstop>relatedWordsThresholdSlider</tabstop>
+  <tabstop>topicsRadioButton</tabstop>
+  <tabstop>regexRadioButton</tabstop>
   <tabstop>matchesNumber</tabstop>
   <tabstop>matchesNumberSurahs</tabstop>
   <tabstop>matchesNumberVerses</tabstop>
   <tabstop>tabWidget</tabstop>
-  <tabstop>foundVerses</tabstop>
   <tabstop>filterButton</tabstop>
   <tabstop>clearFilterButton</tabstop>
   <tabstop>colorizeCheckbox</tabstop>
+  <tabstop>foundVerses</tabstop>
   <tabstop>allResultsCheckbox</tabstop>
   <tabstop>surahResultsSum</tabstop>
   <tabstop>diacriticsCheckbox</tabstop>
+  <tabstop>wordTransliterationCheckbox</tabstop>
+  <tabstop>wordMeaningCheckbox</tabstop>
   <tabstop>wordSum</tabstop>
+  <tabstop>topicSum</tabstop>
  </tabstops>
  <resources>
   <include location="../resources/resources.qrc"/>

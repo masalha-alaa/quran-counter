@@ -25,8 +25,8 @@ class FinderThread(QThread):
     result_ready = Signal(str, int, FinderResultObject, float, QThread)
     dia_or_waqf = rf"(?:(?={re.escape(alamaat_waqf_regex)})|(?={re.escape(diacritics_regex)}))"
     char_followed_by_dia_or_waqf = re.compile(rf"\[?[{''.join(arabic_alphabit)+' '}]+\]?{dia_or_waqf}")
-    MIN_CLOSE_MATCH_RAW_THRESHOLD = 6
-    MAX_CLOSE_MATCH_RAW_THRESHOLD = 10
+    MIN_CLOSE_MATCH_RAW_THRESHOLD = 7
+    MAX_CLOSE_MATCH_RAW_THRESHOLD = 9
     my_cache = SingleCache()
     REGEX_CHARS_FOR_ROOT_FIND = r"()?:|[]"
     nested_brackets_regex = re.compile(r"\[([^\[\]]*)\[(.*?)\]([^\[\]]*)\]")
@@ -55,7 +55,7 @@ class FinderThread(QThread):
         self.close_match_threshold = None
         self.related_words = None
         self.related_words_threshold = None
-        self._default_close_match_threshold = 6
+        self._default_close_match_threshold = FinderThread.MIN_CLOSE_MATCH_RAW_THRESHOLD
         self._default_related_words_threshold = 1
 
         self._final_word = None
@@ -106,20 +106,27 @@ class FinderThread(QThread):
         if self.root_flag:
             # new_text = self._get_root(self.initial_word).strip()
             # check if root in root list
+            print(f"{self.initial_word = }")
+            print(f"{self.preprocessor.normalize_for_root(self.initial_word) = }")
             try:
                 new_text = MyDataLoader.root_to_words.loc[(preprocessed_w := self.preprocessor.normalize_for_root(self.initial_word)), 'regex']
+                print(f"1. {new_text = }")
             except KeyError:
                 try:
                     # check if word in words list
                     new_text = MyDataLoader.word_to_words.loc[preprocessed_w, 'regex']
+                    print(f"2. {new_text = }")
                 except KeyError:
                     # stem and check if root in root list
                     new_text = self._get_root(self.initial_word).strip()
+                    print(f"3. {new_text = }")
                     try:
                         new_text = MyDataLoader.root_to_words.loc[preprocessed_w, 'regex']
+                        print(f"4. {new_text = }")
                     except KeyError:
                         # activate fallback to compare against roots of all words
                         self._activate_root_finder_fallback = True
+                        print("5. fallback")
         elif self.full_word or self.close_match or self.related_words:
             new_text = self.initial_word.strip()
         else:
@@ -233,7 +240,7 @@ class FinderThread(QThread):
         offset = 0
         SEPARATOR = ' '
         for i, w in enumerate(sentence.split(SEPARATOR)):  # assuming one space separator
-            ratio = SequenceMatcher(None, word, normalize_alif(remove_diacritics(w))).ratio()
+            ratio = SequenceMatcher(None, word, remove_diacritics(normalize_alif(w, True))).ratio()
             if ratio >= threshold:
                 match = (offset, offset + len(w))
                 matches.append(match)

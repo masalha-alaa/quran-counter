@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QTextBrowser
 from my_utils.emphasizer import emphasize_span, CssColors
 from arabic_reformer import reform_text
 from models.match_item import MatchItem
+from my_utils.my_data_loader import MyDataLoader
 
 
 class LazyTextBrowser(QTextBrowser):
@@ -90,10 +91,11 @@ class LazyTextBrowser(QTextBrowser):
             if (match_item := next(self._filtered_matches_iter, LazyTextBrowser._exhausted)) is LazyTextBrowser._exhausted:
                 return _done()
             surah_num, verse_num, verse, spans = match_item.surah_num, match_item.verse_num, match_item.verse_text, match_item.spans
-            ref = f"{surah_num}:{verse_num}"
+            surah_name = MyDataLoader.get_surah_name(surah_num)
+            ref = f"{surah_name} {surah_num}:{verse_num}"
             if colorize:
                 verse = self.reform_and_color(verse, spans)
-            line = f"<p>{ref}: {verse}</p>"
+            line = f"<p><b>{ref}:</b> {verse}</p>"
             # line = f"{ref}: {verse}"
             self.append(line)
 
