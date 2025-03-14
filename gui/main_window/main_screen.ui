@@ -180,7 +180,7 @@ QSlider::handle:horizontal:disabled {
           </property>
           <property name="styleSheet">
            <string notr="true">QLineEdit {
-	background-color: rgb(56, 56, 56);
+	background-color: rgb(58, 58, 58);
 }</string>
           </property>
           <property name="maxLength">

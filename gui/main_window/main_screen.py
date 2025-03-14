@@ -200,7 +200,7 @@ class Ui_MainWindow(object):
         self.searchWord.setMaximumSize(QSize(16777215, 16777215))
         self.searchWord.setContextMenuPolicy(Qt.NoContextMenu)
         self.searchWord.setStyleSheet(u"QLineEdit {\n"
-"	background-color: rgb(56, 56, 56);\n"
+"	background-color: rgb(58, 58, 58);\n"
 "}")
         self.searchWord.setMaxLength(30)
 
