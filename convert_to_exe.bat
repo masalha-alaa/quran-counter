@@ -24,7 +24,8 @@ CALL deactivate
 RD /s /q "temp_venv"
 
 COPY "app_info.json" "dist/app_info.json"
-COPY "README.md" "dist/app_info.json"
+COPY "README.md" "dist/README.md"
+COPY "LICENSE" "dist/LICENSE"
 CD dist
 "C:\Program Files\7-Zip\7z.exe" a QuranCounter.zip QuranCounter
 CD ..
