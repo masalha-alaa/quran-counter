@@ -2,7 +2,7 @@
   <img alt="search example" src="https://github.com/user-attachments/assets/21b00fe3-f3e7-498e-8727-467ee97dc2de" width="400">
 </div>
 
-**Quran counter** is a tool for fast and easy searching in the Holy Quran (`exe` download link at the bottom).
+**Quran counter** is a tool for fast and easy searching in the Holy Quran (`exe` download link [at the bottom](#notes)).
 
 The app's interface currently has English and Arabic translations:
 
@@ -64,7 +64,7 @@ As you can see there are several features in the Quran Browser window. For examp
 
 ---
 
-<h3>Notes</h3>
+### Notes
 
 * Windows binaries can be found at sourceforge.net:
 https://sourceforge.net/projects/qurancounter/
