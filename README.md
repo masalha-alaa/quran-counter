@@ -1,4 +1,4 @@
-Quran counter is a tool for fast and easy searching in the Holy Quran (`exe` download link at the bottom).
+**Quran counter** is a tool for fast and easy searching in the Holy Quran (`exe` download link at the bottom).
 
 The app's interface currently has English and Arabic translations:
 
