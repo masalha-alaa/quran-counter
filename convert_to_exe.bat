@@ -9,6 +9,10 @@ IF /I "%PRO%"=="pro" (
     SET REQUIREMENTS_FILE=minimal_requirements.txt
 )
 
+IF EXIST dist (
+    RD /s /q "dist"
+)
+
 python -m venv temp_venv
 CALL temp_venv/Scripts/activate
 CALL pip3 install pyinstaller
