@@ -44,6 +44,8 @@ You could also see the similarity path between the source and destination words:
 * Topic search (using an AI model I developed and trained):
 <img alt="topics" src="https://github.com/user-attachments/assets/ed70dea6-6990-400c-b266-54ccd0b49dc2" width="600">
 
+<i>I may provide the source code for the model in the future<i>
+
 * Regex search:
 <img alt="regex" src="https://github.com/user-attachments/assets/bb95cac5-7e66-4835-94fc-aebc3700c0db" width="600">
 
