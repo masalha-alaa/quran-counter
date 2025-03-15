@@ -1,3 +1,7 @@
+<div align="center">
+  <img alt="search example" src="https://github.com/user-attachments/assets/21b00fe3-f3e7-498e-8727-467ee97dc2de" width="400">
+</div>
+
 **Quran counter** is a tool for fast and easy searching in the Holy Quran (`exe` download link at the bottom).
 
 The app's interface currently has English and Arabic translations:
@@ -5,11 +9,10 @@ The app's interface currently has English and Arabic translations:
 <img alt="english" src="https://github.com/user-attachments/assets/441a8175-a188-4d6c-a143-0b06a2de8938" width="400">
 <img alt="arabic" src="https://github.com/user-attachments/assets/3a3e4c56-8b18-4031-b1aa-35b82b420f72" width="400">
 
-
 Here's a breakdown of some of the various features the app provides:
 
 * No restrictions search (substrings):
-<img alt="no restrictions" src="https://github.com/user-attachments/assets/02da537e-83a0-4dad-9214-f40720fbbaf5" width="600">
+<img alt="no restrictions" src="https://github.com/user-attachments/assets/5c70451c-da32-4b9b-9608-93b9880b917a">
 
 You could also apply smart filtering (using ChatGPT) by clicking the filter button:
 <img alt="no restrictions - filtering" src="https://github.com/user-attachments/assets/07d79065-28de-4605-8da8-7eaf45d1e9bb" width="600">
