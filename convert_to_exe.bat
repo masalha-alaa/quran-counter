@@ -18,12 +18,13 @@ CALL temp_venv/Scripts/activate
 CALL pip3 install pyinstaller
 CALL pip3 install -r %REQUIREMENTS_FILE%
 
-CALL pyinstaller --name=QuranCounter --onedir --window --icon=gui/resources/app-icon.ico --add-data "data;data" --add-data "embeddings/topics_embeddings.pkl;embeddings" --add-data "gui/resources;gui/resources" --add-data "translations;translations" --add-data "fonts;fonts" --add-data "surah_index.yml;." main.py
+CALL pyinstaller --name=QuranCounter --onedir --window --icon=gui/resources/app-icon.ico --add-data "data;data" --add-data "embeddings/topics_embeddings.pkl;embeddings" --add-data "gui/resources;gui/resources" --add-data "translations;translations" --add-data "fonts;fonts" --add-data "surah_index.yml;." --add-data "app_info.json;." main.py
 
 CALL deactivate
 RD /s /q "temp_venv"
 
 COPY "app_info.json" "dist/app_info.json"
+COPY "README.md" "dist/app_info.json"
 CD dist
 "C:\Program Files\7-Zip\7z.exe" a QuranCounter.zip QuranCounter
 CD ..

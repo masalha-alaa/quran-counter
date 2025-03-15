@@ -42,10 +42,10 @@ class AskGptThread(QThread):
     def _ask_gpt_for_relevant_verses(self):
         # sorted verses_ref for caching purposes
         # TODO:
-        # match == surah_num, verse_num, verse, spans
+        # match == surah_num, verse_num, verse, spans, other
         verse_refs = []
         verses = []
-        for surah_num, verse_num, verse, _ in self.verses:
+        for surah_num, verse_num, verse, _, _ in self.verses:
             verse_refs.append(f"{surah_num}:{verse_num}")
             verses.append(verse)
         verse_refs = tuple(sorted(verse_refs))

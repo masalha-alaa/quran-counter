@@ -5,3 +5,6 @@ class MatchItem:
         self.verse_text = verse_text
         self.spans = spans
         self.other = other
+
+    def __iter__(self):
+        return iter((self.surah_num, self.verse_num, self.verse_text, self.spans, self.other))
