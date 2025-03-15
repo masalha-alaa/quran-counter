@@ -68,7 +68,11 @@ As you can see there are several features in the Quran Browser window. For examp
 
 * Windows binaries can be found at sourceforge.net:
 https://sourceforge.net/projects/qurancounter/
-* Future work: I'm planning to add a feature to compare between the 10 Qiraat (recitations) of the Quran.
+
+<h3>Future work</h3>
+
+* I'm planning to add a feature to compare between the 10 Qiraat (recitations) of the Quran **(I'm looking for volunteers - no experience required)**.
+* Create a web app version **(looking for volunteers - required experience: C++, Python, Qt)**
 
 <h3>Special Thanks</h3>
 
