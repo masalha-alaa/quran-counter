@@ -68,5 +68,6 @@ https://sourceforge.net/projects/qurancounter/
 * Future work: I'm planning to add a feature to compare between the 10 Qiraat (recitations) of the Quran.
 
 <h3>Special Thanks</h3>
-- Dr. Yahya Mir Alam (در. يحيى مير علم) & Dr. Michel Bakni (در. ميشيل باكني) for providing the grammatical particles list.
-- Mr. Ali Aloush (علي علوش) for reviewing and testing the app.
+
+* Dr. Yahya Mir Alam (در. يحيى مير علم) & Dr. Michel Bakni (در. ميشيل باكني) for providing the grammatical particles list.
+* Mr. Ali Aloush (علي علوش) for reviewing and testing the app.
