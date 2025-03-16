@@ -26,7 +26,7 @@ You can also see the results breakdown by word count:
 * End of word search:
 <img alt="end of word" src="https://github.com/user-attachments/assets/2f0f08e0-69a1-4ce2-a5b9-167394a7b04f" width="600">
 
-* Full word serach:
+* Full word search:
 <img alt="full word" src="https://github.com/user-attachments/assets/02ec5d54-bbe9-46e8-915a-236cf5b826ad" width="600">
 
 * Root search (words with the same root):
