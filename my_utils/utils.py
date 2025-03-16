@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QMessageBox, QPushButton
 import importlib
 import subprocess
 import os
@@ -92,19 +92,25 @@ def is_topics_model_zip_available():
     model_name = resource_path('embedding_models/topic_sim_model')
     return os.path.exists(f"{model_name}.zip")
 
-def show_error_dialog(parent, msg):
-    _show_dialog(parent, QMessageBox.Icon.Critical, "Error", msg)
+def show_error_dialog(parent, msg, button_txt:str|None=None, button_callback=None):
+    _show_dialog(parent, QMessageBox.Icon.Critical, "Error", msg, button_txt=button_txt, button_callback=button_callback)
 
-def show_info_dialog(parent, msg):
-    _show_dialog(parent, QMessageBox.Icon.Information, "Info", msg)
+def show_info_dialog(parent, msg, button_txt:str|None=None, button_callback=None):
+    _show_dialog(parent, QMessageBox.Icon.Information, "Info", msg, button_txt=button_txt, button_callback=button_callback)
 
-def _show_dialog(parent, icon, title, msg, fontsize=14):
+def _show_dialog(parent, icon, title, msg, fontsize=14, button_txt:str|None=None, button_callback=None):
     msg_box = QMessageBox(parent)
     msg_box.setIcon(icon)
     msg_box.setWindowTitle(title)
     msg_box.setText(msg)
     msg_box.setStyleSheet(f"font-size:{fontsize}pt")
-    msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+    if button_txt is None:
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+    else:
+        custom_button = QPushButton(button_txt)
+        custom_button.clicked.connect(button_callback)
+        msg_box.addButton(custom_button, QMessageBox.ButtonRole.AcceptRole)
+
     msg_box.exec()
 
 def get_radio_threshold(radio_button):

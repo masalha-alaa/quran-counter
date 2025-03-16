@@ -16,3 +16,4 @@ color-test.html
 translations/*.qm
 /temp_venv/
 /research/
+/graphs/

@@ -144,7 +144,7 @@ class NetworkXGraph(QWidget):
             font_weight = 'bold' if node in outline_nodes else 'normal'
             if self._current_lang == AppLang.ENGLISH:
                 label = RelatedWords.arb_to_eng.get(node, node)
-                label = self._break_label(label)
+                label = self._break_label(label, True)
             else:
                 label = self._break_label(node)
                 label = self.fix_arabic(label)
@@ -160,8 +160,16 @@ class NetworkXGraph(QWidget):
         self.canvas.draw()  # necessary?
         self.layout().addWidget(self.canvas)
 
-    def _break_label(self, label):
-        return label.replace(" ", "\n").replace("-", "\n")
+    def _break_label(self, label, wrap=False, wrap_on=6):
+        new_label = label.replace(" ", "\n").replace("-", "\n")
+        if wrap:
+            wrapped_label = ""
+            for word in new_label.split():
+                if len(word) >= wrap_on:
+                    word = f"{word[:wrap_on]}-\n{word[wrap_on:]}"
+                wrapped_label = f"{wrapped_label}\n{word}"
+            new_label = wrapped_label.strip()
+        return new_label
 
     def re_order_nodes_straight_path(self, pos):
         pos_keys = list(pos)

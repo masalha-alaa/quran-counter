@@ -1,4 +1,5 @@
 import re
+import webbrowser
 from json import load as j_load
 from datetime import datetime
 import uuid
@@ -80,6 +81,8 @@ class MainWindow(QMainWindow):
         SharedData.ui.surahResultsSum.setText(str(0))
         SharedData.ui.wordSum.setText(str(0))
 
+        self.check_for_updates()
+
         # SharedData.ui.topicsRadioButton.setEnabled(False)  # TODO: Remove
 
     def _apply_language(self, lang):
@@ -132,6 +135,26 @@ class MainWindow(QMainWindow):
     def _setup_fonts(self):
         # Load the custom font
         QFontDatabase.addApplicationFont(resource_path("fonts/NotoNaskhArabic-VariableFont_wght.ttf"))
+
+    def check_for_updates(self):
+        print("Checking for updates...")
+        version_update_thread = VersionUpdateThread()
+        self._add_thread(version_update_thread)
+        version_update_thread.check_finished.connect(self.check_for_updates_callback)
+        version_update_thread.start()
+
+    def check_for_updates_callback(self, update_url: str, caller_thread: VersionUpdateThread):
+        caller_thread.check_finished.disconnect(self.check_for_updates_callback)
+        self._remove_thread(caller_thread)
+
+        if update_url:
+            print(f"Update found: {update_url}")
+            show_info_dialog(self, "New update available!", "Update", lambda: self.update_button_clicked(update_url))
+        else:
+            print("No update required")
+
+    def update_button_clicked(self, update_url):
+        webbrowser.open(update_url)  # Open download link in browser
 
     def _get_max_words_for_search_option(self):
         match SharedData.ui.searchOptionsButtonGroup.checkedButton():
