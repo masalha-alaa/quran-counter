@@ -12,7 +12,7 @@ The app's interface currently has English and Arabic translations:
 Here's a breakdown of some of the various features the app provides:
 
 * No restrictions search (substrings):
-<img alt="no restrictions" src="https://github.com/user-attachments/assets/5c70451c-da32-4b9b-9608-93b9880b917a">
+<img alt="arabic" src="https://github.com/user-attachments/assets/0f8fde7c-872d-46dc-a238-88c474742d9b" width="400">
 
 You could also apply smart filtering (using ChatGPT) by clicking the filter button:
 <img alt="no restrictions - filtering" src="https://github.com/user-attachments/assets/07d79065-28de-4605-8da8-7eaf45d1e9bb" width="600">
@@ -36,12 +36,14 @@ You can also see the results breakdown by word count:
 <img alt="syntax similarity" src="https://github.com/user-attachments/assets/bbe38cd7-455b-45d3-9d05-b733e1df415e" width="600">
 
 * Related words search:
-<img alt="related words" src="https://github.com/user-attachments/assets/f335879d-2561-49b7-8b22-6e055a197346" width="600">
+<img alt="related words" src="https://github.com/user-attachments/assets/b7b41a79-319d-4507-ab60-362c295f2ea9" width="600">
 
 You could also see the similarity path between the source and destination words:
-<img alt="related words - words list" src="https://github.com/user-attachments/assets/a41b102a-f764-4c69-b6e2-591a8d694fb7" width="600">  
-<img alt="related words path - arabic" src="https://github.com/user-attachments/assets/ddc88eb0-6d22-4746-bfba-33c610b7bc35" width="600">  
-<img alt="related words path - english" src="https://github.com/user-attachments/assets/ee9dfcee-26a3-45ce-b91a-7ba3d8c3398f" width="600">  
+
+<img alt="related words - words list" src="https://github.com/user-attachments/assets/29307799-834b-4e41-b5c5-708359f44f01" width="600">  
+<img alt="related words path - arabic" src="https://github.com/user-attachments/assets/2288f868-95ab-4b39-a168-60bcc8cb09fd" width="600">  
+<img alt="related words path - english" src="https://github.com/user-attachments/assets/c1ff2094-4f64-4713-8ae5-2386084b9a19" width="600">
+
 <i>data from http://corpus.quran.com</i>
 
 * Topic search (using an AI model I developed and trained):
