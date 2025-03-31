@@ -1,0 +1,7 @@
+Version 1.0.2
+- Display selection stats just as current Surah stats.
+
+
+Version 1.0.1
+- Word wrap in related words graph for long English words.
+- Auto update check on startup.

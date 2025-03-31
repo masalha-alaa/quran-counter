@@ -106,8 +106,8 @@ QPushButton:disabled {
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_11">
               <item>
-               <layout class="QGridLayout" name="gridLayout" columnstretch="3,1">
-                <item row="0" column="1">
+               <layout class="QGridLayout" name="gridLayout" columnstretch="0,2,1">
+                <item row="0" column="2">
                  <widget class="QPushButton" name="selectionStartButton">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -123,7 +123,7 @@ QPushButton:disabled {
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
+                <item row="1" column="2">
                  <widget class="QPushButton" name="selectionEndButton">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -139,17 +139,31 @@ QPushButton:disabled {
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="0">
+                <item row="0" column="1">
                  <widget class="QLabel" name="selectionStartLabel">
                   <property name="text">
                    <string/>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
+                <item row="1" column="1">
                  <widget class="QLabel" name="selectionEndLabel">
                   <property name="text">
                    <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="selectionResetButton">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../resources/resources.qrc">
+                    <normaloff>:/reset-icon.png</normaloff>:/reset-icon.png</iconset>
+                  </property>
+                  <property name="autoDefault">
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -174,7 +188,7 @@ QPushButton:disabled {
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="6,2">
+            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="5,2">
              <item>
               <spacer name="horizontalSpacer_2">
                <property name="orientation">
@@ -239,7 +253,7 @@ QPushButton:disabled {
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="10,8">
+            <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="2,3">
              <property name="spacing">
               <number>6</number>
              </property>
@@ -344,7 +358,10 @@ QPushButton:disabled {
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="3,0,0,2,0">
+            <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="3,0,0,6,8">
+             <property name="spacing">
+              <number>12</number>
+             </property>
              <item>
               <spacer name="horizontalSpacer_3">
                <property name="orientation">
@@ -864,6 +881,9 @@ QPushButton:disabled {
                 <iconset resource="../resources/resources.qrc">
                  <normaloff>:/reset-icon.png</normaloff>:/reset-icon.png</iconset>
                </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -1037,6 +1057,9 @@ QToolTip {
             <property name="leftMargin">
              <number>0</number>
             </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
             <property name="rightMargin">
              <number>2</number>
             </property>
@@ -1054,7 +1077,7 @@ QToolTip {
                  </sizepolicy>
                 </property>
                 <property name="toolTip">
-                 <string>عدد الكلمات المختلفة (بدون تكرار)</string>
+                 <string>عدد الكلمات المختلفة (بدون تكرار) في السورة / التحديد</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
@@ -1066,7 +1089,7 @@ QToolTip {
 }</string>
                 </property>
                 <property name="text">
-                 <string>عدد الكلمات المختلفة في السورة</string>
+                 <string>عدد الكلمات المختلفة</string>
                 </property>
                </widget>
               </item>
@@ -1127,6 +1150,9 @@ QToolTip {
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="toolTip">
+                 <string>الكلمة الأكثر تكرارًا في السورة / التحديد</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
 	font: bold;
@@ -1137,7 +1163,7 @@ QToolTip {
 }</string>
                 </property>
                 <property name="text">
-                 <string>الكلمة الأكثر تكرارًا في السورة</string>
+                 <string>الكلمة الأكثر تكرارًا</string>
                 </property>
                </widget>
               </item>
@@ -1203,6 +1229,9 @@ QToolTip {
             <property name="leftMargin">
              <number>2</number>
             </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
             <property name="rightMargin">
              <number>0</number>
             </property>
@@ -1244,30 +1273,8 @@ QToolTip {
                    <iconset resource="../resources/resources.qrc">
                     <normaloff>:/reset-icon.png</normaloff>:/reset-icon.png</iconset>
                   </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_12">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="toolTip">
-                   <string>جميع الكلمات داخل التحديد, مع تكرار</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-	font: bold;
-}
-QToolTip { 
-    color: #484848;
-	font: 14pt;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>كلمات داخل التحديد</string>
+                  <property name="autoDefault">
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -1288,25 +1295,6 @@ QToolTip {
                   </property>
                  </spacer>
                 </item>
-                <item>
-                 <widget class="QLabel" name="wordsInSelection">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="toolTip">
-                   <string notr="true"/>
-                  </property>
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
                </layout>
               </item>
              </layout>
@@ -1325,7 +1313,7 @@ QToolTip {
                  </sizepolicy>
                 </property>
                 <property name="toolTip">
-                 <string>عدد جميع الكلمات, مع تكرار</string>
+                 <string>عدد جميع الكلمات (في السورة / التحديد), مع تكرار</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
@@ -1337,7 +1325,7 @@ QToolTip {
 }</string>
                 </property>
                 <property name="text">
-                 <string>عدد كلمات السورة</string>
+                 <string>عدد الكلمات</string>
                 </property>
                </widget>
               </item>

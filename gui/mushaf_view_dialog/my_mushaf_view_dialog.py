@@ -80,7 +80,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.page = Page()
         self.selectionStartInfo: CursorPositionInfo | None = None
         self.selectionEndInfo: CursorPositionInfo | None = None
-        self.stats_widgets = [self.wordsInSelection,]
+        # self.stats_widgets = [self.wordsInSelection,]
+        self.stats_widgets = []
 
         self.running_threads = set()
         self._thread_id = -1
@@ -109,6 +110,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.exclusive_words_bi = None
         self.exclusive_words_tri = None
         self.resetStatsButton.clicked.connect(self.restart_stats_button_clicked)
+        self.selectionResetButton.clicked.connect(self.restart_stats_button_clicked)
         self.refreshExclusiveWordsButton.clicked.connect(self.refresh_exclusive_words_buton_clicked)
         self.wawIsAWordCheckbox.stateChanged.connect(self.waw_is_a_word_checkbox_state_changed)
         self.waykaannaTwoWordsCheckbox.stateChanged.connect(self.waykaanna_two_words_checkbox_state_changed)
@@ -159,6 +161,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.exclusive_words_tri = load(open(resource_path("data/exclusive_per_surah_tri.json"), mode='r', encoding='utf-8'))
 
     def get_current_surah_stats(self, clear_current=False, get_exclusive_phrases=True):
+        if self.selectionStartInfo is not None or self.selectionEndInfo is not None:
+            return False
         if clear_current:
             self.surahUniqueWords.setText("")
             # self.mostRepeatedLetter.setText("")
@@ -177,6 +181,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.add_thread(span_thread)
             span_thread.start()
 
+        return True
+
     def current_surah_stats_callback(self, span_info: SpanInfo, thread_id, caller_thread: SpanInfoThread):
         caller_thread.result_ready.disconnect(self.current_surah_stats_callback)
         QTimer.singleShot(MyMushafViewDialog.REMOVE_THREAD_AFTER_MS, lambda: self.remove_thread(caller_thread))
@@ -185,26 +191,28 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.lock()
 
         unique_words_percent = int(span_info.surah_unique_words_num) / int(span_info.words_in_selection) * 100
-        if span_info.metadata.total_surahs_in_page == 1:
-            self.surahUniqueWords.setText(f"{span_info.surah_unique_words_num} ({unique_words_percent:.0f}%)")
-            self.mostRepeatedWord.setText(f"{span_info.most_repeated_word[0]} ({span_info.most_repeated_word[1]})")
-            self.surahWordsNum.setText(f"{span_info.words_in_selection}")
-        else:
-            # unique words num
-            unique_words_num_new_text = (self.surahUniqueWords.text() + ", " + f"{span_info.surah_name}: {span_info.surah_unique_words_num} ({unique_words_percent:.0f}%)").strip(", ")
-            unique_words_num_sorted_results = sorted(unique_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
-            self.surahUniqueWords.setText(", ".join(unique_words_num_sorted_results))
+        # if span_info.metadata.total_surahs_in_page == 1:
+        #     self.surahUniqueWords.setText(f"{span_info.surah_unique_words_num} ({unique_words_percent:.0f}%)")
+        #     self.mostRepeatedWord.setText(f"{span_info.most_repeated_word[0]} ({span_info.most_repeated_word[1]})")
+        #     self.surahWordsNum.setText(f"{span_info.words_in_selection}")
+        # else:
+        # MULTI SURAH [BEGIN]
+        # unique words num
+        unique_words_num_new_text = (self.surahUniqueWords.text() + ", " + f"{span_info.surah_name}: {span_info.surah_unique_words_num} ({unique_words_percent:.0f}%)").strip(", ")
+        unique_words_num_sorted_results = sorted(unique_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        self.surahUniqueWords.setText(", ".join(unique_words_num_sorted_results))
 
-            # most repeated word
-            word, repetitions = span_info.most_repeated_word
-            most_repeated_word_new_text = (self.mostRepeatedWord.text() + ", " + f"{span_info.surah_name}: '{word}' ({repetitions})").strip(", ")
-            most_repeated_word_sorted_results = sorted(most_repeated_word_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
-            self.mostRepeatedWord.setText(", ".join(most_repeated_word_sorted_results))
+        # most repeated word
+        word, repetitions = span_info.most_repeated_word
+        most_repeated_word_new_text = (self.mostRepeatedWord.text() + ", " + f"{span_info.surah_name}: '{word}' ({repetitions})").strip(", ")
+        most_repeated_word_sorted_results = sorted(most_repeated_word_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        self.mostRepeatedWord.setText(", ".join(most_repeated_word_sorted_results))
 
-            # surah words num
-            surah_words_num_new_text = (self.surahWordsNum.text() + ", " + f"{span_info.surah_name}: {span_info.words_in_selection}").strip(", ")
-            surah_words_num_sorted_results = sorted(surah_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
-            self.surahWordsNum.setText(", ".join(surah_words_num_sorted_results))
+        # surah words num
+        surah_words_num_new_text = (self.surahWordsNum.text() + ", " + f"{span_info.surah_name}: {span_info.words_in_selection}").strip(", ")
+        surah_words_num_sorted_results = sorted(surah_words_num_new_text.split(", "), key=lambda x: MyDataLoader.get_surah_num(x.split(": ")[0]))
+        self.surahWordsNum.setText(", ".join(surah_words_num_sorted_results))
+        # MULTI SURAH [END]
 
         # surah exclusive phrases
         # Surah x: a (#), bc (#), def (#)
@@ -247,7 +255,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.exclusivePhrasesInSurah3.setText("")
 
     def clear_results(self):
-        self.wordsInSelection.setText("0")
+        # self.wordsInSelection.setText("0")
         self.surahUniqueWords.setText("")
         # self.mostRepeatedLetter.setText("")
         self.mostRepeatedWord.setText("")
@@ -258,6 +266,10 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.selectionEndLabel.setText("")
         self.selectionStartInfo = None
         self.selectionEndInfo = None
+        cursor = self.textBrowser.textCursor()
+        if cursor.selectionStart() != cursor.selectionEnd():
+            cursor.setPosition(cursor.selectionStart())
+            self.textBrowser.setTextCursor(cursor)
 
     def beam_cursor(self):
         self.textBrowser.viewport().setProperty("cursor", QCursor(Qt.CursorShape.IBeamCursor))
@@ -504,8 +516,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.current_page = self.pageInput.text()
             new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
             if prev_surahs != new_surahs:
-                self.last_selection_type = SelectionType.BY_PAGE
-                self.get_current_surah_stats(clear_current=True)
+                if self.get_current_surah_stats(clear_current=True):
+                    self.last_selection_type = SelectionType.BY_PAGE
 
     def go_to_ref_by_surah_num_and_verse_num(self):
         prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
@@ -516,8 +528,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.current_page = page_num
         new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
         if prev_surahs != new_surahs:
-            self.last_selection_type = SelectionType.BY_PAGE
-            self.get_current_surah_stats(clear_current=True)
+            if self.get_current_surah_stats(clear_current=True):
+                self.last_selection_type = SelectionType.BY_PAGE
 
     def go_to_ref_by_surah_name_and_verse_num(self):
         prev_surahs = tuple(surah.surah_num for surah in self.page.surahs)
@@ -533,8 +545,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.current_page = page_num
         new_surahs = tuple(surah.surah_num for surah in self.page.surahs)
         if prev_surahs != new_surahs:
-            self.last_selection_type = SelectionType.BY_PAGE
-            self.get_current_surah_stats(clear_current=True)
+            if self.get_current_surah_stats(clear_current=True):
+                self.last_selection_type = SelectionType.BY_PAGE
 
     def valid_selection(self):
         cursor = self.textBrowser.textCursor()
@@ -542,11 +554,25 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         return span[0] != span[1]
 
     def on_cursor_position_changed(self):
+        # cursor = self.textBrowser.textCursor()
+        # span = (cursor.selectionStart(), cursor.selectionEnd())
+        # print(span)
         if self.valid_selection():
+            # cursor = self.textBrowser.textCursor()
+            # span = (cursor.selectionStart(), cursor.selectionEnd())
             # print(span)
             self.start_span_info_thread(SelectionType.BY_TEXT)
         # else:
-        #     self.clear_results()
+        # elif self.last_selection_type == SelectionType.BY_TEXT:
+        # tried to refresh current surah stats upon clearing selection,
+        # but this function is also called after the next / prev buttons are called,
+        # and the problem is that this function is called first.
+        # so this will trigger either way, and then the button's function will trigger,
+        # causing a double call to self.get_current_surah_stats()
+        # so right now the only option to refresh current surah stats after text selection is
+        # to click the refresh button.
+        #     if self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False):
+        #         self.last_selection_type = SelectionType.BY_PAGE
 
     def span_info_completed(self, span_info: SpanInfo, thread_id, caller_thread: SpanInfoThread):
         caller_thread.result_ready.disconnect(self.span_info_completed)
@@ -555,7 +581,14 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             return
         self._last_thread_id = thread_id
 
-        self.wordsInSelection.setText(str(span_info.words_in_selection))
+        # self.wordsInSelection.setText(str(span_info.words_in_selection))
+        self.surahUniqueWords.setText(str(span_info.surah_unique_words_num))
+        if len(span_info.most_repeated_word) == 2:
+            self.mostRepeatedWord.setText(f"{span_info.most_repeated_word[0]} ({span_info.most_repeated_word[1]})")
+        else:
+            self.mostRepeatedWord.setText("")
+        self.surahWordsNum.setText(f"{span_info.words_in_selection}")
+
         self.finished_waiting()
         # print(f"{count.words_in_selection = }")
 
@@ -697,6 +730,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def restart_stats_button_clicked(self):
         for widget in self.stats_widgets:
             widget.setText("0")
+        self.clear_selection_info()
+        if self.get_current_surah_stats(clear_current=True, get_exclusive_phrases=False):
+            self.last_selection_type = SelectionType.BY_PAGE
 
     def refresh_exclusive_words_buton_clicked(self):
         for i, surah in enumerate(self.page.surahs):

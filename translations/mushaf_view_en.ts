@@ -31,9 +31,14 @@
         <translation>Surah</translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="563"/>
-        <source>الكلمة الأكثر تكرارًا في السورة</source>
-        <translation>Surah's most repeated word</translation>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1137"/>
+        <source>الكلمة الأكثر تكرارًا في السورة / التحديد</source>
+        <translation>Most repeated word in Surah / Selection</translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1149"/>
+        <source>الكلمة الأكثر تكرارًا</source>
+        <translation>Most repeated word</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="773"/>
@@ -44,11 +49,6 @@
         <location filename="../mushaf_view.ui" line="815"/>
         <source>عبارات حصرية للسورة</source>
         <translation>Exclusive phrases</translation>
-    </message>
-    <message>
-        <location filename="../mushaf_view.ui" line="674"/>
-        <source>جميع الكلمات داخل التحديد, مع تكرار</source>
-        <translation>Words inside selection, with repetition</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="417"/>
@@ -102,18 +102,18 @@ will be considered similar (experimental)</translation>
         <translation>Show more phrases</translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="716"/>
-        <source>عدد جميع الكلمات, مع تكرار</source>
-        <translation>Number of words in Surah, with repetition</translation>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1296"/>
+        <source>عدد جميع الكلمات (في السورة / التحديد), مع تكرار</source>
+        <translation>Number of words in Surah / Selection, with repetition</translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="683"/>
-        <source>عدد الكلمات المختلفة (بدون تكرار)</source>
-        <translation>Number of unique words in Surah</translation>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1063"/>
+        <source>عدد الكلمات المختلفة (بدون تكرار) في السورة / التحديد</source>
+        <translation>Number of unique words in Surah / Selection</translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="689"/>
-        <source>عدد الكلمات المختلفة في السورة</source>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1075"/>
+        <source>عدد الكلمات المختلفة</source>
         <translation>Unique words without repetition</translation>
     </message>
     <message>
@@ -169,14 +169,9 @@ will be considered similar (experimental)</translation>
 2. Make another selection, and click &quot;Mark selection end&quot;.</translation>
     </message>
     <message>
-        <location filename="../mushaf_view.ui" line="680"/>
-        <source>كلمات داخل التحديد</source>
-        <translation>Words inside selection</translation>
-    </message>
-    <message>
-        <location filename="../mushaf_view.ui" line="722"/>
-        <source>عدد كلمات السورة</source>
-        <translation>Surah's word count</translation>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1308"/>
+        <source>عدد الكلمات</source>
+        <translation>Word count</translation>
     </message>
 </context>
 </TS>
