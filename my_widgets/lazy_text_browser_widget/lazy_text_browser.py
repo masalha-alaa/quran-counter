@@ -92,11 +92,14 @@ class LazyTextBrowser(QTextBrowser):
                 return _done()
             surah_num, verse_num, verse, spans = match_item.surah_num, match_item.verse_num, match_item.verse_text, match_item.spans
             surah_name = MyDataLoader.get_surah_name(surah_num)
-            ref = f"{surah_name} {surah_num}:{verse_num}"
+            ref = f"{surah_name} {surah_num}:{verse_num}:"
             if colorize:
                 verse = self.reform_and_color(verse, spans)
-            line = f"<p><b>{ref}:</b> {verse}</p>"
-            # line = f"{ref}: {verse}"
+            line = f"<p><b>{ref}</b> {verse}</p>"
+
+            # align lines
+            # space = '\u00A0'
+            # line = f"""<p><span style="font-family: 'Courier New', monospace; font-weight: bold;">{ref:{space}<16}</span>{verse}</p>"""
             self.append(line)
 
         return _done()
