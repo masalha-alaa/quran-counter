@@ -11,6 +11,8 @@ alif_khunjariyah = "\u0670"  # ـٰ
 waw_khunjariyah = "وٰ"  # 2 characters
 _n_to_m_conversion_high = "\u06E2"
 _n_to_m_conversion_low = "\u06ED"
+_sad_to_sin_conversion = "\u06E3"
+_extra_n = "\u06E8"
 rub_el_hizb_mark = "\u06DE"
 sujood_mark = "\u06E9"
 alif_maksura = "\u0649"  # "ى"
@@ -20,8 +22,8 @@ _hamza_above = "\u0654"
 _hamza = "\u0621"  # "ء"
 _hamzas = [_hamza, _hamza_above]
 _tatweel_character = "\u0640"
-_special_diacritics = ["\uFC60", "\uFC61", "\uFC62", _tatweel_character, "\u06DF", "\u06EA"] + [
-    alif_khunjariyah] + alamaat_waqf + _long_harakat + [_n_to_m_conversion_high, _n_to_m_conversion_low]
+_special_diacritics = ["\uFC60", "\uFC61", "\uFC62", _tatweel_character, "\u06DF", "\u06E0", "\u06EA", "\u06EB", "\u06EC", _extra_n] + [
+    alif_khunjariyah] + alamaat_waqf + _long_harakat + [_n_to_m_conversion_high, _n_to_m_conversion_low, _sad_to_sin_conversion]
 diacritics_regex = f"[{_diacritics_begin}-{_diacritics_end}{''.join(_special_diacritics)}]"
 diacritics_regex_compiled = re_compile(diacritics_regex)
 diacritics_ending_regex_compiled = re_compile(f"{diacritics_regex}+$")

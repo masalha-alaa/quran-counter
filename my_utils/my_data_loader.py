@@ -38,6 +38,7 @@ class MyDataLoader:
     page_surah_verses = None
     surah_num_to_name_map = None
     surah_name_to_num_map = None
+    letters_histogram_index = None
     waw_words = None
     waw_khunjariyah_words = None
     huroof_maani = None
@@ -53,6 +54,7 @@ class MyDataLoader:
         if MyDataLoader.df is None:
             # TODO: Loading page
             pages = j_load(open(resource_path('data/surah-num-page-map.json')))
+            MyDataLoader.letters_histogram_index = j_load(open(resource_path('data/letters_histogram.json'), encoding='utf-8'))
             MyDataLoader.surah_num_to_name_map = j_load(open(resource_path('data/surah-map.json'), encoding='utf-8'))
             MyDataLoader.surah_name_to_num_map = InsensitiveToAlTarifDict()
             MyDataLoader.surah_name_to_num_map.update({v:k for k,v in MyDataLoader.surah_num_to_name_map.items()})

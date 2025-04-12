@@ -104,6 +104,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.textBrowser.cursorPositionChanged.connect(self.on_cursor_position_changed)
         self.selectionStartButton.clicked.connect(self.selection_start_button_clicked)
         self.selectionEndButton.clicked.connect(self.selection_end_button_clicked)
+        self.lettersHistogram.itemSelectionChanged.connect(self.letters_histogram_selection_changed)
 
         self.exclusive_words_uni = None
         self.exclusive_words_uni_diff_roots = None
@@ -132,6 +133,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         super().showEvent(event)
         self.show_verses_from_page(self._current_page)
         self.last_selection_type = SelectionType.BY_PAGE
+        self.align_titles(self._current_lang)
         self.clear_results()
         self.clear_selection_info()
         self.get_current_surah_stats()
@@ -154,6 +156,16 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         self.running_threads.remove(thread)
         # MyMushafViewDialog.RUNNING_THREADS_MUTEX.unlock()
 
+    def align_titles(self, lang: AppLang):
+        if lang == AppLang.ENGLISH:
+            self.allWordsNum.setAlignment(Qt.AlignmentFlag.AlignRight)
+            self.uniqueWordsNum.setAlignment(Qt.AlignmentFlag.AlignRight)
+            self.mostRepeatedWords.setAlignment(Qt.AlignmentFlag.AlignRight)
+        else:
+            self.allWordsNum.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            self.uniqueWordsNum.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            self.mostRepeatedWords.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
     def load_exclusive_words_data(self):
         self.exclusive_words_uni = load(open(resource_path("data/exclusive_per_surah_uni.json"), mode='r', encoding='utf-8'))
         self.exclusive_words_uni_diff_roots = load(open(resource_path("data/exclusive_per_surah_uni_diff_roots.json"), mode='r', encoding='utf-8'))
@@ -168,6 +180,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             # self.mostRepeatedLetter.setText("")
             self.mostRepeatedWord.setText("")
             self.surahWordsNum.setText("")
+            self.clear_histogram()
         for i, surah in enumerate(self.page.surahs):
             span_thread = SpanInfoThread(surah_name=surah.surah_name,
                                          count_waw_as_a_word=self.wawIsAWordCheckbox.isChecked(),
@@ -219,8 +232,25 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         if span_info.metadata.get_exclusive:
             self.fill_exclusive_words(span_info)
 
+        # histogram
+        self.fill_histogram(span_info.letters_histogram)
+        # Note: letters sum may count letters not included in histogram
+        self.lettersSumTableWidget.item(0,0).setText(f"{span_info.letters_in_selection:,}")
+
         # --- MUTEX UNLOCK ---
         MyMushafViewDialog.CURRENT_SURAH_STATS_MUTEX.unlock()
+
+    def clear_histogram(self):
+        for i in range(self.lettersHistogram.columnCount()):
+            self.lettersHistogram.item(0, i).setText("")
+            self.lettersHistogram.item(0, i).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lettersSumTableWidget.item(0, 0).setText("")
+        self.lettersSumTableWidget.item(0, 0).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+
+    def fill_histogram(self, data: list):
+        self.lettersHistogram.clearSelection()
+        for i,cnt in enumerate(data):
+            self.lettersHistogram.item(0, i).setText(str(cnt))
 
     def fill_exclusive_words(self, span_info):
         span_info.surah_exclusive_words = self.exclusive_words_uni[str(span_info.surah_num)]
@@ -260,12 +290,14 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         # self.mostRepeatedLetter.setText("")
         self.mostRepeatedWord.setText("")
         self.surahWordsNum.setText("")
+        self.clear_histogram()
 
     def clear_selection_info(self):
         self.selectionStartLabel.setText("")
         self.selectionEndLabel.setText("")
         self.selectionStartInfo = None
         self.selectionEndInfo = None
+        self.lettersHistogram.clearSelection()
         cursor = self.textBrowser.textCursor()
         if cursor.selectionStart() != cursor.selectionEnd():
             cursor.setPosition(cursor.selectionStart())
@@ -588,6 +620,9 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
         else:
             self.mostRepeatedWord.setText("")
         self.surahWordsNum.setText(f"{span_info.words_in_selection}")
+        self.fill_histogram(span_info.letters_histogram)
+        # Note: letters sum may count letters not included in histogram
+        self.lettersSumTableWidget.item(0,0).setText(f"{span_info.letters_in_selection:,}")
 
         self.finished_waiting()
         # print(f"{count.words_in_selection = }")
@@ -620,6 +655,10 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
 
         self.textBrowser.setFocus()
         self.beam_cursor()
+
+    def letters_histogram_selection_changed(self):
+        total = sum(int(item.text()) for item in self.lettersHistogram.selectedItems())
+        self.lettersSumTableWidget.item(0,0).setText(str(total))
 
     def valid_selection_span(self):
         if self.selectionStartInfo is None or self.selectionEndInfo is None:
@@ -747,7 +786,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
                       surah_num: bool = True,
                       verse_num_1: bool = True,
                       surah_name: bool = True,
-                      verse_num_2: bool = True,):
+                      verse_num_2: bool = True,
+                      text_browser: bool = True,):
         if page_input:
             self.pageInput.setEnabled(True)
         if surah_num:
@@ -758,13 +798,16 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.surahNameInput.setEnabled(True)
         if verse_num_2:
             self.verseInput_2.setEnabled(True)
+        if text_browser:
+            self.textBrowser.setEnabled(True)
 
     def disable_inputs(self,
                        page_input: bool = True,
                        surah_num: bool = True,
                        verse_num_1: bool = True,
                        surah_name: bool = True,
-                       verse_num_2: bool = True,):
+                       verse_num_2: bool = True,
+                       text_browser: bool = True):
         if page_input:
             self.pageInput.setEnabled(False)
         if surah_num:
@@ -775,6 +818,8 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
             self.surahNameInput.setEnabled(False)
         if verse_num_2:
             self.verseInput_2.setEnabled(False)
+        if text_browser:
+            self.textBrowser.setEnabled(False)
 
     def waiting(self, text=""):
         self.spinner.setText(text)

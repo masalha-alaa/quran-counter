@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1144</width>
-    <height>858</height>
+    <width>1116</width>
+    <height>853</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
    <string notr="true">QWidget {
     background-color: rgb(49, 49, 49);
     color: rgb(207, 207, 207);
-    font: 400 18pt &quot;Calibri&quot;;
+    font: 400 17pt &quot;Calibri&quot;;
 }
 
 /* Line edit styling */
@@ -69,7 +69,7 @@ QPushButton:disabled {
 }
 </string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7" stretch="4,1">
+  <layout class="QVBoxLayout" name="verticalLayout_7" stretch="4,1,0">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout" stretch="6,0">
      <property name="spacing">
@@ -204,6 +204,9 @@ QPushButton:disabled {
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <property name="spacing">
+                <number>9</number>
+               </property>
                <item>
                 <widget class="QPushButton" name="goToPageButton">
                  <property name="text">
@@ -486,7 +489,7 @@ QPushButton:disabled {
        <item>
         <widget class="QFrame" name="frame_4">
          <property name="styleSheet">
-          <string notr="true">font-size: 16pt;</string>
+          <string notr="true">font-size: 15pt;</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Box</enum>
@@ -789,6 +792,9 @@ QPushButton:disabled {
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,2">
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="statsHorizontalLayout" stretch="5">
         <item>
@@ -819,7 +825,7 @@ QPushButton:disabled {
             <number>8</number>
            </property>
            <property name="bottomMargin">
-            <number>8</number>
+            <number>0</number>
            </property>
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -851,17 +857,38 @@ QPushButton:disabled {
              <item>
               <widget class="QCheckBox" name="differentRootCheckBox">
                <property name="toolTip">
-                <string>كلمات مختلفة لها جذر مشترك تعتبر كلمات متشابهة (تجريبي)</string>
+                <string>(تجريبي)</string>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::RightToLeft</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">QToolTip { 
-    color: red;
+                <string notr="true">QCheckBox{
+	font: bold;
+}
+QToolTip { 
+    color: #484848;
+	font: 12pt;
+	color: red;
 }</string>
                </property>
                <property name="text">
                 <string>جذر مختلف</string>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_10">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
              <item>
               <widget class="QPushButton" name="refreshExclusiveWordsButton">
@@ -903,7 +930,7 @@ QPushButton:disabled {
 }
 QToolTip { 
     color: #484848;
-	font: 14pt;
+	font: 12pt;
 }</string>
                </property>
                <property name="text">
@@ -948,6 +975,9 @@ QToolTip {
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="0,0,5,5">
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_13">
            <item>
@@ -963,7 +993,7 @@ QToolTip {
 }
 QToolTip { 
     color: #484848;
-	font: 14pt;
+	font: 12pt;
 }</string>
                </property>
                <property name="text">
@@ -985,7 +1015,7 @@ QToolTip {
 }
 QToolTip { 
     color: #484848;
-	font: 14pt;
+	font: 12pt;
 }</string>
                </property>
                <property name="text">
@@ -1007,7 +1037,7 @@ QToolTip {
 }
 QToolTip { 
     color: #484848;
-	font: 14pt;
+	font: 12pt;
 }</string>
                </property>
                <property name="text">
@@ -1063,13 +1093,16 @@ QToolTip {
             <property name="rightMargin">
              <number>2</number>
             </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_8">
               <property name="spacing">
                <number>3</number>
               </property>
               <item>
-               <widget class="QLabel" name="label_3">
+               <widget class="QLabel" name="uniqueWordsNum">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1085,7 +1118,7 @@ QToolTip {
 }
 QToolTip { 
     color: #484848;
-	font: 14pt;
+	font: 12pt;
 }</string>
                 </property>
                 <property name="text">
@@ -1143,7 +1176,7 @@ QToolTip {
                <number>3</number>
               </property>
               <item>
-               <widget class="QLabel" name="label_13">
+               <widget class="QLabel" name="mostRepeatedWords">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1159,7 +1192,7 @@ QToolTip {
 }
 QToolTip { 
     color: #484848;
-	font: 14pt;
+	font: 12pt;
 }</string>
                 </property>
                 <property name="text">
@@ -1235,6 +1268,9 @@ QToolTip {
             <property name="rightMargin">
              <number>0</number>
             </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_9">
               <property name="spacing">
@@ -1305,7 +1341,7 @@ QToolTip {
                <number>3</number>
               </property>
               <item>
-               <widget class="QLabel" name="label_2">
+               <widget class="QLabel" name="allWordsNum">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1321,7 +1357,7 @@ QToolTip {
 }
 QToolTip { 
     color: #484848;
-	font: 14pt;
+	font: 12pt;
 }</string>
                 </property>
                 <property name="text">
@@ -1375,6 +1411,457 @@ QToolTip {
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="0,1">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QTableWidget" name="lettersSumTableWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>111</width>
+         <height>85</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>مجموع الحروف</string>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTableWidget {
+        font-size: 12pt;
+		font: bold;
+    }
+QHeaderView {
+        font-size: 12pt;
+		font: bold;
+    }
+
+/*headers*/
+QHeaderView::section {
+        background-color: lightsteelblue;
+        color: darkblue;
+    }
+/*headers when corresponding cell is selected*/
+QHeaderView::section:checked {
+        background-color: lightsteelblue;
+        border: 1px outset darkgray;
+    }
+
+/*corner*/
+QTableCornerButton::section {
+    background-color: rgb(59, 59, 59);
+    }
+
+/*selected item*/
+QTableWidget::item:selected {
+        background-color: rgba(47, 74, 97, 1.0);
+        color: rgb(207, 207, 207);
+        border: none;
+    }
+</string>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <row>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </row>
+       <column>
+        <property name="text">
+         <string>المجموع</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="lettersHistogram">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>85</height>
+        </size>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+QTableWidget {
+        font-size: 12pt;
+    }
+QHeaderView {
+        font-size: 12pt;
+    }
+
+/*headers*/
+QHeaderView::section {
+        background-color: lightsteelblue;
+        color: darkblue;
+    }
+/*headers when corresponding cell is selected*/
+QHeaderView::section:checked {
+        background-color: lightsteelblue;
+        border: 1px outset darkgray;
+    }
+
+/*corner*/
+QTableCornerButton::section {
+    background-color: rgb(59, 59, 59);
+    }
+
+/*selected item*/
+QTableWidget::item:selected {
+        background-color: rgba(47, 74, 97, 1.0);
+        color: rgb(207, 207, 207);
+        border: none;
+    }
+</string>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="rowCount">
+        <number>1</number>
+       </property>
+       <property name="columnCount">
+        <number>29</number>
+       </property>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <row/>
+       <column>
+        <property name="text">
+         <string>ا</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ب</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ت / ـة</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ث</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ج</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ح</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>خ</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>د</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ذ</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ر</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ز</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>س</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ش</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ص</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ض</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ط</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ظ</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ع</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>غ</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ف</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ق</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ك</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ل</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>م</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ن</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ه</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>و</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ي / ى</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>ء / ؤ / ئ</string>
+        </property>
+       </column>
+       <item row="0" column="0">
+        <property name="text">
+         <string notr="true">0</string>
+        </property>
+       </item>
+       <item row="0" column="1">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="2">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="3">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="4">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="5">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="6">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="7">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="8">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="9">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="10">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="11">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="12">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="13">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="14">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="15">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="16">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="17">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="18">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="19">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="20">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="21">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="22">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="23">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="24">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="25">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="26">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="27">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+       <item row="0" column="28">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

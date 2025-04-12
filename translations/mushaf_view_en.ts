@@ -81,10 +81,9 @@
         <translation>Previous Juz</translation>
     </message>
     <message>
-        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="750"/>
-        <source>كلمات مختلفة لها جذر مشترك تعتبر كلمات متشابهة (تجريبي)</source>
-        <translation>Different words that share the same root
-will be considered similar (experimental)</translation>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="860"/>
+        <source>(تجريبي)</source>
+        <translation>(experimental)</translation>
     </message>
     <message>
         <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="733"/>
@@ -112,9 +111,19 @@ will be considered similar (experimental)</translation>
         <translation>Number of unique words in Surah / Selection</translation>
     </message>
     <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1435"/>
+        <source>مجموع الحروف</source>
+        <translation>Letters sum</translation>
+    </message>
+    <message>
+        <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1493"/>
+        <source>المجموع</source>
+        <translation>Sum</translation>
+    </message>
+    <message>
         <location filename="../gui/mushaf_view_dialog/mushaf_view.ui" line="1075"/>
         <source>عدد الكلمات المختلفة</source>
-        <translation>Unique words without repetition</translation>
+        <translation>Unique words</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="777"/>

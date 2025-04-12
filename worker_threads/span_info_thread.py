@@ -1,10 +1,9 @@
 import re
 from PySide6.QtCore import Signal, QThread, QCoreApplication, QMutex
 from PySide6.QtGui import QTextCursor
-from arabic_reformer import is_diacritic, normalize_letter, alif_khunjariyah, remove_diacritics
+from arabic_reformer import is_diacritic, normalize_letter, alif_khunjariyah, rub_el_hizb_mark, sujood_mark
 from models.cursor_position_info import CursorPositionInfo
 from my_utils.my_data_loader import MyDataLoader
-from arabic_reformer import rub_el_hizb_mark
 from enum import Enum, auto
 from random import choice
 from my_utils.insensitive_to_last_diacritic_dict import InsensitiveToLastDiacriticDict
@@ -24,6 +23,7 @@ class SpanInfo:
         self.letters_from_beginning_of_surah = 0
         self.letters_from_beginning_of_quran = 0
         self.letters_in_selection = 0
+        self.letters_histogram = [0] * len(set(MyDataLoader.letters_histogram_index.values()))
         self.surah_unique_words_num = 0
         self.most_repeated_letter = ""
         self.most_repeated_word = ""
@@ -70,6 +70,7 @@ class SpanInfo:
                 f"{self.letters_from_beginning_of_surah = }\n"
                 f"{self.letters_from_beginning_of_quran = }\n"
                 f"{self.letters_in_selection = }\n"
+                f"{self.letters_histogram = }\n"
                 f"{self.surah_unique_words_num = }\n"
                 f"{self.most_repeated_letter = }\n"
                 f"{self.most_repeated_word = }\n"
@@ -153,7 +154,7 @@ class SpanInfoThread(QThread):
         waw_words_matrix_idx = [False] * len(SpanInfoThread.WawWordsMatrixCol)
         for word in self.text_iter:
             if not self.verse_mark_regex_ptrn.search(word):
-                if not is_diacritic(word) and word != rub_el_hizb_mark:
+                if not is_diacritic(word) and word not in [rub_el_hizb_mark, sujood_mark]:
                     if word in self.waikanna:
                         words[word] = words.get(word, 0) + 1
                         if self.count_waikaana_as_two_words:
@@ -197,10 +198,14 @@ class SpanInfoThread(QThread):
                         words[word] = words.get(word, 0) + 1
 
                 for ch in word:
-                    if ch == alif_khunjariyah or not is_diacritic(ch):
+                    if ch == alif_khunjariyah or (not is_diacritic(ch) and not ch in [rub_el_hizb_mark, sujood_mark]):
                         ch = normalize_letter(ch)
                         letters[ch] = letters.get(ch, 0) + 1
                         self.info.letters_in_selection += 1
+                        try:
+                            self.info.letters_histogram[MyDataLoader.letters_histogram_index[ch]] += 1
+                        except KeyError:
+                            print(f"{ch} not in hist")
             QCoreApplication.processEvents()
         self.info.most_repeated_letter = max(letters.items(), key=lambda x: x[1], default="")
         self.info.most_repeated_word = max(words.items(), key=lambda x: x[1], default="")
