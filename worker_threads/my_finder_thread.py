@@ -106,27 +106,27 @@ class FinderThread(QThread):
         if self.root_flag:
             # new_text = self._get_root(self.initial_word).strip()
             # check if root in root list
-            print(f"{self.initial_word = }")
-            print(f"{self.preprocessor.normalize_for_root(self.initial_word) = }")
+            # print(f"{self.initial_word = }")
+            # print(f"{self.preprocessor.normalize_for_root(self.initial_word) = }")
             try:
                 new_text = MyDataLoader.root_to_words.loc[(preprocessed_w := self.preprocessor.normalize_for_root(self.initial_word)), 'regex']
-                print(f"1. {new_text = }")
+                # print(f"1. {new_text = }")
             except KeyError:
                 try:
                     # check if word in words list
                     new_text = MyDataLoader.word_to_words.loc[preprocessed_w, 'regex']
-                    print(f"2. {new_text = }")
+                    # print(f"2. {new_text = }")
                 except KeyError:
                     # stem and check if root in root list
                     new_text = self._get_root(self.initial_word).strip()
-                    print(f"3. {new_text = }")
+                    # print(f"3. {new_text = }")
                     try:
                         new_text = MyDataLoader.root_to_words.loc[preprocessed_w, 'regex']
-                        print(f"4. {new_text = }")
+                        # print(f"4. {new_text = }")
                     except KeyError:
                         # activate fallback to compare against roots of all words
                         self._activate_root_finder_fallback = True
-                        print("5. fallback")
+                        # print("5. fallback")
         elif self.full_word or self.close_match or self.related_words:
             new_text = self.initial_word.strip()
         else:
