@@ -2,7 +2,7 @@
   <img alt="search example" src="https://github.com/user-attachments/assets/21b00fe3-f3e7-498e-8727-467ee97dc2de" width="400">
 </div>
 
-**Quran counter** is a tool for fast and easy searching in the Holy Quran (`exe` download link [at the bottom](#notes)).
+**Quran counter** is a tool for fast and flexible searching in the Holy Quran (`exe` download link [at the bottom](#notes)).
 
 The app's interface currently has English and Arabic translations:
 
