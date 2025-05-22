@@ -80,6 +80,7 @@ https://sourceforge.net/projects/qurancounter/
 
 * Dr. Yahya Mir Alam (در. يحيى مير علم) & Dr. Michel Bakni (در. ميشيل باكني) for providing the grammatical particles list.
 * Mr. Ali Aloush (علي علوش) for reviewing and testing the app.
+* Reem Masalha for reviewing and testing the app.
 
 ---
 
