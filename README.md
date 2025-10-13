@@ -32,10 +32,10 @@ You can also see the results breakdown by word count:
 * Root search (words with the same root):
 <img alt="root" src="https://github.com/user-attachments/assets/ccd22b16-cdce-4c41-9a7e-a1400dde05cd" width="600">
 
-* Similar words search (syntax similarity):
+* Similar words search (syntactic similarity):
 <img alt="syntax similarity" src="https://github.com/user-attachments/assets/bbe38cd7-455b-45d3-9d05-b733e1df415e" width="600">
 
-* Related words search:
+* Related words search (semantic similarity):
 <img alt="related words" src="https://github.com/user-attachments/assets/b7b41a79-319d-4507-ab60-362c295f2ea9" width="600">
 
 You could also see the similarity path between the source and destination words:
