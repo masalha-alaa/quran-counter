@@ -4,10 +4,24 @@
 
 **Quran counter** is a tool for fast and flexible semantic and syntactic search in the Holy Quran (`exe` download link [at the bottom](#notes)).
 
-The app's interface currently has English and Arabic translations:
+The desktop interface supports English and Arabic, with mirrored layouts, an emerald theme, a dedicated search-mode panel, and result summary cards. Press **Ctrl+F** to focus search; results still update as you type.
 
-<img alt="english" src="https://github.com/user-attachments/assets/441a8175-a188-4d6c-a143-0b06a2de8938" width="400">
-<img alt="arabic" src="https://github.com/user-attachments/assets/3a3e4c56-8b18-4031-b1aa-35b82b420f72" width="400">
+<img alt="Modern English interface" src="docs/ui/english.png" width="600">
+<img alt="Modern Arabic interface" src="docs/ui/arabic.png" width="600">
+
+### UI development and validation
+
+The layout and theme live in `gui/main_window/modern_main_window.py` and `theme.py`. They reuse the original Designer controls and custom result widgets. Continue editing/regenerating `main_screen.ui` as usual; `build.bat` does not overwrite the presentation layer. New interface text is localized in `set_language`, alongside the existing Qt translation catalogs.
+
+With the project's dependencies installed, run the Qt UI checks from the repository root:
+
+```sh
+python -m unittest discover -s tests -v
+python tools/render_ui_preview.py --language en --output work/english.png
+python tools/render_ui_preview.py --language ar --output work/arabic.png
+```
+
+The tests cover language switching, preserved control signals and state, keyboard search, read-only counts, tab visibility, and a 940 × 780 window. The preview command captures the real form without starting search workers. It is not a functional search demo: full application testing still requires the separately distributed `data/` files, which are excluded from this repository. The feature screenshots below show earlier versions.
 
 Here's a breakdown of some of the various features the app provides:
 

@@ -13,7 +13,7 @@ from PySide6.QtGui import QFontDatabase
 
 from my_utils.my_data_loader import MyDataLoader
 from my_utils.shared_data import SharedData
-from gui.main_window.main_screen import Ui_MainWindow
+from gui.main_window.modern_main_window import Ui_MainWindow
 from text_validators.composite_validator import CompositeValidator
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 from worker_threads.my_finder_thread import FinderThread
@@ -48,7 +48,6 @@ class MainWindow(QMainWindow):
         self._last_thread_id = -1
         self.spinner = SpinningLoader()
         # TODO: Settings dialog...
-        self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
         self._surah_results_list_uuid = uuid.uuid4().hex
         self._word_results_list_uuid = uuid.uuid4().hex
@@ -99,17 +98,7 @@ class MainWindow(QMainWindow):
             SharedData.app_language = lang
 
     def set_font_for_language(self, lang):
-        styleSheet = self.styleSheet()
-        font = "Calibri"
-        size = 10
-        weight = 400
-        if lang == AppLang.ARABIC:
-            size = 18
-        elif lang == AppLang.ENGLISH:
-            size = 16
-
-        styleSheet = self._font_ptrn.sub(rf'\1 {weight} {size}pt "{font}"\2', styleSheet)
-        self.setStyleSheet(styleSheet)
+        SharedData.ui.set_language(self, lang)
 
     def _setup_events(self):
         SharedData.ui.searchOptionsButtonGroup.buttonToggled.connect(self._search_options_radio_buttons_changed)
