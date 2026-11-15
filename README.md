@@ -4,7 +4,7 @@
 
 **Quran counter** is a tool for fast and flexible semantic and syntactic search in the Holy Quran (`exe` download link [at the bottom](#notes)).
 
-The desktop interface supports English and Arabic, with mirrored layouts, a charcoal and slate theme with soft blue accents, a dedicated search-mode panel, and result summary cards. Press **Ctrl+F** to focus search; results still update as you type.
+The desktop interface supports English and Arabic, with mirrored layouts and a charcoal and slate theme with soft blue accents. Results use the full width by default, beneath a compact search toolbar and inline totals. **Search options** opens the mode and matching controls; its label shows the current mode and number of active matching options even when collapsed. Press **Ctrl+F** to focus search; results still update as you type.
 
 <img alt="Modern English interface" src="docs/ui/english.png" width="600">
 <img alt="Modern Arabic interface" src="docs/ui/arabic.png" width="600">
@@ -21,7 +21,7 @@ python tools/render_ui_preview.py --language en --output work/english.png
 python tools/render_ui_preview.py --language ar --output work/arabic.png
 ```
 
-The tests cover language switching, preserved control signals and state, keyboard search, read-only counts, tab visibility, and a 940 × 780 window. The preview command captures the real form without starting search workers. It is not a functional search demo: full application testing still requires the separately distributed `data/` files, which are excluded from this repository. The feature screenshots below show earlier versions.
+The tests cover language switching, preserved control signals and state, keyboard search, read-only counts, tab visibility, and a 940 × 640 window. They also verify that collapsing options preserves the query and results, and that the results pane occupies over 95% of the width and 60% of the height at the default 1220 × 860 size in both languages. The preview command captures the real form without starting search workers. It is not a functional search demo: full application testing still requires the separately distributed `data/` files, which are excluded from this repository. The feature screenshots below show earlier versions.
 
 Here's a breakdown of some of the various features the app provides:
 

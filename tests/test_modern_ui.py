@@ -114,7 +114,7 @@ class ModernUiTest(unittest.TestCase):
         for language in (AppLang.ARABIC, AppLang.ENGLISH):
             if language == AppLang.ENGLISH:
                 self.english()
-            self.window.resize(940, 780)
+            self.window.resize(940, 640)
             self.app.processEvents()
             for widget in (self.ui.searchWord, self.ui.tabWidget, self.ui.foundVerses,
                            self.ui.browse_button, self.ui.matchesNumber):
@@ -123,14 +123,55 @@ class ModernUiTest(unittest.TestCase):
                     bottom_right = widget.mapTo(self.window, widget.rect().bottomRight())
                     self.assertTrue(self.window.rect().contains(top_left))
                     self.assertTrue(self.window.rect().contains(bottom_right))
-            self.ui.sidebar.ensureWidgetVisible(self.ui.regexRadioButton)
+            self.ui.options_button.setChecked(True)
             self.app.processEvents()
-            center = self.ui.regexRadioButton.mapTo(self.ui.sidebar.viewport(), self.ui.regexRadioButton.rect().center())
+            self.ui.sidebar.ensureWidgetVisible(self.ui.optionalAlTarifCheckbox)
+            self.app.processEvents()
+            center = self.ui.optionalAlTarifCheckbox.mapTo(self.ui.sidebar.viewport(), self.ui.optionalAlTarifCheckbox.rect().center())
             self.assertTrue(self.ui.sidebar.viewport().rect().contains(center))
+            self.ui.options_button.setChecked(False)
+
+    def test_results_have_priority_in_both_languages(self):
+        for language in (AppLang.ARABIC, AppLang.ENGLISH):
+            if language == AppLang.ENGLISH:
+                self.english()
+            self.window.resize(1220, 860)
+            self.app.processEvents()
+            with self.subTest(language=language):
+                self.assertFalse(self.ui.sidebar.isVisible())
+                self.assertGreater(self.ui.foundVerses.width(), self.window.width() * 0.95)
+                self.assertGreater(self.ui.foundVerses.height(), self.window.height() * 0.60)
+
+    def test_options_panel_preserves_search_and_results(self):
+        self.ui.searchWord.setText("الرحمة")
+        self.ui.foundVerses.setPlainText("نتيجة تجريبية")
+        self.ui.matchesNumber.setText("1234567")
+        query_changes = QSignalSpy(self.ui.searchWord.textChanged)
+        QTest.mouseClick(self.ui.options_button, Qt.MouseButton.LeftButton)
+        self.app.processEvents()
+        self.assertTrue(self.ui.sidebar.isVisible())
+        self.ui.fullWordRadioButton.click()
+        self.ui.optionalAlTarifCheckbox.click()
+        self.assertIn(self.ui.fullWordRadioButton.text(), self.ui.options_button.text())
+        self.assertIn("(+1)", self.ui.options_button.text())
+        self.english()
+        self.assertTrue(self.ui.sidebar.isVisible())
+        self.assertIn("Full word", self.ui.options_button.text())
+        QTest.mouseClick(self.ui.options_button, Qt.MouseButton.LeftButton)
+        self.app.processEvents()
+        self.assertFalse(self.ui.sidebar.isVisible())
+        self.assertTrue(self.ui.fullWordRadioButton.isChecked())
+        self.assertTrue(self.ui.optionalAlTarifCheckbox.isChecked())
+        self.assertEqual(self.ui.searchWord.text(), "الرحمة")
+        self.assertEqual(self.ui.foundVerses.toPlainText(), "نتيجة تجريبية")
+        self.assertEqual(self.ui.matchesNumber.text(), "1234567")
+        self.assertGreater(self.ui.matchesNumber.width(), self.ui.matchesNumber.fontMetrics().horizontalAdvance("1234567"))
+        self.assertEqual(query_changes.count(), 0)
+        self.assertTrue(self.ui.searchWord.hasFocus())
 
     def test_all_result_tabs_and_controller_visibility_remain_available(self):
         self.assertEqual(self.ui.tabWidget.count(), 4)
-        self.window.resize(940, 780)
+        self.window.resize(940, 640)
         for index in range(4):
             self.ui.tabWidget.setCurrentIndex(index)
             self.app.processEvents()

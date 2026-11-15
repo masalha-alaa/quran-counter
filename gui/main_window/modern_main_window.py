@@ -29,21 +29,16 @@ class Ui_MainWindow(DesignerUi):
         self.centralwidget = QWidget(window)
         self.centralwidget.setObjectName("centralwidget")
         root = QVBoxLayout(self.centralwidget)
-        root.setContentsMargins(24, 12, 24, 22)
-        root.setSpacing(16)
+        root.setContentsMargins(16, 4, 16, 16)
+        root.setSpacing(8)
 
         header = QHBoxLayout()
         header.setSpacing(16)
         self.brand_mark = QLabel("۞")
         self.brand_mark.setObjectName("brandMark")
         header.addWidget(self.brand_mark)
-        heading = QVBoxLayout()
-        heading.setSpacing(2)
         self.title = self._label("title")
-        self.subtitle = self._label("subtitle")
-        heading.addWidget(self.title)
-        heading.addWidget(self.subtitle)
-        header.addLayout(heading, 1)
+        header.addWidget(self.title, 1)
         self.browse_button = QToolButton()
         self.browse_button.setObjectName("browseButton")
         self.browse_button.setDefaultAction(self.mushafNavigationButton)
@@ -65,10 +60,7 @@ class Ui_MainWindow(DesignerUi):
         modes_layout.setContentsMargins(16, 18, 16, 18)
         modes_layout.setSpacing(7)
         self.modes_title = self._label("section")
-        self.modes_hint = self._label("muted")
-        self.modes_hint.setWordWrap(True)
         modes_layout.addWidget(self.modes_title)
-        modes_layout.addWidget(self.modes_hint)
         modes_layout.addSpacing(8)
         self.mode_buttons = [
             self.noRestrictionsRadioButton, self.fullWordRadioButton,
@@ -84,37 +76,46 @@ class Ui_MainWindow(DesignerUi):
                 modes_layout.addLayout(self._threshold_row(self.similarityThresholdSlider, self.similarityThresholdLabel))
             elif button is self.relatedWordsRadioButton:
                 modes_layout.addLayout(self._threshold_row(self.relatedWordsThresholdSlider, self.relatedWordsThresholdLabel))
+        modes_layout.addSpacing(12)
+        self.refinements_title = self._label("section")
+        modes_layout.addWidget(self.refinements_title)
+        self.refinements = (self.alifAlifMaksuraCheckbox, self.yaAlifMaksuraCheckbox,
+                            self.finalTaCheckbox, self.wordPermutationsCheckbox,
+                            self.optionalAlTarifCheckbox)
+        for checkbox in self.refinements:
+            modes_layout.addWidget(checkbox)
+            checkbox.toggled.connect(self._update_options_summary)
         modes_layout.addStretch()
         self.sidebar.setWidget(modes)
-        workspace.addWidget(self.sidebar)
+        self.sidebar.hide()
 
         content = QVBoxLayout()
-        content.setSpacing(16)
-        search_card, search_layout = self._card()
-        self.label.setProperty("role", "section")
+        content.setSpacing(6)
+        search_row = QHBoxLayout()
+        search_row.setSpacing(10)
         self.label.setBuddy(self.searchWord)
         self.label.hide()
-        self.label.setParent(search_card)
+        self.label.setParent(self.centralwidget)
         self.searchWord.setClearButtonEnabled(True)
         self.searchWord.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.searchWord.setAlignment(Qt.AlignmentFlag.AlignRight)
-        search_layout.addWidget(self.searchWord)
-        options = QHBoxLayout()
-        options.setSpacing(14)
-        for checkbox in (self.alifAlifMaksuraCheckbox, self.yaAlifMaksuraCheckbox,
-                         self.finalTaCheckbox, self.wordPermutationsCheckbox,
-                         self.optionalAlTarifCheckbox):
-            options.addWidget(checkbox)
-        options.addStretch()
-        search_layout.addLayout(options)
-        content.addWidget(search_card)
+        search_row.addWidget(self.searchWord, 1)
+        self.options_button = QToolButton()
+        self.options_button.setObjectName("optionsButton")
+        self.options_button.setCheckable(True)
+        self.options_button.toggled.connect(self._toggle_options)
+        self.searchOptionsButtonGroup.buttonToggled.connect(self._update_options_summary)
+        search_row.addWidget(self.options_button)
+        root.addLayout(search_row)
 
-        stats = QHBoxLayout()
-        stats.setSpacing(12)
+        self.result_summary = QFrame()
+        self.result_summary.setObjectName("resultSummary")
+        stats = QHBoxLayout(self.result_summary)
+        stats.setContentsMargins(4, 0, 4, 0)
+        stats.setSpacing(8)
         for label, value in ((self.label_2, self.matchesNumber),
                              (self.label_4, self.matchesNumberSurahs),
                              (self.label_5, self.matchesNumberVerses)):
-            card, layout = self._card("stat")
             label.setProperty("role", "statLabel")
             value.setProperty("role", "count")
             value.setEnabled(True)
@@ -124,15 +125,13 @@ class Ui_MainWindow(DesignerUi):
             palette = value.palette()
             palette.setColor(QPalette.ColorRole.PlaceholderText, QColor("#a8c4ff"))
             value.setPalette(palette)
-            value.setMinimumWidth(0)
-            value.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
-            layout.addWidget(value)
-            layout.addWidget(label)
-            stats.addWidget(card, 1)
-        content.addLayout(stats)
+            value.textChanged.connect(lambda _text, field=value: self._size_count(field))
+            stats.addWidget(value)
+            stats.addWidget(label)
+            stats.addSpacing(20)
+        stats.addStretch()
+        content.addWidget(self.result_summary)
 
-        self.results_title = self._label("section")
-        content.addWidget(self.results_title)
         self.tabWidget.setTabShape(QTabWidget.TabShape.Rounded)
         self.tabWidget.setDocumentMode(True)
         self.tabWidget.tabBar().setDrawBase(False)
@@ -168,20 +167,20 @@ class Ui_MainWindow(DesignerUi):
             table.setMinimumHeight(110)
             table.verticalHeader().setDefaultSectionSize(46)
         workspace.addLayout(content, 1)
+        workspace.addWidget(self.sidebar)
         root.addLayout(workspace, 1)
         window.setCentralWidget(self.centralwidget)
         old_central.deleteLater()
         self.statusbar.hide()
-        window.setMinimumSize(940, 780)
+        window.setMinimumSize(940, 640)
         window.resize(1220, 860)
         self.search_shortcut = QShortcut(QKeySequence("Ctrl+F"), window)
         self.search_shortcut.activated.connect(self._focus_search)
-        focus_order = [self.searchWord, self.alifAlifMaksuraCheckbox,
-                       self.yaAlifMaksuraCheckbox, self.finalTaCheckbox,
-                       self.wordPermutationsCheckbox, self.optionalAlTarifCheckbox,
+        focus_order = [self.searchWord, self.options_button,
                        *self.mode_buttons[:6], self.similarityThresholdSlider,
                        self.relatedWordsRadioButton, self.relatedWordsThresholdSlider,
-                       self.topicsRadioButton, self.regexRadioButton, self.tabWidget]
+                       self.topicsRadioButton, self.regexRadioButton,
+                       *self.refinements, self.tabWidget]
         for previous, following in zip(focus_order, focus_order[1:]):
             QWidget.setTabOrder(previous, following)
         window.setStyleSheet(STYLESHEET)
@@ -193,15 +192,6 @@ class Ui_MainWindow(DesignerUi):
         label = QLabel()
         label.setProperty("role", role)
         return label
-
-    @staticmethod
-    def _card(role="card"):
-        card = QFrame()
-        card.setProperty("role", role)
-        layout = QVBoxLayout(card)
-        layout.setContentsMargins(18, 12, 18, 12)
-        layout.setSpacing(4)
-        return card, layout
 
     @staticmethod
     def _threshold_row(slider, label):
@@ -216,6 +206,30 @@ class Ui_MainWindow(DesignerUi):
         self.searchWord.setFocus()
         self.searchWord.selectAll()
 
+    def _toggle_options(self, expanded):
+        self.sidebar.setVisible(expanded)
+        self._update_options_summary()
+        if not expanded:
+            self.searchWord.setFocus()
+
+    def _update_options_summary(self, *_args):
+        arabic = self._language == AppLang.ARABIC
+        mode = self.searchOptionsButtonGroup.checkedButton().text()
+        count = sum(checkbox.isChecked() for checkbox in self.refinements)
+        label = "خيارات البحث" if arabic else "Search options"
+        suffix = f" (+{count})" if count else ""
+        self.options_button.setText(f"{label} · {mode}{suffix}")
+        self.options_button.setAccessibleName(self.options_button.text())
+        self.options_button.setToolTip(
+            ("إخفاء خيارات البحث" if arabic else "Hide search options")
+            if self.options_button.isChecked() else
+            ("إظهار خيارات البحث" if arabic else "Show search options")
+        )
+
+    @staticmethod
+    def _size_count(field):
+        field.setFixedWidth(max(28, field.fontMetrics().horizontalAdvance(field.text() or "0") + 12))
+
     def retranslateUi(self, window):
         super().retranslateUi(window)
         if hasattr(self, "title"):
@@ -228,10 +242,11 @@ class Ui_MainWindow(DesignerUi):
         window.setLayoutDirection(Qt.LayoutDirection.RightToLeft if arabic else Qt.LayoutDirection.LeftToRight)
         text = lambda ar, en: ar if arabic else en
         self.title.setText(text("عدّاد القرآن الكريم", "Quran Counter"))
-        self.subtitle.setText(text("رحلة في كلمات القرآن ومعانيه", "Explore the words. Discover the connections."))
         self.modes_title.setText(text("طريقة البحث", "SEARCH MODE"))
-        self.modes_hint.setText(text("اختر كيف تبحث في القرآن", "Choose how you explore the Quran."))
-        self.results_title.setText(text("نتائج البحث", "YOUR RESULTS"))
+        self.refinements_title.setText(text("خيارات المطابقة", "MATCHING OPTIONS"))
+        self.label_2.setText(text("نتيجة", "Matches"))
+        self.label_4.setText(text("سورة", "Surahs"))
+        self.label_5.setText(text("آية", "Verses"))
         self.searchWord.setPlaceholderText(text("اكتب كلمة أو عبارة…", "Search an Arabic word or phrase…"))
         self.searchWord.setAccessibleName(text("البحث في القرآن", "Search the Quran"))
         self.searchWord.setToolTip(text("تظهر النتائج أثناء الكتابة · Ctrl+F", "Results update as you type · Ctrl+F"))
@@ -243,6 +258,8 @@ class Ui_MainWindow(DesignerUi):
                             (self.topicResultsTableWidget, self.label_10)):
             table.setToolTip(hint.text())
         self.wordPermutationsCheckbox.setAccessibleName(self.wordPermutationsCheckbox.toolTip())
+        self.wordPermutationsCheckbox.setText(text("تبديل ترتيب الكلمات", "Any word order"))
+        self.wordPermutationsCheckbox.setIcon(QIcon())
         for menu, ar, en in ((self.menu_Language, "اللغة", "Language"),
                              (self.mushafViewButton, "المصحف", "Quran"),
                              (self.menuChatGPT, "المساعد", "Assistant"),
@@ -259,3 +276,6 @@ class Ui_MainWindow(DesignerUi):
             widget.style().unpolish(widget)
             widget.style().polish(widget)
             widget.updateGeometry()
+        for field in (self.matchesNumber, self.matchesNumberSurahs, self.matchesNumberVerses):
+            self._size_count(field)
+        self._update_options_summary()
