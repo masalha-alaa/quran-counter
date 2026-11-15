@@ -122,7 +122,7 @@ class Ui_MainWindow(DesignerUi):
             value.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             value.setPlaceholderText("0")
             palette = value.palette()
-            palette.setColor(QPalette.ColorRole.PlaceholderText, QColor("#8de0bd"))
+            palette.setColor(QPalette.ColorRole.PlaceholderText, QColor("#a8c4ff"))
             value.setPalette(palette)
             value.setMinimumWidth(0)
             value.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)

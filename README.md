@@ -4,7 +4,7 @@
 
 **Quran counter** is a tool for fast and flexible semantic and syntactic search in the Holy Quran (`exe` download link [at the bottom](#notes)).
 
-The desktop interface supports English and Arabic, with mirrored layouts, an emerald theme, a dedicated search-mode panel, and result summary cards. Press **Ctrl+F** to focus search; results still update as you type.
+The desktop interface supports English and Arabic, with mirrored layouts, a charcoal and slate theme with soft blue accents, a dedicated search-mode panel, and result summary cards. Press **Ctrl+F** to focus search; results still update as you type.
 
 <img alt="Modern English interface" src="docs/ui/english.png" width="600">
 <img alt="Modern Arabic interface" src="docs/ui/arabic.png" width="600">
