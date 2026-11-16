@@ -15,6 +15,8 @@ from PySide6.QtWidgets import (
 from gui.main_window.main_screen import Ui_MainWindow as DesignerUi
 from gui.theme import STYLESHEET
 from gui.main_window.results_placeholder import ResultsPlaceholder
+from gui.main_window.search_input import SearchInput
+from gui.main_window.search_filter import SearchFilter
 from my_utils.my_enums import AppLang
 
 
@@ -111,8 +113,8 @@ class Ui_MainWindow(DesignerUi):
         self.label.hide()
         self.label.setParent(self.centralwidget)
         self.searchWord.setClearButtonEnabled(True)
-        self.searchWord.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.searchWord.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignAbsolute)
+        self.search_input = SearchInput(self.searchWord)
+        self.search_filter = SearchFilter(self.filterButton)
         search_grid.addWidget(self.searchWord, 0, 1)
         self.options_button = QToolButton()
         self.options_button.setObjectName("optionsButton")
@@ -159,6 +161,10 @@ class Ui_MainWindow(DesignerUi):
         self.horizontalLayout_5.removeItem(self.verticalLayout_9)
         self.line_3.hide()
         self.results_placeholder = ResultsPlaceholder(self.foundVerses)
+        result_option = self.foundVerses.document().defaultTextOption()
+        result_option.setTextDirection(Qt.RightToLeft)
+        result_option.setAlignment(Qt.AlignRight | Qt.AlignAbsolute)
+        self.foundVerses.document().setDefaultTextOption(result_option)
         word_options = QHBoxLayout()
         for checkbox in (self.diacriticsCheckbox, self.wordTransliterationCheckbox,
                          self.wordMeaningCheckbox):
@@ -258,10 +264,7 @@ class Ui_MainWindow(DesignerUi):
         self._language = language
         arabic = language == AppLang.ARABIC
         window.setLayoutDirection(Qt.LayoutDirection.RightToLeft if arabic else Qt.LayoutDirection.LeftToRight)
-        # AlignRight alone is mirrored by Qt for RTL text. AlignAbsolute pins
-        # both the entered query and its placeholder to the physical right.
-        self.searchWord.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.searchWord.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignAbsolute)
+        self.search_input.set_language(language)
         text = lambda ar, en: ar if arabic else en
         self.title.setText(text("عدّاد القرآن الكريم", "Quran Counter"))
         self.modes_title.setText(text("طريقة البحث", "SEARCH MODE"))
@@ -276,7 +279,7 @@ class Ui_MainWindow(DesignerUi):
         self.searchWord.setPlaceholderText(text("اكتب كلمة أو عبارة…", "Search an Arabic word or phrase…"))
         self.searchWord.setAccessibleName(text("البحث في القرآن", "Search the Quran"))
         self.searchWord.setToolTip(text("تظهر النتائج أثناء الكتابة · Ctrl+F", "Results update as you type · Ctrl+F"))
-        self.results_placeholder.set_text(text("ابدأ البحث لاستكشاف الآيات هنا", "Start a search to explore matching verses here."))
+        self.results_placeholder.set_text(text("ابدأ البحث لاستكشاف الآيات هنا", "Start a search to explore matching verses here."), right_aligned=arabic)
         self.filterButton.setText(text("تصفية ذكية", "Smart filter"))
         self.clearFilterButton.setText(text("مسح التصفية", "Clear filter"))
         for table, hint in ((self.surahResultsTableWidget, self.label_8),

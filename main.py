@@ -45,6 +45,7 @@ class MainWindow(QMainWindow):
         SharedData.ui = Ui_MainWindow()
         self.running_threads = set()
         self._last_thread_id = -1
+        self._active_search_id = None
         self.spinner = SpinningLoader()
         # TODO: Settings dialog...
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
@@ -261,7 +262,8 @@ class MainWindow(QMainWindow):
             return False
 
     def _search_word_text_changed(self, new_text):
-        SharedData.ui.filterButton.setEnabled(False)
+        self._active_search_id = None
+        SharedData.ui.search_filter.begin()
         SharedData.all_matches = []
         if ((not (stripped := new_text.strip()))
                 or ((SharedData.ui.rootRadioButton.isChecked() or
@@ -272,10 +274,11 @@ class MainWindow(QMainWindow):
                     and len(stripped.replace(" ", "")) < 3)):
             self.clear_results()
             self.tabs_manager.refresh_tabs_config()
-            SharedData.ui.filterButton.setEnabled(False)
+            SharedData.ui.search_filter.complete(False)
             self.tabs_manager.clear_tabs_results()
             if SharedData.ui.regexRadioButton.isChecked():
                 SharedData.ui.searchWord.setStyleSheet("")
+            self.finished_waiting()
             return
 
         if SharedData.ui.regexRadioButton.isChecked():
@@ -283,6 +286,8 @@ class MainWindow(QMainWindow):
                 SharedData.ui.searchWord.setStyleSheet("")
             else:
                 SharedData.ui.searchWord.setStyleSheet("background-color: rgba(255, 0, 0, 50);")
+                SharedData.ui.search_filter.complete(False)
+                self.finished_waiting()
                 return
 
         if (SharedData.ui.rootRadioButton.isChecked() or
@@ -292,6 +297,7 @@ class MainWindow(QMainWindow):
             self.waiting(block_search=False)
 
         thread_id = datetime.now().timestamp()
+        self._active_search_id = thread_id
         if SharedData.ui.topicsRadioButton.isChecked():
             topics_finder_thread = TopicFinderThread(thread_id)
             topics_finder_thread.set_data(new_text)
@@ -340,7 +346,7 @@ class MainWindow(QMainWindow):
         caller_thread.result_ready.disconnect(self.on_topics_found_complete)
         self._remove_thread(caller_thread)
         # reject older threads
-        if thread_id < self._last_thread_id:
+        if thread_id != self._active_search_id or thread_id < self._last_thread_id:
             return
         self._last_thread_id = thread_id
 
@@ -355,13 +361,14 @@ class MainWindow(QMainWindow):
         SharedData.matches_number_verses = str(number_of_verses)
 
         self.tabs_manager.on_txt_found_complete(initial_word, number_of_matches)
+        SharedData.ui.search_filter.complete(number_of_matches > 0 and len(SharedData.search_word.split()) == 1)
         self.finished_waiting()
 
     def on_txt_found_complete(self, initial_word, words_num, result: FinderResultObject, thread_id, caller_thread: FinderThread):
         caller_thread.result_ready.disconnect(self.on_txt_found_complete)
         self._remove_thread(caller_thread)
         # reject older threads
-        if thread_id < self._last_thread_id:
+        if thread_id != self._active_search_id or thread_id < self._last_thread_id:
             return
         self._last_thread_id = thread_id
 
@@ -373,6 +380,7 @@ class MainWindow(QMainWindow):
         SharedData.matches_number_verses = str(result.total_number_of_verses)
 
         self.tabs_manager.on_txt_found_complete(initial_word, result.total_number_of_matches)
+        SharedData.ui.search_filter.complete(result.total_number_of_matches > 0 and len(SharedData.search_word.split()) == 1)
         self.finished_waiting()
 
     def waiting(self, text="", block_search=True):

@@ -10,7 +10,7 @@ import unittest
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtCore import QEvent, QTranslator, Qt
-from PySide6.QtGui import QFontDatabase
+from PySide6.QtGui import QFontDatabase, QKeyEvent
 from PySide6.QtTest import QSignalSpy, QTest
 from PySide6.QtWidgets import QApplication, QMainWindow
 
@@ -179,6 +179,82 @@ class ModernUiTest(unittest.TestCase):
             self.ui.options_button.setChecked(False)
             self.assertTrue(self.ui.matching_options.isVisible())
             self.ui.options_button.setChecked(True)
+
+    def test_space_keeps_caret_at_visual_end_after_keyboard_direction_change(self):
+        field = self.ui.searchWord
+        for language in (AppLang.ARABIC, AppLang.ENGLISH):
+            if language == AppLang.ENGLISH:
+                self.english()
+            field.clear()
+            field.setFocus()
+            # This is the direction event delivered by native keyboard-layout
+            # changes. Widget layoutDirection alone does not govern the caret.
+            QTest.keyClick(field, Qt.Key_Direction_L)
+            typed = ""
+            for char in "بسم الله الرحمن":
+                before = field.cursorRect().x()
+                if char == " ":
+                    QTest.keyClick(field, Qt.Key_Space)
+                else:
+                    self.app.sendEvent(field, QKeyEvent(QEvent.KeyPress, Qt.Key_unknown, Qt.NoModifier, char))
+                typed += char
+                self.app.processEvents()
+                self.assertEqual(field.text(), typed)
+                self.assertEqual(field.cursorPosition(), len(typed))
+                if char == " ":
+                    self.assertLess(field.cursorRect().x(), before)
+                    self.assertLess(before - field.cursorRect().x(), field.fontMetrics().height())
+                    QTest.keyClick(field, Qt.Key_Direction_L)
+
+    def test_english_hints_are_left_aligned_but_query_stays_right_aligned(self):
+        self.english()
+        field = self.ui.searchWord
+        hint = self.ui.results_placeholder.label
+        self.assertTrue(field.alignment() & Qt.AlignLeft)
+        self.assertTrue(hint.alignment() & Qt.AlignLeft)
+        self.assertTrue(hint.alignment() & Qt.AlignAbsolute)
+        browser = self.ui.foundVerses
+        browser.append("<p>رحمة الله</p>")
+        self.app.processEvents()
+        self.assertFalse(hint.isVisible())
+        self.assertGreater(browser.cursorRect().x(), browser.viewport().width() * 0.65)
+        browser.clear()
+        self.assertTrue(hint.isVisible())
+        self.assertTrue(hint.alignment() & Qt.AlignLeft)
+        field.insert("الرحمة")
+        self.assertTrue(field.alignment() & Qt.AlignRight)
+        field.clear()
+        self.assertTrue(field.alignment() & Qt.AlignLeft)
+        self.app.removeTranslator(self.translator)
+        self.ui.retranslateUi(self.window)
+        self.ui.set_language(self.window, AppLang.ARABIC)
+        self.assertTrue(field.alignment() & Qt.AlignRight)
+        self.assertTrue(hint.alignment() & Qt.AlignRight)
+
+    def test_query_editing_preserves_selection_undo_and_validators(self):
+        from text_validators.composite_validator import CompositeValidator
+        field = self.ui.searchWord
+        field.setValidator(CompositeValidator(None))
+        field.insert("بسم الله")
+        field.setSelection(4, 4)
+        field.insert("الرحمن")
+        self.assertEqual(field.text(), "بسم الرحمن")
+        field.undo()
+        self.assertEqual(field.text(), "بسم الله")
+        field.deselect()
+        field.setCursorPosition(3)
+        QTest.keyClick(field, Qt.Key_Space)
+        self.assertEqual(field.text(), "بسم الله")  # double spaces remain invalid
+        field.setCursorPosition(len(field.text()))
+        QTest.keyClick(field, Qt.Key_Backspace)
+        self.assertEqual(field.text(), "بسم الل")
+        field.undo()
+        field.insert("abc")
+        self.assertEqual(field.text(), "بسم الله")
+        field.setValidator(ArabicWithRegexValidator())
+        field.selectAll()
+        field.insert("^(الله|رحمة)$")
+        self.assertEqual(field.text(), "^(الله|رحمة)$")
 
     def test_results_hint_is_right_aligned_and_never_becomes_result_content(self):
         label = self.ui.results_placeholder.label

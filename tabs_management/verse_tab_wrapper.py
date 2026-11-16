@@ -45,7 +45,6 @@ class VerseTabWrapper(TabWrapper):
                            SharedData.ui.searchOptionsButtonGroup.checkedId(),
                            current_radio_threshold)
         SharedData.found_verses.save_values_and_refresh(SharedData.all_matches, range(len(SharedData.all_matches)))
-        SharedData.ui.filterButton.setEnabled((number_of_matches > 0) and len(SharedData.search_word.split()) == 1)
 
     def _colorize_toggled(self, state):
         SharedData.found_verses.reset_iter_and_refresh(SharedData.all_matches, state)

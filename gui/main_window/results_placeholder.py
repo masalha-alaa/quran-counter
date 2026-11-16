@@ -1,4 +1,4 @@
-"""A right-aligned empty-state hint without changing the results document.
+"""A localized empty-state hint without changing the results document.
 
 QTextEdit's native placeholder ignores document paragraph alignment. A passive
 viewport label avoids putting instructional text into selectable/searchable
@@ -23,8 +23,9 @@ class ResultsPlaceholder(QObject):
         browser.textChanged.connect(self._refresh)
         self._refresh()
 
-    def set_text(self, text):
+    def set_text(self, text, *, right_aligned=True):
         self.label.setText(text)
+        self.label.setAlignment((Qt.AlignRight if right_aligned else Qt.AlignLeft) | Qt.AlignTop | Qt.AlignAbsolute)
         self._refresh()
 
     def _refresh(self):

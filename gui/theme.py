@@ -46,6 +46,9 @@ QPushButton[role="primary"]:disabled { background: #39414e; color: #929caf; }
 QPushButton:pressed, QToolButton:pressed { background: #465f8c; }
 QPushButton:focus, QToolButton:focus { border: 1px solid #c8d8ff; }
 QPushButton:disabled { background: #282d37; border-color: #39414e; color: #929caf; }
+QPushButton#filterButton[pendingSearch="true"]:disabled {
+    background: #2c3851; border-color: #4b6085; color: #e5edff;
+}
 QToolButton#browseButton { background: #a8c4ff; color: #182642; font-weight: 600; }
 QToolButton#browseButton:hover { background: #c8daff; }
 QToolButton#optionsButton:checked { background: #354a72; border-color: #a8c4ff; }

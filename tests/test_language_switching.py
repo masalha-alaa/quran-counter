@@ -12,6 +12,7 @@ from unittest.mock import Mock, patch
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtCore import QEvent, QSignalBlocker, QTranslator, Qt
+from PySide6.QtGui import QKeyEvent
 from PySide6.QtTest import QSignalSpy, QTest
 from PySide6.QtWidgets import QApplication, QMainWindow
 
@@ -46,6 +47,10 @@ class LanguageSwitchingTest(unittest.TestCase):
         # updates. Keep the production action wiring and _apply_language method.
         self.window = self.main.MainWindow.__new__(self.main.MainWindow)
         QMainWindow.__init__(self.window)
+        self.window.spinner = Mock()
+        self.window.running_threads = set()
+        self.window._last_thread_id = -1
+        self.window._active_search_id = None
         self.ui = self.main.Ui_MainWindow()
         self.shared.ui = self.ui
         self.ui.setupUi(self.window)
@@ -181,6 +186,83 @@ class LanguageSwitchingTest(unittest.TestCase):
         self.assertTrue(self.ui.searchWord.hasFocus())
         self.assertEqual(focus.count(), 0)
         self.assertEqual(slider.count(), 0)
+
+    def test_typing_and_result_callbacks_keep_the_caret_and_filter_steady(self):
+        self.window.tabs_manager = Mock()
+        self.window._composite_validator = self.main.CompositeValidator(None)
+        self.window._regex_validator = self.main.ArabicWithRegexValidator()
+        self.window._set_validator(self.window._composite_validator)
+        field = self.ui.searchWord
+        result = self.main.FinderResultObject([], 1, 1, 1)
+        with patch.object(self.main, "FinderThread"), \
+                patch.object(self.main, "TopicFinderThread"), \
+                patch("worker_threads.my_topic_finder_thread.TopicFinderThread"), \
+                patch.object(self.window, "_remove_thread"):
+            for action in (self.ui.arabicLangButton, self.ui.englishLangButton):
+                action.trigger()
+                for mode in self.ui.mode_buttons:
+                    field.clear()
+                    mode.click()
+                    self.window.finished_waiting()
+                    field.setFocus()
+                    QTest.keyClick(field, Qt.Key_Direction_L)
+                    for char in "بسم ":
+                        self.app.processEvents()
+                        was_enabled = self.ui.filterButton.isEnabled()
+                        appearance = self.ui.filterButton.grab().toImage()
+                        before = field.cursorRect().x()
+                        if char == " ":
+                            QTest.keyClick(field, Qt.Key_Space)
+                        else:
+                            self.app.sendEvent(field, QKeyEvent(QEvent.KeyPress, Qt.Key_unknown, Qt.NoModifier, char))
+                        self.app.processEvents()
+                        search_id = self.window._active_search_id
+                        if search_id is not None:
+                            with self.subTest(language=action.text(), mode=mode.text(), char=char):
+                                self.assertFalse(self.ui.filterButton.isEnabled())
+                                if was_enabled:
+                                    self.assertEqual(self.ui.filterButton.grab().toImage(), appearance)
+                            if mode is self.ui.topicsRadioButton:
+                                self.window.on_topics_found_complete(field.text(), result, search_id, Mock())
+                            else:
+                                self.window.on_txt_found_complete(field.text(), 1, result, search_id, Mock())
+                        self.app.processEvents()
+                        if char == " ":
+                            self.assertLess(field.cursorRect().x(), before)
+                        self.assertEqual(field.cursorPosition(), len(field.text()))
+                        self.assertTrue(field.hasFocus())
+                    self.assertEqual(field.text(), "بسم ")
+
+    def test_outdated_search_cannot_enable_filter_for_the_current_query(self):
+        self.window.tabs_manager = Mock()
+        result = self.main.FinderResultObject([], 1, 1, 1)
+        with patch.object(self.main, "FinderThread"), patch.object(self.window, "_remove_thread"):
+            self.ui.searchWord.setText("رحمة")
+            previous = self.window._active_search_id
+            self.ui.searchWord.insert("ا")
+            current = self.window._active_search_id
+            self.window.on_txt_found_complete("رحمة", 1, result, previous, Mock())
+            self.assertTrue(self.ui.search_filter.pending)
+            self.assertFalse(self.ui.filterButton.isEnabled())
+            self.window.tabs_manager.on_txt_found_complete.assert_not_called()
+            self.window.on_txt_found_complete(self.ui.searchWord.text(), 1, result, current, Mock())
+            self.assertTrue(self.ui.filterButton.isEnabled())
+            self.ui.searchWord.clear()
+            self.window.on_txt_found_complete("رحمةا", 1, result, current, Mock())
+            self.assertFalse(self.ui.filterButton.isEnabled())
+            self.assertFalse(self.ui.search_filter.pending)
+            self.window.spinner.stop.assert_called()
+
+    def test_filter_becomes_unavailable_for_no_matches_or_multiple_words(self):
+        self.window.tabs_manager = Mock()
+        with patch.object(self.main, "FinderThread"), patch.object(self.window, "_remove_thread"):
+            for query, count, available in (("رحمة", 2, True), ("رحمةا", 0, False),
+                                            ("رحمة الله", 2, False)):
+                self.ui.searchWord.setText(query)
+                result = self.main.FinderResultObject([], count, 1, 1)
+                self.window.on_txt_found_complete(query, len(query.split()), result, self.window._active_search_id, Mock())
+                self.assertEqual(self.ui.filterButton.isEnabled(), available)
+                self.assertFalse(self.ui.filterButton.property("pendingSearch"))
 
 
 if __name__ == "__main__":
