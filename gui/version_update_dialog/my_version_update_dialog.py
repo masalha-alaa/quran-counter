@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 import webbrowser
 from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QShowEvent, QCloseEvent
@@ -9,8 +10,8 @@ class MyVersionUpdateDialog(QDialog, Ui_VersionUpdateDialog):
 
     def __init__(self, language: None | AppLang):
         super(MyVersionUpdateDialog, self).__init__()
-        self.setFixedSize(450, 150)
         self.setupUi(self)
+        prepare_dialog(self, self, "update")
         self.downloadButton.setVisible(False)
         self.version_update_thread = None
         self._current_lang = None
@@ -44,7 +45,7 @@ class MyVersionUpdateDialog(QDialog, Ui_VersionUpdateDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     def translate(self, text):

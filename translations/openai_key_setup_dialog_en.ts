@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ar_EG">
 <context>
-    <name>Dialog</name>
+    <name>OpenAiKeySetupDialog</name>
     <message>
         <location filename="../openai_key_setup_dialog.ui" line="14"/>
         <source>تثبيت المفتاح</source>
@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../openai_key_setup_dialog.ui" line="44"/>
-        <source>يمكنك الحصول على مفتاح من خلال الموقع:</source>
+        <source>يمكن الحصول على مفتاح من خلال الموقع:</source>
         <translation>You can obtain a key from the website:</translation>
     </message>
     <message>

@@ -103,7 +103,8 @@ def _show_dialog(parent, icon, title, msg, fontsize=14, button_txt:str|None=None
     msg_box.setIcon(icon)
     msg_box.setWindowTitle(title)
     msg_box.setText(msg)
-    msg_box.setStyleSheet(f"font-size:{fontsize}pt")
+    from gui.theme import STYLESHEET
+    msg_box.setStyleSheet(STYLESHEET + f"\nQMessageBox QLabel {{ font-size: {fontsize}pt; }}")
     if button_txt is None:
         msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
     else:

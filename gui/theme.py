@@ -1,4 +1,4 @@
-"""Main-window theme, kept in Python so frozen builds need no extra assets."""
+"""Shared desktop theme, kept in Python so frozen builds need no extra assets."""
 
 STYLESHEET = """
 QWidget {
@@ -6,11 +6,15 @@ QWidget {
     font-family: "Segoe UI", "Noto Sans", sans-serif;
     font-size: 11pt;
 }
-QMainWindow, QWidget#centralwidget { background: #15171c; }
+QMainWindow, QDialog, QWidget#centralwidget, QWidget#readerStatistics { background: #15171c; }
 QMessageBox { background: #1d2028; }
 QWidget[arabic="true"] { font-family: "Noto Naskh Arabic"; font-size: 13pt; }
 QLabel, QCheckBox, QRadioButton { background: transparent; }
 QLabel[role="title"] { font-size: 16pt; font-weight: 600; color: #f4f5f9; }
+QLabel[role="dialogTitle"] { font-size: 18pt; font-weight: 600; color: #f4f5f9; }
+QLabel[role="statValue"] { font-size: 18pt; color: #a8c4ff; }
+QFrame[role="panel"] { background: #1d2028; border: 1px solid #343945; border-radius: 10px; }
+QFrame[role="separator"] { background: #343945; border: none; }
 QLabel[role="muted"] { color: #a8b0c1; }
 QLabel[role="statLabel"] { color: #a8b0c1; font-size: 11pt; }
 QLabel[role="section"] { color: #c3ccdd; font-weight: 600; }
@@ -36,6 +40,9 @@ QPushButton, QToolButton {
     color: #e5edff; padding: 7px 12px;
 }
 QPushButton:hover, QToolButton:hover { background: #394b6d; border-color: #a8c4ff; }
+QPushButton[role="primary"] { background: #a8c4ff; color: #182642; font-weight: 600; }
+QPushButton[role="primary"]:hover { background: #c8daff; }
+QPushButton[role="primary"]:disabled { background: #39414e; color: #929caf; }
 QPushButton:pressed, QToolButton:pressed { background: #465f8c; }
 QPushButton:focus, QToolButton:focus { border: 1px solid #c8d8ff; }
 QPushButton:disabled { background: #282d37; border-color: #39414e; color: #929caf; }
@@ -64,12 +71,19 @@ QTabWidget::pane { background: #1d2028; border: 1px solid #343945; border-radius
 QTabBar::tab { background: transparent; color: #b0bdd3; padding: 6px 18px; border-bottom: 3px solid transparent; }
 QTabBar::tab:selected { color: #a8c4ff; border-bottom-color: #a8c4ff; }
 QTabBar::tab:hover { background: #28303f; }
-QTextBrowser, QTableWidget {
+QTextBrowser, QTableWidget, QListWidget {
     background: #191c23; alternate-background-color: #222731; color: #e7eaf1;
     border: none; border-radius: 8px; padding: 10px;
     selection-background-color: #354a72; selection-color: #f2f6ff; gridline-color: #343945;
 }
 QTextBrowser#foundVerses { font-family: "Noto Naskh Arabic"; font-size: 19pt; }
+QTextBrowser[role="quran"] { font-family: "Noto Naskh Arabic"; font-size: 19pt; }
+QLineEdit[role="arabicInput"] { font-family: "Noto Naskh Arabic"; font-size: 15pt; }
+QListWidget::item { padding: 10px; border-radius: 6px; }
+QListWidget::item:selected { background: #354a72; color: #f2f6ff; }
+QProgressBar { border: 1px solid #485162; border-radius: 7px; background: #171a21; text-align: center; min-height: 24px; }
+QProgressBar::chunk { background: #4b628a; border-radius: 6px; }
+QScrollArea { background: transparent; border: none; }
 QLabel#resultsPlaceholder { color: #a8b0c1; font-family: "Noto Naskh Arabic"; font-size: 19pt; background: transparent; }
 QTableWidget::item { padding: 8px; border-bottom: 1px solid #313948; }
 QTableWidget::item:selected { background: #354a72; color: #f2f6ff; }

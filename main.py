@@ -6,7 +6,6 @@ import uuid
 from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QValidator
 from PySide6.QtGui import QCursor
-from PySide6.QtTest import QTest
 from PySide6.QtCore import Qt, QTimer, QTranslator
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QFontDatabase
@@ -214,13 +213,11 @@ class MainWindow(QMainWindow):
 
     def _optional_al_tarif_state_changed(self, state):
         self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _maintain_words_order_state_changed(self, state):
         new_max_words = self._composite_validator.get_max_words() if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Unchecked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER
         self._composite_validator.set_max_words(new_max_words)
         self._finetune_search_text()
-        SharedData.ui.searchWord.setFocus()
 
     def _finetune_search_text(self, max_words:str|int|None='auto'):
         if max_words == 'auto':
@@ -234,19 +231,16 @@ class MainWindow(QMainWindow):
         # ['\u062a', '\u0629'] == ["ت", "ة"]
         if any(word.endswith(('\u062a', '\u0629')) for word in SharedData.search_word.split()):
             self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _ya_alif_maksura_state_changed(self, state):
         # if any(word.endswith(("ي", "يء", "ى", "ىء")) for word in SharedData.search_word.split()):
         #['\u064a', '\u0649'] == ["ي", "ى"]
         if any(ch in ['\u064a', '\u0649'] for ch in SharedData.search_word):
             self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _alif_variations_state_changed(self, state):
         if any((is_alif(ch) or alif_maksura == ch) for ch in SharedData.search_word):
             self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _add_thread(self, thread):
         # MainWindow.RUNNING_THREADS_MUTEX.lock()
@@ -339,7 +333,6 @@ class MainWindow(QMainWindow):
         new_max_words = self._get_max_words_for_search_option()
         self._composite_validator.set_max_words(new_max_words)
         self._finetune_search_text(new_max_words)
-        SharedData.ui.searchWord.setFocus()
 
         self.finished_waiting()
 
@@ -384,7 +377,7 @@ class MainWindow(QMainWindow):
 
     def waiting(self, text="", block_search=True):
         if block_search:
-            SharedData.ui.searchWord.setEnabled(False)
+            SharedData.ui.searchWord.setReadOnly(True)
         SharedData.ui.similarityThresholdSlider.setEnabled(False)
         SharedData.ui.relatedWordsThresholdSlider.setEnabled(False)
         self.spinner.setText(text)
@@ -392,39 +385,9 @@ class MainWindow(QMainWindow):
 
     def finished_waiting(self):
         self.spinner.stop()
-        if not SharedData.ui.searchWord.isEnabled():
-            SharedData.ui.searchWord.setEnabled(True)
+        SharedData.ui.searchWord.setReadOnly(False)
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
         SharedData.ui.relatedWordsThresholdSlider.setEnabled(SharedData.ui.relatedWordsRadioButton.isChecked())
-        if SharedData.ui.similarityThresholdSlider.isEnabled():
-            # a trick to restore the blue color on the slider handle (setFocus() didn't work)
-            self._simulate_click_on_slider_handle(SharedData.ui.similarityThresholdSlider)
-        if SharedData.ui.relatedWordsThresholdSlider.isEnabled():
-            # a trick to restore the blue color on the slider handle (setFocus() didn't work)
-            self._simulate_click_on_slider_handle(SharedData.ui.relatedWordsThresholdSlider)
-        SharedData.ui.searchWord.setFocus()
-
-    def _simulate_click_on_slider_handle(self, slider):
-        # Get the slider handle position based on its current value
-        handle_pos = slider.rect().center()  # Default to center if no other method is available
-
-        # For horizontal sliders
-        if slider.orientation() == Qt.Orientation.Horizontal:
-            # Map the value to the x-coordinate of the handle within the slider's range
-            handle_x = int((slider.value() - slider.minimum()) / (slider.maximum() - slider.minimum()) * slider.width())
-            handle_pos = slider.mapToGlobal(slider.rect().topLeft()) + slider.rect().topLeft()
-            handle_pos.setX(handle_x)
-
-        # For vertical sliders
-        elif slider.orientation() == Qt.Orientation.Vertical:
-            # Map the value to the y-coordinate of the handle within the slider's range
-            handle_y = int(
-                (slider.value() - slider.minimum()) / (slider.maximum() - slider.minimum()) * slider.height())
-            handle_pos = slider.mapToGlobal(slider.rect().topLeft()) + slider.rect().topLeft()
-            handle_pos.setY(handle_y)
-
-        # Simulate the click at the handle position
-        QTest.mouseClick(slider, Qt.MouseButton.LeftButton, pos=handle_pos)
 
     def _search_options_radio_buttons_changed(self, button, is_checked: bool):
         if button == SharedData.ui.rootRadioButton:
@@ -503,7 +466,6 @@ class MainWindow(QMainWindow):
         new_max_words = self._get_max_words_for_search_option()
         self._composite_validator.set_max_words(new_max_words)
         self._finetune_search_text(new_max_words)
-        SharedData.ui.searchWord.setFocus()
 
 
     def _similarity_threshold_changed(self, value):

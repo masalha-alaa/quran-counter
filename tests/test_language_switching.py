@@ -7,11 +7,12 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
 from PySide6.QtCore import QEvent, QSignalBlocker, QTranslator, Qt
+from PySide6.QtTest import QSignalSpy, QTest
 from PySide6.QtWidgets import QApplication, QMainWindow
 
 
@@ -129,6 +130,57 @@ class LanguageSwitchingTest(unittest.TestCase):
             for checkbox in self.ui.refinements:
                 self.assertTrue(checkbox.isEnabled())
                 self.assertTrue(checkbox.isVisible())
+
+    def test_mouse_mode_switches_preserve_query_focus_and_geometry(self):
+        self.window._composite_validator = self.main.CompositeValidator(None)
+        self.window._regex_validator = self.main.ArabicWithRegexValidator()
+        self.window.tabs_manager = Mock()
+        with patch.object(self.window, "_finetune_search_text"), \
+                patch("worker_threads.my_topic_finder_thread.TopicFinderThread") as worker:
+            worker.return_value.is_model_initialized.return_value = True
+            for action in (self.ui.arabicLangButton, self.ui.englishLangButton):
+                action.trigger()
+                for size in ((1220, 860), (940, 640)):
+                    self.window.resize(*size)
+                    self.ui.searchWord.setFocus()
+                    self.app.processEvents()
+                    geometry = self.ui.searchWord.geometry()
+                    changes = QSignalSpy(self.app.focusChanged)
+                    for button in self.ui.mode_buttons:
+                        self.ui.sidebar.ensureWidgetVisible(button)
+                        QTest.mouseClick(button, Qt.LeftButton)
+                        self.app.processEvents()
+                        with self.subTest(mode=button.text(), size=size):
+                            self.assertTrue(button.isChecked())
+                            self.assertTrue(self.ui.searchWord.hasFocus())
+                            self.assertEqual(changes.count(), 0)
+                            self.assertEqual(self.ui.searchWord.geometry(), geometry)
+
+    def test_keyboard_mode_selection_keeps_keyboard_focus(self):
+        self.window._composite_validator = self.main.CompositeValidator(None)
+        with patch.object(self.window, "_finetune_search_text"):
+            self.ui.fullWordRadioButton.setFocus()
+            QTest.keyClick(self.ui.fullWordRadioButton, Qt.Key_Space)
+            self.assertTrue(self.ui.fullWordRadioButton.isChecked())
+            self.assertTrue(self.ui.fullWordRadioButton.hasFocus())
+
+    def test_waiting_locks_text_without_focus_flashes_or_slider_clicks(self):
+        self.window.spinner = Mock()
+        self.ui.searchWord.setFocus()
+        self.app.processEvents()
+        focus = QSignalSpy(self.app.focusChanged)
+        changed = QSignalSpy(self.ui.searchWord.textChanged)
+        slider = QSignalSpy(self.ui.similarityThresholdSlider.sliderPressed)
+        self.window.waiting("Working")
+        QTest.keyClicks(self.ui.searchWord, "123")
+        self.assertTrue(self.ui.searchWord.isReadOnly())
+        self.assertTrue(self.ui.searchWord.isEnabled())
+        self.assertEqual(changed.count(), 0)
+        self.window.finished_waiting()
+        self.assertFalse(self.ui.searchWord.isReadOnly())
+        self.assertTrue(self.ui.searchWord.hasFocus())
+        self.assertEqual(focus.count(), 0)
+        self.assertEqual(slider.count(), 0)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QShowEvent
 from PySide6.QtCore import Signal
@@ -12,6 +13,7 @@ class MyWaitingDialog(QDialog, Ui_WaitingDialog):
     def __init__(self, language: None | AppLang):
         super(MyWaitingDialog, self).__init__()
         self.setupUi(self)
+        prepare_dialog(self, self, "waiting")
         self._current_lang = None
         self._apply_language(language)
         self.spinner = SpinningLoader()
@@ -23,7 +25,7 @@ class MyWaitingDialog(QDialog, Ui_WaitingDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     def showEvent(self, event: QShowEvent):

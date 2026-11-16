@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 from PySide6.QtWidgets import QDialog, QLabel
 from PySide6.QtGui import QShowEvent, QPixmap
 from PySide6.QtCore import Signal, Slot, QTimer
@@ -15,6 +16,7 @@ class MyOpenAiKeySetupDialog(QDialog, Ui_OpenAiKeySetupDialog):
     def __init__(self, language: None | AppLang):
         super(MyOpenAiKeySetupDialog, self).__init__()
         self.setupUi(self)
+        prepare_dialog(self, self, "key")
         self.enterKeyLineEdit.setValidator(OpenAiKeyValidator())
         self._current_lang = None
         self._apply_language(language)
@@ -42,7 +44,7 @@ class MyOpenAiKeySetupDialog(QDialog, Ui_OpenAiKeySetupDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     def _setup_events(self):

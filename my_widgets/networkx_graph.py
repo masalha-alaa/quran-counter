@@ -114,24 +114,24 @@ class NetworkXGraph(QWidget):
 
         nx.draw_networkx_edges(self.graph, pos, ax=self.ax,
                                arrows=False,
-                               edge_color="gray",
+                               edge_color="#62708b",
                                alpha=edges_alpha,
                                hide_ticks=False)
         nx.draw_networkx_nodes(self.graph, pos, ax=self.ax,
                                nodelist=other_nodes,
-                               node_color='#0066BE',
+                               node_color='#354a72',
                                node_size=2200,
                                hide_ticks=False)
         nx.draw_networkx_nodes(self.graph, pos, ax=self.ax,
                                nodelist=outline_nodes,
-                               node_color='#0066BE',
-                               edgecolors='#0086DE',
+                               node_color='#354a72',
+                               edgecolors='#a8c4ff',
                                linewidths=2,
                                node_size=2200,
                                hide_ticks=False)
         nx.draw_networkx_nodes(self.graph, pos, ax=self.ax,
                                nodelist=leaf_nodes,
-                               node_color='#0066BE',
+                               node_color='#354a72',
                                alpha=0.5 * show_leafs,  # transparent leafs if not show leafs
                                node_size=1500,
                                hide_ticks=False)
@@ -149,11 +149,11 @@ class NetworkXGraph(QWidget):
                 label = self._break_label(node)
                 label = self.fix_arabic(label)
             self.ax.text(x, y, label, fontsize=12, fontweight=font_weight,
-                             ha='center', va='center', color='orange')
+                             ha='center', va='center', color='#e7eaf1')
 
         self.ax.text(-0.15, 0,
                      "Data from http://corpus.quran.com",
-                     fontstyle='italic',
+                     fontstyle='italic', color='#a8b0c1',
                      transform=self.ax.transAxes)
 
         # Layout

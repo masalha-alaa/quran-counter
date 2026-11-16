@@ -8,12 +8,12 @@ API, including their validators, signals, defaults and custom result widgets.
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QIcon, QKeySequence, QPalette, QShortcut
 from PySide6.QtWidgets import (
-    QFrame, QHBoxLayout, QLabel, QScrollArea, QSizePolicy, QTabWidget,
+    QFrame, QGridLayout, QHBoxLayout, QLabel, QScrollArea, QSizePolicy, QTabWidget,
     QToolButton, QVBoxLayout, QWidget,
 )
 
 from gui.main_window.main_screen import Ui_MainWindow as DesignerUi
-from gui.main_window.theme import STYLESHEET
+from gui.theme import STYLESHEET
 from gui.main_window.results_placeholder import ResultsPlaceholder
 from my_utils.my_enums import AppLang
 
@@ -52,8 +52,10 @@ class Ui_MainWindow(DesignerUi):
         self.sidebar = QScrollArea()
         self.sidebar.setObjectName("searchSidebar")
         self.sidebar.setWidgetResizable(True)
-        self.sidebar.setMinimumWidth(250)
-        self.sidebar.setMaximumWidth(310)
+        # A scroll area's StrongFocus otherwise steals focus from mouse clicks
+        # on its TabFocus-only radio buttons.
+        self.sidebar.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.sidebar.setFixedWidth(250)
         self.sidebar.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         modes = QWidget()
         modes.setObjectName("searchModes")
@@ -71,6 +73,9 @@ class Ui_MainWindow(DesignerUi):
             self.regexRadioButton,
         ]
         for button in self.mode_buttons:
+            # Mouse selection keeps the query focused; Tab/Space still support
+            # keyboard navigation through the modes.
+            button.setFocusPolicy(Qt.FocusPolicy.TabFocus)
             button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
             modes_layout.addWidget(button)
             if button is self.similarWordRadioButton:
@@ -83,7 +88,7 @@ class Ui_MainWindow(DesignerUi):
         self.matching_options = QFrame()
         self.matching_options.setObjectName("matchingOptions")
         matching_layout = QHBoxLayout(self.matching_options)
-        matching_layout.setContentsMargins(4, 0, 4, 0)
+        matching_layout.setContentsMargins(0, 0, 0, 0)
         matching_layout.setSpacing(12)
         self.refinements_title = self._label("muted")
         matching_layout.addWidget(self.refinements_title)
@@ -91,29 +96,33 @@ class Ui_MainWindow(DesignerUi):
                             self.finalTaCheckbox, self.wordPermutationsCheckbox,
                             self.optionalAlTarifCheckbox)
         for checkbox in self.refinements:
+            checkbox.setFocusPolicy(Qt.FocusPolicy.TabFocus)
             matching_layout.addWidget(checkbox)
             checkbox.toggled.connect(self._update_options_summary)
         matching_layout.addStretch()
 
         content = QVBoxLayout()
         content.setSpacing(6)
-        search_row = QHBoxLayout()
-        search_row.setSpacing(10)
+        search_grid = QGridLayout()
+        search_grid.setHorizontalSpacing(20)
+        search_grid.setVerticalSpacing(8)
+        search_grid.setColumnStretch(1, 1)
         self.label.setBuddy(self.searchWord)
         self.label.hide()
         self.label.setParent(self.centralwidget)
         self.searchWord.setClearButtonEnabled(True)
         self.searchWord.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
         self.searchWord.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignAbsolute)
-        search_row.addWidget(self.searchWord, 1)
+        search_grid.addWidget(self.searchWord, 0, 1)
         self.options_button = QToolButton()
         self.options_button.setObjectName("optionsButton")
         self.options_button.setCheckable(True)
+        self.options_button.setFixedWidth(250)
         self.options_button.toggled.connect(self._toggle_options)
         self.searchOptionsButtonGroup.buttonToggled.connect(self._update_options_summary)
-        search_row.insertWidget(0, self.options_button)
-        root.addLayout(search_row)
-        root.addWidget(self.matching_options)
+        search_grid.addWidget(self.options_button, 0, 0)
+        search_grid.addWidget(self.matching_options, 1, 1)
+        root.addLayout(search_grid)
 
         self.result_summary = QFrame()
         self.result_summary.setObjectName("resultSummary")
@@ -226,13 +235,14 @@ class Ui_MainWindow(DesignerUi):
         count = sum(checkbox.isChecked() for checkbox in self.refinements)
         label = "خيارات البحث" if arabic else "Search options"
         suffix = f" (+{count})" if count else ""
-        self.options_button.setText(f"{label} · {mode}{suffix}")
-        self.options_button.setAccessibleName(self.options_button.text())
+        self.options_button.setText(label)
+        self.options_button.setAccessibleName(f"{label} · {mode}{suffix}")
         self.options_button.setToolTip(
             ("إخفاء خيارات البحث" if arabic else "Hide search options")
             if self.options_button.isChecked() else
             ("إظهار خيارات البحث" if arabic else "Show search options")
         )
+        self.options_button.setToolTip(f"{self.options_button.toolTip()}\n{mode}{suffix}")
 
     @staticmethod
     def _size_count(field):

@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 from PySide6.QtWidgets import QApplication
 from datetime import datetime
 from PySide6.QtWidgets import QDialog
@@ -25,6 +26,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
     def __init__(self, language: None | AppLang):
         super(MyDownloadDialog, self).__init__()
         self.setupUi(self)
+        prepare_dialog(self, self, "download")
         self._current_lang = None
         self._apply_language(language)
         self.model_downloader = ModelDownloader()
@@ -59,7 +61,7 @@ class MyDownloadDialog(QDialog, Ui_DownloadDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     def _setup_events(self):

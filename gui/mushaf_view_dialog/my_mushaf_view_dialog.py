@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 import re
 from json import load
 from datetime import datetime
@@ -68,6 +69,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def __init__(self, language: None | AppLang):
         super(MyMushafViewDialog, self).__init__()
         self.setupUi(self)
+        prepare_dialog(self, self, "mushaf")
         self.setWindowFlags(self.windowFlags() |
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
@@ -126,7 +128,7 @@ class MyMushafViewDialog(QDialog, Ui_MushafViewDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     def showEvent(self, event: QShowEvent):

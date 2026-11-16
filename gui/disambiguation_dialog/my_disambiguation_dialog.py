@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QShowEvent
 from PySide6.QtCore import Signal, Slot, QThread
@@ -13,6 +14,7 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
     def __init__(self, disambiguator, language: None | AppLang):
         super(MyDidsambiguationDialog, self).__init__()
         self.setupUi(self)
+        prepare_dialog(self, self, "disambiguation")
         self._current_lang = None
         self._apply_language(language)
         self.spinner = SpinningLoader()
@@ -28,7 +30,7 @@ class MyDidsambiguationDialog(QDialog, Ui_DidsambiguationDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     def set_data(self, word):
