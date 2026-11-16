@@ -32,29 +32,40 @@ FORMS = {
 }
 
 
-def create_dialog(kind):
+def create_dialog(kind, *, original=False):
     module, name, _ = FORMS[kind]
     dialog = QDialog()
     ui = getattr(import_module(f"gui.{module}"), name)()
     ui.setupUi(dialog)
-    prepare_dialog(dialog, ui, kind)
+    if not original:
+        prepare_dialog(dialog, ui, kind)
     return dialog, ui
 
 
 def sample_content(kind, ui, language):
     """Preview-only samples; never used by production controllers."""
     arabic = language == AppLang.ARABIC
-    if kind in ("mushaf", "details"):
+    if kind == "details":
         ui.textBrowser.setHtml('<p dir="rtl" align="right">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>')
     if kind == "mushaf":
-        ui.pageInput.setText("1")
-        ui.surahNumInput.setText("1")
-        ui.verseInput.setText("1")
-        ui.verseInput_2.setText("1")
-        ui.surahNameInput.setText("الفاتحة")
-        for name, value in (("pageNumDisplay", "1"), ("surahNumDisplay", "1"),
-                            ("surahNameDisplay", "الفاتحة"), ("versesCountDisplay", "7"),
-                            ("juzzNumDisplay", "1")):
+        # The same centered first-page fixture is used for original/restored
+        # comparisons. This is visual sample content, not a data-backed search.
+        verses = (
+            "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+            "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+            "الرَّحْمَٰنِ الرَّحِيمِ",
+            "مَالِكِ يَوْمِ الدِّينِ",
+            "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+            "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+            "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+        )
+        ui.textBrowser.setAlignment(Qt.AlignCenter)
+        ui.textBrowser.insertHtml('<h3 style="text-align:center">الفاتحة</h3><br>')
+        ui.textBrowser.setAlignment(Qt.AlignCenter)
+        ui.textBrowser.insertHtml("<br>".join(f"{verse} ({index})" for index, verse in enumerate(verses, 1)))
+        for name, value in (("pageNumDisplay", "صفحة 1"), ("surahNumDisplay", "رقم: 1"),
+                            ("surahNameDisplay", "الفاتحة"), ("versesCountDisplay", "آيات: 7"),
+                            ("juzzNumDisplay", "جزء 1")):
             getattr(ui, name).setText(value)
     elif kind == "relations":
         import networkx as nx
@@ -87,6 +98,7 @@ def sample_content(kind, ui, language):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=Path("docs/ui/dialogs"))
+    parser.add_argument("--screen", choices=("all", *FORMS), default="all")
     args = parser.parse_args()
     output = args.output_dir.resolve()
     os.chdir(ROOT)
@@ -97,6 +109,8 @@ def main():
         subprocess.run([sys.executable, "tools/compile_translations.py", "--output-dir", temporary], check=True, capture_output=True)
         for language in (AppLang.ARABIC, AppLang.ENGLISH):
             for kind, (_, _, catalog) in FORMS.items():
+                if args.screen not in ("all", kind):
+                    continue
                 translator = QTranslator()
                 if not translator.load(str(Path(temporary) / f"{catalog}_{language.value}.qm")):
                     raise RuntimeError(f"Missing translation: {catalog}")
@@ -104,6 +118,8 @@ def main():
                 dialog, ui = create_dialog(kind)
                 set_dialog_language(dialog, language)
                 sample_content(kind, ui, language)
+                if kind == "mushaf":
+                    dialog.resize(1920, 1110)
                 dialog.show()
                 app.processEvents()
                 def capture(name):
@@ -112,12 +128,19 @@ def main():
                         raise RuntimeError(f"Could not save {path}")
                 capture(kind)
                 if kind == "mushaf":
-                    ui.selection_toggle.click()
+                    ui.stats_toggle.click()
                     app.processEvents()
-                    capture("mushaf-selection")
-                    ui.reader_tabs.setCurrentIndex(1)
+                    capture("mushaf-collapsed")
+                    original, original_ui = create_dialog("mushaf", original=True)
+                    sample_content("mushaf", original_ui, language)
+                    original.resize(1920, 1110)
+                    original.show()
                     app.processEvents()
-                    capture("mushaf-statistics")
+                    path = output / f"mushaf-original-{language.value}.png"
+                    if not original.grab().save(str(path)):
+                        raise RuntimeError(f"Could not save {path}")
+                    original.close()
+                    original.deleteLater()
                 if kind == "relations":
                     from matplotlib import pyplot as plt
                     plt.close(ui.graphWidget.figure)

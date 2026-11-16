@@ -6,7 +6,7 @@ QWidget {
     font-family: "Segoe UI", "Noto Sans", sans-serif;
     font-size: 11pt;
 }
-QMainWindow, QDialog, QWidget#centralwidget, QWidget#readerStatistics { background: #15171c; }
+QMainWindow, QDialog, QWidget#centralwidget { background: #15171c; }
 QMessageBox { background: #1d2028; }
 QWidget[arabic="true"] { font-family: "Noto Naskh Arabic"; font-size: 13pt; }
 QLabel, QCheckBox, QRadioButton { background: transparent; }
