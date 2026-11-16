@@ -1,7 +1,6 @@
 """Theme the original Mushaf form without moving or mirroring its controls."""
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QFrame, QToolButton, QWidget
+from PySide6.QtWidgets import QFrame, QWidget
 
 from gui.theme import STYLESHEET
 
@@ -27,7 +26,6 @@ QDialog#MushafViewDialog QTextBrowser,
 QDialog#MushafViewDialog QTableWidget { padding: 0; }
 QDialog#MushafViewDialog QHeaderView::section { padding: 4px; }
 QDialog#MushafViewDialog QTableWidget::item { padding: 0; }
-QToolButton#statsToggle { padding: 0; border-radius: 5px; }
 """
 
 
@@ -41,30 +39,3 @@ def style_mushaf(dialog, ui):
     for frame in (ui.frame_2, ui.frame_4, ui.frame, ui.exclusiveWordsFrame, ui.frame_3):
         frame.setProperty("role", "panel")
     dialog.setStyleSheet(MUSHAF_STYLESHEET)
-
-    # The sole addition to the existing layout: a small icon in the page bar.
-    # It remains accessible while the stats frame is hidden. The histogram is
-    # a separate sibling in the original form and is never hidden or moved.
-    ui.stats_toggle = QToolButton(ui.frame_4)
-    ui.stats_toggle.setObjectName("statsToggle")
-    ui.stats_toggle.setFixedSize(24, 24)
-    ui.stats_toggle.setCheckable(True)
-    ui.stats_toggle.setChecked(True)
-    ui.stats_toggle.setToolButtonStyle(Qt.ToolButtonIconOnly)
-    ui.horizontalLayout_2.addWidget(ui.stats_toggle)
-
-    def toggle(expanded):
-        ui.frame.setVisible(expanded)
-        update_stats_toggle(ui, bool(dialog.property("arabic")))
-
-    ui.stats_toggle.toggled.connect(toggle)
-
-
-def update_stats_toggle(ui, arabic):
-    expanded = ui.stats_toggle.isChecked()
-    ui.stats_toggle.setArrowType(Qt.UpArrow if expanded else Qt.DownArrow)
-    text = ("إخفاء الإحصاءات" if expanded else "إظهار الإحصاءات") if arabic else (
-        "Collapse statistics" if expanded else "Expand statistics"
-    )
-    ui.stats_toggle.setToolTip(text)
-    ui.stats_toggle.setAccessibleName(text)

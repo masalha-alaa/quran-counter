@@ -7,7 +7,6 @@ These images capture the actual Qt presentation layers in Arabic and English. Th
 | Main search | [Preview](arabic.png) | [Preview](english.png) |
 | Original Quran reader (comparison) | [Preview](dialogs/mushaf-original-ar.png) | [Preview](dialogs/mushaf-original-en.png) |
 | Restored Quran reader, new theme | [Preview](dialogs/mushaf-ar.png) | [Preview](dialogs/mushaf-en.png) |
-| Reader with statistics collapsed | [Preview](dialogs/mushaf-collapsed-ar.png) | [Preview](dialogs/mushaf-collapsed-en.png) |
 | Detailed results | [Preview](dialogs/details-ar.png) | [Preview](dialogs/details-en.png) |
 | Relations graph | [Preview](dialogs/relations-ar.png) | [Preview](dialogs/relations-en.png) |
 | Assistant key setup | [Preview](dialogs/key-ar.png) | [Preview](dialogs/key-en.png) |
@@ -16,7 +15,7 @@ These images capture the actual Qt presentation layers in Arabic and English. Th
 | Update checking | [Preview](dialogs/update-ar.png) | [Preview](dialogs/update-en.png) |
 | Waiting | [Preview](dialogs/waiting-ar.png) | [Preview](dialogs/waiting-en.png) |
 
-The original and restored reader captures use the same 1920 × 1110 window and sample page. Selection tools, navigation, page controls, statistics, and the histogram retain their original positions. Only the new theme and a small statistics toggle differ; collapsing statistics leaves the histogram visible.
+The original and restored reader captures use the same 1920 × 1110 window and sample page. Selection tools, navigation, page controls, statistics, and the histogram retain their original positions. Only the theme differs; statistics and the histogram are always visible.
 
 Regenerate from the repository root:
 

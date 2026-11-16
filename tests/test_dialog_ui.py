@@ -80,8 +80,6 @@ class DialogUiTest(unittest.TestCase):
             items = []
             for index in range(layout.count()):
                 item = layout.itemAt(index)
-                if item.widget() and item.widget().objectName() == "statsToggle":
-                    continue
                 if item.widget():
                     value = ("widget", item.widget().objectName())
                 elif item.layout():
@@ -131,15 +129,13 @@ class DialogUiTest(unittest.TestCase):
                     self.assertTrue(ui.selectionStartButton.isVisible())
                     self.assertTrue(ui.selectionEndButton.isVisible())
 
-    def test_mushaf_stats_toggle_leaves_histogram_and_selection_in_place(self):
+    def test_mushaf_keeps_stats_visible_and_original_controls_usable(self):
         dialog, ui = self.create("mushaf")
         dialog.resize(1920, 1110)
         dialog.show()
         self.app.processEvents()
         self.assertTrue(ui.frame.isVisible())
-        self.assertTrue(ui.stats_toggle.isChecked())
-        self.assertEqual(ui.stats_toggle.text(), "")
-        self.assertLessEqual(ui.stats_toggle.width(), 24)
+        self.assertFalse(hasattr(ui, "stats_toggle"))
         navigation = QSignalSpy(ui.goToPageButton.clicked)
         ui.pageInput.setText("23")
         ui.goToPageButton.click()
@@ -149,32 +145,26 @@ class DialogUiTest(unittest.TestCase):
         cursor.select(cursor.SelectionType.Document)
         ui.textBrowser.setTextCursor(cursor)
         selected = cursor.selectedText()
-        height = ui.textBrowser.height()
         histogram_rect = ui.lettersHistogram.geometry()
         ui.differentRootCheckBox.click()
-        ui.stats_toggle.click()
         self.app.processEvents()
-        self.assertFalse(ui.frame.isVisible())
+        self.assertTrue(ui.frame.isVisible())
         self.assertTrue(ui.lettersHistogram.isVisible())
         self.assertTrue(ui.lettersSumTableWidget.isVisible())
         self.assertTrue(ui.frame_2.isVisible())
         self.assertEqual(ui.lettersHistogram.geometry(), histogram_rect)
-        self.assertGreater(ui.textBrowser.height(), height)
         self.assertEqual(ui.textBrowser.textCursor().selectedText(), selected)
         selection = QSignalSpy(ui.selectionStartButton.clicked)
         ui.selectionStartButton.click()
         self.assertEqual(selection.count(), 1)
         self.language("mushaf", dialog, ui, AppLang.ENGLISH)
-        self.assertEqual(ui.stats_toggle.toolTip(), "Expand statistics")
-        self.assertFalse(ui.frame.isVisible())
+        self.assertTrue(ui.frame.isVisible())
         self.assertEqual(ui.pageInput.text(), "23")
-        ui.stats_toggle.click()
         self.app.processEvents()
         self.assertTrue(ui.frame.isVisible())
         self.assertTrue(ui.differentRootCheckBox.isChecked())
         self.assertEqual(ui.textBrowser.toPlainText(), "نص للاختبار")
         self.assertEqual(ui.lettersHistogram.geometry(), histogram_rect)
-        self.assertEqual(ui.stats_toggle.toolTip(), "Collapse statistics")
 
     def test_detail_content_survives_language_and_close_works(self):
         dialog, ui = self.create("details")

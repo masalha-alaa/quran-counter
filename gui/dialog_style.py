@@ -113,9 +113,6 @@ def set_dialog_language(dialog, language):
         dialog._modern_title.setText(dialog.windowTitle())
     if hasattr(dialog, "_modern_close"):
         dialog._modern_close.setText("إغلاق" if arabic else "Close")
-    if is_mushaf:
-        from gui.mushaf_view_dialog.presentation import update_stats_toggle
-        update_stats_toggle(dialog._modern_ui, arabic)
     for widget in [dialog, *dialog.findChildren(QWidget)]:
         widget.setProperty("arabic", arabic)
         widget.style().unpolish(widget)

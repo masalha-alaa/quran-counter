@@ -128,9 +128,6 @@ def main():
                         raise RuntimeError(f"Could not save {path}")
                 capture(kind)
                 if kind == "mushaf":
-                    ui.stats_toggle.click()
-                    app.processEvents()
-                    capture("mushaf-collapsed")
                     original, original_ui = create_dialog("mushaf", original=True)
                     sample_content("mushaf", original_ui, language)
                     original.resize(1920, 1110)
