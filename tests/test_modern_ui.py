@@ -125,9 +125,9 @@ class ModernUiTest(unittest.TestCase):
                     self.assertTrue(self.window.rect().contains(bottom_right))
             self.ui.options_button.setChecked(True)
             self.app.processEvents()
-            self.ui.sidebar.ensureWidgetVisible(self.ui.optionalAlTarifCheckbox)
+            self.ui.sidebar.ensureWidgetVisible(self.ui.regexRadioButton)
             self.app.processEvents()
-            center = self.ui.optionalAlTarifCheckbox.mapTo(self.ui.sidebar.viewport(), self.ui.optionalAlTarifCheckbox.rect().center())
+            center = self.ui.regexRadioButton.mapTo(self.ui.sidebar.viewport(), self.ui.regexRadioButton.rect().center())
             self.assertTrue(self.ui.sidebar.viewport().rect().contains(center))
             self.ui.options_button.setChecked(False)
 
@@ -138,17 +138,67 @@ class ModernUiTest(unittest.TestCase):
             self.window.resize(1220, 860)
             self.app.processEvents()
             with self.subTest(language=language):
+                self.assertTrue(self.ui.sidebar.isVisible())
+                self.assertTrue(self.ui.options_button.isChecked())
+                self.assertGreater(self.ui.foundVerses.width(), self.window.width() * 0.70)
+                self.assertGreater(self.ui.foundVerses.height(), self.window.height() * 0.55)
+                self.ui.options_button.setChecked(False)
+                self.app.processEvents()
                 self.assertFalse(self.ui.sidebar.isVisible())
                 self.assertGreater(self.ui.foundVerses.width(), self.window.width() * 0.95)
-                self.assertGreater(self.ui.foundVerses.height(), self.window.height() * 0.60)
+                self.ui.options_button.setChecked(True)
+
+    def test_query_is_physically_right_aligned_in_both_languages(self):
+        for language in (AppLang.ARABIC, AppLang.ENGLISH):
+            if language == AppLang.ENGLISH:
+                self.english()
+            for query in ("الرحمة", "123", "^الله$"):
+                self.ui.searchWord.setText(query)
+                self.ui.searchWord.setCursorPosition(len(query))
+                self.app.processEvents()
+                with self.subTest(language=language, query=query):
+                    self.assertGreater(self.ui.searchWord.cursorRect().left(), self.ui.searchWord.width() * 0.65)
+                    self.assertTrue(self.ui.searchWord.alignment() & Qt.AlignAbsolute)
+
+    def test_matching_options_stay_next_to_query_and_remain_visible(self):
+        for language in (AppLang.ARABIC, AppLang.ENGLISH):
+            if language == AppLang.ENGLISH:
+                self.english()
+            self.window.resize(940, 640)
+            self.app.processEvents()
+            query_bottom = self.ui.searchWord.mapTo(self.window, self.ui.searchWord.rect().bottomLeft()).y()
+            for checkbox in self.ui.refinements:
+                self.assertTrue(checkbox.isVisible())
+                top = checkbox.mapTo(self.window, checkbox.rect().topLeft()).y()
+                self.assertGreater(top, query_bottom)
+                self.assertLess(top - query_bottom, 35)
+            self.ui.options_button.setChecked(False)
+            self.assertTrue(self.ui.matching_options.isVisible())
+            self.ui.options_button.setChecked(True)
+
+    def test_results_hint_is_right_aligned_and_never_becomes_result_content(self):
+        label = self.ui.results_placeholder.label
+        self.assertTrue(label.isVisible())
+        self.assertTrue(label.alignment() & Qt.AlignRight)
+        self.assertTrue(label.alignment() & Qt.AlignAbsolute)
+        self.assertTrue(label.testAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents))
+        self.assertTrue(self.ui.foundVerses.document().isEmpty())
+        self.ui.foundVerses.setPlainText("نتيجة تجريبية")
+        self.assertFalse(label.isVisible())
+        self.english()
+        self.assertFalse(label.isVisible())
+        self.assertEqual(self.ui.foundVerses.toPlainText(), "نتيجة تجريبية")
+        self.ui.foundVerses.clear()
+        self.assertTrue(label.isVisible())
+        self.window.resize(940, 640)
+        self.app.processEvents()
+        self.assertTrue(self.ui.foundVerses.viewport().rect().contains(label.geometry()))
 
     def test_options_panel_preserves_search_and_results(self):
         self.ui.searchWord.setText("الرحمة")
         self.ui.foundVerses.setPlainText("نتيجة تجريبية")
         self.ui.matchesNumber.setText("1234567")
         query_changes = QSignalSpy(self.ui.searchWord.textChanged)
-        QTest.mouseClick(self.ui.options_button, Qt.MouseButton.LeftButton)
-        self.app.processEvents()
         self.assertTrue(self.ui.sidebar.isVisible())
         self.ui.fullWordRadioButton.click()
         self.ui.optionalAlTarifCheckbox.click()

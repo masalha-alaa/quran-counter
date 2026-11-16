@@ -7,6 +7,7 @@ QWidget {
     font-size: 11pt;
 }
 QMainWindow, QWidget#centralwidget { background: #15171c; }
+QMessageBox { background: #1d2028; }
 QWidget[arabic="true"] { font-family: "Noto Naskh Arabic"; font-size: 13pt; }
 QLabel, QCheckBox, QRadioButton { background: transparent; }
 QLabel[role="title"] { font-size: 16pt; font-weight: 600; color: #f4f5f9; }
@@ -69,6 +70,7 @@ QTextBrowser, QTableWidget {
     selection-background-color: #354a72; selection-color: #f2f6ff; gridline-color: #343945;
 }
 QTextBrowser#foundVerses { font-family: "Noto Naskh Arabic"; font-size: 19pt; }
+QLabel#resultsPlaceholder { color: #a8b0c1; font-family: "Noto Naskh Arabic"; font-size: 19pt; background: transparent; }
 QTableWidget::item { padding: 8px; border-bottom: 1px solid #313948; }
 QTableWidget::item:selected { background: #354a72; color: #f2f6ff; }
 QHeaderView { background: #2b3342; }

@@ -7,8 +7,8 @@ from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QValidator
 from PySide6.QtGui import QCursor
 from PySide6.QtTest import QTest
-from PySide6.QtCore import Qt, QTimer
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtCore import Qt, QTimer, QTranslator
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QFontDatabase
 
 from my_utils.my_data_loader import MyDataLoader
@@ -85,17 +85,36 @@ class MainWindow(QMainWindow):
         # SharedData.ui.topicsRadioButton.setEnabled(False)  # TODO: Remove
 
     def _apply_language(self, lang):
-        if lang != SharedData.app_language and \
-                load_translation(SharedData.translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and \
-                load_translation(SharedData.ar_to_en_dynamic_translator, resource_path(f"translations/dynamic_translations_ar_src_{lang.value}.qm")) and \
-                load_translation(SharedData.en_to_ar_dynamic_translator, resource_path(f"translations/dynamic_translations_en_src_{lang.value}.qm")):
-            app.installTranslator(SharedData.translator)
-            app.installTranslator(SharedData.ar_to_en_dynamic_translator)
-            app.installTranslator(SharedData.en_to_ar_dynamic_translator)
-            SharedData.ui.retranslateUi(self)
-            self.tabs_manager.retranslate_ui()
-            self.set_font_for_language(lang)
-            SharedData.app_language = lang
+        if lang == SharedData.app_language:
+            return
+
+        # Load a complete set before replacing any installed translator. A
+        # missing catalog must not leave the application half-translated.
+        translations = []
+        for attribute, catalog in (
+            ("translator", "main_screen"),
+            ("ar_to_en_dynamic_translator", "dynamic_translations_ar_src"),
+            ("en_to_ar_dynamic_translator", "dynamic_translations_en_src"),
+        ):
+            translator = QTranslator()
+            if not load_translation(translator, resource_path(f"translations/{catalog}_{lang.value}.qm")):
+                QMessageBox.warning(
+                    self, "Language / اللغة",
+                    "Translation files are missing or unreadable. Rebuild or reinstall the application.\n\n"
+                    "ملفات الترجمة مفقودة أو غير قابلة للقراءة. أعد بناء التطبيق أو تثبيته.",
+                )
+                return
+            translations.append((attribute, translator))
+
+        application = QApplication.instance()
+        for attribute, translator in translations:
+            application.removeTranslator(getattr(SharedData, attribute))
+            setattr(SharedData, attribute, translator)
+            application.installTranslator(translator)
+        SharedData.app_language = lang
+        SharedData.ui.retranslateUi(self)
+        self.tabs_manager.retranslate_ui()
+        self.set_font_for_language(lang)
 
     def set_font_for_language(self, lang):
         SharedData.ui.set_language(self, lang)

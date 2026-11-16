@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 
 from gui.main_window.main_screen import Ui_MainWindow as DesignerUi
 from gui.main_window.theme import STYLESHEET
+from gui.main_window.results_placeholder import ResultsPlaceholder
 from my_utils.my_enums import AppLang
 
 
@@ -76,18 +77,23 @@ class Ui_MainWindow(DesignerUi):
                 modes_layout.addLayout(self._threshold_row(self.similarityThresholdSlider, self.similarityThresholdLabel))
             elif button is self.relatedWordsRadioButton:
                 modes_layout.addLayout(self._threshold_row(self.relatedWordsThresholdSlider, self.relatedWordsThresholdLabel))
-        modes_layout.addSpacing(12)
-        self.refinements_title = self._label("section")
-        modes_layout.addWidget(self.refinements_title)
+        modes_layout.addStretch()
+        self.sidebar.setWidget(modes)
+
+        self.matching_options = QFrame()
+        self.matching_options.setObjectName("matchingOptions")
+        matching_layout = QHBoxLayout(self.matching_options)
+        matching_layout.setContentsMargins(4, 0, 4, 0)
+        matching_layout.setSpacing(12)
+        self.refinements_title = self._label("muted")
+        matching_layout.addWidget(self.refinements_title)
         self.refinements = (self.alifAlifMaksuraCheckbox, self.yaAlifMaksuraCheckbox,
                             self.finalTaCheckbox, self.wordPermutationsCheckbox,
                             self.optionalAlTarifCheckbox)
         for checkbox in self.refinements:
-            modes_layout.addWidget(checkbox)
+            matching_layout.addWidget(checkbox)
             checkbox.toggled.connect(self._update_options_summary)
-        modes_layout.addStretch()
-        self.sidebar.setWidget(modes)
-        self.sidebar.hide()
+        matching_layout.addStretch()
 
         content = QVBoxLayout()
         content.setSpacing(6)
@@ -98,15 +104,16 @@ class Ui_MainWindow(DesignerUi):
         self.label.setParent(self.centralwidget)
         self.searchWord.setClearButtonEnabled(True)
         self.searchWord.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-        self.searchWord.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self.searchWord.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignAbsolute)
         search_row.addWidget(self.searchWord, 1)
         self.options_button = QToolButton()
         self.options_button.setObjectName("optionsButton")
         self.options_button.setCheckable(True)
         self.options_button.toggled.connect(self._toggle_options)
         self.searchOptionsButtonGroup.buttonToggled.connect(self._update_options_summary)
-        search_row.addWidget(self.options_button)
+        search_row.insertWidget(0, self.options_button)
         root.addLayout(search_row)
+        root.addWidget(self.matching_options)
 
         self.result_summary = QFrame()
         self.result_summary.setObjectName("resultSummary")
@@ -142,6 +149,7 @@ class Ui_MainWindow(DesignerUi):
         self.horizontalLayout_3.addWidget(self.colorizeCheckbox)
         self.horizontalLayout_5.removeItem(self.verticalLayout_9)
         self.line_3.hide()
+        self.results_placeholder = ResultsPlaceholder(self.foundVerses)
         word_options = QHBoxLayout()
         for checkbox in (self.diacriticsCheckbox, self.wordTransliterationCheckbox,
                          self.wordMeaningCheckbox):
@@ -166,8 +174,8 @@ class Ui_MainWindow(DesignerUi):
             table.setShowGrid(False)
             table.setMinimumHeight(110)
             table.verticalHeader().setDefaultSectionSize(46)
-        workspace.addLayout(content, 1)
         workspace.addWidget(self.sidebar)
+        workspace.addLayout(content, 1)
         root.addLayout(workspace, 1)
         window.setCentralWidget(self.centralwidget)
         old_central.deleteLater()
@@ -176,15 +184,15 @@ class Ui_MainWindow(DesignerUi):
         window.resize(1220, 860)
         self.search_shortcut = QShortcut(QKeySequence("Ctrl+F"), window)
         self.search_shortcut.activated.connect(self._focus_search)
-        focus_order = [self.searchWord, self.options_button,
+        focus_order = [self.searchWord, self.options_button, *self.refinements,
                        *self.mode_buttons[:6], self.similarityThresholdSlider,
                        self.relatedWordsRadioButton, self.relatedWordsThresholdSlider,
-                       self.topicsRadioButton, self.regexRadioButton,
-                       *self.refinements, self.tabWidget]
+                       self.topicsRadioButton, self.regexRadioButton, self.tabWidget]
         for previous, following in zip(focus_order, focus_order[1:]):
             QWidget.setTabOrder(previous, following)
         window.setStyleSheet(STYLESHEET)
         self.set_language(window, self._language)
+        self.options_button.setChecked(True)
         self.searchWord.setFocus()
 
     @staticmethod
@@ -240,17 +248,25 @@ class Ui_MainWindow(DesignerUi):
         self._language = language
         arabic = language == AppLang.ARABIC
         window.setLayoutDirection(Qt.LayoutDirection.RightToLeft if arabic else Qt.LayoutDirection.LeftToRight)
+        # AlignRight alone is mirrored by Qt for RTL text. AlignAbsolute pins
+        # both the entered query and its placeholder to the physical right.
+        self.searchWord.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+        self.searchWord.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignAbsolute)
         text = lambda ar, en: ar if arabic else en
         self.title.setText(text("عدّاد القرآن الكريم", "Quran Counter"))
         self.modes_title.setText(text("طريقة البحث", "SEARCH MODE"))
-        self.refinements_title.setText(text("خيارات المطابقة", "MATCHING OPTIONS"))
+        self.refinements_title.setText(text("خيارات المطابقة", "Matching options"))
+        self.refinements_title.setToolTip(text(
+            "متاحة للبحث دون تقييد أو عن كلمة كاملة أو بداية كلمة أو نهايتها",
+            "Available for unrestricted, full-word, beginning-of-word and end-of-word searches.",
+        ))
         self.label_2.setText(text("نتيجة", "Matches"))
         self.label_4.setText(text("سورة", "Surahs"))
         self.label_5.setText(text("آية", "Verses"))
         self.searchWord.setPlaceholderText(text("اكتب كلمة أو عبارة…", "Search an Arabic word or phrase…"))
         self.searchWord.setAccessibleName(text("البحث في القرآن", "Search the Quran"))
         self.searchWord.setToolTip(text("تظهر النتائج أثناء الكتابة · Ctrl+F", "Results update as you type · Ctrl+F"))
-        self.foundVerses.setPlaceholderText(text("ابدأ البحث لاستكشاف الآيات هنا", "Start a search to explore matching verses here."))
+        self.results_placeholder.set_text(text("ابدأ البحث لاستكشاف الآيات هنا", "Start a search to explore matching verses here."))
         self.filterButton.setText(text("تصفية ذكية", "Smart filter"))
         self.clearFilterButton.setText(text("مسح التصفية", "Clear filter"))
         for table, hint in ((self.surahResultsTableWidget, self.label_8),
