@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 import warnings
 from typing import Any
 from PySide6.QtGui import QShowEvent
@@ -14,6 +15,7 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
     def __init__(self, language: None | AppLang, items_to_load=25):
         super(BaseDetailedDisplayDialog, self).__init__()
         self.setupUi(self)
+        prepare_dialog(self, self, "details")
         self._current_lang = None
         self._apply_language(language)
         self.setWindowFlags(self.windowFlags() |
@@ -35,7 +37,7 @@ class BaseDetailedDisplayDialog(QDialog, Ui_DetailedWordDisplayDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     @property

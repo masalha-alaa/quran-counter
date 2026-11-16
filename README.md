@@ -4,10 +4,31 @@
 
 **Quran counter** is a tool for fast and flexible semantic and syntactic search in the Holy Quran (`exe` download link [at the bottom](#notes)).
 
-The app's interface currently has English and Arabic translations:
+The desktop interface supports English and Arabic, with mirrored layouts and a charcoal and slate theme with soft blue accents across all screens. Search modes open by default and can be collapsed with **Search options** to give results the full width. Matching controls align directly beneath the query and reflect which options the selected mode supports. Switching modes keeps the query's size and focus stable; the button's tooltip includes the selected mode. Entered queries and result text always align to the right. Empty search and results hints align left in English and right in Arabic. Arabic query text keeps its RTL paragraph direction when the keyboard layout changes, so spaces do not move the caret to the opposite end of a word. Smart filter keeps a steady appearance during search updates while its action remains disabled until current results arrive. Press **Ctrl+F** to focus search; results still update as you type.
 
-<img alt="english" src="https://github.com/user-attachments/assets/441a8175-a188-4d6c-a143-0b06a2de8938" width="400">
-<img alt="arabic" src="https://github.com/user-attachments/assets/3a3e4c56-8b18-4031-b1aa-35b82b420f72" width="400">
+<img alt="Modern English interface" src="docs/ui/english.png" width="600">
+<img alt="Modern Arabic interface" src="docs/ui/arabic.png" width="600">
+
+The Quran browser keeps its original layout: selection tools at the top left, navigation at the top right, then the Quran text, page controls, statistics, and histogram. It uses the new theme without added titles or tabs. Statistics and the histogram remain visible. Detailed results, relation graphs, assistant setup and meaning selection, downloads, updates, and waiting dialogs share the same theme. [View the complete English and Arabic screen gallery, including the original/restored reader comparison](docs/ui/README.md).
+
+On pages containing multiple Surahs, the histogram and letter total combine the counts of all those Surahs. Resetting statistics waits for the complete set and ignores superseded requests, so completion order cannot change the numbers.
+
+### UI development and validation
+
+The presentation layers live in `gui/main_window/modern_main_window.py` and `gui/dialog_style.py`, with shared styling in `gui/theme.py`. The Mushaf's theme lives in `gui/mushaf_view_dialog/presentation.py`; its Designer layout remains unchanged and is not mirrored when changing language. They reuse the original Designer controls and custom result widgets. Continue editing/regenerating the `.ui` files as usual; `build.bat` does not overwrite these presentation layers. New interface text is localized in the language helpers, alongside the existing Qt translation catalogs.
+
+Language switching requires compiled `.qm` catalogs. For a source checkout, run `python tools/compile_translations.py` after installing the dependencies. On Windows, `convert_to_exe.bat` now runs this step automatically before packaging and stops if compilation fails. Rebuild an older EXE to include the catalogs; `.ts` source files alone cannot enable runtime translation. The Windows build also needs the separately distributed `data/` directory and `embeddings/topics_embeddings.pkl`.
+
+With the project's dependencies installed, run the Qt UI checks from the repository root:
+
+```sh
+python -m unittest discover -s tests -v
+python tools/render_ui_preview.py --language en --output work/english.png
+python tools/render_ui_preview.py --language ar --output work/arabic.png
+python tools/render_dialog_previews.py --output-dir work/dialogs
+```
+
+The tests cover production language-menu actions, missing-catalog recovery, right alignment, preserved control signals and state, keyboard navigation, and focus/geometry stability across all nine search modes in both languages at two window sizes. Typing checks cover caret screen position after spaces and keyboard-direction changes, editing/undo/validators, filter appearance during pending searches, and rejection of stale results. Dialog checks cover translation, visible control bounds, the Mushaf's original layout hierarchy and control positions, statistics remaining visible, reader navigation and selection tools, detail closing, key input, meaning selection, and download progress. With options open, results occupy over 70% of the width and 55% of the height at the default 1220 × 860 size in both languages; collapsing modes restores over 95% of the width. Tests use the real forms and action wiring without live data services. Mushaf statistics tests run the real counting worker on small two-Surah fixtures, reversing completion order and exercising repeated resets, stale results, and selection changes. Previews use deterministic sample content, not live search or network results. Full application and Windows EXE testing still require the separately distributed data and embeddings. The feature screenshots below show earlier versions.
 
 Here's a breakdown of some of the various features the app provides:
 

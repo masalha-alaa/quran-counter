@@ -42,8 +42,8 @@
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="773"/>
-        <source>عبارات تظهر فقط في هذه السورة - اضغط لمشاهدة المزيد</source>
-        <translation>Phrases that appear only in this Surah - Click to see more</translation>
+        <source>عبارات تظهر فقط في هذه السورة</source>
+        <translation>Phrases that appear only in this Surah</translation>
     </message>
     <message>
         <location filename="../mushaf_view.ui" line="815"/>

@@ -47,9 +47,9 @@ class SpinningLoader(QWidget):
         # Draw a spinning circle
         center = self.rect().center()
         radius = self.radius  # Radius of the circle
-        pen = QPen(QColor(0, 150, 150))
+        pen = QPen(QColor("#a8c4ff"))
         pen.setWidth(4)
-        painter.setPen(pen)  # Green color for the spinner
+        painter.setPen(pen)
         painter.setBrush(Qt.BrushStyle.NoBrush)  # No fill color for the arc
 
         # Draw the spinner as an arc
@@ -61,7 +61,7 @@ class SpinningLoader(QWidget):
 
         # Draw the text below the spinner
         if self.text:
-            font = QFont("Arial", 10)
+            font = QFont("Segoe UI", 10)
             painter.setFont(font)
             text_width = painter.fontMetrics().horizontalAdvance(self.text)
             text_height = painter.fontMetrics().height()

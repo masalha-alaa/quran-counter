@@ -1,3 +1,4 @@
+from gui.dialog_style import prepare_dialog, set_dialog_language
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QDialog, QApplication
 from gui.relations_graph.relations_graph import Ui_RelationsGraphDialog
@@ -12,6 +13,7 @@ class MyRelationsGraphDialog(QDialog, Ui_RelationsGraphDialog):
     def __init__(self, language: None | AppLang):
         super(MyRelationsGraphDialog, self).__init__()
         self.setupUi(self)
+        prepare_dialog(self, self, "relations")
         self.expandedGraphCheckbox.setChecked(True)  # don't change initial value - otherwise graph will be messed up
         self._current_lang = None
         self.expanded = False
@@ -20,11 +22,11 @@ class MyRelationsGraphDialog(QDialog, Ui_RelationsGraphDialog):
                             Qt.WindowType.WindowMaximizeButtonHint |
                             Qt.WindowType.WindowMinimizeButtonHint)
         # Manually resize to the screen size
-        screen_geometry = QApplication.screenAt(QCursor.pos()).geometry()
-        self.resize(screen_geometry.width(), screen_geometry.height())
+        screen_geometry = (QApplication.screenAt(QCursor.pos()) or QApplication.primaryScreen()).availableGeometry()
+        self.resize(min(1060, screen_geometry.width() - 40), min(720, screen_geometry.height() - 60))
 
         # Optionally center the dialog
-        self.move(screen_geometry.topLeft())
+        self.move(screen_geometry.center() - self.rect().center())
 
         self.setup_events()
 
@@ -37,11 +39,11 @@ class MyRelationsGraphDialog(QDialog, Ui_RelationsGraphDialog):
     def _apply_language(self, lang):
         if lang != self._current_lang:
             self.retranslateUi(self)
-            # self.set_font_for_language(lang)
+            set_dialog_language(self, lang)
             self._current_lang = lang
 
     def set_data(self, graph: DiGraph):
-        self.graphWidget.set_data(graph, "#313131", self._current_lang)
+        self.graphWidget.set_data(graph, "#191c23", self._current_lang)
 
     # SIGNALS
     def _toggle_expanded_graph(self, state):

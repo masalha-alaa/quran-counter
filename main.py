@@ -6,14 +6,13 @@ import uuid
 from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QValidator
 from PySide6.QtGui import QCursor
-from PySide6.QtTest import QTest
-from PySide6.QtCore import Qt, QTimer
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtCore import Qt, QTimer, QTranslator
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QFontDatabase
 
 from my_utils.my_data_loader import MyDataLoader
 from my_utils.shared_data import SharedData
-from gui.main_window.main_screen import Ui_MainWindow
+from gui.main_window.modern_main_window import Ui_MainWindow
 from text_validators.composite_validator import CompositeValidator
 from text_validators.arabic_with_regex_validator import ArabicWithRegexValidator
 from worker_threads.my_finder_thread import FinderThread
@@ -46,9 +45,9 @@ class MainWindow(QMainWindow):
         SharedData.ui = Ui_MainWindow()
         self.running_threads = set()
         self._last_thread_id = -1
+        self._active_search_id = None
         self.spinner = SpinningLoader()
         # TODO: Settings dialog...
-        self._font_ptrn = re.compile(r"(font:) .* \"[a-zA-Z \-]+\"([\s\S]*)")
         self._verse_ref_pattern = re.compile(r"\d{,3}:\d{,3}")
         self._surah_results_list_uuid = uuid.uuid4().hex
         self._word_results_list_uuid = uuid.uuid4().hex
@@ -86,30 +85,39 @@ class MainWindow(QMainWindow):
         # SharedData.ui.topicsRadioButton.setEnabled(False)  # TODO: Remove
 
     def _apply_language(self, lang):
-        if lang != SharedData.app_language and \
-                load_translation(SharedData.translator, resource_path(f"translations/main_screen_{lang.value}.qm")) and \
-                load_translation(SharedData.ar_to_en_dynamic_translator, resource_path(f"translations/dynamic_translations_ar_src_{lang.value}.qm")) and \
-                load_translation(SharedData.en_to_ar_dynamic_translator, resource_path(f"translations/dynamic_translations_en_src_{lang.value}.qm")):
-            app.installTranslator(SharedData.translator)
-            app.installTranslator(SharedData.ar_to_en_dynamic_translator)
-            app.installTranslator(SharedData.en_to_ar_dynamic_translator)
-            SharedData.ui.retranslateUi(self)
-            self.tabs_manager.retranslate_ui()
-            self.set_font_for_language(lang)
-            SharedData.app_language = lang
+        if lang == SharedData.app_language:
+            return
+
+        # Load a complete set before replacing any installed translator. A
+        # missing catalog must not leave the application half-translated.
+        translations = []
+        for attribute, catalog in (
+            ("translator", "main_screen"),
+            ("ar_to_en_dynamic_translator", "dynamic_translations_ar_src"),
+            ("en_to_ar_dynamic_translator", "dynamic_translations_en_src"),
+        ):
+            translator = QTranslator()
+            if not load_translation(translator, resource_path(f"translations/{catalog}_{lang.value}.qm")):
+                QMessageBox.warning(
+                    self, "Language / اللغة",
+                    "Translation files are missing or unreadable. Rebuild or reinstall the application.\n\n"
+                    "ملفات الترجمة مفقودة أو غير قابلة للقراءة. أعد بناء التطبيق أو تثبيته.",
+                )
+                return
+            translations.append((attribute, translator))
+
+        application = QApplication.instance()
+        for attribute, translator in translations:
+            application.removeTranslator(getattr(SharedData, attribute))
+            setattr(SharedData, attribute, translator)
+            application.installTranslator(translator)
+        SharedData.app_language = lang
+        SharedData.ui.retranslateUi(self)
+        self.tabs_manager.retranslate_ui()
+        self.set_font_for_language(lang)
 
     def set_font_for_language(self, lang):
-        styleSheet = self.styleSheet()
-        font = "Calibri"
-        size = 10
-        weight = 400
-        if lang == AppLang.ARABIC:
-            size = 18
-        elif lang == AppLang.ENGLISH:
-            size = 16
-
-        styleSheet = self._font_ptrn.sub(rf'\1 {weight} {size}pt "{font}"\2', styleSheet)
-        self.setStyleSheet(styleSheet)
+        SharedData.ui.set_language(self, lang)
 
     def _setup_events(self):
         SharedData.ui.searchOptionsButtonGroup.buttonToggled.connect(self._search_options_radio_buttons_changed)
@@ -206,13 +214,11 @@ class MainWindow(QMainWindow):
 
     def _optional_al_tarif_state_changed(self, state):
         self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _maintain_words_order_state_changed(self, state):
         new_max_words = self._composite_validator.get_max_words() if (qt_state := Qt.CheckState(state)) == Qt.CheckState.Unchecked else MainWindow.MAX_WORDS_IF_NOT_MAINTAIN_ORDER
         self._composite_validator.set_max_words(new_max_words)
         self._finetune_search_text()
-        SharedData.ui.searchWord.setFocus()
 
     def _finetune_search_text(self, max_words:str|int|None='auto'):
         if max_words == 'auto':
@@ -226,19 +232,16 @@ class MainWindow(QMainWindow):
         # ['\u062a', '\u0629'] == ["ت", "ة"]
         if any(word.endswith(('\u062a', '\u0629')) for word in SharedData.search_word.split()):
             self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _ya_alif_maksura_state_changed(self, state):
         # if any(word.endswith(("ي", "يء", "ى", "ىء")) for word in SharedData.search_word.split()):
         #['\u064a', '\u0649'] == ["ي", "ى"]
         if any(ch in ['\u064a', '\u0649'] for ch in SharedData.search_word):
             self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _alif_variations_state_changed(self, state):
         if any((is_alif(ch) or alif_maksura == ch) for ch in SharedData.search_word):
             self._search_word_text_changed(SharedData.search_word)
-        SharedData.ui.searchWord.setFocus()
 
     def _add_thread(self, thread):
         # MainWindow.RUNNING_THREADS_MUTEX.lock()
@@ -259,7 +262,8 @@ class MainWindow(QMainWindow):
             return False
 
     def _search_word_text_changed(self, new_text):
-        SharedData.ui.filterButton.setEnabled(False)
+        self._active_search_id = None
+        SharedData.ui.search_filter.begin()
         SharedData.all_matches = []
         if ((not (stripped := new_text.strip()))
                 or ((SharedData.ui.rootRadioButton.isChecked() or
@@ -270,10 +274,11 @@ class MainWindow(QMainWindow):
                     and len(stripped.replace(" ", "")) < 3)):
             self.clear_results()
             self.tabs_manager.refresh_tabs_config()
-            SharedData.ui.filterButton.setEnabled(False)
+            SharedData.ui.search_filter.complete(False)
             self.tabs_manager.clear_tabs_results()
             if SharedData.ui.regexRadioButton.isChecked():
                 SharedData.ui.searchWord.setStyleSheet("")
+            self.finished_waiting()
             return
 
         if SharedData.ui.regexRadioButton.isChecked():
@@ -281,6 +286,8 @@ class MainWindow(QMainWindow):
                 SharedData.ui.searchWord.setStyleSheet("")
             else:
                 SharedData.ui.searchWord.setStyleSheet("background-color: rgba(255, 0, 0, 50);")
+                SharedData.ui.search_filter.complete(False)
+                self.finished_waiting()
                 return
 
         if (SharedData.ui.rootRadioButton.isChecked() or
@@ -290,6 +297,7 @@ class MainWindow(QMainWindow):
             self.waiting(block_search=False)
 
         thread_id = datetime.now().timestamp()
+        self._active_search_id = thread_id
         if SharedData.ui.topicsRadioButton.isChecked():
             topics_finder_thread = TopicFinderThread(thread_id)
             topics_finder_thread.set_data(new_text)
@@ -331,7 +339,6 @@ class MainWindow(QMainWindow):
         new_max_words = self._get_max_words_for_search_option()
         self._composite_validator.set_max_words(new_max_words)
         self._finetune_search_text(new_max_words)
-        SharedData.ui.searchWord.setFocus()
 
         self.finished_waiting()
 
@@ -339,7 +346,7 @@ class MainWindow(QMainWindow):
         caller_thread.result_ready.disconnect(self.on_topics_found_complete)
         self._remove_thread(caller_thread)
         # reject older threads
-        if thread_id < self._last_thread_id:
+        if thread_id != self._active_search_id or thread_id < self._last_thread_id:
             return
         self._last_thread_id = thread_id
 
@@ -354,13 +361,14 @@ class MainWindow(QMainWindow):
         SharedData.matches_number_verses = str(number_of_verses)
 
         self.tabs_manager.on_txt_found_complete(initial_word, number_of_matches)
+        SharedData.ui.search_filter.complete(number_of_matches > 0 and len(SharedData.search_word.split()) == 1)
         self.finished_waiting()
 
     def on_txt_found_complete(self, initial_word, words_num, result: FinderResultObject, thread_id, caller_thread: FinderThread):
         caller_thread.result_ready.disconnect(self.on_txt_found_complete)
         self._remove_thread(caller_thread)
         # reject older threads
-        if thread_id < self._last_thread_id:
+        if thread_id != self._active_search_id or thread_id < self._last_thread_id:
             return
         self._last_thread_id = thread_id
 
@@ -372,11 +380,12 @@ class MainWindow(QMainWindow):
         SharedData.matches_number_verses = str(result.total_number_of_verses)
 
         self.tabs_manager.on_txt_found_complete(initial_word, result.total_number_of_matches)
+        SharedData.ui.search_filter.complete(result.total_number_of_matches > 0 and len(SharedData.search_word.split()) == 1)
         self.finished_waiting()
 
     def waiting(self, text="", block_search=True):
         if block_search:
-            SharedData.ui.searchWord.setEnabled(False)
+            SharedData.ui.searchWord.setReadOnly(True)
         SharedData.ui.similarityThresholdSlider.setEnabled(False)
         SharedData.ui.relatedWordsThresholdSlider.setEnabled(False)
         self.spinner.setText(text)
@@ -384,39 +393,9 @@ class MainWindow(QMainWindow):
 
     def finished_waiting(self):
         self.spinner.stop()
-        if not SharedData.ui.searchWord.isEnabled():
-            SharedData.ui.searchWord.setEnabled(True)
+        SharedData.ui.searchWord.setReadOnly(False)
         SharedData.ui.similarityThresholdSlider.setEnabled(SharedData.ui.similarWordRadioButton.isChecked())
         SharedData.ui.relatedWordsThresholdSlider.setEnabled(SharedData.ui.relatedWordsRadioButton.isChecked())
-        if SharedData.ui.similarityThresholdSlider.isEnabled():
-            # a trick to restore the blue color on the slider handle (setFocus() didn't work)
-            self._simulate_click_on_slider_handle(SharedData.ui.similarityThresholdSlider)
-        if SharedData.ui.relatedWordsThresholdSlider.isEnabled():
-            # a trick to restore the blue color on the slider handle (setFocus() didn't work)
-            self._simulate_click_on_slider_handle(SharedData.ui.relatedWordsThresholdSlider)
-        SharedData.ui.searchWord.setFocus()
-
-    def _simulate_click_on_slider_handle(self, slider):
-        # Get the slider handle position based on its current value
-        handle_pos = slider.rect().center()  # Default to center if no other method is available
-
-        # For horizontal sliders
-        if slider.orientation() == Qt.Orientation.Horizontal:
-            # Map the value to the x-coordinate of the handle within the slider's range
-            handle_x = int((slider.value() - slider.minimum()) / (slider.maximum() - slider.minimum()) * slider.width())
-            handle_pos = slider.mapToGlobal(slider.rect().topLeft()) + slider.rect().topLeft()
-            handle_pos.setX(handle_x)
-
-        # For vertical sliders
-        elif slider.orientation() == Qt.Orientation.Vertical:
-            # Map the value to the y-coordinate of the handle within the slider's range
-            handle_y = int(
-                (slider.value() - slider.minimum()) / (slider.maximum() - slider.minimum()) * slider.height())
-            handle_pos = slider.mapToGlobal(slider.rect().topLeft()) + slider.rect().topLeft()
-            handle_pos.setY(handle_y)
-
-        # Simulate the click at the handle position
-        QTest.mouseClick(slider, Qt.MouseButton.LeftButton, pos=handle_pos)
 
     def _search_options_radio_buttons_changed(self, button, is_checked: bool):
         if button == SharedData.ui.rootRadioButton:
@@ -495,7 +474,6 @@ class MainWindow(QMainWindow):
         new_max_words = self._get_max_words_for_search_option()
         self._composite_validator.set_max_words(new_max_words)
         self._finetune_search_text(new_max_words)
-        SharedData.ui.searchWord.setFocus()
 
 
     def _similarity_threshold_changed(self, value):
